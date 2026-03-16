@@ -3,9 +3,10 @@ import requests
 import gspread
 from google.oauth2.service_account import Credentials
 
-
-TAG = "本当のルーキー祭り2025秋"
-SPREADSHEET_NAME = "video_catalog_2025autumn"
+# TAG = "本当のルーキー祭り2025秋"
+# SPREADSHEET_NAME = "video_catalog_2025autumn"
+TAG = "本当のルーキー祭り2026春"
+SPREADSHEET_NAME = "video_catalog_2026spring"
 SHEET_NAME = "videos"
 
 LIMIT = 100
@@ -18,12 +19,15 @@ def fetch_all_videos(tag):
     fields = [
         "contentId",
         "title",
+        "userId",
+        "description",
         "startTime",
         "viewCounter",
         "likeCounter",
         "commentCounter",
         "mylistCounter",
         "tags",
+        "lengthSeconds",
     ]
 
     all_videos = []
@@ -90,7 +94,10 @@ def write_sheet(sheet, videos):
     header = [
         "動画ID",
         "タイトル",
-        "投稿日",
+        "投稿者ID",
+        "投稿日時",
+        "概要欄",
+        "動画時間",
         "再生数",
         "いいね",
         "コメント",
@@ -108,7 +115,10 @@ def write_sheet(sheet, videos):
             [
                 video_id,
                 v["title"],
+                v["userId"],
                 v["startTime"],
+                v["description"],
+                v["lengthSeconds"],
                 v["viewCounter"],
                 v.get("likeCounter", 0),
                 v["commentCounter"],
