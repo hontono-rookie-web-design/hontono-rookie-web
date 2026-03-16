@@ -2,11 +2,12 @@ import os
 import requests
 import gspread
 from google.oauth2.service_account import Credentials
+from bs4 import BeautifulSoup
 
-# TAG = "本当のルーキー祭り2025秋"
-# SPREADSHEET_NAME = "video_catalog_2025autumn"
-TAG = "本当のルーキー祭り2026春"
-SPREADSHEET_NAME = "video_catalog_2026spring"
+TAG = "本当のルーキー祭り2025秋"
+SPREADSHEET_NAME = "video_catalog_2025autumn"
+# TAG = "本当のルーキー祭り2026春"
+# SPREADSHEET_NAME = "video_catalog_2026spring"
 SHEET_NAME = "videos"
 
 LIMIT = 100
@@ -65,6 +66,50 @@ def fetch_all_videos(tag):
     return all_videos
 
 
+def get_username(user_id):
+    url = f"https://www.nicovideo.jp/user/{user_id}"
+
+    headers = {"User-Agent": "Mozilla/5.0"}
+
+    res = requests.get(url, headers=headers)
+
+    if res.status_code != 200:
+        return None
+
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    # ユーザー名は <meta property="profile:username"> に入っている
+    meta = soup.find("meta", {"property": "profile:username"})
+    if meta:
+        return meta.get("content")
+
+    # fallback: titleタグ
+    if soup.title:
+        return soup.title.text.replace(" - ニコニコ", "")
+
+    return None
+
+
+def attach_user_names(videos):
+
+    user_cache = {}
+
+    for video in videos:
+
+        user_id = video.get("userId")
+
+        if not user_id:
+            video["userName"] = None
+            continue
+
+        if user_id not in user_cache:
+            user_cache[user_id] = get_username(user_id)
+
+        video["userName"] = user_cache[user_id]
+
+    return videos
+
+
 def connect_sheet():
 
     scope = [
@@ -95,6 +140,7 @@ def write_sheet(sheet, videos):
         "動画ID",
         "タイトル",
         "投稿者ID",
+        "投稿者名",
         "投稿日時",
         "概要欄",
         "動画時間",
@@ -116,6 +162,7 @@ def write_sheet(sheet, videos):
                 video_id,
                 v["title"],
                 v["userId"],
+                v["userName"],
                 v["startTime"],
                 v["description"],
                 v["lengthSeconds"],
@@ -136,6 +183,7 @@ def main():
     print("動画取得開始")
 
     videos = fetch_all_videos(TAG)
+    videos = attach_user_names(videos)
 
     print(f"合計 {len(videos)} 件")
 
