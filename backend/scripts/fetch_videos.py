@@ -4,10 +4,10 @@ import gspread
 from google.oauth2.service_account import Credentials
 from bs4 import BeautifulSoup
 
-TAG = "本当のルーキー祭り2025秋"
-SPREADSHEET_NAME = "video_catalog_2025autumn"
-# TAG = "本当のルーキー祭り2026春"
-# SPREADSHEET_NAME = "video_catalog_2026spring"
+# TAG = "本当のルーキー祭り2025秋"
+# SPREADSHEET_NAME = "video_catalog_2025autumn"
+TAG = "本当のルーキー祭り2026春"
+SPREADSHEET_NAME = "video_catalog_2026spring"
 SHEET_NAME = "videos"
 
 LIMIT = 100
