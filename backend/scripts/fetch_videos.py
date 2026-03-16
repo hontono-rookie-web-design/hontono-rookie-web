@@ -4,16 +4,8 @@ import gspread
 from google.oauth2.service_account import Credentials
 from bs4 import BeautifulSoup
 
-# TAG = "本当のルーキー祭り2025秋"
-# SPREADSHEET_NAME = "video_catalog_2025autumn"
-TAG = "本当のルーキー祭り2026春"
-SPREADSHEET_NAME = "video_catalog_2026spring"
-SHEET_NAME = "videos"
 
-LIMIT = 100
-
-
-def fetch_all_videos(tag):
+def fetch_all_videos(tag, limit=100):
 
     url = "https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
 
@@ -40,16 +32,12 @@ def fetch_all_videos(tag):
             "q": tag,
             "targets": "tagsExact",
             "fields": ",".join(fields),
-            "_limit": LIMIT,
+            "_limit": limit,
             "_offset": offset,
             "_sort": "+startTime",
-            # "_context": "rookie_tag_collection_script",
         }
 
-        # headers = {"User-Agent": "niconico-rookie-script", "X-Frontend-Id": "6"}
-
         res = requests.get(url, params=params)
-        # res = requests.get(url, params=params, headers=headers)
         res.raise_for_status()
 
         data = res.json()["data"]
@@ -61,7 +49,7 @@ def fetch_all_videos(tag):
 
         print(f"{len(all_videos)} 件取得")
 
-        offset += LIMIT
+        offset += limit
 
     return all_videos
 
@@ -110,7 +98,7 @@ def attach_user_names(videos):
     return videos
 
 
-def connect_sheet():
+def connect_sheet(spreadsheet_name, sheet_name):
 
     scope = [
         "https://www.googleapis.com/auth/spreadsheets",
@@ -124,12 +112,12 @@ def connect_sheet():
 
     gc = gspread.authorize(credentials)
 
-    spreadsheet = gc.open(SPREADSHEET_NAME)
+    spreadsheet = gc.open(spreadsheet_name)
 
     try:
-        sheet = spreadsheet.worksheet(SHEET_NAME)
+        sheet = spreadsheet.worksheet(sheet_name)
     except gspread.WorksheetNotFound:
-        sheet = spreadsheet.add_worksheet(title=SHEET_NAME, rows=2000, cols=10)
+        sheet = spreadsheet.add_worksheet(title=sheet_name, rows=2000, cols=10)
 
     return sheet
 
@@ -179,16 +167,22 @@ def write_sheet(sheet, videos):
 
 
 def main():
+    # TAG = "本当のルーキー祭り2025秋"
+    # SPREADSHEET_NAME = "video_catalog_2025autumn"
+    TAG = "本当のルーキー祭り2026春"
+    SPREADSHEET_NAME = "video_catalog_2026spring"
+    SHEET_NAME = "videos"
+
+    LIMIT = 100
 
     print("動画取得開始")
 
-    videos = fetch_all_videos(TAG)
+    videos = fetch_all_videos(TAG, LIMIT)
     videos = attach_user_names(videos)
 
     print(f"合計 {len(videos)} 件")
 
-    sheet = connect_sheet()
-
+    sheet = connect_sheet(SPREADSHEET_NAME, SHEET_NAME)
     write_sheet(sheet, videos)
 
     print("スプレッドシート更新完了")
