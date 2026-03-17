@@ -1,0 +1,108 @@
+import csv
+import random
+
+
+class ContentGrouper:
+    def __init__(self, content_ids):
+        self.content_ids = list(content_ids)
+        self.content_to_group = {}
+        self.group_to_contents = {}
+
+    def _reset_groups(self):
+        self.content_to_group = {}
+        self.group_to_contents = {}
+
+    def _populate_lookups(self, groups):
+        """
+        groups: list of lists, where each inner list represents a group
+        """
+        self._reset_groups()
+        for idx, group in enumerate(groups):
+            group_id = idx + 1  # 1-based index for user friendliness
+            self.group_to_contents[group_id] = group
+            for content_id in group:
+                self.content_to_group[content_id] = group_id
+
+    def group_by_size(self, size):
+        """
+        Groups content into chunks of roughly 'size'.
+        The last group might be smaller.
+        """
+        if size <= 0:
+            raise ValueError("Size must be positive")
+            
+        shuffled = self.content_ids[:]
+        random.shuffle(shuffled)
+        
+        groups = []
+        for i in range(0, len(shuffled), size):
+            groups.append(shuffled[i:i + size])
+            
+        self._populate_lookups(groups)
+        return self.group_to_contents
+
+    def group_by_count(self, count):
+        """
+        Splits content into exactly 'count' groups.
+        Items are distributed as evenly as possible.
+        """
+        if count <= 0:
+            raise ValueError("Count must be positive")
+        if count > len(self.content_ids):
+             raise ValueError("Count cannot be larger than number of items")
+
+        shuffled = self.content_ids[:]
+        random.shuffle(shuffled)
+        
+        groups = [[] for _ in range(count)]
+        for i, item in enumerate(shuffled):
+            groups[i % count].append(item)
+            
+        self._populate_lookups(groups)
+        return self.group_to_contents
+
+    def get_group_id(self, content_id):
+        """Find group ID for a content ID."""
+        return self.content_to_group.get(content_id)
+
+    def get_members(self, group_id):
+        """Get all members of a group."""
+        return self.group_to_contents.get(group_id, [])
+
+    def export_to_csv(self, filename):
+        """Exports the grouping to a CSV file."""
+        if not self.content_to_group:
+            print("No grouping has been performed yet.")
+            return
+
+        with open(filename, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['content_id', 'group_id'])
+            for content_id, group_id in self.content_to_group.items():
+                writer.writerow([content_id, group_id])
+        print(f"Exported to {filename}")
+
+def main():
+    # Sample data
+    content_ids = [f"id_{i}" for i in range(1, 21)] # 20 items
+    grouper = ContentGrouper(content_ids)
+
+    print("--- Grouping by Size (3 items per group) ---")
+    grouper.group_by_size(3)
+    for gid, members in grouper.group_to_contents.items():
+        print(f"Group {gid}: {members}")
+    
+    # Check lookup
+    sample_id = "id_5"
+    print(f"Group for {sample_id}: {grouper.get_group_id(sample_id)}")
+    
+    print("\n--- Grouping by Count (4 groups total) ---")
+    grouper.group_by_count(4)
+    for gid, members in grouper.group_to_contents.items():
+        print(f"Group {gid}: {members}")
+
+    # Export
+    grouper.export_to_csv('groups.csv')
+
+if __name__ == "__main__":
+    main()
