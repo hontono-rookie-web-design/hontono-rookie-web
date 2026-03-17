@@ -38,39 +38,44 @@ class ContentGrouper:
         shuffled = self.content_ids[:] # 元のリストを変更しないようにコピー
         self.rng.shuffle(shuffled) # IDをランダムにシャッフル
         
+        # 実際にグループ分けを行い、リストのリストを作成
         groups = []
         for i in range(0, len(shuffled), size):
             groups.append(shuffled[i:i + size])
             
+        # content_to_groupとgroup_to_contentsを更新
         self._populate_lookups(groups)
         return self.group_to_contents
 
     def group_by_count(self, count):
         """
-        Splits content into exactly 'count' groups.
-        Items are distributed as evenly as possible.
+        countで与えられた数だけのグループに分割
+        なるべく均等に分割されるようにする（最後のグループは他より1つ多い可能性がある）
         """
         if count <= 0:
             raise ValueError("Count must be positive")
         if count > len(self.content_ids):
              raise ValueError("Count cannot be larger than number of items")
 
-        shuffled = self.content_ids[:]
-        self.rng.shuffle(shuffled)
+        shuffled = self.content_ids[:] # 元のリストを変更しないようにコピー
+        self.rng.shuffle(shuffled) # IDをランダムにシャッフル
         
+        # グループ分け後に生成されるリストのリストを作成
         groups = [[] for _ in range(count)]
         for i, item in enumerate(shuffled):
+            # idを前から順番にグループに割り当てる
             groups[i % count].append(item)
             
+        # content_to_groupとgroup_to_contentsを更新
         self._populate_lookups(groups)
         return self.group_to_contents
 
     def get_group_id(self, content_id):
-        """Find group ID for a content ID."""
+        """コンテンツIDに対応するグループIDを取得"""
         return self.content_to_group.get(content_id)
 
     def get_members(self, group_id):
-        """Get all members of a group."""
+        """指定されたグループの全要素を取得"""
         return self.group_to_contents.get(group_id, [])
 
     def export_to_csv(self, filename):
