@@ -16,7 +16,11 @@ def connect_sheet(credentials_path: str, spreadsheet_name: str, worksheet_name: 
 
     client = gspread.authorize(credentials)
     spreadsheet = client.open(spreadsheet_name)
-    worksheet = spreadsheet.worksheet(worksheet_name)
+
+    try:
+        worksheet = spreadsheet.worksheet(worksheet_name)
+    except:
+        worksheet = spreadsheet.add_worksheet(title=worksheet_name, rows=1000, cols=10)
 
     return worksheet
 

@@ -1,7 +1,11 @@
 niconico:
-  tag: "本当のルーキー祭り2026春"
+  tag: "本当のルーキー祭り2025秋"
 
 spreadsheets:
   video_catalog:
-    name: "video_catalog_2026spring"
+    name: "video_catalog_2025autumn"
     sheet: "videos"
+    excluded_sheet: "excluded"
+  video_exclusion_list:
+    name: "video_exclusion_list_2025autumn"
+    sheet: "video_exclusion_list"
