@@ -2,11 +2,13 @@ import csv
 import random
 
 
+# 動画のコンテンツIDをグループ化するクラス
 class ContentGrouper:
-    def __init__(self, content_ids):
+    def __init__(self, content_ids, seed=None):
         self.content_ids = list(content_ids)
         self.content_to_group = {}
         self.group_to_contents = {}
+        self.rng = random.Random(seed)
 
     def _reset_groups(self):
         self.content_to_group = {}
@@ -14,25 +16,27 @@ class ContentGrouper:
 
     def _populate_lookups(self, groups):
         """
-        groups: list of lists, where each inner list represents a group
+        グループのルックアップテーブル（）を更新
+        groups: リストのリスト。各サブリストはグループ内のcontent_idを含む。
+        例）[['id1', 'id2'], ['id3', 'id4', 'id5'], ...]
         """
         self._reset_groups()
         for idx, group in enumerate(groups):
-            group_id = idx + 1  # 1-based index for user friendliness
+            group_id = idx + 1  # グループIDは1始まり
             self.group_to_contents[group_id] = group
             for content_id in group:
                 self.content_to_group[content_id] = group_id
 
     def group_by_size(self, size):
         """
-        Groups content into chunks of roughly 'size'.
-        The last group might be smaller.
+        グループをsizeで与えられた数ごとに分割
+        （最後のグループはsizeより小さい可能性がある）
         """
         if size <= 0:
             raise ValueError("Size must be positive")
             
-        shuffled = self.content_ids[:]
-        random.shuffle(shuffled)
+        shuffled = self.content_ids[:] # 元のリストを変更しないようにコピー
+        self.rng.shuffle(shuffled) # IDをランダムにシャッフル
         
         groups = []
         for i in range(0, len(shuffled), size):
@@ -52,7 +56,7 @@ class ContentGrouper:
              raise ValueError("Count cannot be larger than number of items")
 
         shuffled = self.content_ids[:]
-        random.shuffle(shuffled)
+        self.rng.shuffle(shuffled)
         
         groups = [[] for _ in range(count)]
         for i, item in enumerate(shuffled):
@@ -85,7 +89,11 @@ class ContentGrouper:
 def main():
     # Sample data
     content_ids = [f"id_{i}" for i in range(1, 21)] # 20 items
-    grouper = ContentGrouper(content_ids)
+    
+    # シードを指定して初期化（再現性のため）
+    seed = 42
+    print(f"Using random seed: {seed}")
+    grouper = ContentGrouper(content_ids, seed=seed)
 
     print("--- Grouping by Size (3 items per group) ---")
     grouper.group_by_size(3)
