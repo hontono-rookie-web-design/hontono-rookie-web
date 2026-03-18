@@ -67,13 +67,8 @@ def write_sheet(sheet, videos: list[dict]):
 def main():
     config = utils.load_config()
     tag = config["niconico"]["tag"]
-    spreadsheet_name = config["spreadsheets"]["video_catalog"]["name"]
-    sheet_name = config["spreadsheets"]["video_catalog"]["sheet"]
-    excluded_sheet_name = config["spreadsheets"]["video_catalog"]["excluded_sheet"]
-    exclusion_list_spreadsheet_name = config["spreadsheets"]["video_exclusion_list"][
-        "name"
-    ]
-    exclusion_list_sheet_name = config["spreadsheets"]["video_exclusion_list"]["sheet"]
+    video_catalog_sheet_config = config["spreadsheets"]["video_catalog"]
+    exclusion_list_sheet_config = config["spreadsheets"]["video_exclusion_list"]
 
     # 動画情報の取得
     print("動画取得開始")
@@ -82,16 +77,20 @@ def main():
 
     # 対象動画と除外動画を分離
     exclusion_list_sheet = connect_sheet(
-        exclusion_list_spreadsheet_name, exclusion_list_sheet_name
+        exclusion_list_sheet_config["name"], exclusion_list_sheet_config["sheet"]
     )
     included, excluded = split_videos_by_exclusion(videos, exclusion_list_sheet)
 
     # 対象動画をシートに出力
-    sheet = connect_sheet(spreadsheet_name, sheet_name)
-    write_sheet(sheet, included)
+    video_catalog_sheet = connect_sheet(
+        video_catalog_sheet_config["name"], video_catalog_sheet_config["sheet"]
+    )
+    write_sheet(video_catalog_sheet, included)
 
     # 除外動画をシートに出力
-    excluded_sheet = connect_sheet(spreadsheet_name, excluded_sheet_name)
+    excluded_sheet = connect_sheet(
+        video_catalog_sheet_config["name"], video_catalog_sheet_config["excluded_sheet"]
+    )
     write_sheet(excluded_sheet, excluded)
 
     print("動画一覧更新完了")
