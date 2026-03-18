@@ -98,28 +98,27 @@ def update_video_sheet_by_tag(
 def main():
     config = utils.load_config()
     tag_config: dict[str, str] = config["tag"]
-    video_catalog_sheet_config = config["spreadsheets"]["video_catalog"]
-    exclusion_list_sheet_config = config["spreadsheets"]["video_exclusion_list"]
+    catalog_sheet_config = config["spreadsheets"]["video_catalog"]
+    exclusion_sheet_config = config["spreadsheets"]["video_exclusion_list"]
 
-    video_catalog_spreadsheetname = video_catalog_sheet_config["name"]
-    exclusion_list_spreadsheetname = exclusion_list_sheet_config["name"]
+    catalog_spreadsheetname = catalog_sheet_config["name"]
+    exclusion_spreadsheetname = exclusion_sheet_config["name"]
 
-    # for div in tag_config.keys():
-    for div in ["rookie", "op", "ex"]:
+    # for div in ["rookie", "op", "ex"]:
+    for div in tag_config.keys():
+
         tag = tag_config[div]
-        video_catalog_sheetname = video_catalog_sheet_config[f"{div}_sheet"]
-        video_catalog_excluded_sheetname = video_catalog_sheet_config[
-            f"excluded_{div}_sheet"
-        ]
-        exclusion_list_sheetname = exclusion_list_sheet_config[f"{div}_sheet"]
+        catalog_sheetname = catalog_sheet_config[f"{div}_sheet"]
+        catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
+        exclusion_sheetname = exclusion_sheet_config[f"{div}_sheet"]
 
         update_video_sheet_by_tag(
             tag,
-            video_catalog_spreadsheetname,
-            video_catalog_sheetname,
-            video_catalog_excluded_sheetname,
-            exclusion_list_spreadsheetname,
-            exclusion_list_sheetname,
+            catalog_spreadsheetname,
+            catalog_sheetname,
+            catalog_excluded_sheetname,
+            exclusion_spreadsheetname,
+            exclusion_sheetname,
         )
 
 
