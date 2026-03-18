@@ -50,7 +50,7 @@ def clear_sheet(worksheet):
     worksheet.clear()
 
 
-def append_sheet(worksheet, data):
+def append_sheet(worksheet, data: dict | list[dict]):
     """
     スプレッドシートへデータ追加
     dict または list[dict]
@@ -68,7 +68,7 @@ def append_sheet(worksheet, data):
     worksheet.append_rows(rows)
 
 
-def delete_rows_by_key(worksheet, keys):
+def delete_rows_by_key(worksheet, keys: str | list[str]):
     """
     1列目をキーとして行削除
     """
