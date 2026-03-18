@@ -62,36 +62,65 @@ def write_sheet(sheet, videos: list[dict]):
     sheet_client.update_sheet(sheet, data)
 
 
-def main():
-    config = utils.load_config()
-    tag = config["niconico"]["tag"]
-    video_catalog_sheet_config = config["spreadsheets"]["video_catalog"]
-    exclusion_list_sheet_config = config["spreadsheets"]["video_exclusion_list"]
+def update_video_sheet_by_tag(
+    tag: str,
+    video_catalog_spreadsheetname: str,
+    video_catalog_sheetname: str,
+    video_catalog_excluded_sheetname: str,
+    exclusion_list_spreadsheetname: str,
+    exclusion_list_sheetname: str,
+):
 
-    # 動画情報の取得
-    print("動画取得開始")
     videos = fetch_video(tag)
-    print(f"合計 {len(videos)} 件")
+    print(f"{tag}: {len(videos)} videos")
 
     # 対象動画と除外動画を分離
     exclusion_list_sheet = connect_sheet(
-        exclusion_list_sheet_config["name"], exclusion_list_sheet_config["sheet"]
+        exclusion_list_spreadsheetname, exclusion_list_sheetname
     )
     included, excluded = split_videos_by_exclusion(videos, exclusion_list_sheet)
 
     # 対象動画をシートに出力
     video_catalog_sheet = connect_sheet(
-        video_catalog_sheet_config["name"], video_catalog_sheet_config["sheet"]
+        video_catalog_spreadsheetname, video_catalog_sheetname
     )
     write_sheet(video_catalog_sheet, included)
 
     # 除外動画をシートに出力
     excluded_sheet = connect_sheet(
-        video_catalog_sheet_config["name"], video_catalog_sheet_config["excluded_sheet"]
+        video_catalog_spreadsheetname, video_catalog_excluded_sheetname
     )
     write_sheet(excluded_sheet, excluded)
 
-    print("動画一覧更新完了")
+    print(f"{tag} update completed")
+
+
+def main():
+    config = utils.load_config()
+    tag_config: dict[str, str] = config["tag"]
+    video_catalog_sheet_config = config["spreadsheets"]["video_catalog"]
+    exclusion_list_sheet_config = config["spreadsheets"]["video_exclusion_list"]
+
+    video_catalog_spreadsheetname = video_catalog_sheet_config["name"]
+    exclusion_list_spreadsheetname = exclusion_list_sheet_config["name"]
+
+    # for div in tag_config.keys():
+    for div in ["rookie", "op", "ex"]:
+        tag = tag_config[div]
+        video_catalog_sheetname = video_catalog_sheet_config[f"{div}_sheet"]
+        video_catalog_excluded_sheetname = video_catalog_sheet_config[
+            f"excluded_{div}_sheet"
+        ]
+        exclusion_list_sheetname = exclusion_list_sheet_config[f"{div}_sheet"]
+
+        update_video_sheet_by_tag(
+            tag,
+            video_catalog_spreadsheetname,
+            video_catalog_sheetname,
+            video_catalog_excluded_sheetname,
+            exclusion_list_spreadsheetname,
+            exclusion_list_sheetname,
+        )
 
 
 if __name__ == "__main__":
