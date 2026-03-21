@@ -9,6 +9,9 @@ jobs:
   run-script:
     runs-on: ubuntu-latest
 
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+
     defaults:
       run:
         working-directory: 2026spring/backend
@@ -28,7 +31,7 @@ jobs:
 
       - name: Create credentials.json
         run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > credentials.json
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS="credentials.json"
 
       - name: Run script
