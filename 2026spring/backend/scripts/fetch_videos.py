@@ -92,7 +92,7 @@ def update_video_sheet_by_tag(
     )
     write_sheet(excluded_sheet, excluded)
 
-    print(f"{tag} update completed")
+    print(f"{video_catalog_spreadsheetname} update completed")
 
 
 def main():
