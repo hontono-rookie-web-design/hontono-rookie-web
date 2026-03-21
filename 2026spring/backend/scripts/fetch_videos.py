@@ -1,8 +1,8 @@
 import os
 
-from backend.lib import sheet_client
-from backend.lib import niconico
-from backend.lib import utils
+from lib import sheet_client
+from lib import niconico
+from lib import utils
 
 
 def connect_sheet(spreadsheet_name, sheet_name):
