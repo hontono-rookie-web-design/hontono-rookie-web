@@ -54,6 +54,8 @@ backend
 `config/settings.yml`で、タグやスプレッドシート名などの情報を設定している。
 次回開催時にコードを流用する場合にはこのファイルのみ変更すれば良い想定。
 
+また、スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で`config/settings.yml`の内容が取得できる。
+
 以下で、`config/settings.yml`で設定できるパラメータを項目ごとに説明する。
 下記の「*」には開催期（「2026spring」、「2026春」など）が入る。
 
