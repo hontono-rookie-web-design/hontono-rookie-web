@@ -57,7 +57,6 @@ backend
 また、スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で`config/settings.yml`の内容が取得できる。
 
 以下で、`config/settings.yml`で設定できるパラメータを項目ごとに説明する。
-下記の「*」には開催期（「2026spring」、「2026春」など）が入る。
 
 ### `tag`
 
