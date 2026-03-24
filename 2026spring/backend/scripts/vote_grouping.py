@@ -1,5 +1,8 @@
 import csv
+import os
 import random
+
+from lib import sheet_client, utils
 
 
 # 動画のコンテンツIDをグループ化するクラス
@@ -91,31 +94,63 @@ class ContentGrouper:
                 writer.writerow([content_id, group_id])
         print(f"Exported to {filename}")
 
+def connect_sheet(spreadsheet_name, sheet_name):
+    # 環境変数からJSONパス取得
+    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+
+    return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
+
 def main():
-    # Sample data
-    content_ids = [f"id_{i}" for i in range(1, 21)] # 20 items
-    
-    # シードを指定して初期化（再現性のため）
-    seed = 42
-    print(f"Using random seed: {seed}")
-    grouper = ContentGrouper(content_ids, seed=seed)
 
-    print("--- Grouping by Size (3 items per group) ---")
-    grouper.group_by_size(3)
-    for gid, members in grouper.group_to_contents.items():
-        print(f"Group {gid}: {members}")
-    
-    # Check lookup
-    sample_id = "id_5"
-    print(f"Group for {sample_id}: {grouper.get_group_id(sample_id)}")
-    
-    print("\n--- Grouping by Count (4 groups total) ---")
-    grouper.group_by_count(4)
-    for gid, members in grouper.group_to_contents.items():
-        print(f"Group {gid}: {members}")
+    # シートに接続
+    config = utils.load_config()
+    tag_config: dict[str, str] = config["tag"]
+    catalog_sheet_config = config["spreadsheets"]["video_catalog"]
+    catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    # Export
-    grouper.export_to_csv('groups.csv')
+    # for div in ["rookie", "op", "ex"]:
+    for div in tag_config.keys():
+
+        catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
+
+        # シートに接続
+        excluded_sheet = connect_sheet(
+            catalog_spreadsheetname, catalog_excluded_sheetname
+        )
+
+        # シートからデータを取得
+        video_data = excluded_sheet.get_all_records()
+        # print(video_data)
+
+        # content_idのリストを作成
+        content_ids = [row["動画ID"] for row in video_data if row["動画ID"]]
+        print(content_ids)
+
+
+    # # Sample data
+    # content_ids = [f"id_{i}" for i in range(1, 21)] # 20 items
+    
+    # # シードを指定して初期化（再現性のため）
+    # seed = 42
+    # print(f"Using random seed: {seed}")
+    # grouper = ContentGrouper(content_ids, seed=seed)
+
+    # print("--- Grouping by Size (3 items per group) ---")
+    # grouper.group_by_size(3)
+    # for gid, members in grouper.group_to_contents.items():
+    #     print(f"Group {gid}: {members}")
+    
+    # # Check lookup
+    # sample_id = "id_5"
+    # print(f"Group for {sample_id}: {grouper.get_group_id(sample_id)}")
+    
+    # print("\n--- Grouping by Count (4 groups total) ---")
+    # grouper.group_by_count(4)
+    # for gid, members in grouper.group_to_contents.items():
+    #     print(f"Group {gid}: {members}")
+
+    # # Export
+    # grouper.export_to_csv('groups.csv')
 
 if __name__ == "__main__":
     main()
