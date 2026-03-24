@@ -5,7 +5,11 @@ from google.oauth2.service_account import Credentials
 from httplib2 import Http
 from oauth2client import client, file, tools
 
-SCOPES = "https://www.googleapis.com/auth/forms.responses.readonly"
+SCOPES = [
+    "https://www.googleapis.com/auth/forms.body",
+    "https://www.googleapis.com/auth/forms.responses.readonly",
+    "https://www.googleapis.com/auth/drive",
+]
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
@@ -20,10 +24,7 @@ creds = Credentials.from_service_account_file(credentials_path, scopes=SCOPES)
 form_service = discovery.build(
     "forms",
     "v1",
-    # http=creds.authorize(Http()),
     credentials=creds,
-    discoveryServiceUrl=DISCOVERY_DOC,
-    static_discovery=False,
 )
 
 # Request body for creating a form
@@ -66,10 +67,10 @@ NEW_QUESTION = {
 }
 
 # Creates the initial form
-# result = form_service.forms().create(body=NEW_FORM).execute()
+result = form_service.forms().create(body=NEW_FORM).execute()
 
-form_id = '{form_id}'
-result = form_service.forms().responses().list(formId=form_id).execute()
+# form_id = '{form_id}'
+# result = form_service.forms().responses().list(formId=form_id).execute()
 print(result)
 
 
