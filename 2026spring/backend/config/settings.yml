@@ -1,0 +1,20 @@
+tag:
+  rookie: "本当のルーキー祭り2025秋"
+  op: "本当のルーキー祭り2025秋OP"
+  ex: "本当のルーキー祭り2025秋EX"
+
+spreadsheets:
+  video_catalog:
+    name: "video_catalog_2025autumn"
+    rookie_sheet: "rookie"
+    op_sheet: "op"
+    ex_sheet: "ex"
+    excluded_rookie_sheet: "excluded_rookie"
+    excluded_op_sheet: "excluded_op"
+    excluded_ex_sheet: "excluded_ex"
+    
+  video_exclusion_list:
+    name: "動画除外リスト_2025秋"
+    rookie_sheet: "ルーキー"
+    op_sheet: "OP"
+    ex_sheet: "EX"
