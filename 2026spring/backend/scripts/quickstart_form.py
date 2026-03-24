@@ -1,9 +1,7 @@
 import os
 
-from apiclient import discovery
 from google.oauth2.service_account import Credentials
-from httplib2 import Http
-from oauth2client import client, file, tools
+from googleapiclient import discovery
 
 SCOPES = [
     "https://www.googleapis.com/auth/forms.body",
@@ -13,18 +11,14 @@ SCOPES = [
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
-# store = file.Storage("token.json")
-# creds = None
-# if not creds or creds.invalid:
-#   flow = client.flow_from_clientsecrets(credentials_path, SCOPES)
-#   creds = tools.run_flow(flow, store)
-
 creds = Credentials.from_service_account_file(credentials_path, scopes=SCOPES)
 
 form_service = discovery.build(
     "forms",
     "v1",
     credentials=creds,
+    discoveryServiceUrl=DISCOVERY_DOC,
+    static_discovery=False,
 )
 
 # Request body for creating a form
@@ -67,6 +61,7 @@ NEW_QUESTION = {
 }
 
 # Creates the initial form
+print(f"Creating form with doc: {DISCOVERY_DOC}")
 result = form_service.forms().create(body=NEW_FORM).execute()
 
 # form_id = '{form_id}'
