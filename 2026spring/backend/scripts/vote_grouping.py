@@ -155,8 +155,8 @@ def main():
         output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
         output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"{div}_sheet"]
         output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
-        output_sheet.clear()  # 既存のデータをクリア
-        output_sheet.update(df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
+        sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
+        sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
 
         print(f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data.")
 
