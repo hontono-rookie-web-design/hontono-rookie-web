@@ -123,35 +123,39 @@ def main():
         video_data = excluded_sheet.get_all_records()
         # print(video_data)
 
+        # 取得したデータが空であればスキップ
+        if any(video_data) == False:
+            print(f"No data found in {catalog_excluded_sheetname}. Skipping.")
+            continue
+
+        # pandasのDataFrameに変換
+        df = pd.DataFrame(video_data)
+        # print(df)
+
         # content_idのリストを作成
-        content_ids = [row["動画ID"] for row in video_data if row["動画ID"]]
-        print(content_ids)
+        content_ids = df["動画ID"].tolist()
+        # print(content_ids)
 
+        # グループ分け
+        seed = config["vote_grouping"]["random_seed"]
+        print(f"Using random seed: {seed}")
+        grouper = ContentGrouper(content_ids, seed=seed)
 
-    # # Sample data
-    # content_ids = [f"id_{i}" for i in range(1, 21)] # 20 items
-    
-    # # シードを指定して初期化（再現性のため）
-    # seed = 42
-    # print(f"Using random seed: {seed}")
-    # grouper = ContentGrouper(content_ids, seed=seed)
+        # グループ一つあたりの人数（サイズ）によってグループ分け
+        group_size = config["vote_grouping"]["group_size"]
+        print(f"Grouping by size: {group_size} items per group")
+        grouper.group_by_size(group_size)
 
-    # print("--- Grouping by Size (3 items per group) ---")
-    # grouper.group_by_size(3)
-    # for gid, members in grouper.group_to_contents.items():
-    #     print(f"Group {gid}: {members}")
-    
-    # # Check lookup
-    # sample_id = "id_5"
-    # print(f"Group for {sample_id}: {grouper.get_group_id(sample_id)}")
-    
-    # print("\n--- Grouping by Count (4 groups total) ---")
-    # grouper.group_by_count(4)
-    # for gid, members in grouper.group_to_contents.items():
-    #     print(f"Group {gid}: {members}")
+        # DataFrameにグループ番号の列を追加
+        df["グループID"] = df["動画ID"].apply(grouper.get_group_id)
 
-    # # Export
-    # grouper.export_to_csv('groups.csv')
+        print(df)
+
+        # # グループ分けされたデータを新しいシートに書き込む
+        # output_sheetname = catalog_sheet_config[f"grouped_{div}_sheet"]
+        # output_sheet = connect_sheet(catalog_spreadsheetname, output_sheetname)
+        # output_sheet.clear()  # 既存のデータをクリア
+        # output_sheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 if __name__ == "__main__":
     main()
