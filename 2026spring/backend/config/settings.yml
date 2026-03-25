@@ -22,3 +22,8 @@ spreadsheets:
 vote_grouping:
   random_seed: 42
   group_size: 3
+  grouped_video_catalog:
+    name: "grouped_video_catalog_2025autumn"
+    rookie_sheet: "rookie"
+    op_sheet: "op"
+    ex_sheet: "ex"

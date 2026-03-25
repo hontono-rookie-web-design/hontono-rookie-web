@@ -151,11 +151,14 @@ def main():
 
         print(df)
 
-        # # グループ分けされたデータを新しいシートに書き込む
-        # output_sheetname = catalog_sheet_config[f"grouped_{div}_sheet"]
-        # output_sheet = connect_sheet(catalog_spreadsheetname, output_sheetname)
-        # output_sheet.clear()  # 既存のデータをクリア
-        # output_sheet.update([df.columns.values.tolist()] + df.values.tolist())
+        # グループ分けされたデータを新しいシートに書き込む
+        output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+        output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"{div}_sheet"]
+        output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
+        output_sheet.clear()  # 既存のデータをクリア
+        output_sheet.update(df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
+
+        print(f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data.")
 
 if __name__ == "__main__":
     main()
