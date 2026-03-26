@@ -74,8 +74,8 @@ def main():
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # form_file_id = os.environ["FORM_ID"]
-    # copy_form(creds, form_file_id, new_folder_id)
+    form_file_id = os.environ["FORM_ID"]
+    copy_form(creds, form_file_id, new_folder_id)
 
 if __name__ == "__main__":
     main()
