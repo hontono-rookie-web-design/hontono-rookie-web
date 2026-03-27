@@ -25,6 +25,7 @@ def create_form(creds, title):
     NEW_FORM = {
         "info": {
             "title": title,
+            "documentTitle": title
         }
     }
 
@@ -78,29 +79,7 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
-def rename_drive_file(creds, file_id, new_file_name):
-    """
-    Google Drive上で表示されるファイル名（フォーム名）を変更します。
-    """
-    # Drive API v3のサービスを構築
-    drive_service = discovery.build('drive', 'v3', credentials=creds)
-
-    # 変更したいファイル名を設定
-    file_metadata = {
-        'name': new_file_name
-    }
-
-    # updateメソッドでファイル名を更新
-    updated_file = drive_service.files().update(
-        fileId=file_id,
-        body=file_metadata,
-        fields='id, name'
-    ).execute()
-
-    print(f"Drive上のファイル名を「{updated_file.get('name')}」に変更しました。")
-    return updated_file
-
-def update_vote_form(creds, form_id, items):
+def update_vote_form(creds, form_id, title, items):
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
     form_service = discovery.build(
@@ -198,11 +177,8 @@ def main():
         # フォームを共有フォルダに移動
         move_file_to_folder(creds, form_id, new_folder_id)
 
-        # フォームの名前を変更
-        rename_drive_file(creds, form_id, title)
-
         # フォームを更新
-        update_vote_form(creds, form_id, group_df)
+        # update_vote_form(creds, form_id, title, group_df)
 
 if __name__ == "__main__":
     main()
