@@ -1,13 +1,12 @@
 import datetime
 import os
 
-from google.oauth2 import service_account
 from googleapiclient import discovery
 from httplib2 import Http
 from oauth2client import client, file, tools
 
 
-# フォームの作成
+# フォームをマイドライブに作成
 def create_form(creds):
 
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
@@ -119,39 +118,10 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
-def copy_form(creds, form_file_id, destination_folder_id):
-    # Drive API v3のサービスを構築
-    service = discovery.build('drive', 'v3', credentials=creds)
-
-    new_form_name = f"コピーされたフォーム_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}" # コピー後のフォーム名に日時を使用
-
-    copy_metadata = {
-        'name': new_form_name,
-        'parents': [destination_folder_id] # 新しい保存先として指定されたフォルダIDを指定
-    }
-
-    copied_form = service.files().copy(
-        fileId=form_file_id, # コピー元のGoogle FormのID
-        body=copy_metadata,
-        fields='id'
-    ).execute()
-
-    copied_form_id = copied_form.get('id')
-    print(f"フォームをコピーしました。(新しいフォームID: {copied_form_id})")
-    return copied_form_id
-
 def main():
-    # service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    # service_account_creds = service_account.Credentials.from_service_account_file(
-    #     service_account_credentials_path,
-    #     scopes=[
-    #         "https://www.googleapis.com/auth/forms.body",
-    #         "https://www.googleapis.com/auth/forms.responses.readonly",
-    #         "https://www.googleapis.com/auth/drive",
-    #     ]
-    # )
 
     credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
+
     SCOPES = [
             "https://www.googleapis.com/auth/forms.body",
             "https://www.googleapis.com/auth/forms.responses.readonly",
@@ -170,13 +140,10 @@ def main():
 
     # フォームの作成
     form_id = create_form(creds)
-    print(f"作成されたフォームのID: {form_id}")
+    # print(f"作成されたフォームのID: {form_id}")
 
     # フォームを共有フォルダに移動
     move_file_to_folder(creds, form_id, new_folder_id)
-
-    # form_file_id = os.environ["FORM_ID"]
-    # copy_form(creds, form_file_id, new_folder_id)
 
 if __name__ == "__main__":
     main()
