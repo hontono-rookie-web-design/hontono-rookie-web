@@ -3,11 +3,12 @@ import os
 
 from googleapiclient import discovery
 from httplib2 import Http
+from lib import utils
 from oauth2client import client, file, tools
 
 
 # フォームをマイドライブに作成
-def create_form(creds):
+def create_form(creds, title):
 
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
@@ -19,58 +20,16 @@ def create_form(creds):
         static_discovery=False,
     )
 
-    # Request body for creating a form
+    # フォーム作成のためのリクエストボディ
     NEW_FORM = {
         "info": {
-            "title": "Quickstart form",
+            "title": title,
         }
     }
 
-    # Request body to add a multiple-choice question
-    NEW_QUESTION = {
-        "requests": [
-            {
-                "createItem": {
-                    "item": {
-                        "title": (
-                            "In what year did the United States land a mission on"
-                            " the moon?"
-                        ),
-                        "questionItem": {
-                            "question": {
-                                "required": True,
-                                "choiceQuestion": {
-                                    "type": "RADIO",
-                                    "options": [
-                                        {"value": "1965"},
-                                        {"value": "1967"},
-                                        {"value": "1969"},
-                                        {"value": "1971"},
-                                    ],
-                                    "shuffle": True,
-                                },
-                            }
-                        },
-                    },
-                    "location": {"index": 0},
-                }
-            }
-        ]
-    }
-
-    # Creates the initial form
+    # 初期フォームを作成
     result = form_service.forms().create(body=NEW_FORM).execute()
 
-    # Adds the question to the form
-    question_setting = (
-        form_service.forms()
-        .batchUpdate(formId=result["formId"], body=NEW_QUESTION)
-        .execute()
-    )
-
-    # Prints the result to show the question has been added
-    get_result = form_service.forms().get(formId=result["formId"]).execute()
-    print(get_result)
     return result["formId"]
 
 # 新しいフォルダーを作成
@@ -118,6 +77,28 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
+def rename_drive_file(creds, file_id, new_file_name):
+    """
+    Google Drive上で表示されるファイル名（フォーム名）を変更します。
+    """
+    # Drive API v3のサービスを構築
+    drive_service = discovery.build('drive', 'v3', credentials=creds)
+
+    # 変更したいファイル名を設定
+    file_metadata = {
+        'name': new_file_name
+    }
+
+    # updateメソッドでファイル名を更新
+    updated_file = drive_service.files().update(
+        fileId=file_id,
+        body=file_metadata,
+        fields='id, name'
+    ).execute()
+
+    print(f"Drive上のファイル名を「{updated_file.get('name')}」に変更しました。")
+    return updated_file
+
 def main():
 
     credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
@@ -134,16 +115,22 @@ def main():
         flow = client.flow_from_clientsecrets(credentials_path, SCOPES)
         creds = tools.run_flow(flow, store)
 
+    # configの読み込み
+    config = utils.load_config()
+
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
     # フォームの作成
-    form_id = create_form(creds)
+    form_id = create_form(creds, config["vote_form"]["title"])
     # print(f"作成されたフォームのID: {form_id}")
 
     # フォームを共有フォルダに移動
     move_file_to_folder(creds, form_id, new_folder_id)
+
+    # フォームの名前を変更
+    rename_drive_file(creds, form_id, config["vote_form"]["title"])
 
 if __name__ == "__main__":
     main()

@@ -27,3 +27,7 @@ vote_grouping:
     rookie_sheet: "rookie"
     op_sheet: "op"
     ex_sheet: "ex"
+
+vote_form:
+  title: "本当のルーキー祭り2025秋_Disc."
+  description: "好きな作品を教えてください。"
