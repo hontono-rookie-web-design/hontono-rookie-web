@@ -8,20 +8,9 @@ from oauth2client import client, file, tools
 
 
 # フォームの作成
-def create_form(credentials_path):
+def create_form(creds):
 
-    SCOPES = [
-            "https://www.googleapis.com/auth/forms.body",
-            "https://www.googleapis.com/auth/forms.responses.readonly",
-            "https://www.googleapis.com/auth/drive",
-    ]
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
-
-    store = file.Storage("token.json")
-    creds = None
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets(credentials_path, SCOPES)
-        creds = tools.run_flow(flow, store)
 
     form_service = discovery.build(
         "forms",
@@ -127,7 +116,7 @@ def move_file_to_folder(creds, file_id, target_folder_id):
         fields='id, parents'
     ).execute()
 
-    print(f"✅ ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
+    print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
 def copy_form(creds, form_file_id, destination_folder_id):
@@ -152,30 +141,42 @@ def copy_form(creds, form_file_id, destination_folder_id):
     return copied_form_id
 
 def main():
-    service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    service_account_creds = service_account.Credentials.from_service_account_file(
-        service_account_credentials_path,
-        scopes=[
+    # service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    # service_account_creds = service_account.Credentials.from_service_account_file(
+    #     service_account_credentials_path,
+    #     scopes=[
+    #         "https://www.googleapis.com/auth/forms.body",
+    #         "https://www.googleapis.com/auth/forms.responses.readonly",
+    #         "https://www.googleapis.com/auth/drive",
+    #     ]
+    # )
+
+    credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
+    SCOPES = [
             "https://www.googleapis.com/auth/forms.body",
             "https://www.googleapis.com/auth/forms.responses.readonly",
             "https://www.googleapis.com/auth/drive",
-        ]
-    )
+    ]
+
+    store = file.Storage("token.json")
+    creds = None
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets(credentials_path, SCOPES)
+        creds = tools.run_flow(flow, store)
 
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
-    new_folder_id = create_folder(service_account_creds, parent_folder_id)
+    new_folder_id = create_folder(creds, parent_folder_id)
 
     # フォームの作成
-    oauth_credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
-    form_id = create_form(oauth_credentials_path)
+    form_id = create_form(creds)
     print(f"作成されたフォームのID: {form_id}")
 
     # フォームを共有フォルダに移動
-    move_file_to_folder(service_account_creds, form_id, new_folder_id)
+    move_file_to_folder(creds, form_id, new_folder_id)
 
     # form_file_id = os.environ["FORM_ID"]
-    # copy_form(service_account_creds, form_file_id, new_folder_id)
+    # copy_form(creds, form_file_id, new_folder_id)
 
 if __name__ == "__main__":
     main()
