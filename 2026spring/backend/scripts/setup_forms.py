@@ -100,6 +100,49 @@ def rename_drive_file(creds, file_id, new_file_name):
     print(f"Drive上のファイル名を「{updated_file.get('name')}」に変更しました。")
     return updated_file
 
+def update_vote_form(creds, form_id, items):
+    DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
+
+    form_service = discovery.build(
+        "forms",
+        "v1",
+        http=creds.authorize(Http()),
+        discoveryServiceUrl=DISCOVERY_DOC,
+        static_discovery=False,
+    )
+
+    update = {
+        "requests": [
+            {
+                "createItem": {
+                    "item": {
+                        "title": "Homework video",
+                        "description": "Quizzes in Google Forms",
+                        "videoItem": {
+                            "video": {
+                                "youtubeUri": (
+                                    "https://www.youtube.com/watch?v=Lt5HqPvM-eI"
+                                )
+                            }
+                        },
+                    },
+                    "location": {"index": 0},
+                }
+            }
+        ]
+    }
+
+    # Add the video to the form
+    question_setting = (
+        form_service.forms()
+        .batchUpdate(formId=form_id, body=update)
+        .execute()
+    )
+
+    # Print the result to see it now has a video
+    result = form_service.forms().get(formId=form_id).execute()
+    return form_id
+
 def main():
 
     service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
@@ -157,6 +200,9 @@ def main():
 
         # フォームの名前を変更
         rename_drive_file(creds, form_id, title)
+
+        # フォームを更新
+        update_vote_form(creds, form_id, group_df)
 
 if __name__ == "__main__":
     main()
