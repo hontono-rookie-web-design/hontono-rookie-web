@@ -1,9 +1,10 @@
 import datetime
 import os
 
+import pandas as pd
 from googleapiclient import discovery
 from httplib2 import Http
-from lib import utils
+from lib import sheet_client, utils
 from oauth2client import client, file, tools
 
 
@@ -101,7 +102,8 @@ def rename_drive_file(creds, file_id, new_file_name):
 
 def main():
 
-    credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
+    service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    oauth_credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
 
     SCOPES = [
             "https://www.googleapis.com/auth/forms.body",
@@ -112,11 +114,25 @@ def main():
     store = file.Storage("token.json")
     creds = None
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets(credentials_path, SCOPES)
+        flow = client.flow_from_clientsecrets(oauth_credentials_path, SCOPES)
         creds = tools.run_flow(flow, store)
 
     # configの読み込み
     config = utils.load_config()
+
+    # ルーキーのスプレッドシート読み込み
+    video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+    video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
+    video_sheet = sheet_client.connect_sheet(service_account_credentials_path, video_spreadsheetname, video_sheetname)
+    video_data = sheet_client.fetch_sheet_data(video_sheet)
+
+    # 取得したデータが空であればスキップ
+    if any(video_data) == False:
+        print(f"No data found in {video_sheetname}. Skipping.")
+        return
+
+    # pandasのDataFrameに変換
+    df = pd.DataFrame(video_data)
 
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
