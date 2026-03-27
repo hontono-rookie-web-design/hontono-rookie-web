@@ -134,19 +134,29 @@ def main():
     # pandasのDataFrameに変換
     df = pd.DataFrame(video_data)
 
+    # 投票フォームの作成
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # フォームの作成
-    form_id = create_form(creds, config["vote_form"]["title"])
-    # print(f"作成されたフォームのID: {form_id}")
+    # 種類数（NaNは除外）
+    n_groups = df["グループID"].nunique(dropna=True)
+    print(f"グループIDの種類数: {n_groups}")
 
-    # フォームを共有フォルダに移動
-    move_file_to_folder(creds, form_id, new_folder_id)
+    # グループIDごとに処理
+    for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
+        print(f"処理中 group_id={group_id}, 件数={len(group_df)}")
+        
+        title = f'{config["vote_form"]["title"]}{group_id}'
+        # フォームの作成
+        form_id = create_form(creds, title)
+        # print(f"作成されたフォームのID: {form_id}")
 
-    # フォームの名前を変更
-    rename_drive_file(creds, form_id, config["vote_form"]["title"])
+        # フォームを共有フォルダに移動
+        move_file_to_folder(creds, form_id, new_folder_id)
+
+        # フォームの名前を変更
+        rename_drive_file(creds, form_id, title)
 
 if __name__ == "__main__":
     main()
