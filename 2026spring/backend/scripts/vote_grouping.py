@@ -120,7 +120,7 @@ def main():
         )
 
         # シートからデータを取得
-        video_data = excluded_sheet.get_all_records()
+        video_data = sheet_client.fetch_sheet_data(excluded_sheet)
         # print(video_data)
 
         # 取得したデータが空であればスキップ
