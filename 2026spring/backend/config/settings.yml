@@ -12,9 +12,18 @@ spreadsheets:
     excluded_rookie_sheet: "excluded_rookie"
     excluded_op_sheet: "excluded_op"
     excluded_ex_sheet: "excluded_ex"
-    
+
   video_exclusion_list:
     name: "動画除外リスト_2025秋"
     rookie_sheet: "ルーキー"
     op_sheet: "OP"
     ex_sheet: "EX"
+
+vote_grouping:
+  random_seed: 42
+  group_size: 3
+  grouped_video_catalog:
+    name: "grouped_video_catalog_2025autumn"
+    rookie_sheet: "rookie"
+    op_sheet: "op"
+    ex_sheet: "ex"

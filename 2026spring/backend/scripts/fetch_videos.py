@@ -14,7 +14,7 @@ def connect_sheet(spreadsheet_name, sheet_name):
 
 def fetch_video(tag: str, limit: int = 100):
     videos = niconico.fetch_all_videos(tag, limit)
-    videos = niconico.attach_user_names(videos)
+    videos = niconico.attach_username_and_thumbnail(videos)
     return videos
 
 
@@ -56,6 +56,7 @@ def write_sheet(sheet, videos: list[dict]):
                 "コメント": v["commentCounter"],
                 "マイリスト": v["mylistCounter"],
                 "URL": f"https://www.nicovideo.jp/watch/{video_id}",
+                "サムネイルURL": v["thumbnailUrl"],
             }
         )
 
