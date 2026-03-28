@@ -85,6 +85,9 @@ def update_vote_form(creds, form_id, item_title, video_titles):
         static_discovery=False,
     )
 
+    # ItemIDを取得
+    item_id = form_service.forms().get(formId=form_id).execute()["items"][0]["itemId"]
+    print(f"取得したItemID: {item_id}")
 
     questions = []
     for video_title in video_titles:
@@ -115,6 +118,7 @@ def update_vote_form(creds, form_id, item_title, video_titles):
             {
                 "updateItem": {
                     "item": {
+                        "itemId": item_id,
                         "title": item_title,
                         "questionGroupItem": {
                             "questions": questions,
@@ -129,7 +133,7 @@ def update_vote_form(creds, form_id, item_title, video_titles):
                         },
                     },
                     "location": {"index": 0},
-                    "updateMask": "title, questionGroupItem"
+                    "updateMask": "*"
                 }
             }
         ]
@@ -141,6 +145,9 @@ def update_vote_form(creds, form_id, item_title, video_titles):
         .batchUpdate(formId=form_id, body=update)
         .execute()
     )
+
+    getresult = form_service.forms().get(formId=form_id).execute()
+    print(getresult)
 
     print(f"フォーム (ID: {form_id}) を更新しました。")
     return form_id
@@ -203,6 +210,8 @@ def main():
 
         # フォームを更新
         update_vote_form(creds, new_form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
+
+        exit()
 
 if __name__ == "__main__":
     main()
