@@ -113,10 +113,9 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
             {
                 "updateFormInfo": {
                     "info": {
-                        "title": title,
-                        "documentTitle": title
+                        "title": title
                     },
-                    "updateMask": "title, documentTitle"
+                    "updateMask": "title"
                 }
             },
             {
@@ -137,7 +136,7 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
                         },
                     },
                     "location": {"index": 0},
-                    "updateMask": "*"
+                    "updateMask": "title,questionGroupItem"
                 }
             }
         ]
