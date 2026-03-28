@@ -25,7 +25,7 @@ def create_folder(creds, parent_folder_id):
 
     new_folder = service.files().create(body=folder_metadata, fields='id').execute()
     new_folder_id = new_folder.get('id')
-    print(f"新しいフォルダ「{new_folder_name}」を作成しました。(ID: {new_folder_id})")
+    print(f"[INFO]\t新しいフォルダ「{new_folder_name}」を作成しました。(ID: {new_folder_id})")
     return new_folder_id
 
 def copy_file(creds, file_id, name):
@@ -41,7 +41,7 @@ def copy_file(creds, file_id, name):
 
     results = service.files().copy(fileId=file_id, body=copied_file).execute()
 
-    print(f"ファイル (ID: {file_id}) をコピーしました。新しいファイルID: {results['id']}")
+    print(f"[INFO]\tファイル (ID: {file_id}) をコピーしました。新しいファイルID: {results['id']}")
     return results["id"]
 
 def move_file_to_folder(creds, file_id, target_folder_id):
@@ -68,7 +68,7 @@ def move_file_to_folder(creds, file_id, target_folder_id):
         fields='id, parents'
     ).execute()
 
-    print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
+    print(f"[INFO]\tファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
 def update_vote_form(creds, form_id, title, item_title, video_titles):
@@ -76,7 +76,7 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
     フォームのタイトルと質問を更新します。
     """
     if len(video_titles) == 0:
-        print(f"動画がありません。終了します。")
+        print(f"[WARNING]\t動画がありません。終了します。")
         return form_id
     
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
@@ -152,12 +152,10 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
     # getresult = form_service.forms().get(formId=form_id).execute()
     # print(getresult)
 
-    print(f"フォーム (ID: {form_id}) を更新しました。")
+    print(f"[INFO]\tフォーム (ID: {form_id}) を更新しました。")
     return form_id
 
-def main():
-
-    service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+def initialize_oauth_credentials():
     oauth_credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
 
     SCOPES = [
@@ -172,8 +170,11 @@ def main():
         flow = client.flow_from_clientsecrets(oauth_credentials_path, SCOPES)
         creds = tools.run_flow(flow, store)
 
-    # configの読み込み
-    config = utils.load_config()
+    return creds
+
+def load_spreadsheet(config):
+    
+    service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
     # ルーキーのスプレッドシート読み込み
     video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
@@ -183,25 +184,24 @@ def main():
 
     # 取得したデータが空であればスキップ
     if any(video_data) == False:
-        print(f"No data found in {video_sheetname}. Skipping.")
+        print(f"[WARNING]\t{video_sheetname}にデータが見つかりません。スキップします。")
         return
 
     # pandasのDataFrameに変換
     df = pd.DataFrame(video_data)
 
-    # 投票フォームの作成
+    return df
+
+def create_vote_forms(creds, config, df):
+
     template_form_id = os.environ["TEMPLATE_FORM_ID"]
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # 種類数（NaNは除外）
-    n_groups = df["グループID"].nunique(dropna=True)
-    print(f"グループIDの種類数: {n_groups}")
-
     # グループIDごとに処理
     for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
-        print(f"処理中 group_id={group_id}, 件数={len(group_df)}")
+        print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
         
         title = f'{config["vote_form"]["title"]}{group_id}'
         item_title = config["vote_form"]["item_title"]
@@ -214,6 +214,21 @@ def main():
 
         # フォームを更新
         update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
+
+
+def main():
+
+    # OAuth認証情報の初期化
+    oauth_creds = initialize_oauth_credentials()
+
+    # configの読み込み
+    config = utils.load_config()
+
+    # スプレッドシートからデータを読み込む
+    df = load_spreadsheet(config)
+
+    # 投票フォームの作成
+    create_vote_forms(oauth_creds, config, df)
 
 if __name__ == "__main__":
     main()
