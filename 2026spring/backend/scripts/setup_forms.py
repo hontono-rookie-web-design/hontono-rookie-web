@@ -26,7 +26,7 @@ def create_folder(creds, parent_folder_id):
     print(f"新しいフォルダ「{new_folder_name}」を作成しました。(ID: {new_folder_id})")
     return new_folder_id
 
-def copy_form(creds, form_id, title):
+def copy_form(creds, form_id, name):
     """
     指定したフォームを、指定したフォルダにコピーします。
     """
@@ -34,7 +34,7 @@ def copy_form(creds, form_id, title):
     service = discovery.build('drive', 'v3', credentials=creds)
 
     copied_file = {
-        "title": title
+        "name": name
     }
 
     results = service.files().copy(fileId=form_id, body=copied_file).execute()
@@ -69,7 +69,7 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
-def update_vote_form(creds, form_id, item_title, video_titles):
+def update_vote_form(creds, form_id, title, item_title, video_titles):
     
     if len(video_titles) == 0:
         print(f"動画がありません。終了します。")
@@ -109,8 +109,8 @@ def update_vote_form(creds, form_id, item_title, video_titles):
             {
                 "updateFormInfo": {
                     "info": {
-                        "title": item_title,
-                        "documentTitle": item_title
+                        "title": title,
+                        "documentTitle": title
                     },
                     "updateMask": "title, documentTitle"
                 }
@@ -201,6 +201,7 @@ def main():
         print(f"処理中 group_id={group_id}, 件数={len(group_df)}")
         
         title = f'{config["vote_form"]["title"]}{group_id}'
+        item_title = config["vote_form"]["item_title"]
 
         # テンプレートフォームをコピー
         new_form_id = copy_form(creds, template_form_id, title)
@@ -209,7 +210,7 @@ def main():
         move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
-        update_vote_form(creds, new_form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
+        update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
 
         exit()
 
