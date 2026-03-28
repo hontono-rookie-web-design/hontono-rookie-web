@@ -34,8 +34,7 @@ def copy_form(creds, form_id, title):
     service = discovery.build('drive', 'v3', credentials=creds)
 
     copied_file = {
-        "title": title,
-        "documentTitle": title
+        "title": title
     }
 
     results = service.files().copy(fileId=form_id, body=copied_file).execute()
@@ -105,7 +104,16 @@ def update_vote_form(creds, form_id, item_title, video_titles):
     update = {
         "requests": [
             {
-                "createItem": {
+                "updateFormInfo": {
+                    "info": {
+                        "title": item_title,
+                        "documentTitle": item_title
+                    },
+                    "updateMask": "title, documentTitle"
+                }
+            },
+            {
+                "updateItem": {
                     "item": {
                         "title": item_title,
                         "questionGroupItem": {
@@ -121,6 +129,7 @@ def update_vote_form(creds, form_id, item_title, video_titles):
                         },
                     },
                     "location": {"index": 0},
+                    "updateMask": "title, questionGroupItem"
                 }
             }
         ]
@@ -133,6 +142,7 @@ def update_vote_form(creds, form_id, item_title, video_titles):
         .execute()
     )
 
+    print(f"フォーム (ID: {form_id}) を更新しました。")
     return form_id
 
 def main():
@@ -192,7 +202,7 @@ def main():
         move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
-        # update_vote_form(creds, new_form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
+        update_vote_form(creds, new_form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
 
 if __name__ == "__main__":
     main()
