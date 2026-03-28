@@ -8,8 +8,10 @@ from lib import sheet_client, utils
 from oauth2client import client, file, tools
 
 
-# 新しいフォルダーを作成
 def create_folder(creds, parent_folder_id):
+    """
+    指定した親フォルダIDの下に、新しいフォルダを作成します。
+    """
     # Drive API v3のサービスを構築
     service = discovery.build('drive', 'v3', credentials=creds)
 
@@ -26,9 +28,9 @@ def create_folder(creds, parent_folder_id):
     print(f"新しいフォルダ「{new_folder_name}」を作成しました。(ID: {new_folder_id})")
     return new_folder_id
 
-def copy_form(creds, form_id, name):
+def copy_file(creds, file_id, name):
     """
-    指定したフォームを、指定したフォルダにコピーします。
+    指定したファイルを、指定したフォルダにコピーします。
     """
     # Drive API v3のサービスを構築
     service = discovery.build('drive', 'v3', credentials=creds)
@@ -37,9 +39,9 @@ def copy_form(creds, form_id, name):
         "name": name
     }
 
-    results = service.files().copy(fileId=form_id, body=copied_file).execute()
+    results = service.files().copy(fileId=file_id, body=copied_file).execute()
 
-    print(f"フォーム (ID: {form_id}) をコピーしました。新しいフォームID: {results['id']}")
+    print(f"ファイル (ID: {file_id}) をコピーしました。新しいファイルID: {results['id']}")
     return results["id"]
 
 def move_file_to_folder(creds, file_id, target_folder_id):
@@ -70,7 +72,9 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     return moved_file
 
 def update_vote_form(creds, form_id, title, item_title, video_titles):
-    
+    """
+    フォームのタイトルと質問を更新します。
+    """
     if len(video_titles) == 0:
         print(f"動画がありません。終了します。")
         return form_id
@@ -87,7 +91,7 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
 
     # ItemIDを取得
     item_id = form_service.forms().get(formId=form_id).execute()["items"][0]["itemId"]
-    print(f"取得したItemID: {item_id}")
+    # print(f"取得したItemID: {item_id}")
 
     questions = []
     for video_title in video_titles:
@@ -146,8 +150,8 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
         .execute()
     )
 
-    getresult = form_service.forms().get(formId=form_id).execute()
-    print(getresult)
+    # getresult = form_service.forms().get(formId=form_id).execute()
+    # print(getresult)
 
     print(f"フォーム (ID: {form_id}) を更新しました。")
     return form_id
@@ -204,15 +208,13 @@ def main():
         item_title = config["vote_form"]["item_title"]
 
         # テンプレートフォームをコピー
-        new_form_id = copy_form(creds, template_form_id, title)
+        new_form_id = copy_file(creds, template_form_id, title)
 
         # フォームを共有フォルダに移動
         move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
         update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
-
-        exit()
 
 if __name__ == "__main__":
     main()
