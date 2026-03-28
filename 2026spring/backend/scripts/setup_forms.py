@@ -8,32 +8,6 @@ from lib import sheet_client, utils
 from oauth2client import client, file, tools
 
 
-# フォームをマイドライブに作成
-def create_form(creds, title):
-
-    DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
-
-    form_service = discovery.build(
-        "forms",
-        "v1",
-        http=creds.authorize(Http()),
-        discoveryServiceUrl=DISCOVERY_DOC,
-        static_discovery=False,
-    )
-
-    # フォーム作成のためのリクエストボディ
-    NEW_FORM = {
-        "info": {
-            "title": title,
-            "documentTitle": title
-        }
-    }
-
-    # 初期フォームを作成
-    result = form_service.forms().create(body=NEW_FORM).execute()
-
-    return result["formId"]
-
 # 新しいフォルダーを作成
 def create_folder(creds, parent_folder_id):
     # Drive API v3のサービスを構築
@@ -51,6 +25,23 @@ def create_folder(creds, parent_folder_id):
     new_folder_id = new_folder.get('id')
     print(f"新しいフォルダ「{new_folder_name}」を作成しました。(ID: {new_folder_id})")
     return new_folder_id
+
+def copy_form(creds, form_id, title):
+    """
+    指定したフォームを、指定したフォルダにコピーします。
+    """
+    # Drive API v3のサービスを構築
+    service = discovery.build('drive', 'v3', credentials=creds)
+
+    copied_file = {
+        "title": title,
+        "documentTitle": title
+    }
+
+    results = service.files().copy(fileId=form_id, body=copied_file).execute()
+
+    print(f"フォーム (ID: {form_id}) をコピーしました。新しいフォームID: {results['id']}")
+    return results["id"]
 
 def move_file_to_folder(creds, file_id, target_folder_id):
     """
@@ -179,6 +170,7 @@ def main():
     df = pd.DataFrame(video_data)
 
     # 投票フォームの作成
+    template_form_id = os.environ["TEMPLATE_FORM_ID"]
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
@@ -192,15 +184,15 @@ def main():
         print(f"処理中 group_id={group_id}, 件数={len(group_df)}")
         
         title = f'{config["vote_form"]["title"]}{group_id}'
-        # フォームの作成
-        form_id = create_form(creds, title)
-        # print(f"作成されたフォームのID: {form_id}")
+
+        # テンプレートフォームをコピー
+        new_form_id = copy_form(creds, template_form_id, title)
 
         # フォームを共有フォルダに移動
-        move_file_to_folder(creds, form_id, new_folder_id)
+        move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
-        update_vote_form(creds, form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
+        # update_vote_form(creds, new_form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
 
 if __name__ == "__main__":
     main()
