@@ -79,7 +79,12 @@ def move_file_to_folder(creds, file_id, target_folder_id):
     print(f"ファイル (ID: {file_id}) を指定フォルダ (ID: {target_folder_id}) に移動しました")
     return moved_file
 
-def update_vote_form(creds, form_id, title, items):
+def update_vote_form(creds, form_id, item_title, video_titles):
+    
+    if len(video_titles) == 0:
+        print(f"動画がありません。終了します。")
+        return form_id
+    
     DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
     form_service = discovery.build(
@@ -90,18 +95,37 @@ def update_vote_form(creds, form_id, title, items):
         static_discovery=False,
     )
 
+
+    questions = []
+    for video_title in video_titles:
+        questions.append({
+            "required": True,
+            "rowQuestion": {
+                "title": video_title
+            }
+        })
+
+    options = []
+    for i in range(len(video_titles)):
+        options.append({
+            "value": f"{i+1}位"
+        })
+
     update = {
         "requests": [
             {
                 "createItem": {
                     "item": {
-                        "title": "Homework video",
-                        "description": "Quizzes in Google Forms",
-                        "videoItem": {
-                            "video": {
-                                "youtubeUri": (
-                                    "https://www.youtube.com/watch?v=Lt5HqPvM-eI"
-                                )
+                        "title": item_title,
+                        "questionGroupItem": {
+                            "questions": questions,
+                            "grid": {
+                                "columns": {
+                                    "type": "RADIO",
+                                    "options": options,
+                                    "shuffle": False
+                                },
+                                "shuffleQuestions": False
                             }
                         },
                     },
@@ -111,15 +135,13 @@ def update_vote_form(creds, form_id, title, items):
         ]
     }
 
-    # Add the video to the form
+    # フォームを更新
     question_setting = (
         form_service.forms()
         .batchUpdate(formId=form_id, body=update)
         .execute()
     )
 
-    # Print the result to see it now has a video
-    result = form_service.forms().get(formId=form_id).execute()
     return form_id
 
 def main():
@@ -178,7 +200,7 @@ def main():
         move_file_to_folder(creds, form_id, new_folder_id)
 
         # フォームを更新
-        # update_vote_form(creds, form_id, title, group_df)
+        update_vote_form(creds, form_id, config["vote_form"]["item_title"], group_df["タイトル"].tolist())
 
 if __name__ == "__main__":
     main()
