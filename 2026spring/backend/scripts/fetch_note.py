@@ -63,7 +63,6 @@ def get_data(hashtag, count):
             # リトライ処理
             for attempt in range(6):
                 try:
-                    # 3. サーバーへの負荷軽減のため、リクエスト前に少し待機（重要）
                     time.sleep(1.5) 
                     
                     response = session.get(url, headers=headers,timeout=10) 
@@ -90,7 +89,7 @@ def get_data(hashtag, count):
 
                         data_list.append([i, title, author_name, published_date, note_url, user_url, eyecatch_url, user_profile_img_url])
                         
-                        if i >= count: # 指定数に達したら終了
+                        if i >= count: 
                             break
                     
                     break # 成功したらリトライループを抜ける
