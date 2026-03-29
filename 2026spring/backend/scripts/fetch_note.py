@@ -54,7 +54,6 @@ def get_data(hashtag, count):
     i = 0
     data_list = []
     
-    # 2. Sessionを使うと接続が維持されやすく、10054エラーを減らせます
     with requests.Session() as session:
         session.headers.update(headers)
 
