@@ -18,6 +18,10 @@ spreadsheets:
     rookie_sheet: "ルーキー"
     op_sheet: "OP"
     ex_sheet: "EX"
+  
+  note_list:
+    name: "note_list_2025autumn"
+    list_sheet: "list"
 
 vote_grouping:
   random_seed: 42
