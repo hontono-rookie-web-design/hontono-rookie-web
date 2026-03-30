@@ -3,7 +3,10 @@ name: Update Video Information
 on:
   workflow_dispatch:  # 手動実行
   schedule:
-    - cron: '0 * * * *'  # 毎時実行（必要に応じて変更）
+    #- cron: '0 * * * *'  # 毎時実行
+    #- cron: '0 */3 * * *' # 3時間おき実行
+    - cron: '0 */6 * * *' # 6時間おき実行
+    #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
 
 jobs:
   run-script:

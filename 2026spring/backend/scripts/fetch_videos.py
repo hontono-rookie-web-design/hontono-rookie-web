@@ -1,5 +1,6 @@
 import os
 import datetime
+import warnings
 
 from lib import sheet_client
 from lib import niconico
@@ -51,14 +52,14 @@ def split_videos_by_exclusion(
         if v["contentId"] in destinations.keys():
             # 除外リストに入っている動画は除外リストにしたがって振り分け
             destination = destinations[v["contentId"]]
-            if destination in [None, "", "除外"]:
-                excluded.append(v)
-            elif destination in ["op", "OP", "オープニング"]:
+            if destination in ["op", "OP", "オープニング"]:
                 before_period.append(v)
             elif destination in ["rookie", "ROOKIE", "ルーキー"]:
                 during_period.append(v)
             else:
-                raise ValueError(f"移動先が無効です: {destination}")
+                excluded.append(v)
+                if destination not in [None, "", "除外"]:
+                    warnings.warn(f"destination of {v["contentId"]}: {destination}.")
             continue
 
         # 投稿時刻で振り分け
