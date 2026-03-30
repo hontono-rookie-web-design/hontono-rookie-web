@@ -1,7 +1,10 @@
 tag:
   rookie: "本当のルーキー祭り2025秋"
-  op: "本当のルーキー祭り2025秋OP"
   ex: "本当のルーキー祭り2025秋EX"
+  fanfic: "本当のルーキー祭り2025秋二次創作"
+
+period:
+  start_period: "2025-10-10T17:00:00+09:00"
 
 spreadsheets:
   video_catalog:
@@ -9,15 +12,16 @@ spreadsheets:
     rookie_sheet: "rookie"
     op_sheet: "op"
     ex_sheet: "ex"
+    fanfic_sheet: "fanfic"
     excluded_rookie_sheet: "excluded_rookie"
-    excluded_op_sheet: "excluded_op"
     excluded_ex_sheet: "excluded_ex"
+    excluded_fanfic_sheet: "excluded_fanfic"
 
   video_exclusion_list:
     name: "動画除外リスト_2025秋"
     rookie_sheet: "ルーキー"
-    op_sheet: "OP"
     ex_sheet: "EX"
+    fanfic_sheet: "二次創作"
 
 vote_grouping:
   random_seed: 42
