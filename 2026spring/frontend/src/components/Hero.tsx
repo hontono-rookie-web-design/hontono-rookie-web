@@ -1,16 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EVENT_PHASES, EventPhase, getCurrentPhase } from "@/config/phase";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
-  const [phase, setPhase] = useState<EventPhase>(EVENT_PHASES.BEFORE);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // クライアントサイドでのみフェーズを評価する（ハイドレーションエラー防止）
-    setPhase(getCurrentPhase());
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
+
+  const phase = mounted ? getCurrentPhase() : EVENT_PHASES.BEFORE;
 
   const renderCTA = () => {
     switch (phase) {
@@ -49,23 +52,23 @@ export default function Hero() {
           <line x1="30%" y1="40%" x2="45%" y2="70%" stroke="#FB7185" strokeWidth="1" className="animate-[pulse_4.5s_ease-in-out_infinite]" />
           <line x1="45%" y1="70%" x2="75%" y2="80%" stroke="#38BDF8" strokeWidth="1" className="animate-[pulse_3.5s_ease-in-out_infinite]" />
           <line x1="60%" y1="15%" x2="75%" y2="80%" stroke="#2DD4BF" strokeWidth="0.5" strokeDasharray="4 4" className="animate-[pulse_6s_ease-in-out_infinite]" />
-          
+
           {/* ノード (Nodes) */}
           <circle cx="10%" cy="20%" r="4" fill="#2DD4BF" className="animate-ping" />
           <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
-          
+
           <circle cx="30%" cy="40%" r="4" fill="#38BDF8" className="animate-pulse" />
           <circle cx="30%" cy="40%" r="8" fill="#38BDF8" opacity="0.8" />
-          
+
           <circle cx="60%" cy="15%" r="3" fill="#2DD4BF" className="animate-ping" />
           <circle cx="60%" cy="15%" r="5" fill="#2DD4BF" />
-          
+
           <circle cx="85%" cy="35%" r="4" fill="#FB7185" className="animate-pulse" />
           <circle cx="85%" cy="35%" r="7" fill="#FB7185" opacity="0.9" />
-          
+
           <circle cx="45%" cy="70%" r="5" fill="#FB7185" className="animate-ping" />
           <circle cx="45%" cy="70%" r="8" fill="#FB7185" />
-          
+
           <circle cx="75%" cy="80%" r="4" fill="#38BDF8" className="animate-pulse" />
           <circle cx="75%" cy="80%" r="6" fill="#38BDF8" opacity="0.8" />
         </svg>
@@ -73,31 +76,32 @@ export default function Hero() {
 
       {/* メインコンテンツ */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
-        <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/80 backdrop-blur-sm border border-mint/20 text-mint text-sm font-medium tracking-wider shadow-sm">
-          ボカロP等の新人クリエイター向け楽曲投稿イベント
-        </div>
-        
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-800 mb-6 drop-shadow-sm">
           本当のルーキー祭り
           <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-mint to-skyblue">
             2026 春
           </span>
         </h1>
-        
+
         <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
-          Connected Rookies<br/>
-          <span className="text-lg md:text-xl font-normal opacity-80">～シンプルに繋がる春～</span>
+          ボカロP等の新人クリエイター向け楽曲投稿イベント
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
           {renderCTA()}
         </div>
+
+        <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <a href="https://www.nicovideo.jp/watch/sm46006887" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-slate-400">
+            説明会動画を見る
+          </a>
+        </div>
+
+        <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
+          投稿祭の進行は<a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer">公式アカウント</a>で随時連絡します。<br className="hidden sm:block" />
+          フォローすると人気投票しやすくなります。
+        </p>
       </div>
-{/* 
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center text-slate-400">
-        <span className="text-xs mb-2 tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-slate-400 to-transparent"></div>
-      </div> */}
     </section>
   );
 }

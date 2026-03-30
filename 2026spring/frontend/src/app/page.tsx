@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Rules from "@/components/Rules";
 import Schedule from "@/components/Schedule";
-import BottomCTA from "@/components/BottomCTA";
+import LinksAndSponsors from "@/components/LinksAndSponsors";
 
 export default function Home() {
   return (
@@ -12,10 +12,10 @@ export default function Home() {
       <About />
       <Rules />
       <Schedule />
-      <BottomCTA />
-      
+      <LinksAndSponsors />
+
       <footer className="w-full py-8 text-center text-sm text-slate-400 bg-white">
-        <p>© 2026 本当のルーキー祭り 運営委員会</p>
+        <p>© 2026 本当のルーキー祭り 運営</p>
       </footer>
     </main>
   );

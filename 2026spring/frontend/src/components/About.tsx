@@ -14,9 +14,9 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mb-6 text-mint">
               <Users size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">新人クリエイターの登竜門</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">一歩を踏み出すきっかけ</h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              「初めて～数回レベル」の投稿を行うボカロPなど、新しい才能を持つクリエイターが主役のイベントです。参加のハードルを下げ、次世代の才能を発掘します。
+              このイベントは、“これからのボカロP”が新しい一歩を踏み出すきっかけになることを大切にしています。
             </p>
           </div>
 
@@ -24,9 +24,9 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-skyblue/10 flex items-center justify-center mb-6 text-skyblue">
               <Music size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">オリジナル楽曲による祭典</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">交流が広がる場</h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              音声合成ソフト等を利用した完全オリジナル楽曲のみが対象。クリエイター同士の交流や、新たなリスナーとの「繋がり」を生み出す場を提供します。
+              投票の仕組みはありますが、決して「順位を競う場」だけではありません。作品をきっかけにクリエイターやリスナー同士の交流が広がることを目指しています。
             </p>
           </div>
 
@@ -34,9 +34,9 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-cherry/10 flex items-center justify-center mb-6 text-cherry">
               <Star size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">リスナーの応援が力に</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">自分の好きを見つける場</h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              リスナー一人ひとりの視聴や投票が、ルーキーたちにとっての大きなステップアップのきっかけになります。あなたの「推し」を見つけよう！
+              すべての参加作品をみんなで聴き合うことを大切にしています。順位だけに一喜一憂せず、是非ともあなただけの「好き」を見つけて楽しんでください。
             </p>
           </div>
         </div>
