@@ -1,4 +1,4 @@
-name: Update Video Information
+name: Update Spreadsheets 2026spring
 
 on:
   workflow_dispatch:  # 手動実行
