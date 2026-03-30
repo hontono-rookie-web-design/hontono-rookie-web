@@ -1,11 +1,14 @@
 import VideoCard from "@/components/video/VideoCard"
 
 async function getVideos() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/videos`), {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
+  const res = await fetch(`${baseUrl}/api/videos`, {
     cache: "no-store"
   })
 
-  return res.json()
+  const data = await res.json()
+  return Array.isArray(data) ? data : []
 }
 
 export default async function Page() {
@@ -13,15 +16,13 @@ export default async function Page() {
 
   return (
     <main style={{ padding: "40px" }}>
-      <h1 style={{ marginBottom: "30px" }}>楽曲一覧（ルーキー）</h1>
+      <h1>楽曲一覧（ルーキー）</h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "20px",
-        }}
-      >
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+        gap: "20px"
+      }}>
         {videos.map((video: any, index: number) => (
           <VideoCard key={index} video={video} />
         ))}
