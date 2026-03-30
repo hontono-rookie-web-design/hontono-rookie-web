@@ -1,7 +1,7 @@
 import VideoCard from "@/components/video/VideoCard"
 
 async function getVideos() {
-  const res = await fetch("http://localhost:3000/api/videos", {
+  const res = await fetch("/api/videos", {
     cache: "no-store"
   })
   return res.json()
