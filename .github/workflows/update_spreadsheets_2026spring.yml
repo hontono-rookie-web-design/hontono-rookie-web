@@ -39,3 +39,4 @@ jobs:
       - name: Run script
         run: |
           python -m scripts.fetch_videos
+          python -m scripts.fetch_note
