@@ -1,4 +1,4 @@
-name: Update Spreadsheets 2026spring
+name: 2026spring Fetch Videos rookie
 
 on:
   workflow_dispatch:  # 手動実行
