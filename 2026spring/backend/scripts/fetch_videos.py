@@ -1,6 +1,7 @@
 import os
 import datetime
 import warnings
+import argparse
 
 from lib import sheet_client
 from lib import niconico
@@ -164,6 +165,15 @@ def update_video_sheet_by_tag(
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Fetch videos by tag keys")
+    parser.add_argument(
+        "--keys",
+        nargs="*",
+        help="実行するタグキー（例: ex fanfic）。未指定の場合は全て実行",
+    )
+
+    args = parser.parse_args()
+
     config = utils.load_config()
     tag_config: dict[str, str] = config["tag"]
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
@@ -175,6 +185,17 @@ def main():
     start_period_rookie = datetime.datetime.fromisoformat(
         config["period"]["start_period"]
     )
+
+    # 実行対象キーの決定
+    if args.keys:
+        target_keys = args.keys
+
+        # 不正キーのチェック（安全性向上）
+        invalid_keys = set(target_keys) - set(tag_config.keys())
+        if invalid_keys:
+            raise ValueError(f"Invalid keys: {invalid_keys}")
+    else:
+        target_keys = tag_config.keys()
 
     # for div in ["rookie", "op", "ex"]:
     for div in tag_config.keys():
