@@ -20,6 +20,12 @@ spreadsheets:
   video_exclusion_list:
     name: "動画除外リスト_2025秋"
     rookie_sheet: "ルーキー"
+    op_sheet: "OP"
+    ex_sheet: "EX"
+  
+  note_list:
+    name: "note_list_2025autumn"
+    list_sheet: "list"
     ex_sheet: "ex"
     fanfic_sheet: "二次創作"
 
