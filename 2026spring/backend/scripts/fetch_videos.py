@@ -1,4 +1,6 @@
 import os
+import datetime
+import warnings
 
 from lib import sheet_client
 from lib import niconico
@@ -18,21 +20,60 @@ def fetch_video(tag: str, limit: int = 100):
     return videos
 
 
-def split_videos_by_exclusion(videos, exclusion_list_sheet):
+def split_videos_by_exclusion(
+    videos: list[dict],
+    exclusion_list_sheet,
+    start_period: datetime.datetime = None,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """除外リストと投稿期間開始時刻によって、動画を期間前/期間内/除外の3つに振り分ける
+    1. 除外リストに存在するものは除外リストの移動先に従って振り分け（移動先の指定がなければ除外）
+    2. 上記以外は、投稿時刻が投稿期間開始時刻より前か後かで期間前/期間内に振り分け
+      （投稿期間開始時刻が渡されない場合は期間内に振り分け）
+
+    Args:
+        videos (list[dict]): 動画リスト
+        exclusion_list_sheet (worksheet): 除外リストのワークシート
+        start_period (datetime.datetime, optional): 投稿期間開始時刻
+
+    Returns:
+        tuple[list[dict], list[dict], list[dict]]: 期間前/期間内/除外の動画リスト
+    """
+    content_id_key = "動画ID"
+    destination_key = "移動先"
 
     data = sheet_client.fetch_sheet_data(exclusion_list_sheet)
-    exclusion_list = [row["動画ID"] for row in data]
+    destinations = {row[content_id_key]: row.get(destination_key, None) for row in data}
 
-    included = []
+    before_period = []
+    during_period = []
     excluded = []
 
     for v in videos:
-        if v["contentId"] in exclusion_list:
-            excluded.append(v)
-        else:
-            included.append(v)
+        if v["contentId"] in destinations.keys():
+            # 除外リストに入っている動画は除外リストにしたがって振り分け
+            destination = destinations[v["contentId"]]
+            if destination in ["op", "OP", "オープニング"]:
+                before_period.append(v)
+            elif destination in ["rookie", "ROOKIE", "ルーキー"]:
+                during_period.append(v)
+            else:
+                excluded.append(v)
+                if destination not in [None, "", "除外"]:
+                    warnings.warn(f"destination of {v["contentId"]}: {destination}.")
+            continue
 
-    return included, excluded
+        # 投稿時刻で振り分け
+        if start_period is None:
+            during_period.append(v)
+            continue
+
+        posting_time = datetime.datetime.fromisoformat(v["startTime"])
+        if posting_time < start_period:
+            before_period.append(v)
+        else:
+            during_period.append(v)
+
+    return before_period, during_period, excluded
 
 
 def write_sheet(sheet, videos: list[dict]):
@@ -70,7 +111,24 @@ def update_video_sheet_by_tag(
     video_catalog_excluded_sheetname: str,
     exclusion_list_spreadsheetname: str,
     exclusion_list_sheetname: str,
+    video_catalog_op_sheetname: str = None,
+    start_period: datetime.datetime = None,
 ):
+    """タグから動画情報を取得し、動画一覧スプレッドシートを更新する
+    除外リスト、投稿期間開始時刻によって、動画を期間前/期間内/除外の3つのワークシートに振り分ける
+
+    Args:
+        tag (str): タグ
+        video_catalog_spreadsheetname (str): 動画一覧スプレッドシート名
+        video_catalog_sheetname (str): （期間内）動画一覧ワークシート名
+        video_catalog_excluded_sheetname (str): 除外動画ワークシート名
+        exclusion_list_spreadsheetname (str): 除外リストスプレッドシート名
+        exclusion_list_sheetname (str): 除外リストワークシート名
+        video_catalog_op_sheetname (str, optional): 期間前動画一覧ワークシート名
+        start_period (datetime.datetime, optional): 投稿期間開始時刻
+    """
+    if video_catalog_op_sheetname is not None:
+        assert start_period is not None, f"{video_catalog_op_sheetname}, {start_period}"
 
     videos = fetch_video(tag)
     print(f"{tag}: {len(videos)} videos")
@@ -79,13 +137,22 @@ def update_video_sheet_by_tag(
     exclusion_list_sheet = connect_sheet(
         exclusion_list_spreadsheetname, exclusion_list_sheetname
     )
-    included, excluded = split_videos_by_exclusion(videos, exclusion_list_sheet)
+    before_period, during_period, excluded = split_videos_by_exclusion(
+        videos, exclusion_list_sheet, start_period
+    )
 
-    # 対象動画をシートに出力
+    # 期間前動画をシートに出力
+    if video_catalog_op_sheetname is not None:
+        video_catalog_op_sheet = connect_sheet(
+            video_catalog_spreadsheetname, video_catalog_op_sheetname
+        )
+        write_sheet(video_catalog_op_sheet, before_period)
+
+    # 期間内動画をシートに出力
     video_catalog_sheet = connect_sheet(
         video_catalog_spreadsheetname, video_catalog_sheetname
     )
-    write_sheet(video_catalog_sheet, included)
+    write_sheet(video_catalog_sheet, during_period)
 
     # 除外動画をシートに出力
     excluded_sheet = connect_sheet(
@@ -105,13 +172,23 @@ def main():
     catalog_spreadsheetname = catalog_sheet_config["name"]
     exclusion_spreadsheetname = exclusion_sheet_config["name"]
 
+    start_period_rookie = datetime.datetime.fromisoformat(
+        config["period"]["start_period"]
+    )
+
     # for div in ["rookie", "op", "ex"]:
     for div in tag_config.keys():
-
         tag = tag_config[div]
         catalog_sheetname = catalog_sheet_config[f"{div}_sheet"]
         catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
         exclusion_sheetname = exclusion_sheet_config[f"{div}_sheet"]
+
+        if div == "rookie":
+            catalog_op_sheetname = catalog_sheet_config["op_sheet"]
+            start_period = start_period_rookie
+        else:
+            catalog_op_sheetname = None
+            start_period = None
 
         update_video_sheet_by_tag(
             tag,
@@ -120,6 +197,8 @@ def main():
             catalog_excluded_sheetname,
             exclusion_spreadsheetname,
             exclusion_sheetname,
+            catalog_op_sheetname,
+            start_period,
         )
 
 
