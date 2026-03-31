@@ -198,7 +198,7 @@ def main():
         target_keys = tag_config.keys()
 
     # for div in ["rookie", "op", "ex"]:
-    for div in tag_config.keys():
+    for div in target_keys:
         tag = tag_config[div]
         catalog_sheetname = catalog_sheet_config[f"{div}_sheet"]
         catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
