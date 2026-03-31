@@ -1,4 +1,4 @@
-name: 2026spring Fetch Videos rookie
+name: 2026spring Fetch Videos Rookie
 
 on:
   workflow_dispatch:  # 手動実行
