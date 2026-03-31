@@ -1,8 +1,6 @@
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
-
 from lib import utils
 from lib import sheet_client
 from gspread_dataframe import set_with_dataframe
