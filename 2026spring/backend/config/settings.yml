@@ -21,12 +21,11 @@ spreadsheets:
     name: "動画除外リスト_2025秋"
     rookie_sheet: "ルーキー"
     ex_sheet: "ex"
+    fanfic_sheet: "二次創作"
   
   note_list:
     name: "note_list_2025autumn"
     list_sheet: "list"
-    ex_sheet: "ex"
-    fanfic_sheet: "二次創作"
 
 vote_grouping:
   random_seed: 42
