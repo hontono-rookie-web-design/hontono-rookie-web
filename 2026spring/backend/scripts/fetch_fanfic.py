@@ -102,6 +102,56 @@ def fetch_by_service(service, url):
 
 
 # ------------------------
+# 元動画情報取得
+# ------------------------
+def extract_video_id(url: str) -> str | None:
+    pattern = r"(sm\d+|nm\d+|so\d+)"
+    match = re.search(pattern, url)
+    return match.group(1) if match else None
+
+
+def find_videos_info(
+    url_list: list[str], spreadsheet_name: str, credentials_path: str
+) -> list[dict]:
+    """
+    URLリストを受け取り、list[dict]で返す
+    """
+
+    video_index = sheet_client.build_video_index(spreadsheet_name, credentials_path)
+
+    results = []
+
+    for url in url_list:
+        video_id = extract_video_id(url)
+
+        if video_id and video_id in video_index:
+            results.append(video_index[video_id])
+        else:
+            results.append({"タイトル": None, "投稿者名": None})
+
+    return results
+
+
+def rename_key(rows: list[dict]):
+    return rows
+
+
+def deduplicate_by_url(data: list[dict]) -> list[dict]:
+    """
+    URLをキーに重複削除（後ろを残す）
+    """
+
+    url_map = {}
+
+    for item in data:
+        url = item.get("二次創作作品URL")
+        if url is not None:
+            url_map[url] = item  # 後ろの要素で上書き
+
+    return list(url_map.values())
+
+
+# ------------------------
 # メイン処理
 # ------------------------
 def main():
@@ -110,6 +160,7 @@ def main():
     spreadsheet_name = config["spreadsheets"]["fanfic_list"]["name"]
     input_spreadsheet_name = config["spreadsheets"]["forms_result_fanfic"]["name"]
     input_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["sheet"]
+    video_catalog_spreadsheet_name = config["spreadsheets"]["video_catalog"]["name"]
 
     credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
@@ -118,18 +169,33 @@ def main():
         credentials_path, input_spreadsheet_name, input_sheet_name
     )
     rows = sheet_client.fetch_sheet_data(input_ws)
+    rows = rename_key(rows)
+    print(f"total: {len(rows)} items")
+
+    # 重複削除
+    rows = deduplicate_by_url(rows)
     print(f"total: {len(rows)} items")
 
     grouped = defaultdict(list)
 
-    for row in rows:
+    # 元動画情報取得
+    rows_org = find_videos_info(
+        [row.get("元動画URL") for row in rows],
+        video_catalog_spreadsheet_name,
+        credentials_path,
+    )
+
+    # 二次創作作品情報取得
+    for row, row_org in zip(rows, rows_org):
         category = row.get("分類")
-        author = row.get("投稿者名")
+        author = row.get("二次創作者名")
         service = row.get("投稿先")
         title_input = row.get("タイトル")
-        description_input = row.get("コメント")
         image_input = row.get("画像URL")
-        url = row.get("URL")
+        url = row.get("二次創作作品URL")
+        url_org = row.get("元動画URL")
+        title_org = row_org.get("タイトル")
+        author_org = row_org.get("投稿者名")
 
         if not url or not service or not category:
             continue
@@ -143,30 +209,28 @@ def main():
             # --- タイトル・コメント・画像URL ---
             if service == "X":
                 title = title_input  # 入力をそのまま
-                description = description_input
                 image = image_input
             else:
                 title = meta["title"]
-                description = meta["description"]
                 image = meta["image"]
 
             grouped[category].append(
                 {
                     "タイトル": title or "",
-                    "投稿者名": author or "",
-                    "コメント": description or "",
+                    "二次創作者名": author or "",
                     "投稿先": service,
-                    "URL": url,
+                    "二次創作作品URL": url,
                     "画像URL": image or "",
+                    "元動画URL": url_org or "",
+                    "元動画タイトル": title_org or "",
+                    "元動画投稿者名": author_org or "",
                 }
             )
 
         except Exception as e:
             print(f"error: {url} -> {e}")
 
-    # ------------------------
     # シート書き込み
-    # ------------------------
     for category, data in grouped.items():
         print(f"{category}: {len(data)} items")
         ws = sheet_client.connect_sheet(credentials_path, spreadsheet_name, category)
