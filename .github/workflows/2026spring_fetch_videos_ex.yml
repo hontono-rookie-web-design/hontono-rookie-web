@@ -1,0 +1,41 @@
+name: 2026spring Fetch Videos ex
+
+on:
+  workflow_dispatch:  # 手動実行
+  schedule:
+    #- cron: '0 * * * *'  # 毎時実行
+    #- cron: '0 */3 * * *' # 3時間おき実行
+    - cron: '0 */6 * * *' # 6時間おき実行
+    #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+
+    defaults:
+      run:
+        working-directory: 2026spring/backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Create credentials.json
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+      - name: Run script
+        run: |
+          python -m scripts.fetch_videos --keys ex fanfic

@@ -1,9 +1,12 @@
-name: Update Video Information
+name: 2026spring Fetch Videos Rookie
 
 on:
   workflow_dispatch:  # 手動実行
   schedule:
-    - cron: '0 * * * *'  # 毎時実行（必要に応じて変更）
+    #- cron: '0 * * * *'  # 毎時実行
+    #- cron: '0 */3 * * *' # 3時間おき実行
+    - cron: '0 */6 * * *' # 6時間おき実行
+    #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
 
 jobs:
   run-script:
@@ -35,4 +38,4 @@ jobs:
 
       - name: Run script
         run: |
-          python -m scripts.fetch_videos
+          python -m scripts.fetch_videos --keys rookie
