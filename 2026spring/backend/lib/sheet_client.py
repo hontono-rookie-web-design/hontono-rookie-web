@@ -96,3 +96,36 @@ def fetch_sheet_data(worksheet) -> list[dict]:
     スプレッドシートの内容を list[dict] で取得
     """
     return worksheet.get_all_records()
+
+
+def build_video_index(
+    spreadsheet_name: str,
+    credentials_path: str,
+    target_sheets: list[str] = ["rookie", "op", "ex"],
+) -> dict:
+    """
+    スプレッドシート全体を読み込んで
+    {動画ID: {"タイトル": ..., "投稿者名": ...}} の辞書を作成
+    """
+
+    gc = gspread.service_account(filename=credentials_path)
+    sh = gc.open(spreadsheet_name)
+
+    video_index = {}
+
+    for sheet_name in target_sheets:
+        try:
+            worksheet = sh.worksheet(sheet_name)
+        except gspread.exceptions.WorksheetNotFound:
+            continue
+
+        records = worksheet.get_all_records()
+
+        for row in records:
+            video_id = str(row.get("動画ID"))
+            video_index[video_id] = {
+                "タイトル": row.get("タイトル"),
+                "投稿者名": row.get("投稿者名"),
+            }
+
+    return video_index

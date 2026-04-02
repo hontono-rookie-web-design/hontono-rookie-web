@@ -1,3 +1,4 @@
+import re
 from bs4 import BeautifulSoup
 import xml.etree.ElementTree as ET
 import requests
@@ -164,3 +165,25 @@ def attach_username_and_thumbnail(videos):
             video["thumbnailUrl"] = get_thumbnail_url(video_id)
 
     return videos
+
+
+def fetch_single_video(url, fields):
+
+    m = re.search(r"(sm\d+)", url)
+    if not m:
+        return None
+
+    video_id = m.group(1)
+
+    api = f"https://ext.nicovideo.jp/api/getthumbinfo/{video_id}"
+
+    res = requests.get(api)
+    res.raise_for_status()
+
+    root = ET.fromstring(res.text)
+
+    def get(tag):
+        el = root.find(f".//{tag}")
+        return el.text if el is not None else None
+
+    return {f: get(f) for f in fields}

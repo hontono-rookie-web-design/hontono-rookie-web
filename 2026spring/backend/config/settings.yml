@@ -27,6 +27,13 @@ spreadsheets:
     name: "note_list_2025autumn"
     list_sheet: "list"
 
+  fanfic_list:
+    name: "fanfic_list_2025autumn"
+
+  forms_result_fanfic:
+    name: "Forms_result_fanfic_2025autumn"
+    sheet: "シート1"
+
 vote_grouping:
   random_seed: 42
   group_size: 3
