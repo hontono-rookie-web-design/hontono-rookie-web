@@ -1,7 +1,5 @@
-import os
-
-from google.oauth2.service_account import Credentials
 from googleapiclient import discovery
+from lib import forms_client
 
 # ==========================================
 # 設定情報の入力
@@ -11,53 +9,34 @@ FORM_ID = 'あなたのForm_IDをここに入力'
 SPREADSHEET_ID = 'あなたのSpreadsheet_IDをここに入力'
 SHEET_RANGE = 'シート1!A1' # 書き込み先のシート名と開始セル
 
-# 必要なAPIのスコープ
-SCOPES = [
-    "https://www.googleapis.com/auth/forms.responses.readonly",
-    "https://www.googleapis.com/auth/forms.body.readonly",
-    "https://www.googleapis.com/auth/spreadsheets"
-]
+
 
 def main():
     # 1. 認証情報の読み込み
-    creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
+    creds = forms_client.build_credentials(CREDENTIALS_FILE)
     
     # APIサービスの構築
-    forms_service = discovery.build('forms', 'v1', credentials=creds)
+    forms_service = forms_client.build_forms_service(creds)
     sheets_service = discovery.build('sheets', 'v4', credentials=creds)
 
     # 2. フォームの設問（ヘッダー）情報を取得
-    form_info = forms_service.forms().get(formId=FORM_ID).execute()
-    items = form_info.get('items', [])
-    
-    question_ids = []
-    headers = ['タイムスタンプ']
-    
-    for item in items:
-        if 'questionItem' in item:
-            q_id = item['questionItem']['question']['questionId']
-            question_ids.append(q_id)
-            headers.append(item['title']) # 設問のタイトルをヘッダーにする
+    form_info = forms_client.get_form(forms_service, FORM_ID)
+    questions = forms_client.get_questions(form_info)
+    question_headers = forms_client.build_question_headers(questions)
+    headers = ['タイムスタンプ'] + question_headers
 
     # 3. フォームの回答リストを取得
-    responses_result = forms_service.forms().responses().list(formId=FORM_ID).execute()
-    responses = responses_result.get('responses', [])
+    responses = forms_client.list_responses(forms_service, FORM_ID)
 
     sheet_data = [headers] # スプレッドシートに書き込むデータの配列（1行目はヘッダー）
 
     for r in responses:
         row = [r.get('createTime')] # タイムスタンプ
-        answers = r.get('answers', {})
         
         # 設問の順序に従って回答を並べる
-        for q_id in question_ids:
-            ans = answers.get(q_id)
-            if ans:
-                # 複数選択肢などの場合を考慮して結合
-                text_values = [a.get('value', '') for a in ans.get('textAnswers', {}).get('answers', [])]
-                row.append(', '.join(text_values))
-            else:
-                row.append('') # 無回答の場合
+        normalized = forms_client.build_response_record(r, questions, include_meta=False)
+        for header in question_headers:
+            row.append(normalized.get(header, ''))
                 
         sheet_data.append(row)
 
