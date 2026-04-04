@@ -1,32 +1,35 @@
-from googleapiclient import discovery
-from lib import forms_client
+import os
 
-# ==========================================
-# 設定情報の入力
-# ==========================================
-CREDENTIALS_FILE = 'credentials.json' # ダウンロードしたJSONキーのパス
-FORM_ID = 'あなたのForm_IDをここに入力'
-SPREADSHEET_ID = 'あなたのSpreadsheet_IDをここに入力'
-SHEET_RANGE = 'シート1!A1' # 書き込み先のシート名と開始セル
+from lib import forms_client, sheet_client, utils
 
 
+# フォームから回答を取得する
+def load_form_responses(forms_service, form_id: str) -> list[dict[str, str]]:
+    pass
 
 def main():
+
+    config = utils.load_config()
+    tag_config: dict[str, str] = config["tag"]
+
     # 1. 認証情報の読み込み
-    creds = forms_client.build_credentials(CREDENTIALS_FILE)
+    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    creds = forms_client.build_credentials(credentials_path)
     
     # APIサービスの構築
     forms_service = forms_client.build_forms_service(creds)
-    sheets_service = discovery.build('sheets', 'v4', credentials=creds)
 
     # 2. フォームの設問（ヘッダー）情報を取得
-    form_info = forms_client.get_form(forms_service, FORM_ID)
+    FANFIC_FORM_ID = os.environ["FANFIC_FORM_ID"]
+    form_info = forms_client.get_form(forms_service, FANFIC_FORM_ID)
     questions = forms_client.get_questions(form_info)
     question_headers = forms_client.build_question_headers(questions)
     headers = ['タイムスタンプ'] + question_headers
 
     # 3. フォームの回答リストを取得
-    responses = forms_client.list_responses(forms_service, FORM_ID)
+    responses = forms_client.list_responses(forms_service, FANFIC_FORM_ID)
+
+    # print(responses)
 
     sheet_data = [headers] # スプレッドシートに書き込むデータの配列（1行目はヘッダー）
 
@@ -44,20 +47,20 @@ def main():
     body = {
         'values': sheet_data
     }
-    
-    # clear() で一旦シートを綺麗にしてから書き込む（任意）
-    sheets_service.spreadsheets().values().clear(
-        spreadsheetId=SPREADSHEET_ID, range='シート1'
-    ).execute()
 
-    result = sheets_service.spreadsheets().values().update(
-        spreadsheetId=SPREADSHEET_ID, 
-        range=SHEET_RANGE,
-        valueInputOption='USER_ENTERED', 
-        body=body
-    ).execute()
+    result_fanfic_spreadsheetname = config["spreadsheets"]["forms_result_fanfic"]["name"]
+    result_fanfic_sheetname = config["spreadsheets"]["forms_result_fanfic"]["sheet"]
+    result_fanfic_sheet = sheet_client.connect_sheet(
+        credentials_path, 
+        result_fanfic_spreadsheetname, 
+        result_fanfic_sheetname
+    )
 
-    print(f"{result.get('updatedRows')} 行のデータをスプレッドシートに書き込みました。")
+    sheet_client.clear_sheet(result_fanfic_sheet)
+
+    sheet_client.update_sheet(result_fanfic_sheet, sheet_data) # 書き込み先のシートとデータを渡す
+
+    print(f"{len(sheet_data) - 1} 行のデータをスプレッドシートに書き込みました。")
 
 if __name__ == '__main__':
     main()
