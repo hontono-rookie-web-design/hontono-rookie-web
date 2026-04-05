@@ -82,10 +82,9 @@ def get_data(hashtag, count):
                         author_name = user.get("name")
                         author_urlname = user.get("urlname")
                         note_key = notedata.get("key")
-
                         published_date = datetime.datetime.fromisoformat(
                             notedata["publish_at"]
-                        ).date()
+                        )#.date()
                         user_url = f"https://note.com/{author_urlname}"
                         note_url = f"{user_url}/n/{note_key}"
                         eyecatch_url = notedata.get("eyecatch_url")
@@ -114,6 +113,52 @@ def get_data(hashtag, count):
                     time.sleep(5)
             if i >= count:
                 break
+
+    return data_list
+
+
+def update_sheet(spreadsheetname, sheetname, data):
+    sheet = connect_sheet(spreadsheetname, sheetname)
+    sheet.clear()
+    set_with_dataframe(sheet, data, row=1, col=1)
+
+def format_df(df): #データフレームの整理
+    # dfからurl重複を削除
+    df = df.drop_duplicates("note_url")
+    # 日付順でソート
+    df = df.sort_values(by="Published Date",ascending=False)
+    # 日付データ形式整理
+    df["Published Date"]=pd.to_datetime(df["Published Date"]).dt.strftime('%Y-%m-%d %H:%M')
+    # No.列の上書き
+    df["No."]=range(1,len(df)+1)
+    return df
+
+def main():
+    # シートに接続
+    config = utils.load_config()
+    tag_config: dict[str, str] = config["tag"]
+    catalog_sheet_config = config["spreadsheets"]["note_list"]
+    catalog_spreadsheetname = catalog_sheet_config["name"]
+    catalog_sheetname = catalog_sheet_config["list_sheet"]
+
+    # hashtag = "本当のルーキー祭り2025秋"
+    # hashtag = tag_config["rookie"]
+    # hashtag = tag_config["fanfic"]
+    hashtags = set(tag_config.values()) # tag_config内のタグすべてを検索対象とする 2026/04/05
+
+    data_list = []
+
+
+    for hashtag in hashtags:
+
+        # 記事の総数を取得
+        note_count = get_note_count(hashtag)
+
+        # 記事情報取得
+        note_data = get_data(hashtag, note_count)
+        data_list.extend(note_data)
+        # print(data_list)
+
     df = pd.DataFrame(
         data_list,
         columns=[
@@ -127,35 +172,11 @@ def get_data(hashtag, count):
             "user_profile_img_url",
         ],
     )
-    return df
 
-
-def update_sheet(spreadsheetname, sheetname, data):
-    sheet = connect_sheet(spreadsheetname, sheetname)
-    sheet.clear()
-    set_with_dataframe(sheet, data, row=1, col=1)
-
-
-def main():
-    # シートに接続
-    config = utils.load_config()
-    tag_config: dict[str, str] = config["tag"]
-    catalog_sheet_config = config["spreadsheets"]["note_list"]
-    catalog_spreadsheetname = catalog_sheet_config["name"]
-    catalog_sheetname = catalog_sheet_config["list_sheet"]
-
-    # hashtag = "本当のルーキー祭り2025秋"
-    # hashtag = tag_config["rookie"]
-    hashtag = tag_config["fanfic"]
-
-    # 記事の総数を取得
-    note_count = get_note_count(hashtag)
-
-    # 記事情報取得
-    note_data = get_data(hashtag, note_count)
+    note_data_df = format_df(df) #データフレームの整理
 
     # スプレッドシートに書き込み
-    update_sheet(catalog_spreadsheetname, catalog_sheetname, note_data)
+    update_sheet(catalog_spreadsheetname, catalog_sheetname, note_data_df)
 
 
 if __name__ == "__main__":
