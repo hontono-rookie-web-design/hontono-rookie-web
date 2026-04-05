@@ -22,7 +22,7 @@ spreadsheets:
     rookie_sheet: "ルーキー"
     ex_sheet: "ex"
     fanfic_sheet: "二次創作"
-  
+
   note_list:
     name: "note_list_2025autumn"
     list_sheet: "list"
@@ -32,7 +32,7 @@ spreadsheets:
 
   forms_result_fanfic:
     name: "Forms_result_fanfic_2025autumn"
-    sheet: "シート1"
+    sheet: "フォームの回答"
 
 vote_grouping:
   random_seed: 42
