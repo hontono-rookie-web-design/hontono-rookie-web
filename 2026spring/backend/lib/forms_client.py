@@ -120,6 +120,7 @@ def build_response_record(
     questions: list[dict[str, str]],
     *,
     include_meta: bool = True,
+    include_email: bool = False,
     answer_delimiter: str = ", ",
 ) -> dict[str, str]:
     """
@@ -133,6 +134,10 @@ def build_response_record(
         record["createTime"] = response.get("createTime", "")
         record["lastSubmittedTime"] = response.get("lastSubmittedTime", "")
 
+    if include_email:
+        respondent_email = response.get("respondentEmail", "")
+        record["respondentEmail"] = respondent_email
+    
     answer_map = response.get("answers", {})
     for header, question in zip(question_headers, questions):
         question_id = question.get("question_id", "")
@@ -148,6 +153,7 @@ def build_response_records(
     questions: list[dict[str, str]],
     *,
     include_meta: bool = True,
+    include_email: bool = False,
     answer_delimiter: str = ", ",
 ) -> list[dict[str, str]]:
     """
@@ -158,6 +164,7 @@ def build_response_records(
             response,
             questions,
             include_meta=include_meta,
+            include_email=include_email,
             answer_delimiter=answer_delimiter,
         )
         for response in responses

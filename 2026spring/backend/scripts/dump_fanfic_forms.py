@@ -31,7 +31,7 @@ def main():
 
     for r in responses:
         # 設問の順序に従って回答を並べる
-        normalized = forms_client.build_response_record(r, questions, include_meta=True)
+        normalized = forms_client.build_response_record(r, questions, include_meta=True, include_email=True)
         sheet_data.append(normalized)
 
     # 4. スプレッドシートに書き込む
