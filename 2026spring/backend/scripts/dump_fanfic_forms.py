@@ -27,12 +27,12 @@ def main():
     # 3. フォームの回答リストを取得
     responses = forms_client.list_responses(forms_service, FANFIC_FORM_ID)
 
-    sheet_data = []
-
-    for r in responses:
-        # 設問の順序に従って回答を並べる
-        normalized = forms_client.build_response_record(r, questions, include_meta=True, include_email=True)
-        sheet_data.append(normalized)
+    sheet_data = forms_client.build_response_records(
+        responses,
+        questions,
+        include_meta=True,
+        include_email=True,
+    )
 
     # 4. スプレッドシートに書き込む
     result_fanfic_spreadsheetname = config["spreadsheets"]["forms_result_fanfic"]["name"]
