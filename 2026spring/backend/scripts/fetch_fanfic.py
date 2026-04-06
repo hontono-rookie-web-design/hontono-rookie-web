@@ -1,9 +1,5 @@
 import os
-import re
-import requests
-from bs4 import BeautifulSoup
 from collections import defaultdict
-import xml.etree.ElementTree as ET
 
 from lib import utils
 from lib import sheet_client
