@@ -2,7 +2,6 @@ import re
 from bs4 import BeautifulSoup
 import xml.etree.ElementTree as ET
 import requests
-import json
 
 
 def fetch_all_videos(tag, limit=100):
