@@ -10,4 +10,16 @@ def fetch_single_video(url, fields):
 
     data = res.json()
 
-    return {f: data.get(f) for f in fields}
+    def get(field):
+        if field == "title":
+            return data.get("title")
+
+        if field in ["author_name", "channel_title"]:
+            return data.get("author_name")
+
+        if field == "thumbnail_url":
+            return data.get("thumbnail_url")
+
+        return None
+
+    return {f: get(f) for f in fields}
