@@ -1,12 +1,14 @@
 import VideoCard from "@/components/video/VideoCard"
 
 async function getVideos() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-
-  const res = await fetch("https://hontono-rookie-git-473f67-hontonorookiewebdesign-8612s-projects.vercel.app/api/videos",
-  {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/videos`, {
     cache: "no-store"
   })
+
+  if (!res.ok) {
+    console.error("API error:", res.status)
+    return []
+  }
 
   const data = await res.json()
   return Array.isArray(data) ? data : []
