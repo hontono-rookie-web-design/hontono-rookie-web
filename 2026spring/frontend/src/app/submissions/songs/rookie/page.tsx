@@ -1,4 +1,5 @@
 import VideoCard from "@/components/video/VideoCard"
+import styles from "@/components/video/VideoCard.module.css"
 
 async function getVideos() {
   try {
