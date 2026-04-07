@@ -28,8 +28,8 @@ export default async function Page() {
 
   return (
     <main style={{ padding: "40px" }}>
-      <h1 style={{ marginBottom: "40px" }}>
-　　　　  楽曲一覧（ルーキー）
+      <h1 className= {styles.titleMain}>
+      楽曲一覧（ルーキー）
 　　　　</h1>
 
       <div style={{
