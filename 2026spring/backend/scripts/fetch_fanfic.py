@@ -61,11 +61,11 @@ def main():
     rows = sheet_client.fetch_sheet_data(input_ws)
     print(f"total: {len(rows)} items")
 
-    # 重複削除
-    rows = deduplicate_by_url(rows)
-
     # 掲載不可のものを削除
     rows = remove_invalid(rows)
+
+    # 重複削除
+    rows = deduplicate_by_url(rows)
     print(f"total: {len(rows)} items")
 
     grouped = defaultdict(list)
