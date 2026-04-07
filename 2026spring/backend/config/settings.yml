@@ -31,7 +31,7 @@ spreadsheets:
     name: "fanfic_list_2025autumn"
 
   forms_result_fanfic:
-    name: "Forms_result_fanfic_2025autumn"
+    name: "二次創作作品提出フォーム回答_2025秋"
     forms_result: "Forms_result"
     for_check: "二次創作作品情報確認用"
 
