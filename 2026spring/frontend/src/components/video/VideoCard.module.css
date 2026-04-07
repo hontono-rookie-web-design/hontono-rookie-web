@@ -73,12 +73,17 @@
  text-overflow: ellipsis;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .titleMain {
   text-align: center;
   font-size: 42px;
+  margin-bottom: 50px;
   font-weight: bold;
   letter-spacing: 2px;
-  margin-bottom: 50px;
   color: #5FCCFA;
 }
 
