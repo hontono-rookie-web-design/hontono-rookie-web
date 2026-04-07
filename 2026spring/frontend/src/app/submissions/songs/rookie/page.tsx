@@ -1,3 +1,4 @@
+/*test*/
 import VideoCard from "@/components/video/VideoCard"
 
 async function getVideos() {
