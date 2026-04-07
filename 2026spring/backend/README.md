@@ -2,39 +2,75 @@
 
 ## 構成
 
-`backend`内のディレクトリ構成を説明する。
+`2026spring/backend`内のディレクトリ構成は以下。
 
 ```
 backend
   ├ README.md
   ├ config
-  │  └ settings.yml     設定ファイル
+  │  └ settings.yml                 設定ファイル
   ├ lib
   │  ├ __init__.py
-  │  ├ sheet_client.py  スプレッドシート関連モジュール
-  │  ├ niconico.py      ニコニコのAPI関連モジュール
-  │  └ utils.py         共通モジュール
-  ├ scripts             実行スクリプトディレクトリ
-  │  └ fetch_videos.py  参加動画一覧更新スクリプト
+  │  ├ sheet_client.py              スプレッドシート関連モジュール
+  │  ├ niconico.py                  ニコニコのAPI関連モジュール
+  │  └ utils.py                     共通モジュール
+  ├ scripts
+  │  ├ fetch_videos.py              参加動画一覧更新スクリプト
+  │  ├ fetch_note.py                note記事一覧更新スクリプト
+  │  ├ fetch_fanfic_forms_result.py 二次創作情報確認用シート更新スクリプト
+  │  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
+  │  ├ vote_grouping.py             投票グループ作成スクリプト
+  │  └ setup_forms.py               投票Form作成スクリプト           
   └ requirements.txt
 ```
 
+backend処理関連のworkflowは以下がある。
+workflowファイルは、`.github/workflows`の中にある。
+
+| workflow | workflowファイル | 処理内容 |
+| --- | --- | --- |
+| 2026spring Fetch Videos Rookie | `2026spring_fetch_videos_rookie.yml` | Rookie、opステージの動画一覧スプレッドシートを更新する |
+| 2026spring Fetch Videos ex | `2026spring_fetch_videos_ex.yml` | exステージ（、二次創作）の動画一覧スプレッドシートを更新する |
+| 2026spring Fetch Note | `2026spring_fetch_note.yml` | Note記事一覧スプレッドシートを更新する |
+| 2026spring Fetch Fanfic From Result | `2026spring_fetch_fanfic_from_result.yml` | 二次創作情報確認用スプレッドシートを更新する |
+| 2026spring Fetch Fanfic | `2026spring_fetch_fanfic.yml` | 二次創作一覧スプレッドシートを更新する |
+
+## 運用方法
+
+ここに想定する運用方法を書く
+
+### スプレッドシートの作成
+
+### workflow準備
+
+### 除外動画の設定
+
+### 二次創作作品の確認
+
 ## 環境
 
-スクリプトの実行環境について説明する。
+### 実行想定環境
 
-以下の環境での実行を想定。
-- python: 3.12
+- Python: 3.12
 - パッケージ管理: pip
 - 仮想環境: venv
 
-ローカルで実行する場合の環境設定方法
+### ローカルで実行する場合の環境設定手順
 
-1. 仮想環境の作成
+1. pyenvなどでPython 3.12をインストール
     ```
+    pyenv install 3.12
+
     cd 2026spring/backend
-    python -m venv .venv
+    pyenv local 3.12
     ```
+
+1. 仮想環境を作成し、仮想環境に入る
+    ```
+    python -m venv .venv
+    source .venv/bin/activate
+    ```
+
 1. `requirements.txt`を使って必要なパッケージをインストール
     ```
     pip install -r requirements.txt
@@ -50,32 +86,61 @@ backend
 
 ## 設定
 
-設定ファイルについて説明する。
 `config/settings.yml`で、タグやスプレッドシート名などの情報を設定している。
-次回開催時にコードを流用する場合にはこのファイルのみ変更すれば良い想定。
+次回開催時にコードを流用する場合にはこのファイルのみ変更すれば良いはず。
 
-また、スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で`config/settings.yml`の内容が取得できる。
+スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で`config/settings.yml`の内容が取得できる。
 
-以下で、`config/settings.yml`で設定できるパラメータを項目ごとに説明する。
+### `config/settings.yml` で設定できるパラメータ
 
-### `tag`
+#### `tag`
 
 タグの情報を設定する。
-| パラメータ名 | 内容 |
-| --- | --- |
-| `rookie` | ルーキー参加タグ | 
-| `op` | opステージ参加タグ |
-| `ex` | exステージ参加タグ |
 
-### `spreadsheet`
+| パラメータ名 | 内容 | 2026春での設定値 |
+| --- | --- | --- |
+| `rookie` | ルーキー参加タグ | `本当のルーキー祭り2026春` |
+| `ex` | exステージ参加タグ |　`本当のルーキー祭り2026春ex` |
+| `fanfic` | 二次創作タグ | `本当のルーキー祭り2026春二次創作` |
+
+#### `period`
+
+投稿期間の情報を設定する。
+
+| パラメータ名 | 内容 | 2026春での設定値 |
+| --- | --- | --- |
+| `start_period` | ルーキー投稿期間開始時刻。opステージとルーキー作品を分けるために使用。ISO形式 | `2026-04-22T17:00:00+09:00` |
+
+#### `spreadsheet`
 
 スプレッドシートの情報を設定する。
 各スプレッドシートについて、`name`でスプレッドシート名を設定し、その他で各シートのシート名を設定している。
 
+スプレッドシートの詳細については、「スプレッドシート」の項目を参照。
+
+#### `vote_grouping`
+
+投票グループ分けの情報を設定する
+
+| パラメータ名 | 内容 | 2026春での設定値 |
+| --- | --- | --- |
+| `random_seed` | ランダムシード | 42 |
+| `group_size` | 1グループの人数 | 10? |
+| `grouped_video_catalog` | グループ分けされた動画一覧を出力するスプレッドシート情報 | |
+
+#### `vote_form`
+
+投票フォームの情報を設定する
+
+| パラメータ名 | 内容 | 2026春での設定値 |
+| --- | --- | --- |
+| `title` | 投票フォームタイトル | `本当のルーキー祭り2026春_Disc`（予選） |
+| `item_title` | 質問内容 | `好きな作品を教えてください。` |
+
 
 ## 実行
 
-各処理の実行手順を説明する。
+各処理をローカルで実行する場合の手順を説明する。
 
 ### 共通準備
 
@@ -86,14 +151,27 @@ backend
     export GOOGLE_APPLICATION_CREDENTIALS=<JSONのPath>
     ```
 
-### 参加動画一覧更新 (`fetch_videos.py`)
+### 参加動画一覧更新
 
-1. 「動画除外リスト_*」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
+1. 「動画除外リスト_2026春」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
 
 1. `backend`ディレクトリで以下を実行
     ```
     python -m scripts.fetch_videos
     ```
+
+### note記事一覧更新
+
+1. `backend`ディレクトリで以下を実行
+    ```
+    python -m scripts.fetch_note
+    ```
+
+### 二次創作作品一覧更新
+
+### 投票グループ分け
+
+### 投票Form作成
 
 
 ## スプレッドシート
