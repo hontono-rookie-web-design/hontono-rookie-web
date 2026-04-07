@@ -72,3 +72,13 @@
  white-space: nowrap;
  text-overflow: ellipsis;
 }
+
+.titleMain {
+  text-align: center;
+  font-size: 42px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+  color: #5FCCFA;
+}
+
