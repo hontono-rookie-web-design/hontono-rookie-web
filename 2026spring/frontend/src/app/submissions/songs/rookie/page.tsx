@@ -1,18 +1,26 @@
-/*test*/
 import VideoCard from "@/components/video/VideoCard"
 
 async function getVideos() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/videos`, {
-    cache: "no-store"
-  })
+  try {
+    const res = await fetch(
+      "https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/rookie",
+      { cache: "no-store" }
+    )
 
-  if (!res.ok) {
-    console.error("API error:", res.status)
+    if (!res.ok) return []
+
+    const data = await res.json()
+
+    return data.map((row: any) => ({
+      title: row["タイトル"],
+      author: row["投稿者名"],
+      videoUrl: row["URL"],
+      thumbnailUrl: row["サムネイルURL"]
+    }))
+  } catch (e) {
+    console.error(e)
     return []
   }
-
-  const data = await res.json()
-  return Array.isArray(data) ? data : []
 }
 
 export default async function Page() {
