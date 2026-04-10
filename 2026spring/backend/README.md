@@ -10,23 +10,23 @@
 
 ```
 backend
-  ├ README.md
-  ├ config
-  │  └ settings.yml                 設定ファイル
-  ├ lib
-  │  ├ __init__.py
-  │  ├ sheet_client.py              スプレッドシート関連モジュール
-  │  ├ niconico.py                  ニコニコ動画からの情報取得関連モジュール
-  │  ├ youtube.py                   YouTubeからの情報取得関連モジュール
-  │  └ utils.py                     共通モジュール
-  ├ scripts
-  │  ├ fetch_videos.py              参加動画一覧更新スクリプト
-  │  ├ fetch_note.py                note記事一覧更新スクリプト
-  │  ├ fetch_fanfic_forms_result.py 二次創作情報確認用シート更新スクリプト
-  │  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
-  │  ├ vote_grouping.py             投票グループ作成スクリプト
-  │  └ setup_forms.py               投票Form作成スクリプト           
-  └ requirements.txt
+├ README.md
+├ config
+│  └ settings.yml                 設定ファイル
+├ lib
+│  ├ __init__.py
+│  ├ sheet_client.py              スプレッドシート関連モジュール
+│  ├ niconico.py                  ニコニコ動画からの情報取得関連モジュール
+│  ├ youtube.py                   YouTubeからの情報取得関連モジュール
+│  └ utils.py                     共通モジュール
+├ scripts
+│  ├ fetch_videos.py              参加動画一覧更新スクリプト
+│  ├ fetch_note.py                note記事一覧更新スクリプト
+│  ├ fetch_fanfic_forms_result.py 二次創作情報確認用シート更新スクリプト
+│  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
+│  ├ vote_grouping.py             投票グループ作成スクリプト
+│  └ setup_forms.py               投票Form作成スクリプト           
+└ requirements.txt
 ```
 
 
