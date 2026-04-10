@@ -20,7 +20,9 @@ export async function GET() {
     originalAuthor: row["元作品投稿者名"] ?? "",
   }));
 
-  return new Response(JSON.stringify(illustrations), {
+  const reversed = illustrations.reverse();
+
+  return new Response(JSON.stringify(reversed), {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
     },
