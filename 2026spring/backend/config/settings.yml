@@ -1,41 +1,41 @@
 tag:
-  rookie: "本当のルーキー祭り2025秋"
-  ex: "本当のルーキー祭り2025秋EX"
-  fanfic: "本当のルーキー祭り2025秋二次創作"
+  rookie: "本当のルーキー祭り2025秋" # ルーキー参加タグ
+  ex: "本当のルーキー祭り2025秋EX" # exステージ参加タグ
+  fanfic: "本当のルーキー祭り2025秋二次創作" # 二次創作作品タグ
 
 period:
-  start_period: "2025-10-10T17:00:00+09:00"
+  start_period: "2025-10-10T17:00:00+09:00" # ルーキー投稿期間開始時刻（opステージとルーキー作品を分けるために使用。ISO形式）
 
 spreadsheets:
-  video_catalog:
-    name: "video_catalog_2025autumn"
-    rookie_sheet: "rookie"
-    op_sheet: "op"
-    ex_sheet: "ex"
-    fanfic_sheet: "fanfic"
-    excluded_rookie_sheet: "excluded_rookie"
-    excluded_ex_sheet: "excluded_ex"
-    excluded_fanfic_sheet: "excluded_fanfic"
+  video_catalog: # 参加作品動画リスト
+    name: "video_catalog_2025autumn" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+    op_sheet: "op" # opステージ参加作品リストシート名
+    ex_sheet: "ex" # exステージ作品リストシート名
+    fanfic_sheet: "fanfic" # 二次創作作品リストシート名
+    excluded_rookie_sheet: "excluded_rookie" # 除外済動画リストシート名（opステージ、ルーキー）
+    excluded_ex_sheet: "excluded_ex" # 除外済動画リストシート名（exステージ）
+    excluded_fanfic_sheet: "excluded_fanfic" # 除外済動画リストシート名（二次創作）
 
-  video_exclusion_list:
-    name: "動画除外リスト_2025秋"
-    rookie_sheet: "ルーキー"
-    ex_sheet: "ex"
-    fanfic_sheet: "二次創作"
+  video_exclusion_list: # 参加作品動画の除外リスト
+    name: "動画除外リスト_2025秋" # スプレッドシート名
+    rookie_sheet: "ルーキー" # 除外対象動画リストシート名（opステージ、ルーキー）
+    ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
+    fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
   
-  note_list:
-    name: "note_list_2025autumn"
-    list_sheet: "list"
+  note_list: # Note記事リスト
+    name: "note_list_2025autumn" # スプレッドシート名
+    list_sheet: "list" # Note記事リストシート名
 
-  fanfic_list:
-    name: "fanfic_list_2025autumn"
+  fanfic_list: # 二次創作作品リスト
+    name: "fanfic_list_2025autumn" # スプレッドシート名
 
-  forms_result_fanfic:
-    name: "二次創作作品提出フォーム回答_2025秋"
-    forms_result: "Forms_result"
-    for_check: "二次創作作品情報確認用"
+  forms_result_fanfic: # 二次創作作品提出フォーム回答リスト
+    name: "二次創作作品提出フォーム回答_2025秋" # スプレッドシート名
+    forms_result: "Forms_result" # フォーム回答結果シート名（二次創作作品提出フォームの回答をリンクさせるシート）
+    for_check: "二次創作作品情報確認用" # 二次創作作品情報確認用シート名
 
-vote_grouping:
+vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
   group_size: 3
   grouped_video_catalog:
@@ -44,6 +44,6 @@ vote_grouping:
     op_sheet: "op"
     ex_sheet: "ex"
 
-vote_form:
+vote_form: # 投票フォーム関連パラメータ
   title: "本当のルーキー祭り2025秋_Disc."
   item_title: "好きな作品を教えてください。"
