@@ -1,6 +1,10 @@
+import { CONFIG } from "@/config/config";
+
 export async function GET() {
+  const { id, name } = CONFIG.sheets.illustrations;
+
   const res = await fetch(
-    "https://opensheet.elk.sh/17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8/イラスト"
+    `https://opensheet.elk.sh/${id}/${name}`
   );
 
   const data = await res.json();
