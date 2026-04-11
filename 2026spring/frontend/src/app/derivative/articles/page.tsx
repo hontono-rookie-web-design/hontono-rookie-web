@@ -82,11 +82,11 @@ export default function Page() {
       {/* ヘッダー */}
       <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-bold">
-          Note記事一覧
+          note記事
         </h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」に関するNote記事を掲載しています。
+          「{CONFIG.event.name}」に関するnote記事を掲載しています。
         </p>
 
         <div className="mt-4 border-b border-gray-200 max-w-xl mx-auto" />
