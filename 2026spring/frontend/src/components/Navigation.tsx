@@ -72,6 +72,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li><Link href="/derivative/articles" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> note記事</Link></li>
           <li><Link href="/derivative/illustrations" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 イラスト</Link></li>
           <li><Link href="/derivative/arrangements" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 アレンジ</Link></li>
+          <li><Link href="/derivative/coversongs" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 歌ってみた</Link></li>
           <li><Link href="/derivative/others" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 その他</Link></li>
 
           <li className="menu-title mt-4 text-slate-500 font-bold tracking-widest text-xs uppercase">その他</li>

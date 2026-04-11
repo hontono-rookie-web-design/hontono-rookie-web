@@ -52,7 +52,7 @@ export default function Page() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    fetch("/api/derivative/arrangements")
+    fetch("/api/derivative/coversongs")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -68,11 +68,11 @@ export default function Page() {
       {/* ヘッダー */}
       <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-bold">
-          二次創作（アレンジ）
+          二次創作（歌ってみた）
         </h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」の二次創作アレンジ作品を掲載しています。
+          「{CONFIG.event.name}」の歌ってみた作品を掲載しています。
         </p>
 
         <div className="mt-4 border-b border-gray-200 max-w-xl mx-auto" />
@@ -94,7 +94,7 @@ export default function Page() {
       ========================= */}
       {!loading && data.length === 0 && (
         <div className="text-center py-20 text-gray-600">
-          二次創作（アレンジ）はまだありません。
+          二次創作（歌ってみた）はまだありません。
         </div>
       )}
 
