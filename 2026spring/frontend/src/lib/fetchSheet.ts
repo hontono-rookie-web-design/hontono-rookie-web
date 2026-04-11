@@ -1,6 +1,6 @@
 import { CONFIG } from "@/config/config";
 
-export type SheetItem = {
+export type FanficSheetItem = {
   creator: string;
   service: string;
   workUrl: string;
@@ -12,8 +12,8 @@ export type SheetItem = {
   publishedAt: string;
 };
 
-export async function fetchSheet(sheetName: string): Promise<SheetItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.sheets.spreadsheetId}/${sheetName}`;
+export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url);
   const data = await res.json();

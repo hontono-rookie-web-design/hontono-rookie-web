@@ -3,15 +3,27 @@ export const CONFIG = {
     name: "本当のルーキー祭り2026春",
   },
 
-  sheets: {
+  fanficsheets: {
     spreadsheetId: "17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8",
+
+    streams: {
+      name: "紹介配信",
+    },
 
     illustrations: {
       name: "イラスト",
     },
 
+    arrangements: {
+      name: "アレンジ",
+    },
+
     coversongs: {
       name: "歌ってみた",
+    },
+
+    others: {
+      name: "その他",
     },
   },
 

@@ -18,7 +18,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/illustrations")
+    fetch("/api/derivative/illustrations")
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));
