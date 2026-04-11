@@ -14,15 +14,53 @@ type Item = {
   originalAuthor: string;
 };
 
+/* =========================
+   Skeleton Card
+========================= */
+function SkeletonCard() {
+  return (
+    <div className="w-[760px] max-w-full rounded-xl bg-white p-4 shadow-sm">
+      <div className="flex gap-4 w-full">
+        {/* サムネ */}
+        <div className="w-44 h-28 bg-gray-200 rounded-lg animate-pulse" />
+
+        {/* テキスト */}
+        <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
+          {/* タイトル */}
+          <div className="space-y-2">
+            <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+          </div>
+
+          {/* メタ */}
+          <div className="space-y-2">
+            <div className="h-5 bg-gray-200 rounded w-24 animate-pulse" />
+            <div className="h-10 bg-gray-200 rounded w-full animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================
+   Page
+========================= */
 export default function Page() {
   const [data, setData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     fetch("/api/derivative/coversongs")
       .then((res) => res.json())
-      .then(setData)
-      .finally(() => setLoading(false));
+      .then((res) => {
+        setData(res);
+        setLoading(false);
+
+        // フェードイン用
+        setTimeout(() => setReady(true), 50);
+      });
   }, []);
 
   return (
@@ -40,16 +78,35 @@ export default function Page() {
         <div className="mt-4 border-b border-gray-200 max-w-xl mx-auto" />
       </div>
 
-      {loading && <div className="text-center">Loading...</div>}
+      {/* =========================
+          LOADING (Skeleton)
+      ========================= */}
+      {loading && (
+        <div className="flex flex-col gap-6 items-center">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      )}
 
+      {/* =========================
+          EMPTY
+      ========================= */}
       {!loading && data.length === 0 && (
         <div className="text-center py-20 text-gray-600">
           二次創作（歌ってみた）はまだありません。
         </div>
       )}
 
+      {/* =========================
+          CONTENT
+      ========================= */}
       {!loading && data.length > 0 && (
-        <div className="flex flex-col gap-6 items-center">
+        <div
+          className={`flex flex-col gap-6 items-center transition-opacity duration-300 ${
+            ready ? "opacity-100" : "opacity-0"
+          }`}
+        >
           {data.map((item, i) => {
             const img =
               item.imageUrl?.trim()
@@ -76,7 +133,7 @@ export default function Page() {
 
                   {/* テキスト */}
                   <div className="flex flex-col justify-between flex-1 min-w-0">
-                    {/* タイトル・作者 */}
+                    {/* タイトル */}
                     <div className="min-w-0">
                       <a href={item.workUrl} target="_blank">
                         <h2 className="text-lg md:text-xl font-bold leading-snug truncate group-hover:underline">
@@ -100,9 +157,9 @@ export default function Page() {
                         </div>
                       )}
 
-                      {/* Original（常に枠表示） */}
-                      <div className="bg-gray-50 px-3 py-2 rounded-lg text-xs text-gray-600 w-full min-w-0">
-                        {item.originalTitle ? (
+                      {/* Original */}
+                      {item.originalTitle && (
+                        <div className="bg-gray-50 px-3 py-2 rounded-lg text-xs text-gray-600 w-full min-w-0">
                           <a
                             href={item.originalUrl}
                             target="_blank"
@@ -111,12 +168,8 @@ export default function Page() {
                             {item.originalTitle}
                             {item.originalAuthor && ` / ${item.originalAuthor}`}
                           </a>
-                        ) : (
-                          <span className="opacity-0 select-none">
-                            placeholder
-                          </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
