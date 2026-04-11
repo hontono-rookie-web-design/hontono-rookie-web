@@ -4,9 +4,14 @@ export const CONFIG = {
   },
 
   sheets: {
+    spreadsheetId: "17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8",
+
     illustrations: {
-      id: "17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8",
       name: "イラスト",
+    },
+
+    coversongs: {
+      name: "歌ってみた",
     },
   },
 
