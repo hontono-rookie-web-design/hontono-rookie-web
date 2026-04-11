@@ -30,3 +30,35 @@ export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetIt
     publishedAt: row["配信日時"] ?? "",
   }));
 }
+
+export type NoteSheetItem = {
+  title: string;
+  author: string;
+  publishedAt: string;
+  noteUrl: string;
+  userUrl: string;
+  eyecatchUrl: string;
+  userProfileImageUrl: string;
+};
+
+export async function fetchNoteSheet(
+  sheetName: string
+): Promise<NoteSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 60 }, // ISR（キャッシュ）
+  });
+
+  const data = await res.json();
+
+  return data.map((row: any) => ({
+    title: row["Title"] ?? "",
+    author: row["Author"] ?? "",
+    publishedAt: row["Published Date"] ?? "",
+    noteUrl: row["note_url"] ?? "",
+    userUrl: row["user_url"] ?? "",
+    eyecatchUrl: row["eyecatch_url"] ?? "",
+    userProfileImageUrl: row["user_profile_img_url"] ?? "",
+  }));
+}

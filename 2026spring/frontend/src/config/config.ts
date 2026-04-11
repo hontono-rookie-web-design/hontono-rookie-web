@@ -27,6 +27,11 @@ export const CONFIG = {
     },
   },
 
+  notesheets: {
+    spreadsheetId: "1PDeZgdU8L_Kk7Qqx_Q1Fx8K_unG3X0S0Op1pWda0BX8",
+    name: "list",
+  },
+
   images: {
     defaultIllustration:
       "https://assets.st-note.com/production/uploads/images/234735453/rectangle_large_type_2_a6d07134e08c70b754fc5c0154e88edf.png?width=1280",
