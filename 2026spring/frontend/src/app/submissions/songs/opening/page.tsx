@@ -68,7 +68,6 @@ function SkeletonCard() {
     <div className="w-[760px] max-w-full rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4">
         <div className="w-44 h-28 bg-gray-200 rounded-lg animate-pulse" />
-
         <div className="flex flex-col flex-1 gap-2">
           <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
           <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
@@ -88,11 +87,15 @@ export default function Page() {
   const [displayData, setDisplayData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // 初期値は固定（←これ重要）
   const [sortType, setSortType] = useState<"new" | "old">("new");
   const [isShuffled, setIsShuffled] = useState(false);
 
+  // ボタンアニメ用
+  const [shuffleActive, setShuffleActive] = useState(false);
+
   /* =========================
-     初期読み込み
+     データ取得
   ========================= */
   useEffect(() => {
     fetch("/api/submissions/songs/opening")
@@ -104,54 +107,46 @@ export default function Page() {
   }, []);
 
   /* =========================
-     localStorage復元
+     localStorage 復元（クライアントのみ）
   ========================= */
   useEffect(() => {
     const savedSort = localStorage.getItem("video_sort");
     const savedShuffle = localStorage.getItem("video_shuffle");
+    const savedData = localStorage.getItem("video_order");
 
     if (savedSort === "new" || savedSort === "old") {
       setSortType(savedSort);
     }
 
-    if (savedShuffle === "true") {
+    if (savedShuffle === "true" && savedData) {
+      setDisplayData(JSON.parse(savedData));
       setIsShuffled(true);
     }
   }, []);
 
   /* =========================
-     並び替え処理
+     ソート処理
   ========================= */
   useEffect(() => {
     if (data.length === 0) return;
+    if (isShuffled) return;
 
-    let result = [...data];
+    let sorted = [...data];
 
-    if (isShuffled) {
-      const saved = localStorage.getItem("video_order");
-
-      if (saved) {
-        const order: string[] = JSON.parse(saved);
-        result.sort(
-          (a, b) =>
-            order.indexOf(a.videoUrl) - order.indexOf(b.videoUrl)
-        );
-      } else {
-        result = shuffleArray(data);
-      }
+    if (sortType === "new") {
+      sorted.sort(
+        (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
+      );
     } else {
-      if (sortType === "new") {
-        result.sort(
-          (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
-        );
-      } else {
-        result.sort(
-          (a, b) => parseDate(a.publishedAt) - parseDate(b.publishedAt)
-        );
-      }
+      sorted.sort(
+        (a, b) => parseDate(a.publishedAt) - parseDate(b.publishedAt)
+      );
     }
 
-    setDisplayData(result);
+    setDisplayData(sorted);
+
+    localStorage.setItem("video_sort", sortType);
+    localStorage.setItem("video_shuffle", "false");
   }, [data, sortType, isShuffled]);
 
   /* =========================
@@ -164,22 +159,11 @@ export default function Page() {
     setIsShuffled(true);
 
     localStorage.setItem("video_shuffle", "true");
-    localStorage.setItem(
-      "video_order",
-      JSON.stringify(shuffled.map((v) => v.videoUrl))
-    );
-  };
+    localStorage.setItem("video_order", JSON.stringify(shuffled));
 
-  /* =========================
-     ソート変更
-  ========================= */
-  const handleSortChange = (value: "new" | "old") => {
-    setSortType(value);
-    setIsShuffled(false);
-
-    localStorage.setItem("video_sort", value);
-    localStorage.setItem("video_shuffle", "false");
-    localStorage.removeItem("video_order");
+    // 押した感（軽いスケール）
+    setShuffleActive(true);
+    setTimeout(() => setShuffleActive(false), 150);
   };
 
   return (
@@ -199,29 +183,40 @@ export default function Page() {
 
       {/* 操作バー */}
       {!loading && data.length > 0 && (
-        <div className="flex items-center gap-3 mb-6">
-          <select
-            value={isShuffled ? "random" : sortType}
-            onChange={(e) => {
-              const value = e.target.value;
+        <div className="flex items-center justify-between mb-6">
+          {/* 左側（操作） */}
+          <div className="flex items-center gap-3">
+            <select
+              value={isShuffled ? "random" : sortType}
+              onChange={(e) => {
+                const value = e.target.value;
 
-              if (value === "random") return;
+                if (value === "random") return;
 
-              handleSortChange(value as "new" | "old");
-            }}
-            className="border rounded px-3 py-1 text-sm"
-          >
-            {isShuffled && <option value="random">ランダム</option>}
-            <option value="new">新しい順</option>
-            <option value="old">古い順</option>
-          </select>
+                setSortType(value as "new" | "old");
+                setIsShuffled(false);
+              }}
+              className="border rounded px-3 py-1 text-sm"
+            >
+              <option value="new">新しい順</option>
+              <option value="old">古い順</option>
+              <option value="random">ランダム</option>
+            </select>
 
-          <button
-            onClick={handleShuffle}
-            className="px-3 py-1 text-sm rounded border bg-white hover:bg-gray-100 active:scale-95 transition"
-          >
-            ランダムに並び替え
-          </button>
+            <button
+              onClick={handleShuffle}
+              className={`px-3 py-1 text-sm rounded border transition-transform duration-150 ${
+                shuffleActive ? "scale-95 bg-gray-200" : "bg-white"
+              }`}
+            >
+              ランダムに並び替え
+            </button>
+          </div>
+
+          {/* 右側（件数） */}
+          <div className="text-sm text-gray-600">
+            全 {displayData.length} 件
+          </div>
         </div>
       )}
 
@@ -257,24 +252,20 @@ export default function Page() {
 
                 {/* テキスト */}
                 <div className="flex flex-col flex-1 min-w-0">
-                  {/* タイトル */}
                   <a href={item.videoUrl} target="_blank">
                     <h2 className="text-lg font-bold truncate group-hover:underline">
                       {item.title}
                     </h2>
                   </a>
 
-                  {/* 投稿者 */}
-                  <p className="text-sm text-gray-700 mt-1 truncate">
+                  <p className="text-sm text-gray-800 font-medium mt-1 truncate">
                     {item.creator}
                   </p>
 
-                  {/* 投稿日 */}
                   <p className="text-xs text-gray-500 mt-1">
                     {formatDate(item.publishedAt)}
                   </p>
 
-                  {/* 概要 */}
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                     {cleanDescription(item.description)}
                   </p>
