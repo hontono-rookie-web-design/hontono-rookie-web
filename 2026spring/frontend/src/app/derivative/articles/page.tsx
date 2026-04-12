@@ -46,6 +46,7 @@ function SkeletonCard() {
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
             <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />
           </div>
 
@@ -141,36 +142,37 @@ export default function Page() {
 
                   {/* テキスト */}
                   <div className="flex flex-col justify-between flex-1 min-w-0">
-                    {/* タイトル＋日付 */}
+                    {/* 上段 */}
                     <div className="min-w-0">
+                      {/* タイトル */}
                       <a href={item.noteUrl} target="_blank">
                         <h2 className="text-lg md:text-xl font-bold leading-snug truncate group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
 
+                      {/* 投稿者（←位置変更） */}
+                      <div className="mt-2 flex items-center gap-2 min-w-0">
+                        {item.userProfileImageUrl && (
+                          <img
+                            src={item.userProfileImageUrl}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        )}
+
+                        <a
+                          href={item.userUrl}
+                          target="_blank"
+                          className="text-sm text-gray-700 font-medium truncate hover:underline"
+                        >
+                          {item.author}
+                        </a>
+                      </div>
+
                       {/* 投稿日 */}
                       <p className="text-xs text-gray-500 mt-1">
                         {formatDate(item.publishedAt)}
                       </p>
-                    </div>
-
-                    {/* 投稿者 */}
-                    <div className="mt-3 flex items-center gap-2 min-w-0">
-                      {item.userProfileImageUrl && (
-                        <img
-                          src={item.userProfileImageUrl}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                      )}
-
-                      <a
-                        href={item.userUrl}
-                        target="_blank"
-                        className="text-sm text-gray-700 font-medium truncate hover:underline"
-                      >
-                        {item.author}
-                      </a>
                     </div>
                   </div>
                 </div>

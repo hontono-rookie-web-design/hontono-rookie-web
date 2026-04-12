@@ -58,6 +58,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li><Link href="/details/derivative" onClick={closeDrawer}><Layout className="w-4 h-4 mr-3 text-slate-400" /> 二次創作参加方法</Link></li>
 
           <li className="menu-title mt-4 text-skyblue font-bold tracking-widest text-xs uppercase">投稿作品</li>
+          <li><Link href="/submissions/songs/opening" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 オープニング</Link></li>
           <li><Link href="/submissions/songs/rookie" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 ルーキー</Link></li>
           <li><Link href="/submissions/songs/extra" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 エクストラ</Link></li>
           

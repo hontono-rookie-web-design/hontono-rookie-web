@@ -62,3 +62,39 @@ export async function fetchNoteSheet(
     userProfileImageUrl: row["user_profile_img_url"] ?? "",
   }));
 }
+
+// lib/fetchSheet.ts に追加
+
+export type VideoSheetItem = {
+  videoId: string;
+  title: string;
+  creatorId: string;
+  creator: string;
+  publishedAt: string;
+  description: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+};
+
+export async function fetchVideosSheet(
+  sheetName: string
+): Promise<VideoSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 60 },
+  });
+
+  const data = await res.json();
+
+  return data.map((row: any) => ({
+    videoId: row["動画ID"] ?? "",
+    title: row["タイトル"] ?? "",
+    creatorId: row["投稿者ID"] ?? "",
+    creator: row["投稿者名"] ?? "",
+    publishedAt: (row["投稿日時"] ?? "").replace(/^'/, ""),
+    description: row["概要欄"] ?? "",
+    videoUrl: row["URL"] ?? "",
+    thumbnailUrl: row["サムネイルURL"] ?? "",
+  }));
+}

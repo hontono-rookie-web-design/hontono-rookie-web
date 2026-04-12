@@ -32,8 +32,25 @@ export const CONFIG = {
     name: "list",
   },
 
+  videosheets: {
+    spreadsheetId: "1lZN68Ojwz1f_x2KEU_ukACzAMDIZUWurV6LI3F3YKj0",
+
+    rookie: {
+      name: "rookie",
+    },
+
+    op: {
+      name: "op",
+    },
+
+    ex: {
+      name: "ex",
+    },
+  },
+
   images: {
     defaultIllustration:
       "https://assets.st-note.com/production/uploads/images/234735453/rectangle_large_type_2_a6d07134e08c70b754fc5c0154e88edf.png?width=1280",
   },
 };
+
