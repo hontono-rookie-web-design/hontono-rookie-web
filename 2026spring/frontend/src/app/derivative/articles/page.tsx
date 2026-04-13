@@ -39,8 +39,10 @@ function SkeletonCard() {
   return (
     <div className="w-full max-w-[760px] rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4 w-full">
+        {/* 画像 */}
         <div className="w-32 sm:w-44 h-20 sm:h-28 bg-gray-200 rounded-lg animate-pulse" />
 
+        {/* テキスト */}
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
@@ -108,7 +110,6 @@ export default function Page() {
           「{CONFIG.event.name}」に関するnote記事を掲載しています。
         </p>
 
-        {/* 下線統一 */}
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
@@ -159,6 +160,7 @@ export default function Page() {
                 key={i}
                 className="group w-full max-w-[760px] rounded-xl bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition"
               >
+                {/* ←ここを常に横並びに */}
                 <div className="flex gap-3 sm:gap-4 w-full">
                   {/* 画像 */}
                   <a
@@ -175,7 +177,6 @@ export default function Page() {
                   {/* テキスト */}
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
-                      {/* タイトル */}
                       <a href={item.noteUrl} target="_blank">
                         <h2 className="text-base sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
                           {item.title}
@@ -187,7 +188,7 @@ export default function Page() {
                         {item.userProfileImageUrl && (
                           <img
                             src={item.userProfileImageUrl}
-                            className="w-8 h-8 rounded-full object-cover"
+                            className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
                           />
                         )}
 

@@ -20,7 +20,7 @@ type Item = {
 function SkeletonCard() {
   return (
     <div className="w-full max-w-[760px] rounded-xl bg-white p-4 shadow-sm">
-      <div className="flex gap-4 w-full">
+      <div className="flex gap-3 sm:gap-4 w-full">
         <div className="w-32 sm:w-44 h-20 sm:h-28 bg-gray-200 rounded-lg animate-pulse" />
 
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
@@ -148,6 +148,7 @@ export default function Page() {
                 key={i}
                 className="group w-full max-w-[760px] rounded-xl bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition"
               >
+                {/* 常に横並び */}
                 <div className="flex gap-3 sm:gap-4 w-full">
                   {/* サムネ */}
                   <a
@@ -165,17 +166,17 @@ export default function Page() {
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
                       <a href={item.workUrl} target="_blank">
-                        <h2 className="text-base sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
+                        <h2 className="text-sm sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
 
-                      <p className="text-sm text-gray-700 mt-1 font-medium truncate">
+                      <p className="text-xs sm:text-sm text-gray-700 mt-1 font-medium truncate">
                         {item.creator}
                       </p>
                     </div>
 
-                    <div className="mt-3 flex flex-col gap-2 w-full">
+                    <div className="mt-2 sm:mt-3 flex flex-col gap-2 w-full">
                       {item.service && item.service !== "その他" && (
                         <div>
                           <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 inline-block truncate max-w-full">
@@ -200,6 +201,7 @@ export default function Page() {
                     </div>
                   </div>
                 </div>
+                {/* ↑ここがポイント */}
               </div>
             );
           })}
