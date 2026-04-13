@@ -91,7 +91,7 @@ export default function Page() {
 
   /* 初期ロード */
   useEffect(() => {
-    fetch("/api/submissions/songs/rookie")
+    fetch("/api/submissions/songs/opening")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -171,11 +171,11 @@ export default function Page() {
       {/* ヘッダー */}
       <div className="text-center mb-8 w-full max-w-[760px]">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          楽曲一覧 ルーキー
+          楽曲一覧 opステージ
         </h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」のルーキー参加楽曲を掲載しています。
+          「{CONFIG.event.name}」のopステージ参加楽曲を掲載しています。
         </p>
 
         <div className="mt-4 border-b border-gray-200 w-full" />

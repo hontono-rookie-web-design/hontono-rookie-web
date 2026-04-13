@@ -18,10 +18,8 @@ type Item = {
 function SkeletonTile() {
   return (
     <div className="w-full flex flex-col border border-gray-200 rounded-xl overflow-hidden">
-      {/* サムネ */}
       <div className="relative w-full aspect-video bg-gray-200 animate-pulse" />
 
-      {/* テキスト */}
       <div className="p-2 space-y-2">
         <div className="h-3 w-32 bg-gray-200 rounded animate-pulse" />
 
@@ -71,9 +69,7 @@ function parseDate(dt?: string) {
   };
 }
 
-/* =========================
-   ラベル
-========================= */
+/* ========================= */
 function getDayLabel(date?: Date) {
   if (!date) return null;
 
@@ -101,36 +97,70 @@ function isFuture(date?: Date) {
 ========================= */
 export default function Page() {
   const [data, setData] = useState<Item[]>([]);
+  const [displayData, setDisplayData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetch("/api/derivative/streams")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+        setDisplayData(res);
         setLoading(false);
       });
   }, []);
 
+  /* =========================
+     検索
+  ========================= */
+  useEffect(() => {
+    let filtered = [...data];
+
+    if (searchText.trim()) {
+      const q = searchText.toLowerCase();
+      filtered = filtered.filter((item) =>
+        (item.title + item.creator).toLowerCase().includes(q)
+      );
+    }
+
+    setDisplayData(filtered);
+  }, [searchText, data]);
+
   return (
-    <div className="p-6 w-full max-w-6xl mx-auto">
+    <div className="p-4 sm:p-6 w-full flex flex-col items-center">
       {/* ヘッダー */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold">
+      <div className="text-center mb-8 w-full max-w-6xl">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           紹介配信
         </h1>
 
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-xs sm:text-sm text-gray-600 mt-2">
           「{CONFIG.event.name}」の紹介配信を掲載しています。
         </p>
 
-        <div className="mt-4 border-b border-gray-200 max-w-xl mx-auto" />
+        {/* ← 下線を他ページと統一 */}
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
+
+      {/* 検索 */}
+      {!loading && (
+        <div className="w-full max-w-6xl mb-4">
+          <input
+            type="text"
+            placeholder="検索"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
+          />
+        </div>
+      )}
 
       {/* LOADING */}
       {loading && (
-        <div className="w-full">
-          <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="w-full max-w-6xl">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <SkeletonTile key={i} />
             ))}
@@ -139,77 +169,76 @@ export default function Page() {
       )}
 
       {/* EMPTY */}
-      {!loading && data.length === 0 && (
+      {!loading && displayData.length === 0 && (
         <div className="text-center py-20 text-gray-600">
           紹介配信はまだありません。
         </div>
       )}
 
       {/* GRID */}
-      {!loading && data.length > 0 && (
-        <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {data.map((item, i) => {
-            const img =
-              item.imageUrl?.trim()
-                ? item.imageUrl
-                : CONFIG.images.defaultIllustration;
+      {!loading && displayData.length > 0 && (
+        <div className="w-full max-w-6xl">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {displayData.map((item, i) => {
+              const img =
+                item.imageUrl?.trim()
+                  ? item.imageUrl
+                  : CONFIG.images.defaultIllustration;
 
-            const parsed = parseDate(item.publishedAt);
-            const dayLabel = getDayLabel(parsed?.raw);
-            const future = isFuture(parsed?.raw);
+              const parsed = parseDate(item.publishedAt);
+              const dayLabel = getDayLabel(parsed?.raw);
+              const future = isFuture(parsed?.raw);
 
-            return (
-              <div
-                key={i}
-                className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md"
-              >
-                <a
-                  href={item.workUrl}
-                  target="_blank"
-                  className="flex flex-col"
+              return (
+                <div
+                  key={i}
+                  className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md"
                 >
-                  {/* サムネ */}
-                  <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={img}
-                      className="w-full h-full object-cover group-hover:scale-105 transition"
-                    />
+                  <a
+                    href={item.workUrl}
+                    target="_blank"
+                    className="flex flex-col"
+                  >
+                    <div className="relative aspect-video overflow-hidden">
+                      <img
+                        src={img}
+                        className="w-full h-full object-cover group-hover:scale-105 transition"
+                      />
 
-                    {/* 予定 */}
-                    {future && (
-                      <span className="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
-                        予定
-                      </span>
-                    )}
-                  </div>
-
-                  {/* テキスト */}
-                  <div className="flex flex-col mt-2 px-2 pb-2">
-                    <div className="text-xs text-gray-700 font-medium min-h-[1.2rem]">
-                      {parsed && (
-                        <>
-                          {dayLabel && (
-                            <span className="mr-1 text-blue-600 font-semibold">
-                              {dayLabel}
-                            </span>
-                          )}
-                          {parsed.label}
-                        </>
+                      {future && (
+                        <span className="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                          予定
+                        </span>
                       )}
                     </div>
 
-                    <h2 className="mt-1 text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
-                      {item.title}
-                    </h2>
+                    <div className="flex flex-col mt-2 px-2 pb-2">
+                      <div className="text-xs text-gray-700 font-medium min-h-[1.2rem]">
+                        {parsed && (
+                          <>
+                            {dayLabel && (
+                              <span className="mr-1 text-blue-600 font-semibold">
+                                {dayLabel}
+                              </span>
+                            )}
+                            {parsed.label}
+                          </>
+                        )}
+                      </div>
 
-                    <p className="text-xs text-gray-600 mt-1 truncate min-h-[1rem]">
-                      {item.creator}
-                    </p>
-                  </div>
-                </a>
-              </div>
-            );
-          })}
+                      <h2 className="mt-1 text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
+                        {item.title}
+                      </h2>
+
+                      <p className="text-xs text-gray-600 mt-1 truncate min-h-[1rem]">
+                        {item.creator}
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
