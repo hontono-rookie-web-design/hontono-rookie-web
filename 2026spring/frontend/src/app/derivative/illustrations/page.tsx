@@ -19,19 +19,14 @@ type Item = {
 function SkeletonCard() {
   return (
     <div className="flex flex-col">
-      {/* 画像 */}
       <div className="aspect-square bg-gray-200 rounded-xl animate-pulse" />
 
-      {/* タイトル */}
       <div className="mt-2 space-y-2">
         <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
         <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
       </div>
 
-      {/* 作者 */}
       <div className="mt-2 h-4 bg-gray-200 rounded w-1/3 animate-pulse" />
-
-      {/* Original */}
       <div className="mt-2 h-10 bg-gray-200 rounded w-full animate-pulse" />
     </div>
   );
@@ -42,66 +37,99 @@ function SkeletonCard() {
 ========================= */
 export default function Page() {
   const [data, setData] = useState<Item[]>([]);
+  const [displayData, setDisplayData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
+
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetch("/api/derivative/illustrations")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+        setDisplayData(res);
         setLoading(false);
-
-        // フェードイン制御
         setTimeout(() => setReady(true), 50);
       });
   }, []);
 
+  /* =========================
+     検索
+  ========================= */
+  useEffect(() => {
+    let filtered = [...data];
+
+    if (searchText.trim()) {
+      const q = searchText.toLowerCase();
+      filtered = filtered.filter((item) =>
+        (
+          item.title +
+          item.creator +
+          item.originalTitle +
+          item.originalAuthor
+        )
+          .toLowerCase()
+          .includes(q)
+      );
+    }
+
+    setDisplayData(filtered);
+  }, [searchText, data]);
+
   return (
-    <div className="p-6">
-      {/* タイトル */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold">
+    <div className="p-4 sm:p-6 flex flex-col items-center">
+      {/* ヘッダー */}
+      <div className="text-center mb-8 w-full max-w-6xl">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           二次創作（イラスト）
         </h1>
 
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-xs sm:text-sm text-gray-600 mt-2">
           「{CONFIG.event.name}」の二次創作イラストを掲載しています。
         </p>
 
-        <div className="mt-4 border-b border-gray-300 max-w-xl mx-auto" />
+        {/* 下線統一 */}
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
-      {/* =========================
-          LOADING
-      ========================= */}
+      {/* 検索 */}
+      {!loading && (
+        <div className="w-full max-w-6xl mb-4">
+          <input
+            type="text"
+            placeholder="検索"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
+          />
+        </div>
+      )}
+
+      {/* LOADING */}
       {loading && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="w-full max-w-6xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {Array.from({ length: 12 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
       )}
 
-      {/* =========================
-          EMPTY
-      ========================= */}
-      {!loading && data.length === 0 && (
-        <div className="flex justify-center items-center min-h-[40vh] text-gray-600">
+      {/* EMPTY */}
+      {!loading && displayData.length === 0 && (
+        <div className="flex justify-center items-center min-h-[40vh] text-gray-600 w-full max-w-6xl">
           二次創作（イラスト）はまだありません。
         </div>
       )}
 
-      {/* =========================
-          CONTENT
-      ========================= */}
-      {!loading && data.length > 0 && (
+      {/* CONTENT */}
+      {!loading && displayData.length > 0 && (
         <div
-          className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 transition-opacity duration-300 ${
+          className={`w-full max-w-6xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 transition-opacity duration-300 ${
             ready ? "opacity-100" : "opacity-0"
           }`}
         >
-          {data.map((item, i) => {
+          {displayData.map((item, i) => {
             const img =
               item.imageUrl?.trim()
                 ? item.imageUrl
@@ -121,13 +149,13 @@ export default function Page() {
 
                 {/* タイトル */}
                 <a href={item.workUrl} target="_blank">
-                  <h2 className="mt-2 font-bold text-sm md:text-base leading-snug line-clamp-2 min-h-[3rem] group-hover:underline">
+                  <h2 className="mt-2 font-bold text-sm sm:text-sm md:text-base leading-snug line-clamp-2 min-h-[3rem] group-hover:underline">
                     {item.title}
                   </h2>
                 </a>
 
                 {/* 作者 */}
-                <p className="text-sm text-gray-700 mt-1 font-medium line-clamp-1 min-h-[1.5rem]">
+                <p className="text-xs sm:text-sm text-gray-700 mt-1 font-medium line-clamp-1 min-h-[1.5rem]">
                   {item.creator}
                 </p>
 

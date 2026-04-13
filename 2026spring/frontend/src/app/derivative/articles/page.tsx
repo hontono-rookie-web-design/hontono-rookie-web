@@ -37,12 +37,10 @@ function formatDate(dateStr?: string) {
 ========================= */
 function SkeletonCard() {
   return (
-    <div className="w-[760px] max-w-full rounded-xl bg-white p-4 shadow-sm">
+    <div className="w-full max-w-[760px] rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4 w-full">
-        {/* 画像 */}
-        <div className="w-44 h-28 bg-gray-200 rounded-lg animate-pulse" />
+        <div className="w-32 sm:w-44 h-20 sm:h-28 bg-gray-200 rounded-lg animate-pulse" />
 
-        {/* テキスト */}
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
@@ -65,37 +63,71 @@ function SkeletonCard() {
 ========================= */
 export default function Page() {
   const [data, setData] = useState<Item[]>([]);
+  const [displayData, setDisplayData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
+
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetch("/api/derivative/articles")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+        setDisplayData(res);
         setLoading(false);
         setTimeout(() => setReady(true), 50);
       });
   }, []);
 
+  /* =========================
+     検索
+  ========================= */
+  useEffect(() => {
+    let filtered = [...data];
+
+    if (searchText.trim()) {
+      const q = searchText.toLowerCase();
+      filtered = filtered.filter((item) =>
+        (item.title + item.author).toLowerCase().includes(q)
+      );
+    }
+
+    setDisplayData(filtered);
+  }, [searchText, data]);
+
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-4 sm:p-6 flex flex-col items-center">
       {/* ヘッダー */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold">
+      <div className="text-center mb-8 w-full max-w-[760px]">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           note記事
         </h1>
 
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-xs sm:text-sm text-gray-600 mt-2">
           「{CONFIG.event.name}」に関するnote記事を掲載しています。
         </p>
 
-        <div className="mt-4 border-b border-gray-200 max-w-xl mx-auto" />
+        {/* 下線統一 */}
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
+
+      {/* 検索 */}
+      {!loading && (
+        <div className="w-full max-w-[760px] mb-4 flex">
+          <input
+            type="text"
+            placeholder="検索"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
+          />
+        </div>
+      )}
 
       {/* LOADING */}
       {loading && (
-        <div className="flex flex-col gap-6 items-center">
+        <div className="flex flex-col gap-6 items-center w-full">
           {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
@@ -103,20 +135,20 @@ export default function Page() {
       )}
 
       {/* EMPTY */}
-      {!loading && data.length === 0 && (
-        <div className="text-center py-20 text-gray-600">
+      {!loading && displayData.length === 0 && (
+        <div className="text-center py-20 text-gray-600 w-full max-w-[760px]">
           note記事はまだありません。
         </div>
       )}
 
       {/* CONTENT */}
-      {!loading && data.length > 0 && (
+      {!loading && displayData.length > 0 && (
         <div
-          className={`flex flex-col gap-6 items-center transition-opacity duration-300 ${
+          className={`flex flex-col gap-4 sm:gap-6 items-center w-full transition-opacity duration-300 ${
             ready ? "opacity-100" : "opacity-0"
           }`}
         >
-          {data.map((item, i) => {
+          {displayData.map((item, i) => {
             const img =
               item.eyecatchUrl?.trim()
                 ? item.eyecatchUrl
@@ -125,14 +157,14 @@ export default function Page() {
             return (
               <div
                 key={i}
-                className="group w-[760px] max-w-full rounded-xl bg-white p-4 shadow-sm hover:shadow-md transition"
+                className="group w-full max-w-[760px] rounded-xl bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition"
               >
-                <div className="flex gap-4 w-full">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
                   {/* 画像 */}
                   <a
                     href={item.noteUrl}
                     target="_blank"
-                    className="w-44 h-28 flex-shrink-0 overflow-hidden rounded-lg"
+                    className="w-full sm:w-44 h-48 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg"
                   >
                     <img
                       src={img}
@@ -142,16 +174,15 @@ export default function Page() {
 
                   {/* テキスト */}
                   <div className="flex flex-col justify-between flex-1 min-w-0">
-                    {/* 上段 */}
                     <div className="min-w-0">
                       {/* タイトル */}
                       <a href={item.noteUrl} target="_blank">
-                        <h2 className="text-lg md:text-xl font-bold leading-snug truncate group-hover:underline">
+                        <h2 className="text-base sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
 
-                      {/* 投稿者（←位置変更） */}
+                      {/* 投稿者 */}
                       <div className="mt-2 flex items-center gap-2 min-w-0">
                         {item.userProfileImageUrl && (
                           <img
