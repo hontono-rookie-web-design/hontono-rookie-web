@@ -154,7 +154,7 @@ export default function Page() {
                   <a
                     href={item.workUrl}
                     target="_blank"
-                    className="w-full sm:w-44 h-48 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg"
+                    className="w-32 sm:w-44 h-20 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg"
                   >
                     <img
                       src={img}
