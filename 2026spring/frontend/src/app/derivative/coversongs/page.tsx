@@ -149,7 +149,7 @@ export default function Page() {
                 className="group w-full max-w-[760px] rounded-xl bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition"
               >
                 {/* レスポンシブ */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
+                <div className="flex gap-3 sm:gap-4 w-full">
                   {/* サムネ */}
                   <a
                     href={item.workUrl}
