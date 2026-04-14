@@ -162,6 +162,13 @@ export default function LinksAndSponsors() {
               ボカロが街を熱くした日を、永遠に―
               本当の投稿祭セレクションCD制作PJー
             </a>
+            <div className="mt-6 flex justify-center">
+              <img
+                src="/honto-crowdfunding.png"
+                alt="クラウドファンディング紹介画像"
+                className="w-full max-w-xl h-auto rounded-xl"
+              />
+            </div>
           </div>
         </div>
 
