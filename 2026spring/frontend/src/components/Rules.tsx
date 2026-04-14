@@ -72,17 +72,49 @@ export default function Rules() {
     {
       title: "投稿方法",
       content: (
-        <ul className="list-disc list-inside space-y-2">
-          <li>
-            投稿期間内に楽曲をニコニコ動画へ投稿し、
-            <strong>「本当のルーキー祭り2026春」</strong>
-            のタグを設定してタグロックしてください。（投稿が期間内でも、タグ設定が期間外の場合は参加できません）
-          </li>
-          <li>MVは1枚絵または紙芝居形式など、シンプルなものを推奨します。</li>
-          <li>
-            二次創作での利用を想定し、投票開始までにダウンロード可能なオフボーカル音源を公開してください。（ピアプロ・Dropboxなどの外部サービス利用可）
-          </li>
-        </ul>
+        <div>
+          <ul className="list-disc list-inside space-y-2">
+            <li>
+              ニコニコ動画に投稿して、
+              <span className="font-bold">「本当のルーキー祭り2026春」</span>
+              のタグを設定し、タグロックしてください。
+            </li>
+            <li>
+              セレクションCD企画にも参加する方は、さらに
+              <span className="font-bold">「セレクションCD企画参加曲」</span>
+              のタグも設定し、タグロックしてください。
+            </li>
+            <li>
+              投稿作品とは別にMV作品を投稿する場合は、MV作品側に
+              <span className="font-bold">「本当のルーキー祭り2026春MV」</span>
+              のタグを設定し、タグロックしてください。
+            </li>
+          </ul>
+          <p className="text-sm text-slate-500 mt-2">
+            ※ タグに#や「」は不要です。
+          </p>
+        </div>
+      ),
+    },
+    {
+      title: "投稿作品の条件",
+      content: (
+        <div>
+          <ul className="list-disc list-inside space-y-2">
+            <li>
+              投稿期間内に楽曲をニコニコ動画へ投稿すること
+              （投稿が期間内でも、タグ設定が期間外の場合は参加できません）
+            </li>
+            <li>
+              <span className="font-bold">「本当のルーキー祭り2026春」</span>
+              のタグを設定してタグロックしてください。
+            </li>
+            <li>MVは1枚絵または紙芝居形式など、シンプルなものを推奨します。</li>
+            <li>
+              二次創作での利用を想定し、投票開始までにダウンロード可能なオフボーカル音源を公開してください。（ピアプロ・Dropboxなどの外部サービス利用可）
+            </li>
+          </ul>
+        </div>
       ),
     },
     {
