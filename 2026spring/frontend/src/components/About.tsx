@@ -19,7 +19,7 @@ export default function About() {
               <Users size={32} />
             </div>
             <h4 className="text-xl font-bold text-slate-800 mb-4">
-              一歩を踏み出すきっかけ
+              初心者の方のための投稿祭です
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
               このイベントは、
@@ -35,14 +35,15 @@ export default function About() {
               <Music size={32} />
             </div>
             <h4 className="text-xl font-bold text-slate-800 mb-4">
-              交流が広がる場
+              全ての作品が必ず聞いてもらえます
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              投票の仕組みはありますが、決して「順位を競う場」だけではありません。
-              <span className="font-bold">
-                作品をきっかけにクリエイターやリスナー同士の交流が広がること
-              </span>
-              を目指しています。
+              <span className="font-bold">全投稿作品を紹介配信</span>
+              します。また、投稿期間終了後、
+              <span className="font-bold">人気投票</span>を行います。
+            </p>
+            <p className="text-xs text-slate-500 mt-2">
+              ※ 投票は、投稿者以外の方も参加できます。
             </p>
           </div>
 
@@ -51,10 +52,13 @@ export default function About() {
               <Star size={32} />
             </div>
             <h4 className="text-xl font-bold text-slate-800 mb-4">
-              自分の好きを見つける場
+              二次創作を強く歓迎しています
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              すべての参加作品をみんなで聴き合うことを大切にしています。順位だけに一喜一憂せず、是非ともあなただけの「好き」を見つけて楽しんでください。
+              <span className="font-bold">
+                歌ってみた、弾いてみた、踊ってみた、ファンアート、紹介配信など
+              </span>
+              、自由な形で作品を盛り上げてください。
             </p>
           </div>
         </div>
