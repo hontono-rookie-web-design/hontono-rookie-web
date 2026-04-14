@@ -393,13 +393,24 @@ export default function Rules() {
       content: (
         <div>
           <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>歌ってみた、ファンアートなどの二次創作を強く歓迎します。</li>
             <li>
-              <strong>二次創作:</strong>{" "}
-              歌ってみた、ファンアートなどの二次創作を強く歓迎します。
+              ニコニコ動画にアップロードする場合、
               <span className="font-bold">
                 「本当のルーキー祭り2026春二次創作」
               </span>
               をタグロックしてください。
+            </li>
+            <li>
+              noteに投稿する場合、
+              <span className="font-bold">
+                「本当のルーキー祭り2026春二次創作」
+              </span>
+              のタグをつけてください。
+            </li>
+            <li>
+              指定のGoogleフォーム（後日公開予定）に投稿内容を入力してください。本サイトに反映されます。投稿者以外が入力しても構いません。
+              <br />※ note投稿者はGoogleフォームへの回答は不要です。
             </li>
             <li>
               商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
