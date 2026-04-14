@@ -96,24 +96,22 @@ export default function Rules() {
           <h3 className="text-lg font-semibold mt-4 mb-2">
             投稿を以って下記の趣旨に同意したものとします。
           </h3>
-          <p className="text-slate-600 leading-relaxed text-sm">
-            <ul className="list-disc list-outside ml-6 space-y-2">
-              <li>
-                <span className="font-bold">
-                  人気投票によるランキング付けをします。
-                </span>
-                <br />
-                作品をじっくり聴いてもらうため、推してくれてる人を可視化するのが目的です。作品に序列をつけるのが目的ではありません。
-              </li>
-              <li>
-                <span className="font-bold">
-                  投稿作品は二次創作として許可なく無断で使用される場合があります。
-                </span>
-                <br />
-                二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
-              </li>
-            </ul>
-          </p>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              <span className="font-bold">
+                人気投票によるランキング付けをします。
+              </span>
+              <br />
+              作品をじっくり聴いてもらうため、推してくれてる人を可視化するのが目的です。作品に序列をつけるのが目的ではありません。
+            </li>
+            <li>
+              <span className="font-bold">
+                投稿作品は二次創作として許可なく無断で使用される場合があります。
+              </span>
+              <br />
+              二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
+            </li>
+          </ul>
         </div>
       ),
     },
@@ -237,25 +235,114 @@ export default function Rules() {
     {
       title: "人気投票について",
       content: (
-        <ul className="list-disc list-outside ml-6 space-y-2">
-          <li>
-            “みんなで作品を聴き合う”ことを何より大切にしています。投票は匿名で行われます。
-          </li>
-          <li>
-            投稿楽曲は約10曲ずつの「Disc」にグループ分けされ、各Disc内で全曲を「好きな順」に並べて投票していただきます（1曲だけ選ぶことはできません）。
-          </li>
-          <li>
-            自分の楽曲が含まれるDiscには投票できませんが、是非とも同じDiscの皆さんで楽曲の感想を語り合ってみてください。
-          </li>
-          <li>
-            各Discの上位曲が「Selection
-            Disc」に進出し再投票、さらに上位曲から構成される「Best
-            Disc」の最終投票により順位を決定します。
-          </li>
-          <li>
-            投票期間中は運営公認のニコ生配信者による楽曲紹介配信も行われます。
-          </li>
-        </ul>
+        <div>
+          <h3 className="text-lg font-bold text-slate-700 mb-2">
+            投票に関する注意事項
+          </h3>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              投票は<span className="font-bold">匿名</span>で行われます。
+            </li>
+            <li>
+              投稿楽曲は抽選で
+              <span className="font-bold">約10曲ずつの「Disc」</span>
+              にグループ分けされ、各Disc内で「好きな順」に並べて投票していただきます,
+            </li>
+            <li>
+              <span className="font-bold">人気投票は誰でも参加できます。</span>
+              （音楽活動者でなくてもOK）
+            </li>
+            <li>
+              投稿者が自曲が含まれるDiscへ投票する場合、自曲は1位に投票してください。(投票促進のため)
+            </li>
+            <li>
+              <span className="font-bold">動画は採点の対象外です。</span>
+              (動画不慣れな方への配慮)
+            </li>
+            <li>10作品毎に分けられた作品はマイリスに登録します。</li>
+            <li>各グループの投票用Googleフォームにアクセスしてください。</li>
+            <li>
+              1番好きな作品から順番に
+              <span className="font-bold">1位、2位、3位・・10位</span>
+              を投票してください。
+            </li>
+            <li>全曲を順位づけする形式のため、1曲だけ選ぶことはできません</li>
+            <li>
+              Disc内で相対評価人気投票をします。(1位作品:10点、・・・、10位作品:1点)
+            </li>
+            <li>
+              自分の独断で投票してください。
+              <span className="font-bold">
+                投票理由や音楽的な知識はいりません。
+              </span>
+            </li>
+            <li>
+              <span className="font-bold">1グループから投票できます。</span>
+              全グループ投票しなくても大丈夫です。
+            </li>
+            <li>期間中に非公開になった動画は1点にしてください。</li>
+            <li>
+              自分はこの曲を1位に投票したよ！は自己責任で公開してもOKです。
+            </li>
+            <li>“みんなで作品を聴き合う”ことを何より大切にしています。</li>
+            <li>
+              投票期間中は
+              <span className="font-bold">
+                運営公認のニコ生配信者による楽曲紹介配信
+              </span>
+              も行われます。
+            </li>
+          </ul>
+          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">
+            予選（Disc）
+          </h3>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              人気投票の結果
+              <span className="font-bold">上位半数を予選通過</span>
+              とし、スコアを公開します。
+            </li>
+            <li>
+              下位の方でも個別に問い合わせ頂ければスコアをお渡しします。
+              <br />
+              スコアを自身で公開するのもOKです。
+              <br />
+              ただし順位は非公開としてください。（みんなが順位を公開すると消去法で他者の順位が実質公開となるため）
+              <br />
+              具体的に特定できない表現（思ってたより良かった、良くなかったなど）で感謝や感想を表明するのはOKです。
+            </li>
+          </ul>
+          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">
+            準決勝（Selection）
+          </h3>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>予選通過作品を改めて10作品単位のSelectionに分けます。</li>
+            <li>
+              予選と同様に人気投票をして
+              <span className="font-bold">上位2曲を準決勝通過</span>とします。
+            </li>
+            <li>スコアは全曲が公開されます。</li>
+          </ul>
+          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">
+            決勝（Best）
+          </h3>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>準決勝通過作品に対して同様の人気投票をします。</li>
+            <li>スコアは全曲が公開されます。</li>
+          </ul>
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            詳しいルールについては
+            <a
+              href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のルーキー祭り2026春人気投票募集要項
+            </a>
+            をご確認ください。
+          </p>
+        </div>
       ),
     },
     {
