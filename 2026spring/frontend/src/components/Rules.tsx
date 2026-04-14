@@ -90,8 +90,29 @@ export default function Rules() {
               のタグを設定し、タグロックしてください。
             </li>
           </ul>
-          <p className="text-sm text-slate-500 mt-2">
+          <p className="text-sm font-semibold text-cherry mt-2">
             ※ タグに#や「」は不要です。
+          </p>
+          <h3 className="text-lg font-semibold mt-4 mb-2">
+            投稿を以って下記の趣旨に同意したものとします。
+          </h3>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            <ul className="list-disc list-outside ml-6 space-y-2">
+              <li>
+                <span className="font-bold">
+                  人気投票によるランキング付けをします。
+                </span>
+                <br />
+                作品をじっくり聴いてもらうため、推してくれてる人を可視化するのが目的です。作品に序列をつけるのが目的ではありません。
+              </li>
+              <li>
+                <span className="font-bold">
+                  投稿作品は二次創作として許可なく無断で使用される場合があります。
+                </span>
+                <br />
+                二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
+              </li>
+            </ul>
           </p>
         </div>
       ),
