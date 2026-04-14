@@ -73,6 +73,7 @@ export default function LinksAndSponsors() {
                 <a
                   key={idx}
                   href={link.url}
+                  target={"_blank"}
                   className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-mint/50 hover:shadow-md transition-all"
                 >
                   <div className="font-bold text-mint text-sm mb-1">
@@ -91,6 +92,7 @@ export default function LinksAndSponsors() {
                 <a
                   key={idx}
                   href={link.url}
+                  target={"_blank"}
                   className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-skyblue/50 hover:shadow-md transition-all"
                 >
                   <div className="font-bold text-skyblue text-sm mb-1">
