@@ -136,15 +136,88 @@ export default function LinksAndSponsors() {
           </div>
         </div>
 
+        {/* クラウドファンディング */}
+        <div className="mt-20">
+          <div className="flex items-center gap-3 mb-8">
+            <HeartHandshake className="text-slate-500 w-8 h-8" />
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-800">
+              本当の投稿祭運営委員会
+            </h3>
+          </div>
+          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200">
+            <h4 className="text-xl font-bold text-slate-800 mb-2">
+              本当の祭プロジェクトCD制作クラウドファンディング
+            </h4>
+            <p className="text-slate-600 text-sm mb-6">
+              大阪新世界の音楽フェスにて披露する楽曲を収録した「公式コンピレーションCD」を制作するためのクラウドファンディングを実施中です。
+            </p>
+            <a
+              href="https://camp-fire.jp/projects/916894/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-mint hover:underline"
+            >
+              ボカロが街を熱くした日を、永遠に―
+              本当の投稿祭セレクションCD制作PJー
+            </a>
+          </div>
+        </div>
+
         {/* 後援 */}
-        <div>
+        <div className="mt-20">
           <div className="flex items-center gap-3 mb-8">
             <HeartHandshake className="text-slate-500 w-8 h-8" />
             <h3 className="text-2xl md:text-3xl font-bold text-slate-800">
               後援
             </h3>
           </div>
-          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200">
+          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
+            <h4 className="text-xl font-bold text-slate-800 mb-2">ヴォエ</h4>
+            <p className="text-slate-600 text-sm mb-6">
+              この投稿祭は「ヴォエ」が後援しています。
+            </p>
+            <a
+              href="https://x.com/vliverofepic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-mint hover:underline"
+            >
+              公式X
+            </a>
+          </div>
+          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
+            <h4 className="text-xl font-bold text-slate-800 mb-2">
+              NFRSラジオ
+            </h4>
+            <p className="text-slate-600 text-sm mb-6">
+              この投稿祭は「NFRSラジオ」が後援しています。
+            </p>
+            <a
+              href="https://x.com/nfrs_radio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-mint hover:underline"
+            >
+              公式X
+            </a>
+          </div>
+          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
+            <h4 className="text-xl font-bold text-slate-800 mb-2">
+              山梨大学DTM(作曲)サークルWineRed
+            </h4>
+            <p className="text-slate-600 text-sm mb-6">
+              この投稿祭は「山梨大学DTM(作曲)サークルWineRed」が後援しています。
+            </p>
+            <a
+              href="https://x.com/YU_WineRed"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-mint hover:underline"
+            >
+              公式X
+            </a>
+          </div>
+          <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
             <h4 className="text-xl font-bold text-slate-800 mb-2">
               楽曲収益化サービス
             </h4>
