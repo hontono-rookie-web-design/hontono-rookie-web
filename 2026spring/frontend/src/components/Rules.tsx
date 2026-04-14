@@ -112,6 +112,18 @@ export default function Rules() {
               二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
             </li>
           </ul>
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            詳しいルールについては
+            <a
+              href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のルーキー祭り2026春投稿者募集要項
+            </a>
+            をご確認ください。
+          </p>
         </div>
       ),
     },
@@ -228,6 +240,18 @@ export default function Rules() {
             >
               ルーキー祭り認定活動者
             </a>
+          </p>
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            詳しいルールについては
+            <a
+              href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のルーキー祭り2026春投稿者募集要項
+            </a>
+            をご確認ください。
           </p>
         </div>
       ),
