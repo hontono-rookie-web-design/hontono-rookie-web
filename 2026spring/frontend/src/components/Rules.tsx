@@ -351,34 +351,80 @@ export default function Rules() {
         <ul className="list-disc list-outside ml-6 space-y-2">
           <li>
             <strong>OPステージ:</strong>{" "}
-            人気投票に参加したくない作品の投稿期間です。人気投票の対象から除外されます。参加タグは通常と同じ「本当のルーキー祭り2026春」です。
+            人気投票に参加したくない作品の投稿期間です。人気投票の対象から除外されます。参加タグは通常と同じ
+            <span className="font-bold">「本当のルーキー祭り2026春」</span>
+            です。
           </li>
           <li>
             <strong>EXステージ:</strong>{" "}
-            二次創作に参加した方が参加できるステージです。参加タグは「本当のルーキー祭り2026春ex」となります。
+            二次創作に参加した方が参加できるステージです。参加タグは
+            <span className="font-bold">「本当のルーキー祭り2026春ex」</span>
+            となります。
           </li>
         </ul>
       ),
     },
     {
-      title: "セレクションCD企画・二次創作",
+      title: "二次創作",
       content: (
-        <ul className="list-disc list-outside ml-6 space-y-2">
-          <li>
-            <strong>セレクションCD企画:</strong>{" "}
-            本投稿祭は「本当のNEXTAGE祭2026」のセレクションCD企画に参加しており、セレクションCDに収録される場合があります。「セレクションCD企画参加曲」をタグロックすることで参加となり、有償販売に同意したものとみなします。
-          </li>
-          <li>
-            <strong>二次創作:</strong>{" "}
-            歌ってみた、ファンアートなどの二次創作を強く歓迎します。「本当のルーキー祭り2026春二次創作」をタグロックしてください。
-          </li>
-          <li>
-            商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
-          </li>
-          <li>
-            楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。
-          </li>
-        </ul>
+        <div>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              <strong>二次創作:</strong>{" "}
+              歌ってみた、ファンアートなどの二次創作を強く歓迎します。
+              <span className="font-bold">
+                「本当のルーキー祭り2026春二次創作」
+              </span>
+              をタグロックしてください。
+            </li>
+            <li>
+              商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
+            </li>
+            <li>
+              楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。
+            </li>
+          </ul>
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            詳しいルールについては
+            <a
+              href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のルーキー祭り2026春二次創作者募集要項
+            </a>
+            をご確認ください。
+          </p>
+        </div>
+      ),
+    },
+    {
+      title: "セレクションCD企画",
+      content: (
+        <div>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              <strong>セレクションCD企画:</strong> 本投稿祭は
+              <span className="font-bold">「本当のNEXTAGE祭2026」</span>
+              のセレクションCD企画に参加しており、セレクションCDに収録される場合があります。
+              <span className="font-bold">「セレクションCD企画参加曲」</span>
+              をタグロックすることで参加となり、有償販売に同意したものとみなします。
+            </li>
+          </ul>
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            セレクションCDについては
+            <a
+              href="https://twipla.jp/events/704387"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のNEXTAGE祭2026【開催日2026/9/18】with 大阪新世界フェス
+            </a>
+            をご確認ください。
+          </p>
+        </div>
       ),
     },
   ];
