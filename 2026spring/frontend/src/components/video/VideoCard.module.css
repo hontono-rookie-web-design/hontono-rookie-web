@@ -83,3 +83,13 @@
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
+
+.titleMain {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: #00bfa6;
+  margin-bottom: 40px;
+  letter-spacing: 2px;  
+}
+
