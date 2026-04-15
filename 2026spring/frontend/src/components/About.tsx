@@ -23,9 +23,7 @@ export default function About() {
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
               このイベントは、
-              <span className="font-bold">
-                “これからのボカロP”が新しい一歩を踏み出すきっかけ
-              </span>
+              <strong>“これからのボカロP”が新しい一歩を踏み出すきっかけ</strong>
               になることを大切にしています。
             </p>
           </div>
@@ -38,9 +36,9 @@ export default function About() {
               全ての作品が必ず聞いてもらえます
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              <span className="font-bold">全投稿作品を紹介配信</span>
+              <strong>全投稿作品を紹介配信</strong>
               します。また、投稿期間終了後、
-              <span className="font-bold">人気投票</span>を行います。
+              <strong>人気投票</strong>を行います。
             </p>
             <p className="text-xs text-slate-500 mt-2">
               ※ 投票は、投稿者以外の方も参加できます。
@@ -55,9 +53,9 @@ export default function About() {
               二次創作を強く歓迎しています
             </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              <span className="font-bold">
+              <strong>
                 歌ってみた、弾いてみた、踊ってみた、ファンアート、紹介配信など
-              </span>
+              </strong>
               、自由な形で作品を盛り上げてください。
             </p>
           </div>
