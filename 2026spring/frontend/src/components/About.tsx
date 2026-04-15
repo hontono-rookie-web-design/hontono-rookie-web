@@ -1,12 +1,16 @@
-import { Users, Music, Star } from "lucide-react";
+import { Music, Star, Users } from "lucide-react";
 
 export default function About() {
   return (
     <section id="about" className="w-full py-24 bg-white">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">About</h2>
-          <h3 className="text-3xl md:text-4xl font-bold text-slate-800">本当のルーキー祭りとは？</h3>
+          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">
+            About
+          </h2>
+          <h3 className="text-3xl md:text-4xl font-bold text-slate-800">
+            本当のルーキー祭りとは？
+          </h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -14,9 +18,13 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mb-6 text-mint">
               <Users size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">一歩を踏み出すきっかけ</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">
+              初心者の方のための投稿祭です
+            </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              このイベントは、“これからのボカロP”が新しい一歩を踏み出すきっかけになることを大切にしています。
+              このイベントは、
+              <strong>“これからのボカロP”が新しい一歩を踏み出すきっかけ</strong>
+              になることを大切にしています。
             </p>
           </div>
 
@@ -24,9 +32,16 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-skyblue/10 flex items-center justify-center mb-6 text-skyblue">
               <Music size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">交流が広がる場</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">
+              全ての作品が必ず聞いてもらえます
+            </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              投票の仕組みはありますが、決して「順位を競う場」だけではありません。作品をきっかけにクリエイターやリスナー同士の交流が広がることを目指しています。
+              <strong>全投稿作品を紹介配信</strong>
+              します。また、投稿期間終了後、
+              <strong>人気投票</strong>を行います。
+            </p>
+            <p className="text-xs text-slate-500 mt-2">
+              ※ 投票は、投稿者以外の方も参加できます。
             </p>
           </div>
 
@@ -34,9 +49,14 @@ export default function About() {
             <div className="w-16 h-16 rounded-full bg-cherry/10 flex items-center justify-center mb-6 text-cherry">
               <Star size={32} />
             </div>
-            <h4 className="text-xl font-bold text-slate-800 mb-4">自分の好きを見つける場</h4>
+            <h4 className="text-xl font-bold text-slate-800 mb-4">
+              二次創作を強く歓迎しています
+            </h4>
             <p className="text-slate-600 leading-relaxed text-sm">
-              すべての参加作品をみんなで聴き合うことを大切にしています。順位だけに一喜一憂せず、是非ともあなただけの「好き」を見つけて楽しんでください。
+              <strong>
+                歌ってみた、弾いてみた、踊ってみた、ファンアート、紹介配信など
+              </strong>
+              、自由な形で作品を盛り上げてください。
             </p>
           </div>
         </div>

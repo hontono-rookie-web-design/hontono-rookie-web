@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -98,7 +98,7 @@ export default function Hero() {
         </div>
 
         <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
-          投稿祭の進行は<a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer">公式アカウント</a>で随時連絡します。<br className="hidden sm:block" />
+          投稿祭の進行は<a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">公式Xアカウント</a>で随時連絡します。<br className="hidden sm:block" />
           フォローすると人気投票しやすくなります。
         </p>
       </div>
