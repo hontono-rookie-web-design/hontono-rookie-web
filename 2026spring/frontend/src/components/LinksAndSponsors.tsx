@@ -36,6 +36,11 @@ export default function LinksAndSponsors() {
       url: "https://discord.gg/XfM6KqZbPT",
     },
     {
+      title: "本当のルーキー祭り2026春TwiPla",
+      desc: "イベントの詳細やスケジュールを掲載しています。",
+      url: "https://twipla.jp/events/705065",
+    },
+    {
       title: "ボカロ15秒投稿祭",
       desc: "告知動画はこちらを活用できます。",
       url: "https://twipla.jp/events/722107",
