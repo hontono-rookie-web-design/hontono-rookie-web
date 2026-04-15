@@ -96,13 +96,14 @@
   font-size: 45px;
   font-weight: 650;
   letter-spacing: 2px;
+  line-height: 1.05;
 }
 
 .subtitle {
   font-size: 16px;
   font-weight: 400;
   color: #818994;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .skeletonThumbnail {
