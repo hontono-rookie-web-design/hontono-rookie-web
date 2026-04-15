@@ -33,7 +33,7 @@ export default async function Page() {
       
       <div className={styles.titleWrapper}>
  　　　　 <h1 className={styles.titleMain}>
-  　　　  　楽曲一覧　ルーキー
+  　　　  　楽曲一覧 ルーキー
   　　　　</h1>
  　　　 　<p className={styles.subtitle}>
    　 　　「本当のルーキー祭り2026春」のルーキー参加楽曲を掲載しています。
