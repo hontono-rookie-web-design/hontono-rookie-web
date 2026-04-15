@@ -74,9 +74,9 @@
 }
 
 .container {
+  padding: 10px 40px 40px;
   max-width: 1200px;
   margin: 0 auto;
-  marigin-top: 10px;
 }
 
 .grid {
