@@ -61,7 +61,7 @@ export default function Page() {
           <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
 
-        <div className="w-full mb-4 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+       <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center">
 
  　　　 {/* 検索 */}
  　　　　 <input
