@@ -48,8 +48,8 @@ export default function Rules() {
               には参加できません。（本当のNEXTAGEの参加条件、本当のルーキー祭りに参加できないことに反するため）
               <br />
               ただし、本当のルーキー祭り2026春に参加した結果、それ以降に作品が伸びて、本当のルーキー祭りに参加できなくなり、本当のNEXTAGE投稿祭に参加するのはOKです。
-              <div className="m-4 border-l-4 border-slate-200 pl-4">
-                <h4 className="text-md font-semibold mt-2">
+              <div className="m-4 bg-slate-100 border-slate-200 pl-4 py-4">
+                <h4 className="text-md font-semibold">
                   本当のNEXTAGE参加OKの例
                 </h4>
                 本当のルーキー後に伸びた場合
@@ -107,7 +107,7 @@ export default function Rules() {
               <br />
               下記は例です。文章は自由ですがリンクは最低限貼ってください。
               <br />
-              <div className="m-4 border-l-4 border-slate-200 pl-4">
+              <div className="m-4 bg-slate-100 border-slate-200 pl-4 py-4">
                 ----------------------------------------------------
                 <br />
                 『『誰でも』』参加できる！！人気投票もあるのでぜひ来てください！！！投票先公式サイト▶︎https://note.com/syn523/n/n3269782e9e16
