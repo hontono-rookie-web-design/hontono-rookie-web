@@ -415,11 +415,12 @@ export default function Rules() {
         <div>
           <h3 className="text-lg font-bold text-slate-700 mb-2">opステージ</h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>人気投票に参加したくない作品の投稿期間です。</li>
+            <li>
+              <strong>人気投票に参加したくない作品の投稿期間です。</strong>
+            </li>
             <li>人気投票の対象から除外されます。</li>
             <li>
-              参加タグは通常と同じ
-              <span className="font-bold">「本当のルーキー祭り2026春」</span>
+              参加タグは通常と同じ<strong>「本当のルーキー祭り2026春」</strong>
               です。
             </li>
             <li>
@@ -430,17 +431,25 @@ export default function Rules() {
             exステージ
           </h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>二次創作に参加した方が参加できるステージです。</li>
+            <li>
+              <strong>二次創作に参加した方</strong>が参加できるステージです。
+            </li>
             <li>
               参加タグは
-              <span className="font-bold">「本当のルーキー祭り2026春ex」</span>
+              <strong>「本当のルーキー祭り2026春ex」</strong>
               となります。
             </li>
-            <li>exでは本投稿祭と同様に人気投票をします。</li>
             <li>
-              exステージは参加条件がなく、誰でも参加できます。（MVアリ、再生数不問、既投稿曲アリ）
+              exでは本投稿祭と同様に<strong>人気投票</strong>をします。
             </li>
-            <li>ボカロ楽曲作品に限ります。（人気投票が難しくなるため）</li>
+            <li>
+              exステージは参加条件がなく、<strong>誰でも参加できます</strong>
+              。（MVアリ、再生数不問、既投稿曲アリ）
+            </li>
+            <li>
+              <strong>ボカロ楽曲作品に限ります。</strong>
+              （人気投票が難しくなるため）
+            </li>
           </ul>
           <h4 className="text-md font-semibold ml-6 mt-4 mb-2">
             exステージ参加方法
@@ -448,21 +457,30 @@ export default function Rules() {
           <ul className="list-disc list-outside ml-12 space-y-2">
             <li>
               参加作品に
-              <span className="font-bold">「本当のルーキー祭り2026春ex」</span>
+              <strong>「本当のルーキー祭り2026春ex」</strong>
               をタグロックしてください。
             </li>
             <li>
-              二次創作のエビデンス（Xポストのリンクなど）を投コメに貼ってください。
+              <strong>二次創作のエビデンス（Xポストのリンクなど）</strong>
+              を投コメに貼ってください。
             </li>
           </ul>
           <h4 className="text-md font-semibold ml-6 mt-4 mb-2">
             二次創作以外でexに参加する方法
           </h4>
           <ul className="list-disc list-outside ml-12 space-y-2">
-            <li>10Disc以上の人気投票をする</li>
-            <li>参加作品にトータル5000pt以上のニコニ広告する</li>
-            <li>参加作品の10曲以上の公開マイリスを作成する。</li>
-            <li>二次創作をしたライバーの枠に行きギフトを贈る</li>
+            <li>
+              <strong>10Disc以上</strong>の人気投票をする。
+            </li>
+            <li>
+              参加作品に<strong>トータル5000pt以上</strong>のニコニ広告をする。
+            </li>
+            <li>
+              参加作品の<strong>10曲以上</strong>の公開マイリスを作成する。
+            </li>
+            <li>
+              二次創作をしたライバーの枠に行き<strong>ギフトを贈る</strong>。
+            </li>
           </ul>
         </div>
       ),
