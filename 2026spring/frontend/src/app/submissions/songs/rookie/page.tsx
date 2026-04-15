@@ -31,9 +31,14 @@ export default async function Page() {
   <main style={{ padding: "40px" }}>
     <div className={styles.container}>
       
-      <h1 className={styles.titleMain}>
-        楽曲一覧（ルーキー）
-      </h1>
+      <div className={styles.titleWrapper}>
+ 　　　　 <h1 className={styles.titleMain}>
+  　　　  　楽曲一覧
+  　　　　</h1>
+ 　　　 　<p className={styles.subtitle}>
+   　 　　「本当のルーキー祭り2026春」のルーキー参加楽曲を掲載しています。
+ 　　　 　</p>
+　　　　</div>
 
       <div className={styles.grid}>
         {videos.map((video: any, index: number) => (
