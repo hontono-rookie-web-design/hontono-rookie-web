@@ -40,7 +40,7 @@ export default function Rules() {
               （同時参加する場合は本当のルーキー祭りの投稿期間に合わせて4月22日以降に投稿してください）
             </li>
             <li>
-              条件を満たしておらず投稿できない方は、人気投票、二次創作、EXステージ、本当のNEXTAGE投稿祭などに参加できます。
+              条件を満たしておらず投稿できない方は、人気投票、二次創作、exステージ、本当のNEXTAGE投稿祭などに参加できます。
             </li>
             <li>
               本当のルーキー祭り2026春に参加した場合は
@@ -176,10 +176,11 @@ export default function Rules() {
             </li>
             <li>
               <span className="font-bold">
-                オフボーカル音源が用意されていること。（音声ファイル形式必須）
+                オフボーカル音源が用意されていること。
               </span>
               <br />
-              二次創作で使用します。
+              動画ではなく、音声ファイルでお願いします。
+              歌みたミックスするためです。 二次創作で使用します。
               オフボーカルの公開は作品の投稿日前でもOKです。
               (投コメにリンクを貼るため)
             </li>
@@ -190,6 +191,9 @@ export default function Rules() {
               歌ってみたの練習に必要です。動画内歌詞表示のみだと追うのが大変です。
             </li>
           </ul>
+          <p className="text-sm text-slate-500 mt-2">
+            ※ オフボーカル音源、歌詞が用意できない場合は相談、連絡してください。
+          </p>
           <h3 className="text-lg font-semibold mt-4 mb-2">任意条件</h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -283,7 +287,7 @@ export default function Rules() {
               <span className="font-bold">動画は採点の対象外です。</span>
               (動画不慣れな方への配慮)
             </li>
-            <li>10作品毎に分けられた作品はマイリスに登録します。</li>
+            <li>10作品毎に分けられたマイリスを用意します。</li>
             <li>各グループの投票用Googleフォームにアクセスしてください。</li>
             <li>
               1番好きな作品から順番に
@@ -370,17 +374,17 @@ export default function Rules() {
       ),
     },
     {
-      title: "OPステージ・EXステージ",
+      title: "opステージ・exステージ",
       content: (
         <ul className="list-disc list-outside ml-6 space-y-2">
           <li>
-            <strong>OPステージ:</strong>{" "}
+            <strong>opステージ:</strong>{" "}
             人気投票に参加したくない作品の投稿期間です。人気投票の対象から除外されます。参加タグは通常と同じ
             <span className="font-bold">「本当のルーキー祭り2026春」</span>
             です。
           </li>
           <li>
-            <strong>EXステージ:</strong>{" "}
+            <strong>exステージ:</strong>{" "}
             二次創作に参加した方が参加できるステージです。参加タグは
             <span className="font-bold">「本当のルーキー祭り2026春ex」</span>
             となります。
@@ -414,6 +418,11 @@ export default function Rules() {
             </li>
             <li>
               商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
+            </li>
+            <li>
+              ルーキー歌い手は開催期間内に、ニコニコ動画へ新規投稿する必要があります。
+              <br />
+              つまり、期間前にニコニコ動画へ投稿してしまうと、その動画では参加できなくなります。
             </li>
             <li>
               楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。
