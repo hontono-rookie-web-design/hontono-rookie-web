@@ -28,7 +28,7 @@ export default async function Page() {
   const videos = await getVideos()
 
   return (
-  <main style={{ padding: "40px" }}>
+ 　<main>
     <div className={styles.container}>
       
       <div className={styles.titleWrapper}>
