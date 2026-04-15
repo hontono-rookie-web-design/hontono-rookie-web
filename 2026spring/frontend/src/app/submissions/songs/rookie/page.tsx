@@ -64,6 +64,7 @@ export default function Page() {
        <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center">
 
  　　　 {/* 検索 */}
+         <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center justify-start">
  　　　　 <input
  　　　   type="text"
         placeholder="検索（タイトル・投稿者）"
