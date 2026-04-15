@@ -73,6 +73,9 @@ export default function Rules() {
       title: "投稿方法",
       content: (
         <div>
+          <p className="text-sm font-semibold text-cherry mb-2">
+            ※ タグに#や「」は不要です。
+          </p>
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
               ニコニコ動画に投稿して、
@@ -80,19 +83,52 @@ export default function Rules() {
               のタグを設定し、タグロックしてください。
             </li>
             <li>
-              セレクションCD企画にも参加する方は、さらに
-              <span className="font-bold">「セレクションCD企画参加曲」</span>
-              のタグも設定し、タグロックしてください。
-            </li>
-            <li>
               投稿作品とは別にMV作品を投稿する場合は、MV作品側に
               <span className="font-bold">「本当のルーキー祭り2026春MV」</span>
               のタグを設定し、タグロックしてください。
             </li>
+            <li>
+              セレクションCD企画にも参加する方は、さらに
+              <span className="font-bold">「セレクションCD企画参加曲」</span>
+              のタグも設定し、タグロックしてください。
+            </li>
           </ul>
-          <p className="text-sm font-semibold text-cherry mt-2">
-            ※ タグに#や「」は不要です。
+          <p className="text-sm text-slate-500 ml-6 mt-2">
+            ※ セレクションCD企画に参加した場合、
+            <span className="font-bold">
+              大阪新世界フェスで有償販売するコンピCDへの収録に同意したものとします。
+            </span>
+            大阪新世界フェスの思い出に持ち帰ってほしい、家でも楽しんでもらうことでボカロ楽曲に興味を持ってほしい！という想いです。手に取った方には大切に扱って欲しいため有償にしてます。収益化が目的ではありません。
           </p>
+          <h3 className="text-lg font-semibold mt-4 mb-2">任意</h3>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              投コメに人気投票を促す文章を記載してください。
+              <br />
+              下記は例です。文章は自由ですがリンクは最低限貼ってください。
+              <br />
+              <div className="m-4 border-l-4 border-slate-200 pl-4">
+                ----------------------------------------------------
+                <br />
+                『『誰でも』』参加できる！！人気投票もあるのでぜひ来てください！！！投票先公式サイト▶︎https://note.com/syn523/n/n3269782e9e16
+                <br />
+                （URLは２５日あたりに発行されますので少々お待ちください）
+                <br />
+                【日程（予定）】 <br />
+                予選(Disc) 4/25～5/10 準決勝(Selection)5/11～5/17
+                <br />
+                決勝(Best)・EX5/18～
+                <br />
+                【参加方法】
+                <br />
+                参加方法は超カンタン！
+                匿名OK、スマホひとつで投票完了。「この曲、なんか好き！」――そんな直感で選んで大丈夫。あなたの一票が、作品に込められた想いを照らす光になります
+                <br />
+                <br />
+                ※この曲はDisk◯グループに入ってます
+              </div>
+            </li>
+          </ul>
           <h3 className="text-lg font-semibold mt-4 mb-2">
             投稿を以って下記の趣旨に同意したものとします。
           </h3>
