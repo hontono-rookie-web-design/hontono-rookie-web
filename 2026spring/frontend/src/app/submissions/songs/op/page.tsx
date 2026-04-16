@@ -14,7 +14,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/rookie")
+    fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/op")
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((row: any) => ({
@@ -35,11 +35,11 @@ export default function Page() {
         {/* ヘッダー */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold leading-tight">
-            楽曲一覧 opステージ
+            楽曲一覧 OPステージ
           </h1>
 
           <p className="text-sm text-gray-500 mt-1">
-            「本当のルーキー祭り2026春」のopステージ参加楽曲を掲載しています。
+            「本当のルーキー祭り2026春」のOPステージ参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
