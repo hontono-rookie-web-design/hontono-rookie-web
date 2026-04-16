@@ -35,11 +35,11 @@ export default function Page() {
         {/* ヘッダー */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold leading-tight">
-            楽曲一覧 exステージ
+            楽曲一覧 EXステージ
           </h1>
 
           <p className="text-sm text-gray-500 mt-1">
-            「本当のルーキー祭り2026春」のexステージ参加楽曲を掲載しています。
+            「本当のルーキー祭り2026春」のEXステージ参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
