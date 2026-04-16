@@ -63,27 +63,6 @@ export default function Page() {
 
        <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center">
 
- 　　　 {/* 検索 */}
-        <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center justify-start">
- 　　　　　 <input
-         　type="text"
-         　placeholder="検索（タイトル・投稿者）"
-         　value={searchText}
-         　onChange={(e) => setSearchText(e.target.value)}
-         className="border rounded px-3 py-1 text-sm w-full sm:w-64"
-         />
-
- 　　　　 <select
-        value={sortType}
-        onChange={(e) => setSortType(e.target.value)}
-        className="border rounded px-2 py-1 text-sm w-full sm:w-40"
-        >
-        <option value="new">おすすめ順</option>
-        <option value="title">タイトル順</option>
-        <option value="author">投稿者順</option>
-     　 </select>
-　　　　</div>
-
         {/* ローディング */}
         {loading && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
