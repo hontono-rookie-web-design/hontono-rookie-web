@@ -14,7 +14,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/rookie")
+    fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/ex")
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((row: any) => ({
