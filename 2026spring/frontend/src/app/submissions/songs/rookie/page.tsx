@@ -12,22 +12,6 @@ type Video = {
 export default function Page() {
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchText, setSearchText] = useState("")
-  const [sortType, setSortType] = useState("new")
-  const filteredVideos = videos
-  .filter(video => {
-  const q = searchText.toLowerCase()
-    return (
-      video.title.toLowerCase().includes(q) ||
-      video.author.toLowerCase().includes(q)
-    )
-  })
-  .sort((a, b) => {
-    if (sortType === "new") return 0 // 今は日付ないのでそのまま
-    if (sortType === "title") return a.title.localeCompare(b.title, "ja")
-    if (sortType === "author") return a.author.localeCompare(b.author, "ja")
-    return 0
-  })
 
   useEffect(() => {
     fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/rookie")
@@ -60,8 +44,6 @@ export default function Page() {
 
           <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
-
-       <div className="w-full mb-4 flex flex-col sm:flex-row gap-3 sm:items-center">
 
         {/* ローディング */}
         {loading && (
@@ -98,7 +80,7 @@ export default function Page() {
         {/* グリッド */}
         {!loading && videos.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {filteredVideos.map((video, i) => (
+            {videos.map((video, i) => (
               <div
                 key={i}
                 className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md"
