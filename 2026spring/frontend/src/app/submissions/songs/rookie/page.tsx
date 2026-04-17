@@ -1,32 +1,123 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { CONFIG } from "@/config/config"
 
 type Video = {
   title: string
   author: string
   videoUrl: string
   thumbnailUrl: string
+  publishedAt?: string
+  description?: string
+}
+
+/* =========================
+   日付パース
+========================= */
+function parseDate(dateStr?: string) {
+  if (!dateStr) return 0
+  return new Date(dateStr).getTime()
+}
+
+/* =========================
+   シャッフル
+========================= */
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
 }
 
 export default function Page() {
-  const [videos, setVideos] = useState<Video[]>([])
+  const [data, setData] = useState<Video[]>([])
+  const [displayData, setDisplayData] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
 
+  const [searchText, setSearchText] = useState("")
+  const [sortType, setSortType] = useState<"new" | "old">("new")
+  const [isRandom, setIsRandom] = useState(false)
+
+  /* =========================
+     初期ロード（旧API）
+  ========================= */
   useEffect(() => {
-    fetch("https://opensheet.elk.sh/12g05mItiwZ9v7htUAhRcqweLKGyIePRGFecc41_n990/rookie")
+    fetch("/api/submissions/songs/rookie")
       .then(res => res.json())
-      .then(data => {
-        const mapped = data.map((row: any) => ({
-          title: row["タイトル"],
-          author: row["投稿者名"],
-          videoUrl: row["URL"],
-          thumbnailUrl: row["サムネイルURL"]
+      .then(res => {
+        const mapped = res.map((item: any) => ({
+          title: item.title,
+          author: item.creator,
+          videoUrl: item.videoUrl,
+          thumbnailUrl: item.thumbnailUrl,
+          publishedAt: item.publishedAt,
+          description: item.description
         }))
-        setVideos(mapped)
+        setData(mapped)
         setLoading(false)
       })
   }, [])
+
+  /* =========================
+     フィルタ + ソート
+  ========================= */
+  useEffect(() => {
+    if (data.length === 0) return
+    if (isRandom) return
+
+    let filtered = [...data]
+
+    if (searchText.trim()) {
+      const q = searchText.toLowerCase()
+      filtered = filtered.filter(v =>
+        (v.title + v.author).toLowerCase().includes(q)
+      )
+    }
+
+    if (sortType === "new") {
+      filtered.sort((a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt))
+    } else {
+      filtered.sort((a, b) => parseDate(a.publishedAt) - parseDate(b.publishedAt))
+    }
+
+    setDisplayData(filtered)
+  }, [data, searchText, sortType, isRandom])
+
+  /* =========================
+     ランダム
+  ========================= */
+  const handleShuffle = () => {
+    let base = [...data]
+
+    if (searchText.trim()) {
+      const q = searchText.toLowerCase()
+      base = base.filter(v =>
+        (v.title + v.author).toLowerCase().includes(q)
+      )
+    }
+
+    setDisplayData(shuffleArray(base))
+    setIsRandom(true)
+  }
+
+  /* =========================
+     ソート変更
+  ========================= */
+  const handleSortChange = (val: "new" | "old") => {
+    setSortType(val)
+    setIsRandom(false)
+  }
+
+  /* =========================
+     検索変更
+  ========================= */
+  const handleSearchChange = (val: string) => {
+    setSearchText(val)
+    setIsRandom(false)
+  }
 
   return (
     <main className="flex justify-center">
@@ -39,15 +130,63 @@ export default function Page() {
           </h1>
 
           <p className="text-sm text-gray-500 mt-1">
-            「本当のルーキー祭り2026春」のルーキー参加楽曲を掲載しています。
+            「{CONFIG.event.name}」のルーキー参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
 
+        {/* 操作バー */}
+        {!loading && (
+          <div className="flex flex-col gap-3 mb-4">
+
+            {/* 上段：検索（左寄せ） */}
+            <div className="flex justify-start">
+              <input
+                type="text"
+                placeholder="検索（タイトル・投稿者）"
+                value={searchText}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="w-full sm:w-72 border rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+
+            {/* 下段：ソート + ボタン */}
+            <div className="flex items-center justify-between">
+
+              <div className="flex items-center gap-2">
+                <select
+                  value={isRandom ? "random" : sortType}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    if (val === "random") return
+                    handleSortChange(val as "new" | "old")
+                  }}
+                  className="border rounded px-2 py-1 text-sm"
+                >
+                  {isRandom && <option value="random">ランダム</option>}
+                  <option value="new">新しい順</option>
+                  <option value="old">古い順</option>
+                </select>
+
+                <button
+                  onClick={handleShuffle}
+                  className="px-3 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200 active:scale-95 transition"
+                >
+                  ランダムに並び替え
+                </button>
+              </div>
+
+              <div className="text-sm text-gray-600">
+                {displayData.length}件
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ローディング */}
         {loading && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
@@ -57,12 +196,7 @@ export default function Page() {
 
                 <div className="p-2 space-y-2">
                   <div className="h-3 w-24 bg-gray-200 rounded animate-pulse" />
-
-                  <div className="space-y-1">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
-                  </div>
-
+                  <div className="h-4 bg-gray-200 rounded animate-pulse" />
                   <div className="h-3 w-1/2 bg-gray-200 rounded animate-pulse" />
                 </div>
               </div>
@@ -70,17 +204,17 @@ export default function Page() {
           </div>
         )}
 
-        {/* 空状態 */}
-        {!loading && videos.length === 0 && (
+        {/* 空 */}
+        {!loading && displayData.length === 0 && (
           <div className="text-center py-20 text-gray-600">
-            楽曲はまだありません。
+            該当する楽曲がありません。
           </div>
         )}
 
         {/* グリッド */}
-        {!loading && videos.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {videos.map((video, i) => (
+        {!loading && displayData.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {displayData.map((video, i) => (
               <div
                 key={i}
                 className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md"
@@ -97,18 +231,15 @@ export default function Page() {
 
                   {/* テキスト */}
                   <div className="flex flex-col mt-2 px-2 pb-2">
-
-                    {/* タイトル */}
-                    <h2 className="mt-1 text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
+                    <h2 className="text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
                       {video.title}
                     </h2>
 
-                    {/* 投稿者 */}
-                    <p className="text-xs text-gray-600 mt-1 truncate min-h-[1rem]">
+                    <p className="text-xs text-gray-600 mt-1 truncate">
                       {video.author}
                     </p>
-
                   </div>
+
                 </a>
               </div>
             ))}
