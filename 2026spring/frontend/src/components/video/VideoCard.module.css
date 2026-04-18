@@ -72,3 +72,77 @@
  white-space: nowrap;
  text-overflow: ellipsis;
 }
+
+.container {
+  padding: 10px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.titleWrapper {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titleMain {
+  margin: 0;
+  text-align: center;
+  font-size: 45px;
+  font-weight: 650;
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: #818994;
+  margin-top: 3px;
+}
+
+.skeletonThumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 5px;
+}
+
+.skeletonText {
+  height: 16px;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.skeletonTextSmall {
+  height: 12px;
+  margin-top: 6px;
+  width: 60%;
+  border-radius: 4px;
+}
+
+.skeletonThumbnail,
+.skeletonText,
+.skeletonTextSmall {
+  background: linear-gradient(
+    90deg,
+    #eee 25%,
+    #f5f5f5 50%,
+    #eee 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -55,14 +55,14 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
 
           <li className="menu-title mt-4 text-skyblue font-bold tracking-widest text-xs uppercase">投稿作品</li>
           <li><Link href="/submissions/songs/rookie" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 ルーキー</Link></li>
-          <li><Link href="/submissions/songs/op" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 OPステージ</Link></li>
-          <li><Link href="/submissions/songs/extra" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 EXステージ</Link></li>
+          <li><Link href="/submissions/songs/opening" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 opステージ</Link></li>
+          <li><Link href="/submissions/songs/extra" onClick={closeDrawer}><Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧 exステージ</Link></li>
 
           <li className="menu-title mt-4 text-cherry font-bold tracking-widest text-xs uppercase">人気投票</li>
           <li><Link href="/submissions/vote/preliminaries" onClick={closeDrawer}><Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 予選</Link></li>
           <li><Link href="/submissions/vote/semifinals" onClick={closeDrawer}><Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 準決勝</Link></li>
           <li><Link href="/submissions/vote/finals" onClick={closeDrawer}><Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 決勝</Link></li>
-          <li><Link href="/submissions/vote/extra" onClick={closeDrawer}><Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 EXステージ</Link></li>
+          <li><Link href="/submissions/vote/extra" onClick={closeDrawer}><Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 exステージ</Link></li>
 
           <li className="menu-title mt-4 text-yellow-500 font-bold tracking-widest text-xs uppercase">二次創作</li>
           <li><Link href="/derivative/streams" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 紹介配信</Link></li>
