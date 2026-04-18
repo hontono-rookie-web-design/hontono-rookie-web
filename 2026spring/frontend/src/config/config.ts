@@ -4,48 +4,24 @@ export const CONFIG = {
   },
 
   fanficsheets: {
-    spreadsheetId: "17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8",
-
-    streams: {
-      name: "紹介配信",
-    },
-
-    illustrations: {
-      name: "イラスト",
-    },
-
-    arrangements: {
-      name: "アレンジ",
-    },
-
-    coversongs: {
-      name: "歌ってみた",
-    },
-
-    others: {
-      name: "その他",
-    },
+    spreadsheetId: process.env.NEXT_PUBLIC_FANFIC_SPREADSHEET_ID!,
+    streams: { name: "紹介配信" },
+    illustrations: { name: "イラスト" },
+    arrangements: { name: "アレンジ" },
+    coversongs: { name: "歌ってみた" },
+    others: { name: "その他" },
   },
 
   notesheets: {
-    spreadsheetId: "1PDeZgdU8L_Kk7Qqx_Q1Fx8K_unG3X0S0Op1pWda0BX8",
+    spreadsheetId: process.env.NEXT_PUBLIC_NOTE_SPREADSHEET_ID!,
     name: "list",
   },
 
   videosheets: {
-    spreadsheetId: "1lZN68Ojwz1f_x2KEU_ukACzAMDIZUWurV6LI3F3YKj0",
-
-    rookie: {
-      name: "rookie",
-    },
-
-    op: {
-      name: "op",
-    },
-
-    ex: {
-      name: "ex",
-    },
+    spreadsheetId: process.env.NEXT_PUBLIC_VIDEO_SPREADSHEET_ID!,
+    rookie: { name: "rookie" },
+    op: { name: "op" },
+    ex: { name: "ex" },
   },
 
   images: {
