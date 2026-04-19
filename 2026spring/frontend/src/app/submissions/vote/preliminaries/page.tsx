@@ -234,7 +234,7 @@ export default function Page() {
         </div>
       )}
 
-      <div className="mt-4 border-b border-gray-200 w-full" />
+      <div className="w-full max-w-[900px] border-b border-gray-200 mb-6" />
 
       {/* RANK */}
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
