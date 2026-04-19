@@ -139,10 +139,10 @@ def main():
         print(f"Using random seed: {seed}")
         grouper = ContentGrouper(content_ids, seed=seed)
 
-        # グループ一つあたりの人数（サイズ）によってグループ分け
-        group_size = config["vote_grouping"]["group_size"]
-        print(f"Grouping by size: {group_size} items per group")
-        grouper.group_by_size(group_size)
+        # グループ数によってグループ分け
+        group_num = config["vote_grouping"]["group_num"]
+        print(f"Grouping by number: {group_num} groups")
+        grouper.group_by_count(group_num)
 
         # DataFrameにグループ番号の列を追加
         df["グループID"] = df["動画ID"].apply(grouper.get_group_id)
