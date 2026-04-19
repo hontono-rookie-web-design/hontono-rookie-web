@@ -105,12 +105,10 @@ def main():
 
     # シートに接続
     config = utils.load_config()
-    tag_config: dict[str, str] = config["tag"]
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
     catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    # for div in ["rookie", "op", "ex"]:
-    for div in tag_config.keys():
+    for div in ["rookie", "ex"]:
 
         catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
 
