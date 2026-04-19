@@ -69,7 +69,7 @@ function formatDate(dateStr?: string) {
   const d = new Date(dateStr)
   if (isNaN(d.getTime())) return ""
 
-  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`
 }
 
 function cleanDescription(text?: string) {
@@ -144,13 +144,14 @@ export default function Page() {
   }, [])
 
   const rankedVideos = useMemo(() => {
-    return ranks
-      .sort((a,b)=>a.rank-b.rank)
-      .map(r => ({
-        ...r,
-        video: videos.find(v => v.videoId === r.videoId)
-      }))
-      .filter(v => v.video)
+    return [...ranks]
+      .sort((a, b) => a.rank - b.rank)
+      .map(r => {
+        const video = videos.find(v => v.videoId === r.videoId)
+        if (!video) return null
+        return { ...r, video }
+      })
+      .filter((v): v is { rank: number; video: Video } => v !== null)
   }, [ranks, videos])
 
   /* =========================
@@ -197,23 +198,44 @@ export default function Page() {
           </h2>
 
           <div className="grid grid-cols-[60px_60px_1fr_160px] text-sm mb-1 font-semibold text-gray-600">
-            <div>順位</div><div></div><div>タイトル</div><div>投稿者</div>
+            <div>順位</div>
+            <div></div>
+            <div>タイトル</div>
+            <div>投稿者</div>
           </div>
 
           <div className="flex flex-col gap-1">
-            {rankedVideos.map(({rank, video}) => (
+            {rankedVideos.map(({ rank, video }) => (
               <a
                 key={video.videoId}
                 href={video.videoUrl}
                 target="_blank"
-                className={`grid grid-cols-[60px_60px_1fr_160px] items-center gap-2 px-2 py-1 rounded ${medalClass(rank)}`}
+                className={`
+                  group grid grid-cols-[60px_60px_1fr_160px]
+                  items-center gap-2 px-2 py-1 rounded
+                  transition-all duration-200
+                  hover:shadow-md hover:-translate-y-[1px]
+                  ${medalClass(rank)}
+                `}
               >
-                <div className={`text-center font-bold ${rank<=3 ? "text-lg" : ""}`}>
+                <div className={`text-center font-bold ${rank <= 3 ? "text-lg" : ""}`}>
                   {rank}
                 </div>
-                <img src={video.thumbnailUrl} className="w-12 h-8 object-cover rounded"/>
-                <div className="truncate">{video.title}</div>
-                <div className="truncate">{video.creator}</div>
+
+                <div className="overflow-hidden rounded">
+                  <img
+                    src={video.thumbnailUrl}
+                    className="w-12 h-8 object-cover transition-transform duration-200 group-hover:scale-105"
+                  />
+                </div>
+
+                <div className="truncate group-hover:underline">
+                  {video.title}
+                </div>
+
+                <div className="truncate">
+                  {video.creator}
+                </div>
               </a>
             ))}
           </div>
@@ -224,18 +246,30 @@ export default function Page() {
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && vote?.formUrl && (
-          <a href={vote.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
+          <a
+            href={vote.formUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
+          >
             人気投票はこちら
           </a>
         )}
 
         {vote?.mylistUrl && (
-          <a href={vote.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
+          <a
+            href={vote.mylistUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
+          >
             {PHASE_LABEL}楽曲マイリストはこちら
           </a>
         )}
 
-        <a href={CONFIG.links.voteGuide} target="_blank" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
+        >
           人気投票の詳細はこちら
         </a>
 
@@ -244,24 +278,51 @@ export default function Page() {
       {/* LIST */}
       {loading ? (
         <div className="flex flex-col gap-6 items-center w-full">
-          {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : (
         <div className="flex flex-col gap-6 items-center w-full">
-          {videos.map((item,i)=>(
-            <div key={i} className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
+          {videos.map((item, i) => (
+            <div
+              key={i}
+              className="
+                group w-full max-w-[900px]
+                rounded-xl bg-white p-4 shadow-sm
+                transition-all duration-200
+                hover:shadow-md hover:-translate-y-[1px]
+              "
+            >
               <div className="flex gap-4">
-                <a href={item.videoUrl} target="_blank">
-                  <img src={item.thumbnailUrl} className="w-40 h-24 object-cover rounded"/>
+
+                <a href={item.videoUrl} target="_blank" className="overflow-hidden rounded">
+                  <img
+                    src={item.thumbnailUrl}
+                    className="w-40 h-24 object-cover transition-transform duration-200 group-hover:scale-105"
+                  />
                 </a>
+
                 <div className="flex flex-col flex-1 min-w-0">
-                  <h2 className="font-bold line-clamp-2">{item.title}</h2>
-                  <p className="text-sm text-gray-700">{item.creator}</p>
-                  <p className="text-xs text-gray-500">{formatDate(item.publishedAt)}</p>
-                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                  <a href={item.videoUrl} target="_blank">
+                    <h2 className="font-bold line-clamp-2 group-hover:underline">
+                      {item.title}
+                    </h2>
+                  </a>
+
+                  <p className="text-sm text-gray-700 truncate">
+                    {item.creator}
+                  </p>
+
+                  <p className="text-xs text-gray-500">
+                    {formatDate(item.publishedAt)}
+                  </p>
+
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-2 break-words">
                     {cleanDescription(item.description)}
                   </p>
                 </div>
+
               </div>
             </div>
           ))}

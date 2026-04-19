@@ -6,7 +6,7 @@ import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
 
 /* =========================
-   表示ラベル（ここで一括管理）
+   表示ラベル
 ========================= */
 const DISC_LABEL = "Disc"
 const PHASE_LABEL = "予選"
@@ -239,6 +239,7 @@ export default function Page() {
       {/* RANK */}
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
         <div className="w-full max-w-[900px] mb-6">
+
           <h2 className="font-bold mb-2">
             {DISC_LABEL} {activeGroup} 人気投票結果
           </h2>
@@ -253,14 +254,32 @@ export default function Page() {
                 key={video.videoId}
                 href={video.videoUrl}
                 target="_blank"
-                className={`grid grid-cols-[60px_60px_1fr_160px] items-center gap-2 px-2 py-1 rounded ${medalClass(rank)}`}
+                className={`
+                  group grid grid-cols-[60px_60px_1fr_160px]
+                  items-center gap-2 px-2 py-1 rounded
+                  transition-all duration-200
+                  hover:shadow-md hover:-translate-y-[1px]
+                  ${medalClass(rank)}
+                `}
               >
                 <div className={`text-center font-bold ${rank<=3 ? "text-lg" : ""}`}>
                   {rank}
                 </div>
-                <img src={video.thumbnailUrl} className="w-12 h-8 object-cover rounded" />
-                <div className="truncate">{video.title}</div>
-                <div className="truncate">{video.creator}</div>
+
+                <div className="overflow-hidden rounded">
+                  <img
+                    src={video.thumbnailUrl}
+                    className="w-12 h-8 object-cover transition-transform duration-200 group-hover:scale-105"
+                  />
+                </div>
+
+                <div className="truncate group-hover:underline">
+                  {video.title}
+                </div>
+
+                <div className="truncate">
+                  {video.creator}
+                </div>
               </a>
             ))}
           </div>
@@ -271,46 +290,83 @@ export default function Page() {
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
-          <a href={voteInfo.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
+          <a
+            href={voteInfo.formUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
+          >
             {DISC_LABEL} {activeGroup}の人気投票はこちら
           </a>
         )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
-          <a href={voteInfo.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
+          <a
+            href={voteInfo.mylistUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
+          >
             {DISC_LABEL}{activeGroup}楽曲マイリストはこちら
           </a>
         )}
 
-        <a href={CONFIG.links.voteGuide} target="_blank" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
+        >
           人気投票の詳細はこちら
         </a>
 
       </div>
 
-      {/* LOADING / LIST */}
+      {/* LIST */}
       {loading ? (
         <div className="flex flex-col gap-6 items-center w-full">
-          {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : (
         <div className="flex flex-col gap-6 items-center w-full">
           {displayVideos.map((item,i)=>(
-            <div key={i} className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
+            <div
+              key={i}
+              className="
+                group w-full max-w-[900px]
+                rounded-xl bg-white p-4 shadow-sm
+                transition-all duration-200
+                hover:shadow-md hover:-translate-y-[1px]
+              "
+            >
               <div className="flex gap-4">
-                <a href={item.videoUrl} target="_blank">
-                  <img src={item.thumbnailUrl} className="w-40 h-24 object-cover rounded"/>
+
+                <a href={item.videoUrl} target="_blank" className="overflow-hidden rounded">
+                  <img
+                    src={item.thumbnailUrl}
+                    className="w-40 h-24 object-cover transition-transform duration-200 group-hover:scale-105"
+                  />
                 </a>
+
                 <div className="flex flex-col flex-1 min-w-0">
                   <a href={item.videoUrl} target="_blank">
-                    <h2 className="font-bold line-clamp-2">{item.title}</h2>
+                    <h2 className="font-bold line-clamp-2 group-hover:underline">
+                      {item.title}
+                    </h2>
                   </a>
-                  <p className="text-sm text-gray-700 truncate">{item.creator}</p>
-                  <p className="text-xs text-gray-500">{formatDate(item.publishedAt)}</p>
+
+                  <p className="text-sm text-gray-700 truncate">
+                    {item.creator}
+                  </p>
+
+                  <p className="text-xs text-gray-500">
+                    {formatDate(item.publishedAt)}
+                  </p>
+
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2 break-words">
                     {cleanDescription(item.description)}
                   </p>
                 </div>
+
               </div>
             </div>
           ))}
