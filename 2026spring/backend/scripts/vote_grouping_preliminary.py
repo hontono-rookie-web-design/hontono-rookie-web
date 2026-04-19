@@ -108,55 +108,53 @@ def main():
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
     catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    for div in ["rookie"]:
+    catalog_excluded_sheetname = catalog_sheet_config[f"excluded_rookie_sheet"]
 
-        catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
+    # シートに接続
+    excluded_sheet = connect_sheet(
+        catalog_spreadsheetname, catalog_excluded_sheetname
+    )
 
-        # シートに接続
-        excluded_sheet = connect_sheet(
-            catalog_spreadsheetname, catalog_excluded_sheetname
-        )
+    # シートからデータを取得
+    video_data = sheet_client.fetch_sheet_data(excluded_sheet)
+    # print(video_data)
 
-        # シートからデータを取得
-        video_data = sheet_client.fetch_sheet_data(excluded_sheet)
-        # print(video_data)
+    # 取得したデータが空であればスキップ
+    if any(video_data) == False:
+        print(f"No data found in {catalog_excluded_sheetname}. Skipping.")
+        return
 
-        # 取得したデータが空であればスキップ
-        if any(video_data) == False:
-            print(f"No data found in {catalog_excluded_sheetname}. Skipping.")
-            continue
+    # pandasのDataFrameに変換
+    df = pd.DataFrame(video_data)
+    # print(df)
 
-        # pandasのDataFrameに変換
-        df = pd.DataFrame(video_data)
-        # print(df)
+    # content_idのリストを作成
+    content_ids = df["動画ID"].tolist()
+    # print(content_ids)
 
-        # content_idのリストを作成
-        content_ids = df["動画ID"].tolist()
-        # print(content_ids)
+    # グループ分け
+    seed = config["vote_grouping"]["random_seed"]
+    print(f"Using random seed: {seed}")
+    grouper = ContentGrouper(content_ids, seed=seed)
 
-        # グループ分け
-        seed = config["vote_grouping"]["random_seed"]
-        print(f"Using random seed: {seed}")
-        grouper = ContentGrouper(content_ids, seed=seed)
+    # グループ数によってグループ分け
+    group_num = config["vote_grouping"]["group_num"]
+    print(f"Grouping by number: {group_num} groups")
+    grouper.group_by_count(group_num)
 
-        # グループ数によってグループ分け
-        group_num = config["vote_grouping"]["group_num"]
-        print(f"Grouping by number: {group_num} groups")
-        grouper.group_by_count(group_num)
+    # DataFrameにグループ番号の列を追加
+    df["グループID"] = df["動画ID"].apply(grouper.get_group_id)
 
-        # DataFrameにグループ番号の列を追加
-        df["グループID"] = df["動画ID"].apply(grouper.get_group_id)
+    print(df)
 
-        print(df)
+    # グループ分けされたデータを新しいシートに書き込む
+    output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+    output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"rookie_sheet"]
+    output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
+    sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
+    sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
 
-        # グループ分けされたデータを新しいシートに書き込む
-        output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-        output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"{div}_sheet"]
-        output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
-        sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
-        sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
-
-        print(f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data.")
+    print(f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data.")
 
 if __name__ == "__main__":
     main()
