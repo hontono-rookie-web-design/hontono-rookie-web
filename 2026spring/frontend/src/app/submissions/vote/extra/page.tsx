@@ -185,7 +185,7 @@ export default function Page() {
           </p>
         )}
 
-        <div className="mt-4 border-b w-full" />
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
       {/* RANK */}

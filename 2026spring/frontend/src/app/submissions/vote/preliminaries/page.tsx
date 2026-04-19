@@ -213,7 +213,7 @@ export default function Page() {
           </p>
         )}
 
-        <div className="mt-4 border-b w-full" />
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
       {/* DISC SELECT */}
@@ -234,7 +234,7 @@ export default function Page() {
         </div>
       )}
 
-      <div className="w-full max-w-[900px] border-b mb-6" />
+      <div className="mt-4 border-b border-gray-200 w-full" />
 
       {/* RANK */}
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
