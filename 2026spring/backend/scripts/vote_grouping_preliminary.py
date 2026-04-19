@@ -108,7 +108,7 @@ def main():
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
     catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    for div in ["rookie", "ex"]:
+    for div in ["rookie"]:
 
         catalog_excluded_sheetname = catalog_sheet_config[f"excluded_{div}_sheet"]
 
