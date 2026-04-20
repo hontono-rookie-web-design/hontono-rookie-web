@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { CONFIG } from "@/config/config"
+import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
+import TBA from "@/components/TBA"
 
 type Video = {
   title: string
@@ -10,6 +12,32 @@ type Video = {
   thumbnailUrl: string
   publishedAt?: string
   description?: string
+}
+
+/* =========================
+   表示フェーズ定義（安全化）
+========================= */
+const VIEW_PHASE = {
+  BEFORE: "before",
+  DURING: "during",
+} as const
+
+function getViewPhase(phase: string) {
+  switch (phase) {
+    case EVENT_PHASES.BEFORE:
+    case EVENT_PHASES.OPENING:
+      return VIEW_PHASE.BEFORE
+
+    case EVENT_PHASES.ROOKIE:
+    case EVENT_PHASES.PRELIM:
+    case EVENT_PHASES.SEMIFINAL:
+    case EVENT_PHASES.FINAL:
+    case EVENT_PHASES.AFTER:
+      return VIEW_PHASE.DURING
+
+    default:
+      return VIEW_PHASE.BEFORE
+  }
 }
 
 /* =========================
@@ -40,6 +68,9 @@ export default function Page() {
   const [searchText, setSearchText] = useState("")
   const [sortType, setSortType] = useState<"new" | "old">("new")
   const [isRandom, setIsRandom] = useState(false)
+
+  const phase = getCurrentPhase()
+  const viewPhase = getViewPhase(phase)
 
   /* =========================
      初期ロード（旧API）
@@ -117,6 +148,13 @@ export default function Page() {
   const handleSearchChange = (val: string) => {
     setSearchText(val)
     setIsRandom(false)
+  }
+
+  /* =========================
+       BEFORE
+    ========================= */
+  if (viewPhase === VIEW_PHASE.BEFORE) {
+    return <TBA title={`楽曲一覧 ルーキー`} />
   }
 
   return (

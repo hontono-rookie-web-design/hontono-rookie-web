@@ -1,5 +1,7 @@
 export const EVENT_PHASES = {
-  BEFORE: "before",
+  BEFORE: "before",        // 開催前
+  OPENING: "opening",      // opステージ投稿期間
+  ROOKIE: "rookie",        // ルーキー投稿期間
   PRELIM: "prelim",        // 予選投票期間
   SEMIFINAL: "semifinal",  // 準決勝
   FINAL: "final",          // 決勝

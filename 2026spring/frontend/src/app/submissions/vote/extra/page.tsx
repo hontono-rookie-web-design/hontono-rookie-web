@@ -22,6 +22,8 @@ const VIEW_PHASE = {
 function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
+    case EVENT_PHASES.OPENING:
+    case EVENT_PHASES.ROOKIE:
     case EVENT_PHASES.PRELIM:
     case EVENT_PHASES.SEMIFINAL:
       return VIEW_PHASE.BEFORE
