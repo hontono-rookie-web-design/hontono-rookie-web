@@ -153,7 +153,7 @@ export default function Page() {
         if (!video) return null
         return { ...r, video }
       })
-      .filter((v): v is { rank: number; video: Video } => v !== null)
+      .filter((v): v is { videoId: string; rank: number; video: Video } => v !== null)
   }, [ranks, videos])
 
   /* =========================
