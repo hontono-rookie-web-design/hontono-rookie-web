@@ -245,7 +245,7 @@ export default function Page() {
         {/* 空 */}
         {!loading && displayData.length === 0 && (
           <div className="text-center py-20 text-gray-600">
-            該当する楽曲がありません。
+            ルーキー楽曲はまだありません。
           </div>
         )}
 
