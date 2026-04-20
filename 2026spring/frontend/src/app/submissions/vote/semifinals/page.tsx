@@ -177,10 +177,10 @@ export default function Page() {
       .filter(r => r.group === activeGroup && r.rank)
       .sort((a,b)=>a.rank-b.rank)
       .map(r => ({
-        ...r,
+        rank: r.rank,
         video: videos.find(v => v.videoId === r.videoId)
       }))
-      .filter(v => v.video)
+      .filter((v): v is { rank: number; video: Video } => v.video !== undefined)
   }, [ranks, videos, activeGroup])
 
   /* =========================
@@ -193,7 +193,6 @@ export default function Page() {
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
 
-      {/* TITLE */}
       <div className="text-center mb-6 w-full max-w-[900px]">
         <h1 className="text-3xl md:text-4xl font-bold">
           人気投票 {PHASE_LABEL}
@@ -218,7 +217,6 @@ export default function Page() {
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
-      {/* DISC SELECT */}
       {!loading && (
         <div className="w-full max-w-[900px] grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4">
           {groups.map(g => (
@@ -238,7 +236,6 @@ export default function Page() {
 
       <div className="w-full max-w-[900px] border-b border-gray-200 mb-6" />
 
-      {/* RANK */}
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
         <div className="w-full max-w-[900px] mb-6">
 
@@ -288,40 +285,25 @@ export default function Page() {
         </div>
       )}
 
-      {/* BUTTONS */}
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
-          <a
-            href={voteInfo.formUrl}
-            target="_blank"
-            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
-          >
+          <a href={voteInfo.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
             {DISC_LABEL} {activeGroup}の人気投票はこちら
           </a>
         )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
-          <a
-            href={voteInfo.mylistUrl}
-            target="_blank"
-            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
-          >
+          <a href={voteInfo.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
             {DISC_LABEL}{activeGroup}楽曲マイリストはこちら
           </a>
         )}
 
-        <a
-          href={CONFIG.links.voteGuide}
-          target="_blank"
-          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
-        >
+        <a href={CONFIG.links.voteGuide} target="_blank" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
           人気投票の詳細はこちら
         </a>
-
       </div>
 
-      {/* LIST */}
       {loading ? (
         <div className="flex flex-col gap-6 items-center w-full">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -336,21 +318,11 @@ export default function Page() {
               href={item.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="
-                group w-full max-w-[900px]
-                rounded-xl bg-white p-4 shadow-sm
-                transition-all duration-200
-                hover:shadow-md hover:-translate-y-[1px]
-                block
-              "
+              className="group w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-[1px] block"
             >
               <div className="flex gap-4">
-
                 <div className="overflow-hidden rounded">
-                  <img
-                    src={item.thumbnailUrl}
-                    className="w-40 h-24 object-cover transition-transform duration-200 group-hover:scale-105"
-                  />
+                  <img src={item.thumbnailUrl} className="w-40 h-24 object-cover group-hover:scale-105" />
                 </div>
 
                 <div className="flex flex-col flex-1 min-w-0">
@@ -370,13 +342,11 @@ export default function Page() {
                     {cleanDescription(item.description)}
                   </p>
                 </div>
-
               </div>
             </a>
           ))}
         </div>
       )}
-
     </div>
   )
 }

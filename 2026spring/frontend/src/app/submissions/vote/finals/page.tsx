@@ -196,7 +196,7 @@ export default function Page() {
         <div className="w-full max-w-[900px] mb-6">
 
           <h2 className="font-bold mb-2">
-            人気投票結果
+            決勝 人気投票結果
           </h2>
 
           <div className="grid grid-cols-[60px_60px_1fr_160px] text-sm mb-1 font-semibold text-gray-600">

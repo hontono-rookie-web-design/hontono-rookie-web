@@ -177,10 +177,10 @@ export default function Page() {
       .filter(r => r.group === activeGroup && r.rank)
       .sort((a,b)=>a.rank-b.rank)
       .map(r => ({
-        ...r,
+        rank: r.rank,
         video: videos.find(v => v.videoId === r.videoId)
       }))
-      .filter(v => v.video)
+      .filter((v): v is { rank: number; video: Video } => v.video !== undefined)
   }, [ranks, videos, activeGroup])
 
   /* =========================
