@@ -56,7 +56,7 @@ export const CONFIG = {
   },
 
   images: {
-    defaultIllustration: "/2026春ロゴ.png",
+    defaultIllustration: "/2026spring_logo.png",
   },
 
   links: {
