@@ -329,30 +329,32 @@ export default function Page() {
       ) : (
         <div className="flex flex-col gap-6 items-center w-full">
           {displayVideos.map((item,i)=>(
-            <div
+            <a
               key={i}
+              href={item.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="
                 group w-full max-w-[900px]
                 rounded-xl bg-white p-4 shadow-sm
                 transition-all duration-200
                 hover:shadow-md hover:-translate-y-[1px]
+                block
               "
             >
               <div className="flex gap-4">
 
-                <a href={item.videoUrl} target="_blank" className="overflow-hidden rounded">
+                <div className="overflow-hidden rounded">
                   <img
                     src={item.thumbnailUrl}
                     className="w-40 h-24 object-cover transition-transform duration-200 group-hover:scale-105"
                   />
-                </a>
+                </div>
 
                 <div className="flex flex-col flex-1 min-w-0">
-                  <a href={item.videoUrl} target="_blank">
-                    <h2 className="font-bold line-clamp-2 group-hover:underline">
-                      {item.title}
-                    </h2>
-                  </a>
+                  <h2 className="font-bold line-clamp-2 group-hover:underline">
+                    {item.title}
+                  </h2>
 
                   <p className="text-sm text-gray-700 truncate">
                     {item.creator}
@@ -368,7 +370,7 @@ export default function Page() {
                 </div>
 
               </div>
-            </div>
+            </a>
           ))}
         </div>
       )}
