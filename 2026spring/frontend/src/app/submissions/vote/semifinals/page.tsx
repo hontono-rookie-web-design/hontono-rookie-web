@@ -198,7 +198,7 @@ export default function Page() {
         </h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」参加楽曲を{DISC_LABEL}ごとに掲載しています。
+          「本当のルーキー祭り2026春」準決勝の楽曲を{DISC_LABEL}ごとに掲載しています。
         </p>
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (
