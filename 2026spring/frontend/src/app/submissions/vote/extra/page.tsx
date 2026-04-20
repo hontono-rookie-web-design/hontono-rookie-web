@@ -118,62 +118,42 @@ export default function Page() {
   const [loading, setLoading] = useState(true)
 
   /* =========================
-     fetch（安全版）
+     fetch
   ========================= */
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [videoRes, voteRes, rankRes] = await Promise.all([
-          fetch("/api/submissions/vote/extra/songs"),
-          fetch("/api/submissions/vote/extra/forms"),
-          fetch("/api/submissions/vote/extra/ranks"),
-        ])
+    Promise.all([
+      fetch("/api/submissions/vote/extra/songs").then(r => r.json()),
+      fetch("/api/submissions/vote/extra/forms").then(r => r.json()),
+      fetch("/api/submissions/vote/extra/ranks").then(r => r.json()),
+    ]).then(([videoRes, voteRes, rankRes]) => {
 
-        const videoJson = await videoRes.json()
-        const voteJson = await voteRes.json()
-        const rankJson = await rankRes.json()
+      const mappedVideos: Video[] = videoRes.map((v: any) => ({
+        title: v.title,
+        creator: v.creator,
+        videoUrl: v.videoUrl,
+        thumbnailUrl: v.thumbnailUrl,
+        publishedAt: v.publishedAt,
+        description: v.description,
+        videoId: v.videoId,
+      }))
 
-        const mappedVideos: Video[] = (videoJson ?? []).map((v: any) => ({
-          title: v?.title ?? "",
-          creator: v?.creator ?? "",
-          videoUrl: v?.videoUrl ?? "#",
-          thumbnailUrl: v?.thumbnailUrl ?? "",
-          publishedAt: v?.publishedAt,
-          description: v?.description,
-          videoId: v?.videoId,
-        }))
+      setVideos(mappedVideos)
+      setVote(voteRes?.[0] ?? null)
+      setRanks(rankRes)
 
-        setVideos(mappedVideos)
-        setVote(voteJson?.[0] ?? null)
-        setRanks(rankJson ?? [])
-      } catch (e) {
-        console.error("fetch error", e)
-        setVideos([])
-        setRanks([])
-        setVote(null)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchData()
+      setLoading(false)
+    })
   }, [])
 
-  /* =========================
-     ranking（完全安全版）
-  ========================= */
   const rankedVideos = useMemo(() => {
-    return ranks
-      .map(r => {
-        const video = videos.find(v => v.videoId && v.videoId === r.videoId)
-        if (!video) return null
-        return { videoId: r.videoId, rank: r.rank, video }
-      })
-      .filter(
-        (v): v is { videoId: string; rank: number; video: Video } =>
-          v !== null
-      )
+    return [...ranks]
       .sort((a, b) => a.rank - b.rank)
+      .map(r => {
+        const video = videos.find(v => v.videoId === r.videoId)
+        if (!video) return null
+        return { ...r, video }
+      })
+      .filter((v): v is { videoId: string; rank: number; video: Video } => v !== null)
   }, [ranks, videos])
 
   /* =========================
@@ -220,16 +200,18 @@ export default function Page() {
           </h2>
 
           <div className="grid grid-cols-[60px_60px_1fr_160px] text-sm mb-1 font-semibold text-gray-600">
-            <div>順位</div><div></div><div>タイトル</div><div>投稿者</div>
+            <div>順位</div>
+            <div></div>
+            <div>タイトル</div>
+            <div>投稿者</div>
           </div>
 
           <div className="flex flex-col gap-1">
             {rankedVideos.map(({ rank, video }) => (
               <a
-                key={video.videoId ?? `${video.title}-${rank}`}
+                key={video.videoId}
                 href={video.videoUrl}
                 target="_blank"
-                rel="noopener noreferrer"
                 className={`
                   group grid grid-cols-[60px_60px_1fr_160px]
                   items-center gap-2 px-2 py-1 rounded
@@ -266,18 +248,30 @@ export default function Page() {
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && vote?.formUrl && (
-          <a href={vote.formUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
+          <a
+            href={vote.formUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
+          >
             人気投票はこちら
           </a>
         )}
 
         {vote?.mylistUrl && (
-          <a href={vote.mylistUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
+          <a
+            href={vote.mylistUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
+          >
             {PHASE_LABEL}楽曲マイリストはこちら
           </a>
         )}
 
-        <a href={CONFIG.links.voteGuide} target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
+        >
           人気投票の詳細はこちら
         </a>
 
@@ -294,7 +288,7 @@ export default function Page() {
         <div className="flex flex-col gap-6 items-center w-full">
           {videos.map((item, i) => (
             <a
-              key={item.videoId ?? `${item.title}-${i}`}
+              key={i}
               href={item.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
