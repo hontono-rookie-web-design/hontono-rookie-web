@@ -5,11 +5,15 @@ import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
 
-/* ========================= */
+/* =========================
+   表示ラベル
+========================= */
 const DISC_LABEL = "Selec."
 const PHASE_LABEL = "準決勝"
 
-/* ========================= */
+/* =========================
+   表示フェーズ定義（安全化）
+========================= */
 const VIEW_PHASE = {
   BEFORE: "before",
   DURING: "during",
@@ -36,7 +40,9 @@ function getViewPhase(phase: string) {
   }
 }
 
-/* ========================= */
+/* =========================
+   型
+========================= */
 type Video = {
   title: string
   creator: string
@@ -61,7 +67,9 @@ type Rank = {
   rank: number
 }
 
-/* ========================= */
+/* =========================
+   util
+========================= */
 function formatDate(dateStr?: string) {
   if (!dateStr) return ""
   const d = new Date(dateStr)
@@ -82,7 +90,9 @@ function medalClass(rank: number) {
   return "bg-gray-100"
 }
 
-/* ========================= */
+/* =========================
+   Skeleton
+========================= */
 function SkeletonCard() {
   return (
     <div className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
@@ -99,7 +109,9 @@ function SkeletonCard() {
   )
 }
 
-/* ========================= */
+/* =========================
+   Page
+========================= */
 export default function Page() {
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
@@ -111,48 +123,41 @@ export default function Page() {
 
   const [activeGroup, setActiveGroup] = useState<number | null>(null)
 
-  /* ========================= */
+  /* =========================
+     fetch
+  ========================= */
   useEffect(() => {
     Promise.all([
       fetch("/api/submissions/vote/semifinals/songs").then(r => r.json()),
       fetch("/api/submissions/vote/semifinals/forms").then(r => r.json()),
       fetch("/api/submissions/vote/semifinals/ranks").then(r => r.json()),
-    ])
-      .then(([videoRes, voteRes, rankRes]) => {
+    ]).then(([videoRes, voteRes, rankRes]) => {
 
-        const safeVideos = Array.isArray(videoRes) ? videoRes : []
-        const safeVotes = Array.isArray(voteRes) ? voteRes : []
-        const safeRanks = Array.isArray(rankRes) ? rankRes : []
+      const mappedVideos: Video[] = videoRes.map((v: any) => ({
+        title: v.title,
+        creator: v.creator,
+        videoUrl: v.videoUrl,
+        thumbnailUrl: v.thumbnailUrl,
+        publishedAt: v.publishedAt,
+        description: v.description,
+        group: Number(v.group || 0),
+        videoId: v.videoId,
+      }))
 
-        const mappedVideos: Video[] = safeVideos.map((v: any) => ({
-          title: v?.title ?? "",
-          creator: v?.creator ?? "",
-          videoUrl: v?.videoUrl ?? "",
-          thumbnailUrl: v?.thumbnailUrl ?? "",
-          publishedAt: v?.publishedAt,
-          description: v?.description,
-          group: Number(v?.group ?? 0),
-          videoId: v?.videoId,
-        }))
+      setVideos(mappedVideos)
+      setVotes(voteRes)
+      setRanks(rankRes)
 
-        setVideos(mappedVideos)
-        setVotes(safeVotes)
-        setRanks(safeRanks)
+      const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
+      setActiveGroup(groups[0] ?? null)
 
-        const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
-        setActiveGroup(groups[0] ?? null)
-      })
-      .catch(() => {
-        setVideos([])
-        setVotes([])
-        setRanks([])
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      setLoading(false)
+    })
   }, [])
 
-  /* ========================= */
+  /* =========================
+     group
+  ========================= */
   const groups = useMemo(() => {
     return [...new Set(videos.map(v => v.group))].sort((a,b)=>a-b)
   }, [videos])
@@ -168,19 +173,19 @@ export default function Page() {
 
   const rankedVideos = useMemo(() => {
     if (activeGroup === null) return []
-
     return ranks
-      .filter(r => r.group === activeGroup && typeof r.rank === "number")
+      .filter(r => r.group === activeGroup && r.rank)
       .sort((a,b)=>a.rank-b.rank)
-      .map(r => {
-        const video = videos.find(v => v.videoId && v.videoId === r.videoId)
-        if (!video) return null
-        return { ...r, video }
-      })
-      .filter(v => v !== null)
+      .map(r => ({
+        ...r,
+        video: videos.find(v => v.videoId === r.videoId)
+      }))
+      .filter(v => v.video)
   }, [ranks, videos, activeGroup])
 
-  /* ========================= */
+  /* =========================
+     BEFORE
+  ========================= */
   if (viewPhase === VIEW_PHASE.BEFORE) {
     return <TBA title={`人気投票 ${PHASE_LABEL}`} />
   }
@@ -248,10 +253,9 @@ export default function Page() {
           <div className="flex flex-col gap-1">
             {rankedVideos.map(({rank, video}) => (
               <a
-                key={video.videoId ?? `${rank}-${video.title}`}
+                key={video.videoId}
                 href={video.videoUrl}
                 target="_blank"
-                rel="noopener noreferrer"
                 className={`
                   group grid grid-cols-[60px_60px_1fr_160px]
                   items-center gap-2 px-2 py-1 rounded
@@ -284,6 +288,39 @@ export default function Page() {
         </div>
       )}
 
+      {/* BUTTONS */}
+      <div className="flex flex-wrap gap-3 mb-6 justify-center">
+
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
+          <a
+            href={voteInfo.formUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
+          >
+            {DISC_LABEL} {activeGroup}の人気投票はこちら
+          </a>
+        )}
+
+        {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
+          <a
+            href={voteInfo.mylistUrl}
+            target="_blank"
+            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
+          >
+            {DISC_LABEL}{activeGroup}楽曲マイリストはこちら
+          </a>
+        )}
+
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
+        >
+          人気投票の詳細はこちら
+        </a>
+
+      </div>
+
       {/* LIST */}
       {loading ? (
         <div className="flex flex-col gap-6 items-center w-full">
@@ -295,7 +332,7 @@ export default function Page() {
         <div className="flex flex-col gap-6 items-center w-full">
           {displayVideos.map((item,i)=>(
             <a
-              key={item.videoId ?? `${i}-${item.title}`}
+              key={i}
               href={item.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
