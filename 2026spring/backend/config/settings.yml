@@ -26,6 +26,13 @@ spreadsheets:
   video_catalog_semifinal: # 準決勝進出作品動画リスト
     name: "video_catalog_2026spring_semifinal" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+  
+  ranking_result: #投票結果のシート
+    name: "人気投票順位_2026春" #スプレッドシート名
+    preliminary_sheet: "予選" #予選結果シート名
+    semifinal_sheet: "準決勝" #準決勝結果シート名
+    final_sheet: "決勝" #決勝シート名
+    ex_sheet: "ex" #exシート名
 
   note_list: # Note記事リスト
     name: "note_list_2025autumn" # スプレッドシート名
