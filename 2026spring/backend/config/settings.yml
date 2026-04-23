@@ -55,6 +55,9 @@ vote_grouping: # 投票グループ分け関連パラメータ
     op_sheet: "op"
     ex_sheet: "ex"
 
+vote_semifinal: # 準決勝グループ分け関連パラメータ
+  semifinal_size: 3
+
 vote_form: # 投票フォーム関連パラメータ
   title: "本当のルーキー祭り2025秋_Disc."
   item_title: "好きな作品を教えてください。"

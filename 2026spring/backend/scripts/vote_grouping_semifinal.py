@@ -35,7 +35,7 @@ def main():
     
     #データフレーム作成
     df = pd.DataFrame(preliminary_data)
-    semifinal_group_count = 3 #準決勝グループ数
+    semifinal_group_size = config["vote_semifinal"]["semifinal_size"] #準決勝グループ数
     
     ###
 
