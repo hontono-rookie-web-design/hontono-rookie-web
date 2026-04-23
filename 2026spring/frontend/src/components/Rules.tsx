@@ -490,7 +490,7 @@ export default function Rules() {
             <li>
               指定の
               <a
-                href="https://forms.gle/VXkmUERYv2GABPSR9"
+                href="https://forms.gle/NofKH1UQjiiiHHYe7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-skyblue font-medium text-fg-brand hover:underline"
