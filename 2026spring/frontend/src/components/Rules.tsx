@@ -488,7 +488,16 @@ export default function Rules() {
               のタグをつけてください。
             </li>
             <li>
-              指定のGoogleフォーム（後日公開予定）に投稿内容を入力してください。本サイトに反映されます。投稿者以外が入力しても構いません。
+              指定の
+              <a
+                href="https://forms.gle/VXkmUERYv2GABPSR9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-skyblue font-medium text-fg-brand hover:underline"
+              >
+                Googleフォーム
+              </a>
+              に投稿内容を入力してください。本サイトに反映されます。投稿者以外が入力しても構いません。
               <br />※ note投稿者はGoogleフォームへの回答は不要です。
             </li>
             <li>
