@@ -36,6 +36,15 @@ def main():
     #データフレーム作成
     df = pd.DataFrame(preliminary_data)
     semifinal_group_size = config["vote_semifinal"]["semifinal_size"] #準決勝グループ数
+
+    #準決勝グループ番号を割り振る
+    for pre_group_no, pre_ranking in zip(df["グループID"],df["順位"]):
+        pre_group_no = pre_group_no -1 #0スタートにする
+        pre_ranking = pre_ranking -1 #0スタートにする
+        semifinal_group_no = (pre_group_no+pre_ranking)%semifinal_group_size
+
+        
+
     
     ###
 
