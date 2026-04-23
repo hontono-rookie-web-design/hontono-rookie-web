@@ -11,6 +11,11 @@ def connect_sheet(spreadsheet_name, sheet_name):
 
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 
+def calc_semifinal_no(row,size):
+    m=row["グループID"]-1
+    r=row["順位"]-1
+    return (m+r)%size+1
+
 def main():
 
     # シートに接続
@@ -35,13 +40,10 @@ def main():
     
     #データフレーム作成
     df = pd.DataFrame(preliminary_data)
-    semifinal_group_size = config["vote_semifinal"]["semifinal_size"] #準決勝グループ数
-
-    #準決勝グループ番号を割り振る
-    for pre_group_no, pre_ranking in zip(df["グループID"],df["順位"]):
-        pre_group_no = pre_group_no -1 #0スタートにする
-        pre_ranking = pre_ranking -1 #0スタートにする
-        semifinal_group_no = (pre_group_no+pre_ranking)%semifinal_group_size
+    
+    # semifinal_group_size = config["vote_semifinal"]["semifinal_size"] #準決勝グループ数
+    semifinal_group_size = 3 
+    df["グループID"]=df.apply(calc_semifinal_no,axis=1,args=(semifinal_group_size,))
 
         
 
