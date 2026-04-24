@@ -108,20 +108,20 @@ def main():
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
     catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    catalog_excluded_sheetname = catalog_sheet_config[f"excluded_rookie_sheet"]
+    catalog_sheetname = catalog_sheet_config[f"rookie_sheet"]
 
     # シートに接続
-    excluded_sheet = connect_sheet(
-        catalog_spreadsheetname, catalog_excluded_sheetname
+    videl_catalog_sheet = connect_sheet(
+        catalog_spreadsheetname, catalog_sheetname
     )
 
     # シートからデータを取得
-    video_data = sheet_client.fetch_sheet_data(excluded_sheet)
+    video_data = sheet_client.fetch_sheet_data(videl_catalog_sheet)
     # print(video_data)
 
     # 取得したデータが空であればスキップ
     if any(video_data) == False:
-        print(f"No data found in {catalog_excluded_sheetname}. Skipping.")
+        print(f"No data found in {catalog_sheetname}. Skipping.")
         return
 
     # pandasのDataFrameに変換
