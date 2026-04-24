@@ -2,7 +2,7 @@ export default function Schedule() {
   const scheduleItems = [
     {
       title: "作品投稿期間",
-      date: "2026年4月22日(水) 17:00 〜 4月24日(金) 20:00",
+      date: "2026年4月22日(水) 17:00 〜 4月25日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
       color: "step-primary", // mint
     },

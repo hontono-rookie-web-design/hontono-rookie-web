@@ -89,14 +89,18 @@ def fetch_others(url):
 # サービス振り分け
 # ------------------------
 def fetch_by_service(service, url):
-    if service == "ニコニコ動画":
-        return fetch_niconico(url)
-    elif service == "YouTube":
-        return fetch_youtube(url)
-    elif service == "その他":
-        return fetch_others(url)
-    else:
-        return None
+    try:
+        if service == "ニコニコ動画":
+            return fetch_niconico(url)
+        elif service == "YouTube":
+            return fetch_youtube(url)
+        elif service == "その他":
+            return fetch_others(url)
+        else:
+            return None
+    except Exception as e:
+        print(f"error: {url} -> {e}")
+    return None
 
 
 # ------------------------

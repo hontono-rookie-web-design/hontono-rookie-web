@@ -8,8 +8,6 @@ export default function Hero() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // クライアントサイドでのみフェーズを評価する（ハイドレーションエラー防止）
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -23,15 +21,57 @@ export default function Hero() {
             参加ルールを読む <ArrowRight className="ml-2 w-5 h-5" />
           </a>
         );
-      case EVENT_PHASES.DURING:
+      case EVENT_PHASES.OPENING:
         return (
-          <a href="#" className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30">
-            投票・視聴ページへ <ArrowRight className="ml-2 w-5 h-5" />
+          <a
+            href="/submissions/songs/opening"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+          >
+            参加楽曲ページへ <ArrowRight className="ml-2 w-5 h-5" />
+          </a>
+        );
+      case EVENT_PHASES.ROOKIE:
+        return (
+          <a
+            href="/submissions/songs/rookie"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+          >
+            参加楽曲ページへ <ArrowRight className="ml-2 w-5 h-5" />
+          </a>
+        );
+      case EVENT_PHASES.PRELIM:
+        return (
+          <a
+            href="/submissions/vote/preliminaries"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+          >
+            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
+          </a>
+        );
+      case EVENT_PHASES.SEMIFINAL:
+        return (
+          <a
+            href="/submissions/vote/semifinals"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+          >
+            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
+          </a>
+        );
+      case EVENT_PHASES.FINAL:
+        return (
+          <a
+            href="/submissions/vote/finals"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+          >
+            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
           </a>
         );
       case EVENT_PHASES.AFTER:
         return (
-          <a href="#" className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-skyblue/30">
+          <a
+            href="/submissions/vote/finals"
+            className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-skyblue/30"
+          >
             結果発表を見る <ArrowRight className="ml-2 w-5 h-5" />
           </a>
         );
@@ -42,10 +82,8 @@ export default function Hero() {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-base-100 to-mint/10">
-      {/* ネットワーク背景アニメーション */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          {/* 線材 (Edges) */}
           <line x1="10%" y1="20%" x2="30%" y2="40%" stroke="#2DD4BF" strokeWidth="1" className="animate-[pulse_4s_ease-in-out_infinite]" />
           <line x1="30%" y1="40%" x2="60%" y2="15%" stroke="#38BDF8" strokeWidth="1" className="animate-[pulse_5s_ease-in-out_infinite]" />
           <line x1="60%" y1="15%" x2="85%" y2="35%" stroke="#2DD4BF" strokeWidth="1" className="animate-[pulse_3s_ease-in-out_infinite]" />
@@ -53,7 +91,6 @@ export default function Hero() {
           <line x1="45%" y1="70%" x2="75%" y2="80%" stroke="#38BDF8" strokeWidth="1" className="animate-[pulse_3.5s_ease-in-out_infinite]" />
           <line x1="60%" y1="15%" x2="75%" y2="80%" stroke="#2DD4BF" strokeWidth="0.5" strokeDasharray="4 4" className="animate-[pulse_6s_ease-in-out_infinite]" />
 
-          {/* ノード (Nodes) */}
           <circle cx="10%" cy="20%" r="4" fill="#2DD4BF" className="animate-ping" />
           <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
 
@@ -74,7 +111,6 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* メインコンテンツ */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-800 mb-6 drop-shadow-sm">
           本当のルーキー祭り
@@ -98,7 +134,11 @@ export default function Hero() {
         </div>
 
         <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
-          投稿祭の進行は<a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">公式Xアカウント</a>で随時連絡します。<br className="hidden sm:block" />
+          投稿祭の進行は
+          <a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">
+            公式Xアカウント
+          </a>
+          で随時連絡します。<br className="hidden sm:block" />
           フォローすると人気投票しやすくなります。
         </p>
       </div>
