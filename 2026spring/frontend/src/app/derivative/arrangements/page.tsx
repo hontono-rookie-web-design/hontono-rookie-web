@@ -94,7 +94,7 @@ export default function Page() {
         </h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」のアレンジ作品を掲載しています。
+          「{CONFIG.event.name}」の二次創作アレンジ作品を掲載しています。
         </p>
 
         {/* 下線統一 */}
@@ -126,7 +126,7 @@ export default function Page() {
       {/* EMPTY */}
       {!loading && displayData.length === 0 && (
         <div className="text-center py-20 text-gray-600 w-full max-w-[760px]">
-          二次創作（歌ってみた）はまだありません。
+          二次創作（アレンジ）はまだありません。
         </div>
       )}
 

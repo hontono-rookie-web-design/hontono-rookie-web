@@ -126,7 +126,7 @@ export default function Page() {
       {/* EMPTY */}
       {!loading && displayData.length === 0 && (
         <div className="text-center py-20 text-gray-600 w-full max-w-[760px]">
-          二次創作（歌ってみた）はまだありません。
+          二次創作（その他）はまだありません。
         </div>
       )}
 
