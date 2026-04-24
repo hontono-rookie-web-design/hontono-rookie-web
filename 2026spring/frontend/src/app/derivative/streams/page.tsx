@@ -53,6 +53,14 @@ function getDayLabel(date?: Date) {
   return null;
 }
 
+function isSameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
 /* =========================
    カード
 ========================= */
@@ -123,22 +131,15 @@ function Card({
 }
 
 /* =========================
-   Skeleton（完全一致）
+   Skeleton
 ========================= */
 function SkeletonCard() {
   return (
     <div className="flex flex-col border border-gray-200 rounded-xl overflow-hidden">
       <div className="aspect-video bg-gray-200 animate-pulse" />
-
-      <div className="flex flex-col mt-2 px-2 pb-2 space-y-2">
-        <div className="flex gap-1">
-          <div className="h-5 w-10 bg-gray-200 rounded animate-pulse" />
-          <div className="h-5 w-24 bg-gray-200 rounded animate-pulse" />
-        </div>
-
+      <div className="p-2 space-y-2">
+        <div className="h-3 w-24 bg-gray-200 rounded animate-pulse" />
         <div className="h-4 bg-gray-200 rounded animate-pulse" />
-        <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
-
         <div className="h-3 w-1/2 bg-gray-200 rounded animate-pulse" />
       </div>
     </div>
@@ -177,6 +178,8 @@ export default function Page() {
   /* =========================
      カレンダー
   ========================= */
+  const today = new Date();
+
   const calendar = useMemo(() => {
     const map = new Map();
 
@@ -221,34 +224,11 @@ export default function Page() {
     <div className="p-4 sm:p-6 flex flex-col items-center">
       <div className="w-full max-w-6xl space-y-10">
 
-        {/* ヘッダー */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold">
-            紹介配信
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            「{CONFIG.event.name}」の紹介配信を掲載しています。
-          </p>
-          <div className="mt-4 border-b border-gray-200 w-full" />
-        </div>
-
-        {/* ========================= 予定 ========================= */}
+        {/* 予定 */}
         <div>
           <h2 className="text-xl font-bold mb-4">紹介配信予定</h2>
 
-          {loading ? (
-            <div className="flex gap-4 overflow-x-auto">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="w-1/2 sm:w-[240px] flex-shrink-0">
-                  <SkeletonCard />
-                </div>
-              ))}
-            </div>
-          ) : sorted.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
-              紹介配信予定はまだありません。
-            </div>
-          ) : (
+          {!loading && sorted.length > 0 && (
             <>
               {/* カレンダー */}
               <div className="flex gap-4 overflow-x-auto mb-6">
@@ -267,17 +247,19 @@ export default function Page() {
                           const d = i + 1;
                           const index = days.get(d);
 
+                          const dateObj = new Date(year, month, d);
+                          const isToday = isSameDay(dateObj, today);
+
                           return (
                             <button
                               key={d}
                               onClick={() =>
                                 index !== undefined && scrollTo(index)
                               }
-                              className={`h-7 rounded ${
-                                index !== undefined
-                                  ? "bg-blue-100 hover:bg-blue-200"
-                                  : ""
-                              }`}
+                              className={`h-7 rounded flex items-center justify-center
+                                ${index !== undefined ? "bg-blue-100 hover:bg-blue-200" : ""}
+                                ${isToday ? "ring-2 ring-blue-400 font-bold" : ""}
+                              `}
                             >
                               {d}
                             </button>
@@ -290,61 +272,14 @@ export default function Page() {
               </div>
 
               {/* 横スクロール */}
-              <div className="relative">
-                <button
-                  onClick={() => scrollBy(-1)}
-                  className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 px-2 rounded"
-                >
-                  ‹
-                </button>
-
-                <div
-                  ref={scrollRef}
-                  className="flex gap-4 overflow-x-auto pb-2"
-                >
-                  {sorted.map((item, i) => (
-                    <div key={i} className="w-1/2 sm:w-[240px] flex-shrink-0">
-                      <Card item={item} />
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => scrollBy(1)}
-                  className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 px-2 rounded"
-                >
-                  ›
-                </button>
+              <div className="flex gap-4 overflow-x-auto" ref={scrollRef}>
+                {sorted.map((item, i) => (
+                  <div key={i} className="w-1/2 sm:w-[240px] flex-shrink-0">
+                    <Card item={item} />
+                  </div>
+                ))}
               </div>
             </>
-          )}
-        </div>
-
-        {/* ========================= アーカイブ ========================= */}
-        <div>
-          <h2 className="text-xl font-bold mb-4">紹介配信アーカイブ</h2>
-
-          {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))}
-            </div>
-          ) : archive.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
-              紹介配信アーカイブはまだありません。
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {archive.map((item, i) => (
-                <Card
-                  key={i}
-                  item={item}
-                  showDate={false}
-                  showFutureBadge={false}
-                />
-              ))}
-            </div>
           )}
         </div>
 
