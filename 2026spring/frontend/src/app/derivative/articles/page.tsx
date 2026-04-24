@@ -180,7 +180,7 @@ export default function Page() {
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
                       <a href={item.noteUrl} target="_blank">
-                        <h2 className="text-base sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
+                        <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug line-clamp-2 h-[2.6em] overflow-hidden group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
