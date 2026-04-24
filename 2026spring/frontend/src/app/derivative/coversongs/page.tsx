@@ -166,25 +166,25 @@ export default function Page() {
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
                       <a href={item.workUrl} target="_blank">
-                        <h2 className="text-sm sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
+                        <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug line-clamp-2 h-[2.6em] overflow-hidden group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
 
-                      <p className="text-xs sm:text-sm text-gray-700 mt-1 font-medium truncate">
-                        {item.creator}
-                      </p>
+                      <div className="flex items-center justify-between mt-1 gap-2">
+                        <p className="text-xs sm:text-sm text-gray-700 font-medium truncate">
+                          {item.creator}
+                        </p>
+
+                        {item.service && item.service !== "その他" && (
+                          <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 shrink-0">
+                            {item.service}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <div className="mt-2 sm:mt-3 flex flex-col gap-2 w-full">
-                      {item.service && item.service !== "その他" && (
-                        <div>
-                          <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 inline-block truncate max-w-full">
-                            {item.service}
-                          </span>
-                        </div>
-                      )}
-
                       {item.originalTitle && (
                         <div className="bg-gray-50 px-3 py-2 rounded-lg text-xs text-gray-600 w-full min-w-0">
                           <a
