@@ -123,22 +123,19 @@ function Card({
 }
 
 /* =========================
-   Skeleton（完全一致）
+   Skeleton
 ========================= */
 function SkeletonCard() {
   return (
     <div className="flex flex-col border border-gray-200 rounded-xl overflow-hidden">
       <div className="aspect-video bg-gray-200 animate-pulse" />
-
       <div className="flex flex-col mt-2 px-2 pb-2 space-y-2">
         <div className="flex gap-1">
           <div className="h-5 w-10 bg-gray-200 rounded animate-pulse" />
           <div className="h-5 w-24 bg-gray-200 rounded animate-pulse" />
         </div>
-
         <div className="h-4 bg-gray-200 rounded animate-pulse" />
         <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
-
         <div className="h-3 w-1/2 bg-gray-200 rounded animate-pulse" />
       </div>
     </div>
@@ -173,6 +170,31 @@ export default function Page() {
         (parseDate(b.publishedAt)?.raw?.getTime() || 0)
     );
   }, [schedule]);
+
+  /* ★追加：初期表示インデックス */
+  const initialIndex = useMemo(() => {
+    const now = Date.now();
+
+    const idx = sorted.findIndex((item) => {
+      const t = parseDate(item.publishedAt)?.raw?.getTime();
+      return t !== undefined && t >= now;
+    });
+
+    return idx >= 0 ? idx : 0;
+  }, [sorted]);
+
+  /* ★追加：初期スクロール */
+  useEffect(() => {
+    if (!scrollRef.current) return;
+
+    const el = scrollRef.current.children[initialIndex] as HTMLElement;
+    if (!el) return;
+
+    scrollRef.current.scrollTo({
+      left: el.offsetLeft - 16,
+      behavior: "auto",
+    });
+  }, [initialIndex]);
 
   /* =========================
      カレンダー
@@ -246,7 +268,7 @@ export default function Page() {
             </div>
           ) : sorted.length === 0 ? (
             <div className="text-center py-10 text-gray-500">
-              紹介配信予定はまだありません。
+              紹介配信の予定はまだありません。
             </div>
           ) : (
             <>
