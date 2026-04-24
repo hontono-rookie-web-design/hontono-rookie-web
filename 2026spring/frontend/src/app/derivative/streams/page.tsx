@@ -267,6 +267,12 @@ export default function Page() {
                           const d = i + 1;
                           const index = days.get(d);
 
+                          const today = new Date();
+                          const isToday =
+                            year === today.getFullYear() &&
+                            month === today.getMonth() &&
+                            d === today.getDate();
+
                           return (
                             <button
                               key={d}
@@ -277,7 +283,7 @@ export default function Page() {
                                 index !== undefined
                                   ? "bg-blue-100 hover:bg-blue-200"
                                   : ""
-                              }`}
+                              } ${isToday ? "ring-2 ring-blue-500" : ""}`}
                             >
                               {d}
                             </button>
