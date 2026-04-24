@@ -13,49 +13,24 @@ type Item = {
 };
 
 /* =========================
-   Skeleton
-========================= */
-function SkeletonTile() {
-  return (
-    <div className="w-full flex flex-col border border-gray-200 rounded-xl overflow-hidden">
-      <div className="relative w-full aspect-video bg-gray-200 animate-pulse" />
-      <div className="p-2 space-y-2">
-        <div className="h-3 w-32 bg-gray-200 rounded animate-pulse" />
-        <div className="space-y-1">
-          <div className="h-4 w-full bg-gray-200 rounded animate-pulse" />
-          <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* =========================
    日付
 ========================= */
 function parseDate(dt?: string) {
   if (!dt) return null;
 
-  const cleaned = dt.replace(/^'/, "").trim();
-  const match = cleaned.match(
+  const m = dt.replace(/^'/, "").match(
     /^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/
   );
-  if (!match) return null;
+  if (!m) return null;
 
-  const [, y, m, d, h, min] = match;
+  const [, y, mo, d, h, mi] = m;
 
   return {
-    raw: new Date(
-      Number(y),
-      Number(m) - 1,
-      Number(d),
-      Number(h),
-      Number(min)
-    ),
-    label: `${y}/${String(m).padStart(2, "0")}/${String(d).padStart(
+    raw: new Date(+y, +mo - 1, +d, +h, +mi),
+    label: `${y}/${mo.padStart(2, "0")}/${d.padStart(
       2,
       "0"
-    )} ${String(h).padStart(2, "0")}:${min}`,
+    )} ${h.padStart(2, "0")}:${mi}`,
   };
 }
 
@@ -67,21 +42,19 @@ function getDayLabel(date?: Date) {
   if (!date) return null;
 
   const now = new Date();
+  const diff =
+    new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() -
+    new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
-  const t = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const n = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const d = diff / (1000 * 60 * 60 * 24);
 
-  const diff = Math.floor(
-    (t.getTime() - n.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  if (diff === 0) return "今日";
-  if (diff === 1) return "明日";
+  if (d === 0) return "今日";
+  if (d === 1) return "明日";
   return null;
 }
 
 /* =========================
-   カード
+   カード（共通・幅持たない）
 ========================= */
 function Card({
   item,
@@ -92,57 +65,55 @@ function Card({
   showDate?: boolean;
   showFutureBadge?: boolean;
 }) {
-  const img =
-    item.imageUrl?.trim()
-      ? item.imageUrl
-      : CONFIG.images.defaultIllustration;
-
   const parsed = parseDate(item.publishedAt);
   const future = isFuture(parsed?.raw);
   const dayLabel = getDayLabel(parsed?.raw);
 
+  const img =
+    item.imageUrl?.trim() || CONFIG.images.defaultIllustration;
+
   return (
-    <div className="min-w-[240px] max-w-[240px] flex flex-col border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-      <a href={item.workUrl} target="_blank">
-        <div className="relative aspect-video">
-          <img src={img} className="w-full h-full object-cover" />
+    <div className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md bg-white">
+      <a href={item.workUrl} target="_blank" className="flex flex-col">
+        <div className="relative aspect-video overflow-hidden">
+          <img
+            src={img}
+            className="w-full h-full object-cover group-hover:scale-105 transition"
+          />
 
           {future && showFutureBadge && (
-            <span className="absolute top-2 left-2 bg-black/80 text-white text-[10px] px-2 py-0.5 rounded">
+            <span className="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
               予定
             </span>
           )}
         </div>
 
-        <div className="p-2 space-y-1">
+        <div className="flex flex-col mt-2 px-2 pb-2">
           {showDate && parsed && (
-            <div className="flex items-center gap-1 flex-wrap">
+            <div className="flex flex-wrap gap-1 mb-1">
               {dayLabel && (
                 <span
-                  className={`
-                    text-[11px] font-bold px-2 py-0.5 rounded
-                    ${
-                      dayLabel === "今日"
-                        ? "bg-red-100 text-red-600"
-                        : "bg-orange-100 text-orange-600"
-                    }
-                  `}
+                  className={`text-xs font-bold px-2 py-0.5 rounded ${
+                    dayLabel === "今日"
+                      ? "bg-red-100 text-red-600"
+                      : "bg-orange-100 text-orange-600"
+                  }`}
                 >
                   {dayLabel}
                 </span>
               )}
 
-              <span className="bg-blue-50 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded">
+              <span className="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded font-semibold">
                 {parsed.label}
               </span>
             </div>
           )}
 
-          <h2 className="text-sm font-semibold line-clamp-2">
+          <h2 className="text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem]">
             {item.title}
           </h2>
 
-          <p className="text-[11px] text-gray-400 truncate">
+          <p className="text-xs text-gray-600 mt-1 truncate">
             {item.creator}
           </p>
         </div>
@@ -160,40 +131,33 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     Promise.all([
       fetch("/api/derivative/streams").then((r) => r.json()),
       fetch("/api/derivative/streams/archive").then((r) => r.json()),
-    ]).then(([scheduleData, archiveData]) => {
-      setSchedule(scheduleData);
-      setArchive(archiveData);
+    ]).then(([s, a]) => {
+      setSchedule(s);
+      setArchive(a);
       setLoading(false);
     });
   }, []);
 
-  const sortedSchedule = useMemo(() => {
-    return [...schedule].sort((a, b) => {
-      const da = parseDate(a.publishedAt)?.raw?.getTime() || 0;
-      const db = parseDate(b.publishedAt)?.raw?.getTime() || 0;
-      return da - db;
-    });
+  const sorted = useMemo(() => {
+    return [...schedule].sort(
+      (a, b) =>
+        (parseDate(a.publishedAt)?.raw?.getTime() || 0) -
+        (parseDate(b.publishedAt)?.raw?.getTime() || 0)
+    );
   }, [schedule]);
 
-  useEffect(() => {
-    const now = Date.now();
-    const index = sortedSchedule.findIndex((item) => {
-      const t = parseDate(item.publishedAt)?.raw?.getTime();
-      return t && t >= now;
-    });
-    if (index >= 0) scrollToIndex(index);
-  }, [sortedSchedule]);
-
-  const monthlyMap = useMemo(() => {
+  /* =========================
+     カレンダー用
+  ========================= */
+  const calendar = useMemo(() => {
     const map = new Map();
 
-    sortedSchedule.forEach((item, i) => {
+    sorted.forEach((item, i) => {
       const d = parseDate(item.publishedAt)?.raw;
       if (!d) return;
 
@@ -203,196 +167,149 @@ export default function Page() {
         map.set(key, {
           year: d.getFullYear(),
           month: d.getMonth(),
-          indexMap: new Map(),
+          days: new Map(),
         });
       }
 
-      const entry = map.get(key);
-      if (!entry.indexMap.has(d.getDate())) {
-        entry.indexMap.set(d.getDate(), i);
-      }
+      map.get(key).days.set(d.getDate(), i);
     });
 
     return [...map.values()];
-  }, [sortedSchedule]);
+  }, [sorted]);
 
-  const scrollToIndex = (index: number) => {
-    const el = scrollRef.current?.children[index] as HTMLElement;
-    if (!el || !scrollRef.current || !sectionRef.current) return;
+  const scrollTo = (i: number) => {
+    const el = scrollRef.current?.children[i] as HTMLElement;
+    if (!el || !scrollRef.current) return;
 
-    const container = scrollRef.current;
-    const offset =
-      el.offsetLeft - container.clientWidth / 2 + el.clientWidth / 2;
-
-    container.scrollTo({ left: offset, behavior: "smooth" });
-
-    sectionRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
-  const scrollBy = (dir: "left" | "right") => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({
-      left: dir === "left" ? -280 : 280,
+    scrollRef.current.scrollTo({
+      left: el.offsetLeft - 16,
       behavior: "smooth",
     });
   };
 
-  const today = new Date();
+  const scrollBy = (dir: number) => {
+    scrollRef.current?.scrollBy({
+      left: dir * 260,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div className="p-4 sm:p-6 w-full flex flex-col items-center">
-      {/* ヘッダー */}
-      <div className="text-center mb-8 w-full max-w-6xl">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          紹介配信
-        </h1>
+    <div className="p-4 sm:p-6 flex flex-col items-center">
+      <div className="w-full max-w-6xl space-y-10">
 
-        <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」の紹介配信を掲載しています。
-        </p>
-
-        <div className="mt-4 border-b border-gray-200 w-full" />
-      </div>
-
-      {loading && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-6xl">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <SkeletonTile key={i} />
-          ))}
+        {/* ヘッダー */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold">
+            紹介配信
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            「{CONFIG.event.name}」の紹介配信を掲載しています。
+          </p>
+          <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
-      )}
 
-      {!loading && (
-        <div className="w-full max-w-6xl space-y-10">
-          {/* ========================= 予定 ========================= */}
-          <div ref={sectionRef}>
-            <h2 className="text-xl font-bold mb-4">紹介配信予定</h2>
+        {/* ========================= 予定 ========================= */}
+        <div>
+          <h2 className="text-xl font-bold mb-4">紹介配信予定</h2>
 
-            {sortedSchedule.length === 0 ? (
-              <div className="text-center py-10 text-gray-500">
-                紹介配信の予定はまだありません。
-              </div>
-            ) : (
-              <>
-                {/* カレンダー */}
-                <div className="flex gap-6 overflow-x-auto pb-2 mb-6">
-                  {monthlyMap.map((m: any, idx) => {
-                    const { year, month, indexMap } = m;
+          {sorted.length === 0 ? (
+            <div className="text-center py-10 text-gray-500">
+              紹介配信の予定はまだありません。
+            </div>
+          ) : (
+            <>
+              {/* カレンダー */}
+              <div className="flex gap-4 overflow-x-auto mb-6">
+                {calendar.map((m: any, idx) => {
+                  const { year, month, days } = m;
+                  const last = new Date(year, month + 1, 0).getDate();
 
-                    const firstDay = new Date(year, month, 1).getDay();
-                    const lastDate = new Date(year, month + 1, 0).getDate();
-
-                    const daysArray = [
-                      ...Array(firstDay).fill(null),
-                      ...Array.from({ length: lastDate }, (_, i) => i + 1),
-                    ];
-
-                    return (
-                      <div
-                        key={idx}
-                        className="min-w-[220px] bg-white border rounded-2xl p-3 shadow-sm"
-                      >
-                        <div className="text-sm font-semibold text-center mb-2">
-                          {year}/{month + 1}
-                        </div>
-
-                        <div className="grid grid-cols-7 text-[10px] text-gray-400 mb-1 text-center">
-                          {["日","月","火","水","木","金","土"].map((d) => (
-                            <div key={d}>{d}</div>
-                          ))}
-                        </div>
-
-                        <div className="grid grid-cols-7 gap-1 text-xs">
-                          {daysArray.map((day, i) => {
-                            if (!day) return <div key={i} />;
-
-                            const index = indexMap.get(day);
-                            const hasStream = index !== undefined;
-
-                            const isToday =
-                              today.getFullYear() === year &&
-                              today.getMonth() === month &&
-                              today.getDate() === day;
-
-                            return (
-                              <button
-                                key={i}
-                                onClick={() =>
-                                  hasStream && scrollToIndex(index!)
-                                }
-                                className={`
-                                  h-7 rounded-full flex items-center justify-center
-                                  ${hasStream ? "bg-blue-100 hover:bg-blue-200 text-blue-700" : ""}
-                                  ${isToday ? "ring-2 ring-blue-400" : ""}
-                                `}
-                              >
-                                {day}
-                              </button>
-                            );
-                          })}
-                        </div>
+                  return (
+                    <div key={idx} className="min-w-[220px] border rounded-xl p-3">
+                      <div className="text-sm font-semibold text-center mb-2">
+                        {year}/{month + 1}
                       </div>
-                    );
-                  })}
+
+                      <div className="grid grid-cols-7 gap-1 text-xs">
+                        {Array.from({ length: last }, (_, i) => {
+                          const d = i + 1;
+                          const index = days.get(d);
+
+                          return (
+                            <button
+                              key={d}
+                              onClick={() => index !== undefined && scrollTo(index)}
+                              className={`h-7 rounded ${
+                                index !== undefined
+                                  ? "bg-blue-100 hover:bg-blue-200"
+                                  : ""
+                              }`}
+                            >
+                              {d}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* 横スクロール */}
+              <div className="relative">
+                <button
+                  onClick={() => scrollBy(-1)}
+                  className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 px-2 rounded"
+                >
+                  ‹
+                </button>
+
+                <div
+                  ref={scrollRef}
+                  className="flex gap-4 overflow-x-auto pb-2 px-1"
+                >
+                  {sorted.map((item, i) => (
+                    <div key={i} className="w-[70vw] sm:w-[240px] flex-shrink-0">
+                      <Card item={item} />
+                    </div>
+                  ))}
                 </div>
 
-                {/* 横スクロール */}
-                <div className="relative group">
-                  <button
-                    onClick={() => scrollBy("left")}
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/60 backdrop-blur border border-gray-200 text-gray-600 opacity-0 group-hover:opacity-100 transition"
-                  >
-                    ‹
-                  </button>
-
-                  <div
-                    ref={scrollRef}
-                    className="flex gap-4 overflow-x-auto px-6 pb-2"
-                  >
-                    {sortedSchedule.map((item, i) => (
-                      <Card key={i} item={item} showDate showFutureBadge />
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => scrollBy("right")}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/60 backdrop-blur border border-gray-200 text-gray-600 opacity-0 group-hover:opacity-100 transition"
-                  >
-                    ›
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* ========================= アーカイブ ========================= */}
-          <div>
-            <h2 className="text-xl font-bold mb-4">
-              紹介配信アーカイブ
-            </h2>
-
-            {archive.length === 0 ? (
-              <div className="text-center py-10 text-gray-500">
-                紹介配信アーカイブはまだありません。
+                <button
+                  onClick={() => scrollBy(1)}
+                  className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 px-2 rounded"
+                >
+                  ›
+                </button>
               </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {archive.map((item, i) => (
-                  <Card
-                    key={i}
-                    item={item}
-                    showDate={false}
-                    showFutureBadge={false}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
-      )}
+
+        {/* ========================= アーカイブ ========================= */}
+        <div>
+          <h2 className="text-xl font-bold mb-4">紹介配信アーカイブ</h2>
+
+          {archive.length === 0 ? (
+            <div className="text-center py-10 text-gray-500">
+              紹介配信アーカイブはまだありません。
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {archive.map((item, i) => (
+                <Card
+                  key={i}
+                  item={item}
+                  showDate={false}
+                  showFutureBadge={false}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 }
