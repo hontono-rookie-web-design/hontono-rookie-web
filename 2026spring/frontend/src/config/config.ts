@@ -5,7 +5,7 @@ export const CONFIG = {
 
   fanficsheets: {
     spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_FANFIC!,
-    streams: { name: "紹介配信" },
+    streams: { name: "紹介配信予定" },
     archive: { name: "紹介配信アーカイブ" },
     illustrations: { name: "イラスト" },
     arrangements: { name: "アレンジ" },
