@@ -268,7 +268,7 @@ export default function Page() {
             </div>
           ) : sorted.length === 0 ? (
             <div className="text-center py-10 text-gray-500">
-              紹介配信の予定はまだありません。
+              紹介配信予定はまだありません。
             </div>
           ) : (
             <>
