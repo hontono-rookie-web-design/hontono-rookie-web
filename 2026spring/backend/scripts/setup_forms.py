@@ -208,20 +208,9 @@ def load_spreadsheet(config, phase):
 
 def create_vote_forms(creds, config, df, phase):
 
-    if phase == "prelim":
-        template_form_id = os.environ["TEMPLATE_FORM_ID"]
-        parent_folder_id = os.environ["FORMS_FOLDER_ID"]
-    elif phase == "semifinal":
-        template_form_id = os.environ["TEMPLATE_FORM_ID_SEMIFINAL"]
-        parent_folder_id = os.environ["FORMS_FOLDER_ID_SEMIFINAL"]
-    elif phase == "final":
-        template_form_id = os.environ["TEMPLATE_FORM_ID_FINAL"]
-        parent_folder_id = os.environ["FORMS_FOLDER_ID_FINAL"]
-    elif phase == "ex":
-        template_form_id = os.environ["TEMPLATE_FORM_ID_EX"]
-        parent_folder_id = os.environ["FORMS_FOLDER_ID_EX"]
-
+    template_form_id = os.environ["TEMPLATE_FORM_ID"]
     # Formsフォルダに新しいフォルダを作成
+    parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
     # グループIDごとに処理
