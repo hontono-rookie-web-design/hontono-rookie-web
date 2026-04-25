@@ -40,10 +40,19 @@ def main():
     
     #データフレーム作成
     df = pd.DataFrame(preliminary_data)
+
+    #予選通過ボーダーより上をフィルタリング
+    border = config["vote_semifinal"]["semifinal_border"]
+    df = df[df["順位"] <= border].copy()
+
+    semifinal_group_size = config["vote_grouping"]["group_size"]//2 #準決勝グループ数=予選グループ数の半分
+
+    df["準決勝グループID"]=df.apply(calc_semifinal_no,axis=1,args=(semifinal_group_size,)) #準決勝グループID列を作成し更新
     
-    # semifinal_group_size = config["vote_semifinal"]["semifinal_size"] #準決勝グループ数
-    semifinal_group_size = 3 
-    df["グループID"]=df.apply(calc_semifinal_no,axis=1,args=(semifinal_group_size,))
+
+    #シートに書き込み
+
+
 
         
 
