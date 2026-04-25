@@ -174,13 +174,25 @@ def initialize_oauth_credentials():
 
     return creds
 
-def load_spreadsheet(config):
+def load_spreadsheet(config, phase):
     
     service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
     # ルーキーのスプレッドシート読み込み
-    video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-    video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
+    # 「グループID」「タイトル」という列が最低でも必要
+    if phase == "prelim":
+        video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+        video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
+    elif phase == "semifinal":
+        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_semifinal"]["name"]
+        video_sheetname = config["spreadsheets"]["grouped_video_catalog_semifinal"]["rookie_sheet"]
+    elif phase == "final":
+        video_spreadsheetname = config["spreadsheets"]["video_catalog_final"]["name"]
+        video_sheetname = config["spreadsheets"]["video_catalog_final"]["rookie_sheet"]
+    elif phase == "ex":
+        video_spreadsheetname = config["spreadsheets"]["video_catalog"]["name"]
+        video_sheetname = config["spreadsheets"]["video_catalog"][f"ex_sheet"]
+    
     video_sheet = sheet_client.connect_sheet(service_account_credentials_path, video_spreadsheetname, video_sheetname)
     video_data = sheet_client.fetch_sheet_data(video_sheet)
 

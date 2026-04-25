@@ -22,7 +22,7 @@ spreadsheets:
     rookie_sheet: "ルーキー" # 除外対象動画リストシート名（opステージ、ルーキー）
     ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
     fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
-  
+
   note_list: # Note記事リスト
     name: "note_list_2026spring" # スプレッドシート名
     list_sheet: "list" # Note記事リストシート名
@@ -34,6 +34,14 @@ spreadsheets:
     name: "二次創作作品提出フォーム回答_2026春" # スプレッドシート名
     forms_result: "Forms_result" # フォーム回答結果シート名（二次創作作品提出フォームの回答をリンクさせるシート）
     for_check: "二次創作作品情報確認用" # 二次創作作品情報確認用シート名
+
+  grouped_video_catalog_semifinal: # グループ分けされた準決勝参加の全ての動画リスト。
+    name: "grouped_video_catalog_2026spring_semifinal" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+
+  video_catalog_final: # 決勝参加の全ての動画リスト。
+    name: "video_catalog_2026spring_final" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
 
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
