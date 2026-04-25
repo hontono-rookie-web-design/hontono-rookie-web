@@ -1,5 +1,7 @@
+import argparse
 import datetime
 import os
+import sys
 
 import pandas as pd
 from googleapiclient import discovery
@@ -217,6 +219,15 @@ def create_vote_forms(creds, config, df):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Set up vote forms")
+    parser.add_argument(
+        "--phase",
+        type=str,
+        required=True,
+        help="対象フェーズ（例: prelim, semifinal, final, ex）",
+    )
+    args = parser.parse_args()
+    phase = args.phase
 
     # OAuth認証情報の初期化
     oauth_creds = initialize_oauth_credentials()
