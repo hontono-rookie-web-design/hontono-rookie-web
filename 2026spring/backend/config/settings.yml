@@ -22,7 +22,7 @@ spreadsheets:
     rookie_sheet: "ルーキー" # 除外対象動画リストシート名（opステージ、ルーキー）
     ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
     fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
-  
+
   note_list: # Note記事リスト
     name: "note_list_2026spring" # スプレッドシート名
     list_sheet: "list" # Note記事リストシート名
@@ -37,7 +37,7 @@ spreadsheets:
 
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
-  group_size: 3
+  group_num: 70
   grouped_video_catalog:
     name: "grouped_video_catalog_2026spring"
     rookie_sheet: "rookie"
