@@ -206,19 +206,30 @@ def load_spreadsheet(config, phase):
 
     return df
 
-def create_vote_forms(creds, config, df):
+def create_vote_forms(creds, config, df, phase):
 
-    template_form_id = os.environ["TEMPLATE_FORM_ID"]
+    if phase == "prelim":
+        template_form_id = os.environ["TEMPLATE_FORM_ID"]
+        parent_folder_id = os.environ["FORMS_FOLDER_ID"]
+    elif phase == "semifinal":
+        template_form_id = os.environ["TEMPLATE_FORM_ID_SEMIFINAL"]
+        parent_folder_id = os.environ["FORMS_FOLDER_ID_SEMIFINAL"]
+    elif phase == "final":
+        template_form_id = os.environ["TEMPLATE_FORM_ID_FINAL"]
+        parent_folder_id = os.environ["FORMS_FOLDER_ID_FINAL"]
+    elif phase == "ex":
+        template_form_id = os.environ["TEMPLATE_FORM_ID_EX"]
+        parent_folder_id = os.environ["FORMS_FOLDER_ID_EX"]
+
     # Formsフォルダに新しいフォルダを作成
-    parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
     # グループIDごとに処理
     for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
         print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
         
-        title = f'{config["vote_form"]["title"]}{group_id}'
-        item_title = config["vote_form"]["item_title"]
+        title = f'{config["vote_form"][phase]["title"]}{group_id}'
+        item_title = config["vote_form"][phase]["item_title"]
 
         # テンプレートフォームをコピー
         new_form_id = copy_file(creds, template_form_id, title)
@@ -248,10 +259,10 @@ def main():
     config = utils.load_config()
 
     # スプレッドシートからデータを読み込む
-    df = load_spreadsheet(config)
+    df = load_spreadsheet(config, phase)
 
     # 投票フォームの作成
-    create_vote_forms(oauth_creds, config, df)
+    create_vote_forms(oauth_creds, config, df, phase)
 
 if __name__ == "__main__":
     main()
