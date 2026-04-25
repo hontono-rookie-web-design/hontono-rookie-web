@@ -2,9 +2,9 @@ name: 2026spring Fetch Videos Rookie
 
 on:
   workflow_dispatch:  # 手動実行
-  schedule:
+  #schedule:
     #- cron: '0 * * * *'  # 毎時実行
-    - cron: '0 */3 * * *' # 3時間おき実行
+    #- cron: '0 */3 * * *' # 3時間おき実行
     #- cron: '0 */6 * * *' # 6時間おき実行
     #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
 
