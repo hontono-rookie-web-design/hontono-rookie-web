@@ -42,7 +42,7 @@ def get_note_count(hashtag):
             break
     else:
         print("最大試行回数に到達しました。")
-        raise
+        return 0
 
 
 # 記事の情報を取得
@@ -84,7 +84,7 @@ def get_data(hashtag, count):
                         note_key = notedata.get("key")
                         published_date = datetime.datetime.fromisoformat(
                             notedata["publish_at"]
-                        )#.date()
+                        )  # .date()
                         user_url = f"https://note.com/{author_urlname}"
                         note_url = f"{user_url}/n/{note_key}"
                         eyecatch_url = notedata.get("eyecatch_url")
@@ -122,16 +122,20 @@ def update_sheet(spreadsheetname, sheetname, data):
     sheet.clear()
     set_with_dataframe(sheet, data, row=1, col=1)
 
-def format_df(df): #データフレームの整理
+
+def format_df(df):  # データフレームの整理
     # dfからurl重複を削除
     df = df.drop_duplicates("note_url")
     # 日付順でソート
-    df = df.sort_values(by="Published Date",ascending=False)
+    df = df.sort_values(by="Published Date", ascending=False)
     # 日付データ形式整理
-    df["Published Date"]=pd.to_datetime(df["Published Date"]).dt.strftime('%Y-%m-%d %H:%M')
+    df["Published Date"] = pd.to_datetime(df["Published Date"]).dt.strftime(
+        "%Y-%m-%d %H:%M"
+    )
     # No.列の上書き
-    df["No."]=range(1,len(df)+1)
+    df["No."] = range(1, len(df) + 1)
     return df
+
 
 def main():
     # シートに接続
@@ -144,10 +148,11 @@ def main():
     # hashtag = "本当のルーキー祭り2025秋"
     # hashtag = tag_config["rookie"]
     # hashtag = tag_config["fanfic"]
-    hashtags = set(tag_config.values()) # tag_config内のタグすべてを検索対象とする 2026/04/05
+    hashtags = set(
+        tag_config.values()
+    )  # tag_config内のタグすべてを検索対象とする 2026/04/05
 
     data_list = []
-
 
     for hashtag in hashtags:
 
@@ -173,7 +178,7 @@ def main():
         ],
     )
 
-    note_data_df = format_df(df) #データフレームの整理
+    note_data_df = format_df(df)  # データフレームの整理
 
     # スプレッドシートに書き込み
     update_sheet(catalog_spreadsheetname, catalog_sheetname, note_data_df)

@@ -4,52 +4,64 @@ export const CONFIG = {
   },
 
   fanficsheets: {
-    spreadsheetId: "17Qc7vH5BuCfiurEad6uekzMjsMl_MmGIP9i9AEMhcf8",
-
-    streams: {
-      name: "紹介配信",
-    },
-
-    illustrations: {
-      name: "イラスト",
-    },
-
-    arrangements: {
-      name: "アレンジ",
-    },
-
-    coversongs: {
-      name: "歌ってみた",
-    },
-
-    others: {
-      name: "その他",
-    },
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_FANFIC!,
+    streams: { name: "紹介配信予定" },
+    archive: { name: "紹介配信アーカイブ" },
+    illustrations: { name: "イラスト" },
+    arrangements: { name: "アレンジ" },
+    coversongs: { name: "歌ってみた" },
+    others: { name: "その他" },
   },
 
   notesheets: {
-    spreadsheetId: "1PDeZgdU8L_Kk7Qqx_Q1Fx8K_unG3X0S0Op1pWda0BX8",
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_NOTES!,
     name: "list",
   },
 
   videosheets: {
-    spreadsheetId: "1lZN68Ojwz1f_x2KEU_ukACzAMDIZUWurV6LI3F3YKj0",
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VIDEOS!,
+    rookie: { name: "rookie" },
+    op: { name: "op" },
+    ex: { name: "ex" },
+  },
 
-    rookie: {
-      name: "rookie",
-    },
+  groupedvideosheets: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED!,
+    rookie: { name: "rookie" },
+  },
 
-    op: {
-      name: "op",
-    },
+  groupedvideosheets_semifinal: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_SEMIFINAL!,
+    rookie: { name: "rookie" },
+  },
 
-    ex: {
-      name: "ex",
-    },
+  videosheets_final: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VIDEOS_FINAL!,
+    rookie: { name: "rookie" },
+  },
+
+  voteformssheets: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VOTEFORM!,
+    preliminaries: { name: "予選" },
+    semifinals: { name: "準決勝" },
+    finals: { name: "決勝" },
+    ex: { name: "ex" },
+  },
+
+  rankingsheets: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_RANKING!,
+    preliminaries: { name: "予選" },
+    semifinals: { name: "準決勝" },
+    finals: { name: "決勝" },
+    ex: { name: "ex" },
   },
 
   images: {
-    defaultIllustration: "/2026春ロゴ.png",
+    defaultIllustration: "/2026spring_logo.png",
   },
-};
 
+  links: {
+    voteGuide:
+      "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
+  },
+}

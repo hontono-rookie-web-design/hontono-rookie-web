@@ -39,10 +39,8 @@ function SkeletonCard() {
   return (
     <div className="w-full max-w-[760px] rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4 w-full">
-        {/* 画像 */}
         <div className="w-32 sm:w-44 h-20 sm:h-28 bg-gray-200 rounded-lg animate-pulse" />
 
-        {/* テキスト */}
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
@@ -155,14 +153,15 @@ export default function Page() {
                 ? item.eyecatchUrl
                 : CONFIG.images.defaultIllustration;
 
+            const hasProfileImage = !!item.userProfileImageUrl?.trim();
+
             return (
               <div
                 key={i}
                 className="group w-full max-w-[760px] rounded-xl bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition"
               >
-                {/* ←ここを常に横並びに */}
                 <div className="flex gap-3 sm:gap-4 w-full">
-                  {/* 画像 */}
+                  {/* サムネ */}
                   <a
                     href={item.noteUrl}
                     target="_blank"
@@ -170,6 +169,9 @@ export default function Page() {
                   >
                     <img
                       src={img}
+                      onError={(e) => {
+                        e.currentTarget.src = CONFIG.images.defaultIllustration;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition"
                     />
                   </a>
@@ -178,16 +180,19 @@ export default function Page() {
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
                       <a href={item.noteUrl} target="_blank">
-                        <h2 className="text-base sm:text-lg md:text-xl font-bold leading-snug line-clamp-2 group-hover:underline">
+                        <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug line-clamp-2 h-[2.6em] overflow-hidden group-hover:underline">
                           {item.title}
                         </h2>
                       </a>
 
                       {/* 投稿者 */}
                       <div className="mt-2 flex items-center gap-2 min-w-0">
-                        {item.userProfileImageUrl && (
+                        {hasProfileImage && (
                           <img
                             src={item.userProfileImageUrl}
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
                             className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
                           />
                         )}
