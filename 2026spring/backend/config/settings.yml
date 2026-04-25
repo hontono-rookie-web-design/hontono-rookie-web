@@ -37,7 +37,7 @@ spreadsheets:
 
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
-  group_num: 20
+  group_num: 70
   grouped_video_catalog:
     name: "grouped_video_catalog_2026spring"
     rookie_sheet: "rookie"
