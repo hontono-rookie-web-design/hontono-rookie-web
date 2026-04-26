@@ -37,14 +37,22 @@ def main():
     if any(preliminary_data) == False:
         print(f"No data found in {preliminary_sheetname}. Skipping.")
     
+    ### 動作確認用テストデータ作成 ###
+    #データフレーム作成
+    # df = pd.DataFrame(preliminary_data)
+    # df["順位"]=df.groupby("グループID").cumcount()+1
+    # sheet_client.update_sheet(sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
+    ###
+
     #データフレーム作成
     df = pd.DataFrame(preliminary_data)
 
     #予選通過ボーダーより上をフィルタリング
     border = config["vote_semifinal"]["semifinal_border"]
+    df["順位"] = pd.to_numeric(df["順位"], errors='coerce')
     df = df[df["順位"] <= border].copy()
 
-    semifinal_group_size = config["vote_grouping"]["group_size"]//2 #準決勝グループ数=予選グループ数の半分
+    semifinal_group_size = config["vote_grouping"]["group_num"]//2 #準決勝グループ数=予選グループ数の半分
 
     df["準決勝グループID"]=df.apply(calc_semifinal_no,axis=1,args=(semifinal_group_size,)) #準決勝グループID列を作成し更新
 
