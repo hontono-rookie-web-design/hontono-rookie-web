@@ -4,6 +4,8 @@ import About from "@/components/About";
 import Rules from "@/components/Rules";
 import Schedule from "@/components/Schedule";
 import LinksAndSponsors from "@/components/LinksAndSponsors";
+import PastEventLink from "@/components/video/PastEventLink";
+
 
 export default function Home() {
   return (
@@ -13,6 +15,7 @@ export default function Home() {
       <Rules />
       <Schedule />
       <LinksAndSponsors />
+      <PastEventLink />
 
       <footer className="w-full py-8 text-center text-sm text-slate-400 bg-white">
         <p>© 2026 本当のルーキー祭り 運営</p>
