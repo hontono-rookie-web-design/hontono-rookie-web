@@ -5,17 +5,17 @@ export default function PastEventLink() {
     {
       title: "第３回",
       image: "/images/eventThird.jpg",
-      url: "https://example.com/2026spring",
+      url: "https://hontono-rookie2025autum.onrender.com/index.html",
     },
     {
       title: "第２回",
       image: "/images/eventSecond.jpg",
-      url: "https://example.com/2025autumn",
+      url: "https://huyu5masora.wixsite.com/my-site-2",
     },
     {
       title: "第１回",
       image: "/images/eventFirst.jpg",
-      url: "https://example.com/2025spring",
+      url: "https://twipla.jp/events/604493",
     },
   ];
 
