@@ -6,7 +6,7 @@ export default function Page() {
       {/* ヘッダー */}
       <div className="text-center mb-8 w-full max-w-[760px]">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          二次創作投票フォーム
+          二次創作 投稿フォーム
         </h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
