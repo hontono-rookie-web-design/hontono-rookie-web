@@ -4,7 +4,7 @@ import About from "@/components/About";
 import Rules from "@/components/Rules";
 import Schedule from "@/components/Schedule";
 import LinksAndSponsors from "@/components/LinksAndSponsors";
-import PastEventLink from "@/components/video/PastEventLink";
+import PastEventLink from "@/components/PastEventLink";
 
 
 export default function Home() {
