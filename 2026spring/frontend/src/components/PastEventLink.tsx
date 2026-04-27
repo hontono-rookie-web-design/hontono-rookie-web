@@ -3,24 +3,19 @@ import { Link as LinkIcon } from "lucide-react";
 export default function PastEventLink() {
   const events = [
     {
-      title: "2026 Spring",
-      image: "/images/event2026spring.jpg",
+      title: "第３回",
+      image: "/images/eventThird.jpg",
       url: "https://example.com/2026spring",
     },
     {
-      title: "2025 Autumn",
-      image: "/images/event2025autumn.jpg",
+      title: "第２回",
+      image: "/images/eventSecond.jpg",
       url: "https://example.com/2025autumn",
     },
     {
-      title: "2025 Spring",
-      image: "/images/event2025spring.jpg",
+      title: "第１回",
+      image: "/images/eventFirst.jpg",
       url: "https://example.com/2025spring",
-    },
-    {
-      title: "2024 Autumn",
-      image: "/images/event2024autumn.jpg",
-      url: "https://example.com/2024autumn",
     },
   ];
 
