@@ -23,6 +23,17 @@ spreadsheets:
     ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
     fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
 
+  video_catalog_semifinal: # 準決勝進出作品動画リスト
+    name: "video_catalog_2026spring_semifinal" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+  
+  ranking_result: #投票結果のシート
+    name: "人気投票順位_2026春" #スプレッドシート名
+    preliminary_sheet: "予選" #予選結果シート名
+    semifinal_sheet: "準決勝" #準決勝結果シート名
+    final_sheet: "決勝" #決勝シート名
+    ex_sheet: "ex" #exシート名
+
   note_list: # Note記事リスト
     name: "note_list_2026spring" # スプレッドシート名
     list_sheet: "list" # Note記事リストシート名
@@ -43,6 +54,13 @@ vote_grouping: # 投票グループ分け関連パラメータ
     rookie_sheet: "rookie"
     op_sheet: "op"
     ex_sheet: "ex"
+
+vote_semifinal: # 準決勝グループ分け関連パラメータ
+  semifinal_size: 3 #Selection数
+  semifinal_border: 5 #予選通過ボーダー
+  grouped_video_catalog_semifinal:
+    name: "grouped_video_catalog_2026spring_semifinal"
+    rookie_sheet: "rookie"
 
 vote_form: # 投票フォーム関連パラメータ
   title: "本当のルーキー祭り2026春_Disc."
