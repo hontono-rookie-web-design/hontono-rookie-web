@@ -3,6 +3,7 @@
 import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -111,48 +112,40 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
+     <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
 
-       <Image
-        src="/images/2026春ロゴ透過.png"
-        alt="本当のルーキー祭り2026春"
-        width={1200}
-        height={600}
-        className="w-[280px] md:w-[420px] lg:w-[520px] h-auto mb-6 drop-shadow-sm"
-      />
+  <Image
+    src="/images/2026春ロゴ透過.png"
+    alt="本当のルーキー祭り2026春"
+    width={1200}
+    height={600}
+    className="w-[280px] md:w-[420px] lg:w-[520px] h-auto mb-6 drop-shadow-sm"
+  />
 
-      <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
-       ボカロP等の新人クリエイター向け楽曲投稿イベント
-      </p>
+  <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
+    ボカロP等の新人クリエイター向け楽曲投稿イベント
+  </p>
 
   <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
     {renderCTA()}
   </div>
+
+  <div className="mt-8 flex flex-wrap gap-4 justify-center">
+    <a href="https://www.nicovideo.jp/watch/sm46006887" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-slate-400">
+      説明会動画を見る
+    </a>
+  </div>
+
+  <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
+    投稿祭の進行は
+    <a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">
+      公式Xアカウント
+    </a>
+    で随時連絡します。<br className="hidden sm:block" />
+    フォローすると人気投票しやすくなります。
+  </p>
+
 </div>
-
-        <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
-          ボカロP等の新人クリエイター向け楽曲投稿イベント
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
-          {renderCTA()}
-        </div>
-
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a href="https://www.nicovideo.jp/watch/sm46006887" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-slate-400">
-            説明会動画を見る
-          </a>
-        </div>
-
-        <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
-          投稿祭の進行は
-          <a href="https://x.com/SynNightPsub?s=20" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">
-            公式Xアカウント
-          </a>
-          で随時連絡します。<br className="hidden sm:block" />
-          フォローすると人気投票しやすくなります。
-        </p>
-      </div>
     </section>
   );
 }
