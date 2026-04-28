@@ -490,8 +490,7 @@ export default function Rules() {
             <li>
               指定の
               <a
-                href="https://forms.gle/NofKH1UQjiiiHHYe7"
-                target="_blank"
+                href="https://hontono-rookie-web-2026spring-bx3op1xrh.vercel.app/derivative/Postingform"
                 rel="noopener noreferrer"
                 className="text-skyblue font-medium text-fg-brand hover:underline"
               >
