@@ -285,6 +285,23 @@ export default function Page() {
                       </div>
 
                       <div className="grid grid-cols-7 gap-1 text-xs">
+
+                        {/* 曜日ヘッダー */}
+                        {["日", "月", "火", "水", "木", "金", "土"].map((w) => (
+                          <div key={w} className="text-center text-gray-500 text-[10px]">
+                            {w}
+                          </div>
+                        ))}
+
+                        {/* 月初の空白（日曜始まり） */}
+                        {(() => {
+                          const firstDay = new Date(year, month, 1).getDay(); // 0=日
+                          return Array.from({ length: firstDay }).map((_, i) => (
+                            <div key={`empty-${i}`} />
+                          ));
+                        })()}
+
+                        {/* 日付 */}
                         {Array.from({ length: last }, (_, i) => {
                           const d = i + 1;
                           const index = days.get(d);
