@@ -112,12 +112,23 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-800 mb-6 drop-shadow-sm">
-          本当のルーキー祭り
-          <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-mint to-skyblue">
-            2026 春
-          </span>
-        </h1>
+
+       <Image
+        src="/logo.png"
+        alt="本当のルーキー祭り2026春"
+        width={1200}
+        height={600}
+        className="w-[280px] md:w-[420px] lg:w-[520px] h-auto mb-6 drop-shadow-sm"
+      />
+
+      <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
+       ボカロP等の新人クリエイター向け楽曲投稿イベント
+      </p>
+
+  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+    {renderCTA()}
+  </div>
+</div>
 
         <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
           ボカロP等の新人クリエイター向け楽曲投稿イベント
