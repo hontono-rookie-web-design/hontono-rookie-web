@@ -117,9 +117,9 @@ export default function Hero() {
   <Image
     src="/images/2026spring_logoTransparent.png"
     alt="本当のルーキー祭り2026春"
-    width={1600}
-    height={800}
-    className="w-[280px] md:w-[420px] lg:w-[520px] h-auto mb-6 drop-shadow-sm"
+    width={1200}
+    height={600}
+    className="w-[90vw] max-w-[1200px] h-auto mb-6 drop-shadow-sm"
   />
 
   <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
