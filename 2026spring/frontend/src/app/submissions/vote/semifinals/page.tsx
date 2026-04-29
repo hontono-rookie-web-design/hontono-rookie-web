@@ -183,6 +183,12 @@ export default function Page() {
       .filter((v): v is { rank: number; video: Video } => v.video !== undefined)
   }, [ranks, videos, activeGroup])
 
+  const selectRandomGroup = () => {
+    if (groups.length === 0) return
+    const randomIndex = Math.floor(Math.random() * groups.length)
+    setActiveGroup(groups[randomIndex])
+  }
+
   /* =========================
      BEFORE
   ========================= */
@@ -217,20 +223,42 @@ export default function Page() {
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
+      {/* DISC SELECT */}
       {!loading && (
-        <div className="w-full max-w-[900px] grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4">
-          {groups.map(g => (
+        <div className="w-full max-w-[900px]">
+
+          {/* Discボタン群 */}
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-2">
+            {groups.map(g => (
+              <button
+                key={g}
+                onClick={()=>setActiveGroup(g)}
+                className={`text-xs py-1 rounded-md border
+                  ${activeGroup===g ? "bg-black text-white" : "bg-white text-gray-700"}
+                `}
+              >
+                <span className="font-medium">{DISC_LABEL} </span>
+                <span className="font-extrabold text-sm">{g}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* ランダムボタン（下中央） */}
+          <div className="flex justify-center mb-4">
             <button
-              key={g}
-              onClick={()=>setActiveGroup(g)}
-              className={`text-xs py-1 rounded-md border
-                ${activeGroup===g ? "bg-black text-white" : "bg-white text-gray-700"}
-              `}
+              onClick={selectRandomGroup}
+              className="
+                text-xs py-1 px-3
+                rounded-md border
+                bg-blue-50 text-blue-700
+                hover:bg-blue-100
+                font-semibold
+              "
             >
-              <span className="font-medium">{DISC_LABEL} </span>
-              <span className="font-extrabold text-sm">{g}</span>
+              {DISC_LABEL}をランダムに選ぶ
             </button>
-          ))}
+          </div>
+
         </div>
       )}
 
