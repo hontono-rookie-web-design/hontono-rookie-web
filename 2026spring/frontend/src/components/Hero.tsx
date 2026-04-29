@@ -119,7 +119,7 @@ export default function Hero() {
     alt="本当のルーキー祭り2026春"
     width={1200}
     height={600}
-    className="w-[90vw] max-w-[1200px] h-auto mb-6 drop-shadow-sm"
+    className="w-[360px] md:w-[540px] lg:w-[680px]"
   />
 
   <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
