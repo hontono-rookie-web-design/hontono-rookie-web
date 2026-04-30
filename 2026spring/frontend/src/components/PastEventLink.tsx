@@ -3,17 +3,17 @@ import { Link as LinkIcon } from "lucide-react";
 export default function PastEventLink() {
   const events = [
     {
-      title: "第３回",
+      title: "本当のルーキー祭り2025秋",
       image: "/images/eventThird.jpg",
       url: "https://hontono-rookie2025autum.onrender.com/index.html",
     },
     {
-      title: "第２回",
+      title: "本当のルーキー祭り2025",
       image: "/images/eventSecond.jpg",
       url: "https://huyu5masora.wixsite.com/my-site-2",
     },
     {
-      title: "第１回",
+      title: "本当のルーキー祭り2024",
       image: "/images/eventFirst.jpg",
       url: "https://twipla.jp/events/604493",
     },
@@ -49,10 +49,14 @@ export default function PastEventLink() {
 
                 {/* ホバー演出 */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">
-                    詳細を見る
-                  </span>
-                </div>
+　　　　　　　　　　  <span className="text-white text-lg font-bold transition-opacity duration-300 group-hover:opacity-0">
+   　　　　　　　　　 {event.title}
+  　　　　　　　　　  </span>
+
+                 <span className="absolute text-white text-sm font-bold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  詳細を見る
+                 </span>
+               </div>
               </div>
             </a>
           ))}
