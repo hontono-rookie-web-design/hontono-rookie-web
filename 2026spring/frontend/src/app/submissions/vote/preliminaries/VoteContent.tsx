@@ -213,7 +213,7 @@ export default function VoteContent() {
     const g = groups[randomIndex]
 
     setActiveGroup(g)
-    router.push(`?group=${g}`)
+    router.push(`?group=${g}`, { scroll: false })
   }
 
   /* =========================
