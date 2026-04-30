@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
+import { useSearchParams, useRouter } from "next/navigation"
 
 /* =========================
    表示ラベル
@@ -123,6 +124,9 @@ export default function Page() {
 
   const [activeGroup, setActiveGroup] = useState<number | null>(null)
 
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
   /* =========================
      fetch
   ========================= */
@@ -149,7 +153,15 @@ export default function Page() {
       setRanks(rankRes)
 
       const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
-      setActiveGroup(groups[0] ?? null)
+
+      const groupParam = searchParams.get("group")
+      const groupFromUrl = groupParam ? Number(groupParam) : null
+
+      if (groupFromUrl && groups.includes(groupFromUrl)) {
+        setActiveGroup(groupFromUrl)
+      } else {
+        setActiveGroup(groups[0] ?? null)
+      }
 
       setLoading(false)
     })
@@ -161,6 +173,17 @@ export default function Page() {
   const groups = useMemo(() => {
     return [...new Set(videos.map(v => v.group))].sort((a,b)=>a-b)
   }, [videos])
+
+  useEffect(() => {
+    if (groups.length === 0) return
+
+    const groupParam = searchParams.get("group")
+    const groupFromUrl = groupParam ? Number(groupParam) : null
+
+    if (groupFromUrl && groups.includes(groupFromUrl)) {
+      setActiveGroup(groupFromUrl)
+    }
+  }, [searchParams, groups])
 
   const displayVideos = useMemo(() => {
     if (activeGroup === null) return []
@@ -185,8 +208,12 @@ export default function Page() {
 
   const selectRandomGroup = () => {
     if (groups.length === 0) return
+
     const randomIndex = Math.floor(Math.random() * groups.length)
-    setActiveGroup(groups[randomIndex])
+    const g = groups[randomIndex]
+
+    setActiveGroup(g)
+    router.push(`?group=${g}`)
   }
 
   /* =========================
@@ -233,7 +260,10 @@ export default function Page() {
             {groups.map(g => (
               <button
                 key={g}
-                onClick={()=>setActiveGroup(g)}
+                onClick={() => {
+                  setActiveGroup(g)
+                  router.push(`?group=${g}`, { scroll: false })
+                }}
                 className={`text-xs py-1 rounded-md border
                   ${activeGroup===g ? "bg-black text-white" : "bg-white text-gray-700"}
                 `}
