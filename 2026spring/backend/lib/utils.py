@@ -10,3 +10,13 @@ def load_config():
         config = yaml.safe_load(f)
 
     return config
+
+
+def load_auxiliary_config():
+
+    config_path = Path(__file__).resolve().parents[1] / "config" / "auxiliary.yml"
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    return config
