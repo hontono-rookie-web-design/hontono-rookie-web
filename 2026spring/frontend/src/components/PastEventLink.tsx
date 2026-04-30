@@ -50,19 +50,24 @@ export default function PastEventLink() {
                 {/* ホバー演出 */}
                 <div className="absolute inset-0 flex items-center justify-center">
 
-  　　　　　　　　　{/* 背景（常に表示） */}
- 　　　　　　　　　　 <div className="absolute inset-0 bg-black/40 transition-opacity duration-300 group-hover:bg-black/60" />
+                {/* 背景 */}
+                  <div className="absolute inset-0 bg-black/40 transition-all duration-300 group-hover:bg-black/60" />
 
- 　　　　　　　　　 {/* タイトル（通常表示） */}
- 　　　　　　　　　　 <span className="relative text-white text-lg font-bold transition-opacity duration-300 group-hover:opacity-0">
-   　　　　　　　　　 {event.title}
- 　　　　　　　　　　 </span>
+                {/* テキストまとめて中央固定 */}
+                  <div className="relative flex flex-col items-center justify-center text-center">
 
- 　　　　　　　　　 {/* ホバー時テキスト */}
- 　　　　　　　　　　 <span className="absolute text-white text-sm font-bold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-   　　　　　　　　　　 詳細を見る
- 　　　　　　　　　　 </span>
-　　　　　　　　　　</div>
+                {/* タイトル */}
+                  <span className="text-white text-lg md:text-xl font-bold transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
+                    {event.title}
+                  </span>
+
+               {/* 詳細 */}
+                <span className="absolute text-white text-lg md:text-xl font-bold opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                 詳細を見る
+                </span>
+
+                  </div>
+                </div>
               </div>
             </a>
           ))}
