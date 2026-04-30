@@ -115,7 +115,7 @@ export default function Hero() {
      <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
 
   <Image
-    src="/images/2026spring_logoTransparent.png"
+    src="/images/2026spring_logoTransparentHigh.png"
     alt="本当のルーキー祭り2026春"
     width={1200}
     height={600}
