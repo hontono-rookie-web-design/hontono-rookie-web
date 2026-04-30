@@ -184,8 +184,8 @@ def load_spreadsheet(config, phase):
         video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
         video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
     elif phase == "semifinal":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_semifinal"]["name"]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_semifinal"]["rookie_sheet"]
+        video_spreadsheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"]["name"]
+        video_sheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"]["rookie_sheet"]
     elif phase == "final":
         video_spreadsheetname = config["spreadsheets"]["video_catalog_final"]["name"]
         video_sheetname = config["spreadsheets"]["video_catalog_final"]["rookie_sheet"]
