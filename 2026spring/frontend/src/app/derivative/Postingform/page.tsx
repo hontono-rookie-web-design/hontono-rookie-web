@@ -12,29 +12,35 @@ export default function Page() {
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
           「本当のルーキー祭り2026春」の二次創作作品の提出はこちらから行えます。
         </p>
+
+        {/* 区切り線 */}
+        <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
 
       {/* 説明 */}
       <div className="w-full max-w-[760px] mb-8 text-sm text-gray-700 leading-relaxed">
         <p>
-          本当のルーキー祭りでは、歌ってみたやファンアートなどの二次創作を歓迎しています。<br />
-          本サイトに掲載する二次創作作品の情報を収集するため、下記フォームにて作品情報の提供をお願いしております（投稿者以外の回答も可能です）。
-          情報提供にご協力をお願いいたします。
-        </p>
-        <p className="mt-2 text-xs text-gray-500">
-          ※ note投稿作品はフォーム回答は不要です。
+          本当のルーキー祭りでは、歌ってみたやファンアートなどの二次創作を歓迎しています。
         </p>
 
-        {/* フォームリンク（追加） */}
-        <p className="mt-3">
+        <p className="mt-2">
+          本サイトに掲載する二次創作作品の情報を収集するため、作品情報の提供をお願いしております（投稿者以外の回答も可能です）。<br />
+          本サイトへの掲載を希望する場合は、このページ下部のフォーム、または
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSczlIrsD3P3AEpbpKirIp8ZZFF6MWlLU2uSPXNTPHw3oicgBA/viewform"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline"
+            className="text-blue-600 underline mx-1"
           >
-            ▶ 二次創作作品提出フォーム（Googleフォーム）を開く
+            こちらのフォーム
           </a>
+          から作品情報をご提出ください。
+        </p>
+
+        <p className="mt-2 text-xs text-gray-500">
+          ※ note記事はフォームへの回答は不要です。<br />
+          フォームにて提出された内容は、本サイトに掲載されます。<br />
+          運営にて内容を確認するため、掲載までにお時間をいただく場合がございます。あらかじめご了承ください。
         </p>
       </div>
 
@@ -48,11 +54,6 @@ export default function Page() {
             <li>ニコニコ動画に投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグをロックしてください。</li>
             <li>noteに投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグを付けてください。</li>
           </ul>
-
-          <p className="mt-3 text-xs text-gray-500">
-            フォームにて提出された内容は、本サイトに掲載されます。<br />
-            運営にて内容を確認するため、掲載までにお時間をいただく場合がございます。あらかじめご了承ください。
-          </p>
         </div>
 
         {/* ルール */}
