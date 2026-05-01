@@ -74,8 +74,8 @@ vote_form: # 投票フォーム関連パラメータ
     title: "本当のルーキー祭り2026春_Selection."
     item_title: "好きな作品を教えてください。"
   final: # 決勝
-    title: "本当のルーキー祭り2026春_Best."
+    title: "本当のルーキー祭り2026春_Best"
     item_title: "好きな作品を教えてください。"
   ex: # exステージ
-    title: "本当のルーキー祭り2026春_ex."
+    title: "本当のルーキー祭り2026春_ex"
     item_title: "好きな作品を教えてください。"
