@@ -231,15 +231,20 @@ def create_vote_forms(creds, config, df, phase):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Set up vote forms")
+    # パーサーを分離して oauth2client の引数と衝突しないようにする
+    parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
         "--phase",
         type=str,
         required=True,
         help="対象フェーズ（例: prelim, semifinal, final, ex）",
     )
-    args = parser.parse_args()
+    args, remaining = parser.parse_known_args()
     phase = args.phase
+
+    # oauth2client など他のライブラリが独自に引数を処理するため、
+    # 残りの引数だけを sys.argv に戻しておく
+    sys.argv = [sys.argv[0]] + remaining
 
     # OAuth認証情報の初期化
     oauth_creds = initialize_oauth_credentials()
