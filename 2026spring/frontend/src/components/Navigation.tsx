@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Menu, Home, Music, Vote, Star } from "lucide-react";
 import { useState } from "react";
+import { PlusCircle } from "lucide-react";
 
 export default function Navigation({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +72,16 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li><Link href="/derivative/arrangements" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 アレンジ</Link></li>
           <li><Link href="/derivative/coversongs" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 歌ってみた</Link></li>
           <li><Link href="/derivative/others" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 その他</Link></li>
-          <li><Link href="/derivative/Postingform" onClick={closeDrawer}><Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 提出フォーム</Link></li>
+          <li className="mt-2">
+            <Link
+              href="/derivative/Postingform"
+              onClick={closeDrawer}
+              className="flex items-center font-semibold text-slate-500 hover:text-slate-600 transition"
+            >
+              <PlusCircle className="w-4 h-4 mr-3 text-slate-400" />
+              二次創作 提出フォーム
+            </Link>
+          </li>
 
 
         </ul>
