@@ -10,26 +10,74 @@ export default function Page() {
         </h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          二次創作作品の提出はこちらから行えます。
+          「本当のルーキー祭り2026春」の二次創作作品の提出はこちらから行えます。
+        </p>
+      </div>
+
+      {/* 説明 */}
+      <div className="w-full max-w-[760px] mb-8 text-sm text-gray-700 leading-relaxed">
+        <p>
+          本当のルーキー祭りでは、歌ってみたやファンアートなどの二次創作を歓迎しています。<br />
+          本サイトに掲載する二次創作作品の情報を収集するため、下記フォームにて作品情報の提供をお願いしております（投稿者以外の回答も可能です）。
+          情報提供にご協力をお願いいたします。
+        </p>
+        <p className="mt-2 text-xs text-gray-500">
+          ※ note投稿作品はフォーム回答は不要です。
         </p>
 
-        <div className="mt-4 border-b border-gray-200 w-full" />
+        {/* フォームリンク（追加） */}
+        <p className="mt-3">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSczlIrsD3P3AEpbpKirIp8ZZFF6MWlLU2uSPXNTPHw3oicgBA/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline"
+          >
+            ▶ 二次創作作品提出フォーム（Googleフォーム）を開く
+          </a>
+        </p>
       </div>
 
       {/* 注意事項 */}
-      <div className="w-full max-w-[760px] mb-8">
-        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
-          <li>歌ってみた、ファンアートなどの二次創作を強く歓迎します。</li>
-          <li>ニコニコ動画にアップロードする場合、「本当のルーキー祭り2026春二次創作」をタグロックしてください。</li>
-          <li>noteに投稿する場合、「本当のルーキー祭り2026春二次創作」のタグをつけてください。</li>
-          <li>指定のGoogleフォームに投稿内容を入力してください。本サイトに反映されます。投稿者以外が入力しても構いません。</li>
-          <li>note投稿者はGoogleフォームへの回答は不要です。</li>
-          <li>商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。</li>
-          <li>ルーキー歌い手は開催期間内に、ニコニコ動画へ新規投稿する必要があります。</li>
-          <li>つまり、期間前にニコニコ動画へ投稿してしまうと、その動画では参加できなくなります。</li>
-          <li>楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。</li>
-          <li>詳しいルールについては本当のルーキー祭り2026春二次創作者募集要項をご確認ください。</li>
-        </ul>
+      <div className="w-full max-w-[760px] mb-8 text-sm text-gray-700 space-y-5">
+
+        {/* 投稿方法 */}
+        <div>
+          <p className="font-semibold mb-1">■ 二次創作投稿方法</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>ニコニコ動画に投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグをロックしてください。</li>
+            <li>noteに投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグを付けてください。</li>
+          </ul>
+
+          <p className="mt-3 text-xs text-gray-500">
+            フォームにて提出された内容は、本サイトに掲載されます。<br />
+            運営にて内容を確認するため、掲載までにお時間をいただく場合がございます。あらかじめご了承ください。
+          </p>
+        </div>
+
+        {/* ルール */}
+        <div>
+          <p className="font-semibold mb-1">■ ルール・注意事項</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>商業目的での利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。</li>
+            <li>ルーキー歌い手として参加する場合は、開催期間内にニコニコ動画へ新規投稿する必要があります（期間前の投稿では参加できません）。</li>
+            <li>楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。</li>
+          </ul>
+
+          <p className="mt-2 text-xs text-gray-500">
+            詳細については
+            <a
+              href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline ml-1"
+            >
+              本当のルーキー祭り2026春二次創作者募集要項
+            </a>
+            をご確認ください。
+          </p>
+        </div>
+
       </div>
 
       {/* フォーム */}
