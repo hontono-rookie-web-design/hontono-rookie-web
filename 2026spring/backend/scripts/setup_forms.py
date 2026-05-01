@@ -1,5 +1,7 @@
+import argparse
 import datetime
 import os
+import sys
 
 import pandas as pd
 from googleapiclient import discovery
@@ -172,13 +174,25 @@ def initialize_oauth_credentials():
 
     return creds
 
-def load_spreadsheet(config):
+def load_spreadsheet(config, phase):
     
     service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
     # ルーキーのスプレッドシート読み込み
-    video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-    video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
+    # 「グループID」「タイトル」という列が最低でも必要
+    if phase == "prelim":
+        video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+        video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["rookie_sheet"]
+    elif phase == "semifinal":
+        video_spreadsheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"]["name"]
+        video_sheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"]["rookie_sheet"]
+    elif phase == "final":
+        video_spreadsheetname = config["spreadsheets"]["video_catalog_final"]["name"]
+        video_sheetname = config["spreadsheets"]["video_catalog_final"]["rookie_sheet"]
+    elif phase == "ex":
+        video_spreadsheetname = config["spreadsheets"]["video_catalog"]["name"]
+        video_sheetname = config["spreadsheets"]["video_catalog"][f"ex_sheet"]
+    
     video_sheet = sheet_client.connect_sheet(service_account_credentials_path, video_spreadsheetname, video_sheetname)
     video_data = sheet_client.fetch_sheet_data(video_sheet)
 
@@ -192,19 +206,36 @@ def load_spreadsheet(config):
 
     return df
 
-def create_vote_forms(creds, config, df):
+def create_vote_forms(creds, config, df, phase):
 
     template_form_id = os.environ["TEMPLATE_FORM_ID"]
     # Formsフォルダに新しいフォルダを作成
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # グループIDごとに処理
-    for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
-        print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
-        
-        title = f'{config["vote_form"]["title"]}{group_id}'
-        item_title = config["vote_form"]["item_title"]
+    if phase == "prelim" or phase == "semifinal":
+        # グループIDごとに処理
+        for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
+            print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
+            
+            title = f'{config["vote_form"][phase]["title"]}{group_id}'
+            item_title = config["vote_form"][phase]["item_title"]
+
+            # テンプレートフォームをコピー
+            new_form_id = copy_file(creds, template_form_id, title)
+
+            # フォームを共有フォルダに移動
+            move_file_to_folder(creds, new_form_id, new_folder_id)
+
+            # フォームを更新
+            update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
+
+    elif phase == "final" or phase == "ex":
+        # グループIDがないため、全体で1つのフォームを作成
+        print(f"[INFO]\t処理中 phase={phase}, 件数={len(df)}")
+
+        title = config["vote_form"][phase]["title"]
+        item_title = config["vote_form"][phase]["item_title"]
 
         # テンプレートフォームをコピー
         new_form_id = copy_file(creds, template_form_id, title)
@@ -213,10 +244,24 @@ def create_vote_forms(creds, config, df):
         move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
-        update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
+        update_vote_form(creds, new_form_id, title, item_title, df["タイトル"].tolist())
 
 
 def main():
+    # パーサーを分離して oauth2client の引数と衝突しないようにする
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument(
+        "--phase",
+        type=str,
+        required=True,
+        help="対象フェーズ（例: prelim, semifinal, final, ex）",
+    )
+    args, remaining = parser.parse_known_args()
+    phase = args.phase
+
+    # oauth2client など他のライブラリが独自に引数を処理するため、
+    # 残りの引数だけを sys.argv に戻しておく
+    sys.argv = [sys.argv[0]] + remaining
 
     # OAuth認証情報の初期化
     oauth_creds = initialize_oauth_credentials()
@@ -225,10 +270,10 @@ def main():
     config = utils.load_config()
 
     # スプレッドシートからデータを読み込む
-    df = load_spreadsheet(config)
+    df = load_spreadsheet(config, phase)
 
     # 投票フォームの作成
-    create_vote_forms(oauth_creds, config, df)
+    create_vote_forms(oauth_creds, config, df, phase)
 
 if __name__ == "__main__":
     main()

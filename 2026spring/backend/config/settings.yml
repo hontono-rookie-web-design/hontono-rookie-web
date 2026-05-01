@@ -26,7 +26,7 @@ spreadsheets:
   video_catalog_semifinal: # 準決勝進出作品動画リスト
     name: "video_catalog_2026spring_semifinal" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名
-  
+
   ranking_result: #投票結果のシート
     name: "人気投票順位_2026春" #スプレッドシート名
     preliminary_sheet: "予選" #予選結果シート名
@@ -46,6 +46,10 @@ spreadsheets:
     forms_result: "Forms_result" # フォーム回答結果シート名（二次創作作品提出フォームの回答をリンクさせるシート）
     for_check: "二次創作作品情報確認用" # 二次創作作品情報確認用シート名
 
+  video_catalog_final: # 決勝参加の全ての動画リスト。
+    name: "video_catalog_2026spring_final" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
   group_num: 70
@@ -63,5 +67,15 @@ vote_semifinal: # 準決勝グループ分け関連パラメータ
     rookie_sheet: "rookie"
 
 vote_form: # 投票フォーム関連パラメータ
-  title: "本当のルーキー祭り2026春_Disc."
-  item_title: "好きな作品を教えてください。"
+  prelim: # 予選
+    title: "本当のルーキー祭り2026春_Disc."
+    item_title: "好きな作品を教えてください。"
+  semifinal: # 準決勝
+    title: "本当のルーキー祭り2026春_Selection."
+    item_title: "好きな作品を教えてください。"
+  final: # 決勝
+    title: "本当のルーキー祭り2026春_Best"
+    item_title: "好きな作品を教えてください。"
+  ex: # exステージ
+    title: "本当のルーキー祭り2026春_ex"
+    item_title: "好きな作品を教えてください。"
