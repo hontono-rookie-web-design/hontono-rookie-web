@@ -213,11 +213,28 @@ def create_vote_forms(creds, config, df, phase):
     parent_folder_id = os.environ["FORMS_FOLDER_ID"]
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # グループIDごとに処理
-    for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
-        print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
-        
-        title = f'{config["vote_form"][phase]["title"]}{group_id}'
+    if phase == "prelim" or phase == "semifinal":
+        # グループIDごとに処理
+        for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
+            print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
+            
+            title = f'{config["vote_form"][phase]["title"]}{group_id}'
+            item_title = config["vote_form"][phase]["item_title"]
+
+            # テンプレートフォームをコピー
+            new_form_id = copy_file(creds, template_form_id, title)
+
+            # フォームを共有フォルダに移動
+            move_file_to_folder(creds, new_form_id, new_folder_id)
+
+            # フォームを更新
+            update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
+
+    elif phase == "final" or phase == "ex":
+        # グループIDがないため、全体で1つのフォームを作成
+        print(f"[INFO]\t処理中 phase={phase}, 件数={len(df)}")
+
+        title = config["vote_form"][phase]["title"]
         item_title = config["vote_form"][phase]["item_title"]
 
         # テンプレートフォームをコピー
@@ -227,7 +244,7 @@ def create_vote_forms(creds, config, df, phase):
         move_file_to_folder(creds, new_form_id, new_folder_id)
 
         # フォームを更新
-        update_vote_form(creds, new_form_id, title, item_title, group_df["タイトル"].tolist())
+        update_vote_form(creds, new_form_id, title, item_title, df["タイトル"].tolist())
 
 
 def main():
