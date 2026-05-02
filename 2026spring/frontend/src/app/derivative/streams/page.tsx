@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CONFIG } from "@/config/config";
+import Image from "next/image"
 
 type Item = {
   creator: string;
@@ -76,9 +77,13 @@ function Card({
     <div className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md bg-white">
       <a href={item.workUrl} target="_blank" className="flex flex-col">
         <div className="relative aspect-video overflow-hidden">
-          <img
+          <Image
             src={img}
-            className="w-full h-full object-cover group-hover:scale-105 transition"
+            alt={item.title}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 240px, 240px"
+            className="object-cover group-hover:scale-105 transition"
+            unoptimized
           />
 
           {future && showFutureBadge && (

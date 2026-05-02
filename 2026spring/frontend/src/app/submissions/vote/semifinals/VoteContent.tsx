@@ -5,6 +5,7 @@ import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
 import { useSearchParams, useRouter } from "next/navigation"
+import Image from "next/image"
 
 /* =========================
    表示ラベル
@@ -323,10 +324,14 @@ export default function VoteContent() {
                   {rank}
                 </div>
 
-                <div className="overflow-hidden rounded">
-                  <img
+                <div className="overflow-hidden rounded relative w-12 h-8">
+                  <Image
                     src={video.thumbnailUrl}
-                    className="w-12 h-8 object-cover transition-transform duration-200 group-hover:scale-105"
+                    alt={video.title}
+                    fill
+                    sizes="48px"
+                    className="object-cover transition-transform duration-200 group-hover:scale-105"
+                    unoptimized
                   />
                 </div>
 
@@ -379,8 +384,15 @@ export default function VoteContent() {
               className="group w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-[1px] block"
             >
               <div className="flex gap-4">
-                <div className="overflow-hidden rounded">
-                  <img src={item.thumbnailUrl} className="w-40 h-24 object-cover group-hover:scale-105" />
+                <div className="overflow-hidden rounded relative w-40 h-24">
+                  <Image
+                    src={item.thumbnailUrl}
+                    alt={item.title}
+                    fill
+                    sizes="160px"
+                    className="object-cover group-hover:scale-105"
+                    unoptimized
+                  />
                 </div>
 
                 <div className="flex flex-col flex-1 min-w-0">
