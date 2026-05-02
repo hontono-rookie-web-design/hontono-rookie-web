@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+import Image from "next/image"
 import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
@@ -14,9 +15,6 @@ type Video = {
   description?: string
 }
 
-/* =========================
-   表示フェーズ定義（安全化）
-========================= */
 const VIEW_PHASE = {
   BEFORE: "before",
   DURING: "during",
@@ -26,31 +24,16 @@ function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
       return VIEW_PHASE.BEFORE
-
-    case EVENT_PHASES.OPENING:
-    case EVENT_PHASES.ROOKIE:
-    case EVENT_PHASES.PRELIM:
-    case EVENT_PHASES.SEMIFINAL:
-    case EVENT_PHASES.FINAL:
-    case EVENT_PHASES.AFTER:
-      return VIEW_PHASE.DURING
-
     default:
-      return VIEW_PHASE.BEFORE
+      return VIEW_PHASE.DURING
   }
 }
 
-/* =========================
-   日付パース
-========================= */
 function parseDate(dateStr?: string) {
   if (!dateStr) return 0
   return new Date(dateStr).getTime()
 }
 
-/* =========================
-   シャッフル
-========================= */
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array]
   for (let i = arr.length - 1; i > 0; i--) {
@@ -60,21 +43,24 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr
 }
 
+const PAGE_SIZE = 24
+
 export default function Page() {
   const [data, setData] = useState<Video[]>([])
   const [displayData, setDisplayData] = useState<Video[]>([])
-  const [loading, setLoading] = useState(true)
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
+  const [loading, setLoading] = useState(true)
   const [searchText, setSearchText] = useState("")
   const [sortType, setSortType] = useState<"new" | "old">("new")
   const [isRandom, setIsRandom] = useState(false)
-  
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null)
+
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
 
-  /* =========================
-     初期ロード（旧API）
-  ========================= */
+  /* 初期ロード */
   useEffect(() => {
     fetch("/api/submissions/songs/opening")
       .then(res => res.json())
@@ -92,9 +78,7 @@ export default function Page() {
       })
   }, [])
 
-  /* =========================
-     フィルタ + ソート
-  ========================= */
+  /* フィルタ + ソート */
   useEffect(() => {
     if (data.length === 0) return
     if (isRandom) return
@@ -115,11 +99,10 @@ export default function Page() {
     }
 
     setDisplayData(filtered)
+    setVisibleCount(PAGE_SIZE)
   }, [data, searchText, sortType, isRandom])
 
-  /* =========================
-     ランダム
-  ========================= */
+  /* ランダム */
   const handleShuffle = () => {
     let base = [...data]
 
@@ -132,30 +115,41 @@ export default function Page() {
 
     setDisplayData(shuffleArray(base))
     setIsRandom(true)
+    setVisibleCount(PAGE_SIZE)
   }
 
-  /* =========================
-     ソート変更
-  ========================= */
   const handleSortChange = (val: "new" | "old") => {
     setSortType(val)
     setIsRandom(false)
   }
 
-  /* =========================
-     検索変更
-  ========================= */
   const handleSearchChange = (val: string) => {
     setSearchText(val)
     setIsRandom(false)
   }
 
-  /* =========================
-     BEFORE
-  ========================= */
+  /* 無限スクロール */
+  useEffect(() => {
+    if (!loadMoreRef.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount(prev => prev + PAGE_SIZE)
+        }
+      },
+      { rootMargin: "200px" }
+    )
+
+    observer.observe(loadMoreRef.current)
+    return () => observer.disconnect()
+  }, [displayData])
+
   if (viewPhase === VIEW_PHASE.BEFORE) {
     return <TBA title={`楽曲一覧 opステージ`} />
   }
+
+  const visibleItems = displayData.slice(0, visibleCount)
 
   return (
     <main className="flex justify-center">
@@ -166,19 +160,15 @@ export default function Page() {
           <h1 className="text-3xl md:text-4xl font-bold leading-tight">
             楽曲一覧 opステージ
           </h1>
-
           <p className="text-sm text-gray-500 mt-1">
             「{CONFIG.event.name}」のopステージ参加楽曲を掲載しています。
           </p>
-
           <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
 
         {/* 操作バー */}
         {!loading && (
           <div className="flex flex-col gap-3 mb-4">
-
-            {/* 上段：検索（左寄せ） */}
             <div className="flex justify-start">
               <input
                 type="text"
@@ -189,9 +179,7 @@ export default function Page() {
               />
             </div>
 
-            {/* 下段：ソート + ボタン */}
             <div className="flex items-center justify-between">
-
               <div className="flex items-center gap-2">
                 <select
                   value={isRandom ? "random" : sortType}
@@ -222,16 +210,12 @@ export default function Page() {
           </div>
         )}
 
-        {/* ローディング */}
+        {/* スケルトン（完全維持） */}
         {loading && (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="flex flex-col border border-gray-200 rounded-xl overflow-hidden"
-              >
+              <div key={i} className="flex flex-col border border-gray-200 rounded-xl overflow-hidden">
                 <div className="aspect-video bg-gray-200 animate-pulse" />
-
                 <div className="p-2 space-y-2">
                   <div className="h-3 w-24 bg-gray-200 rounded animate-pulse" />
                   <div className="h-4 bg-gray-200 rounded animate-pulse" />
@@ -251,37 +235,41 @@ export default function Page() {
 
         {/* グリッド */}
         {!loading && displayData.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {displayData.map((video, i) => (
-              <div
-                key={i}
-                className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md"
-              >
-                <a href={video.videoUrl} target="_blank" className="flex flex-col">
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {visibleItems.map((video, i) => (
+                <div key={i} className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md">
+                  <a href={video.videoUrl} target="_blank" className="flex flex-col">
 
-                  {/* サムネ */}
-                  <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={video.thumbnailUrl}
-                      className="w-full h-full object-cover transition group-hover:scale-105"
-                    />
-                  </div>
+                    <div className="relative aspect-video overflow-hidden">
+                      <Image
+                        src={video.thumbnailUrl}
+                        alt={video.title}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                        className="object-cover transition group-hover:scale-105"
+                        loading="lazy"
+                        unoptimized
+                      />
+                    </div>
 
-                  {/* テキスト */}
-                  <div className="flex flex-col mt-2 px-2 pb-2">
-                    <h2 className="text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
-                      {video.title}
-                    </h2>
+                    <div className="flex flex-col mt-2 px-2 pb-2">
+                      <h2 className="text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem] group-hover:underline">
+                        {video.title}
+                      </h2>
+                      <p className="text-xs text-gray-600 mt-1 truncate">
+                        {video.author}
+                      </p>
+                    </div>
 
-                    <p className="text-xs text-gray-600 mt-1 truncate">
-                      {video.author}
-                    </p>
-                  </div>
+                  </a>
+                </div>
+              ))}
+            </div>
 
-                </a>
-              </div>
-            ))}
-          </div>
+            {/* 無限スクロール */}
+            <div ref={loadMoreRef} className="h-10" />
+          </>
         )}
 
       </div>
