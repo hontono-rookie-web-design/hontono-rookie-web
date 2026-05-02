@@ -119,6 +119,8 @@ export default function Hero() {
     alt="本当のルーキー祭り2026春"
     width={1200}
     height={600}
+    priority
+    sizes="(max-width: 768px) 420px, (max-width: 1024px) 630px, 780px"
     className="w-[420px] md:w-[630px] lg:w-[780px] h-auto mb-6 drop-shadow-sm"
   />
 

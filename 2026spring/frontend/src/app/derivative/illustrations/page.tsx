@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CONFIG } from "@/config/config";
+import Image from "next/image"
 
 type Item = {
   creator: string;
@@ -139,10 +140,14 @@ export default function Page() {
               <div key={i} className="group flex flex-col">
                 {/* 画像 */}
                 <a href={item.workUrl} target="_blank">
-                  <div className="aspect-square overflow-hidden rounded-xl">
-                    <img
+                  <div className="aspect-square overflow-hidden rounded-xl relative">
+                    <Image
                       src={img}
-                      className="w-full h-full object-cover group-hover:scale-105 transition"
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition"
+                      unoptimized
                     />
                   </div>
                 </a>
