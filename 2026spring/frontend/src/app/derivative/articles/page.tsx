@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CONFIG } from "@/config/config";
+import Image from "next/image"
 
 type Item = {
   title: string;
@@ -167,13 +168,16 @@ export default function Page() {
                     target="_blank"
                     className="w-32 sm:w-44 h-20 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg"
                   >
-                    <img
-                      src={img}
-                      onError={(e) => {
-                        e.currentTarget.src = CONFIG.images.defaultIllustration;
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition"
-                    />
+                    <div className="w-full h-full relative">
+                      <Image
+                        src={img}
+                        alt={item.title}
+                        fill
+                        sizes="(max-width: 640px) 128px, 176px"
+                        className="object-cover group-hover:scale-105 transition"
+                        unoptimized
+                      />
+                    </div>
                   </a>
 
                   {/* テキスト */}
@@ -188,13 +192,16 @@ export default function Page() {
                       {/* 投稿者 */}
                       <div className="mt-2 flex items-center gap-2 min-w-0">
                         {hasProfileImage && (
-                          <img
-                            src={item.userProfileImageUrl}
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                            }}
-                            className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
-                          />
+                          <div className="relative w-6 h-6 sm:w-8 sm:h-8">
+                            <Image
+                              src={item.userProfileImageUrl}
+                              alt={item.author}
+                              fill
+                              sizes="32px"
+                              className="rounded-full object-cover"
+                              unoptimized
+                            />
+                          </div>
                         )}
 
                         <a

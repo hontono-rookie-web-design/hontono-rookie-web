@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CONFIG } from "@/config/config";
+import Image from "next/image"
 
 type Item = {
   creator: string;
@@ -156,10 +157,16 @@ export default function Page() {
                     target="_blank"
                     className="w-32 sm:w-44 h-20 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg"
                   >
-                    <img
-                      src={img}
-                      className="w-full h-full object-cover group-hover:scale-105 transition"
-                    />
+                    <div className="w-full h-full relative">
+                      <Image
+                        src={img}
+                        alt={item.title}
+                        fill
+                        sizes="(max-width: 640px) 128px, 176px"
+                        className="object-cover group-hover:scale-105 transition"
+                        unoptimized
+                      />
+                    </div>
                   </a>
 
                   {/* テキスト */}
