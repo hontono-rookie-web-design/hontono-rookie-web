@@ -52,7 +52,17 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // HTMLページは常に最新を優先（必要ならここを s-maxage 等に調整）
+      // トップページは常に最新を優先
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "max-age=0, must-revalidate",
+          },
+        ],
+      },
+      // その他の HTMLページは常に最新を優先（必要ならここを s-maxage 等に調整）
       {
         source: "/(.*)",
         headers: [
