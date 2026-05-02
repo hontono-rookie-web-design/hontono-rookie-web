@@ -1,4 +1,5 @@
 import { HeartHandshake, Link as LinkIcon, MessageCircle } from "lucide-react";
+import Image from "next/image";
 
 export default function LinksAndSponsors() {
   const guidelineLinks = [
@@ -168,9 +169,12 @@ export default function LinksAndSponsors() {
               本当の投稿祭セレクションCD制作PJー
             </a>
             <div className="mt-6 flex justify-center">
-              <img
+              <Image
                 src="/honto-crowdfunding.png"
                 alt="クラウドファンディング紹介画像"
+                width={800}
+                height={450}
+                sizes="(max-width: 768px) 100vw, 768px"
                 className="w-full max-w-xl h-auto rounded-xl"
               />
             </div>
