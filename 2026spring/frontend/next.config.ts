@@ -62,6 +62,36 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // 投稿作品ページは1時間キャッシュ
+      {
+        source: "/submissions/songs/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+      // 投票ページは1時間キャッシュ
+      {
+        source: "/submissions/vote/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+      // 二次創作提出ページは1時間キャッシュ
+      {
+        source: "/derivative/Postingform",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
       // その他の HTMLページは常に最新を優先（必要ならここを s-maxage 等に調整）
       {
         source: "/(.*)",
