@@ -1,4 +1,5 @@
 import { Link as LinkIcon } from "lucide-react";
+import Image from "next/image";
 
 export default function PastEventLink() {
   const events = [
@@ -41,9 +42,12 @@ export default function PastEventLink() {
               className="group block rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all"
             >
               <div className="relative">
-                <img
+                <Image
                   src={event.image}
                   alt={event.title}
+                  width={800}
+                  height={320}
+                  sizes="(max-width: 640px) 100vw, 50vw"
                   className="w-full h-40 object-cover"
                 />
 
