@@ -1,4 +1,5 @@
 import { AlertCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function Rules() {
   const ruleItems = [
@@ -489,13 +490,13 @@ export default function Rules() {
             </li>
             <li>
               指定の
-              <a
-                href="https://hontono-rookie-web-2026spring-bx3op1xrh.vercel.app/derivative/Postingform"
-                rel="noopener noreferrer"
+              <Link
+                href="/derivative/Postingform"
+                prefetch={false}
                 className="text-skyblue font-medium text-fg-brand hover:underline"
               >
                 Googleフォーム
-              </a>
+              </Link>
               に投稿内容を入力してください。本サイトに反映されます。投稿者以外が入力しても構いません。
               <br />※ note投稿者はGoogleフォームへの回答は不要です。
             </li>
