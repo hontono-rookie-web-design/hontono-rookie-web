@@ -58,7 +58,15 @@ export async function GET() {
       .filter((item) => item.videoUrl)
       .sort(
         (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
-      );
+      )
+      .map((v) => ({
+        // 必要なものだけ返す
+        title: v.title,
+        creator: v.creator,
+        videoUrl: v.videoUrl,
+        thumbnailUrl: v.thumbnailUrl,
+        publishedAt: v.publishedAt,
+      }));
 
     // ✔ キャッシュ更新
     cache = {

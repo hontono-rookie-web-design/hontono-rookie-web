@@ -15,6 +15,11 @@ let cache: Cache | null = null;
 const CACHE_TTL = 1000 * 60 * 5; // 5分
 
 /* =========================
+   description 最大文字数
+========================= */
+const DESCRIPTION_MAX_LENGTH = 180; // 概要欄取得文字数
+
+/* =========================
    日付パース
 ========================= */
 function parseDate(dateStr?: string) {
@@ -40,6 +45,37 @@ function parseDate(dateStr?: string) {
 }
 
 /* =========================
+   description整形
+========================= */
+function trimDescription(text?: string) {
+  if (!text) return "";
+
+  const cleaned = text
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/\n/g, " ")
+    .trim();
+
+  if (cleaned.length <= DESCRIPTION_MAX_LENGTH) {
+    return cleaned;
+  }
+
+  // 少し手前で切る（単語途中防止のゆる対策）
+  const slicePoint = DESCRIPTION_MAX_LENGTH - 10;
+  const truncated = cleaned.slice(0, slicePoint);
+
+  // 最後のスペース位置まで戻す（英語対策）
+  const lastSpace = truncated.lastIndexOf(" ");
+
+  const safeText =
+    lastSpace > slicePoint - 20
+      ? truncated.slice(0, lastSpace)
+      : truncated;
+
+  return safeText + "…";
+}
+
+
+/* =========================
    API
 ========================= */
 export async function GET() {
@@ -61,7 +97,16 @@ export async function GET() {
       .filter((item) => item.videoUrl)
       .sort(
         (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
-      );
+      )
+      .map((v) => ({
+        title: v.title,
+        creator: v.creator,
+        videoUrl: v.videoUrl,
+        thumbnailUrl: v.thumbnailUrl,
+        publishedAt: v.publishedAt,
+        group: Number(v.group || 0),
+        description: trimDescription(v.description),
+      }));
 
     // ✔ キャッシュ更新
     cache = {
