@@ -42,3 +42,24 @@ export async function getSemifinalSongs() {
       videoId: v.videoId,
     }));
 }
+
+export async function getFinalSongs() {
+  const items = await fetchGroupedVideosSheet(
+    CONFIG.videosheets_final.spreadsheetId,
+    CONFIG.videosheets_final.rookie.name
+  );
+
+  // 転送量を減らすため、サーバーサイドで map を済ませる
+  return items
+    .filter((v) => v.videoUrl)
+    .map((v) => ({
+      title: v.title,
+      creator: v.creator,
+      videoUrl: v.videoUrl,
+      thumbnailUrl: v.thumbnailUrl,
+      publishedAt: v.publishedAt,
+      description: v.description,
+      group: Number(v.group || 0),
+      videoId: v.videoId,
+    }));
+}
