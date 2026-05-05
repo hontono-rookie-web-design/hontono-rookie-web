@@ -1,10 +1,15 @@
 import { Suspense } from "react"
 import VoteContent from "./VoteContent"
+import { getPreliminarySongs } from "@/lib/votes"
 
-export default function Page() {
+export default async function Page() {
+  // songsデータだけサーバーサイドで事前に取得
+  const initialSongs = await getPreliminarySongs();
+
   return (
     <Suspense fallback={<div className="p-4">Loading...</div>}>
-      <VoteContent />
+      {/* 楽曲データだけ先に渡す */}
+      <VoteContent initialSongs={initialSongs} />
     </Suspense>
   )
 }

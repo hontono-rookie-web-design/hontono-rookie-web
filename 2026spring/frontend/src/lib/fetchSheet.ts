@@ -12,7 +12,9 @@ export type FanficSheetItem = {
   publishedAt: string;
 };
 
-export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetItem[]> {
+export async function fetchFanficSheet(
+  sheetName: string,
+): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url);
@@ -42,7 +44,7 @@ export type NoteSheetItem = {
 };
 
 export async function fetchNoteSheet(
-  sheetName: string
+  sheetName: string,
 ): Promise<NoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
@@ -77,7 +79,7 @@ export type VideoSheetItem = {
 };
 
 export async function fetchVideosSheet(
-  sheetName: string
+  sheetName: string,
 ): Promise<VideoSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
@@ -113,12 +115,12 @@ export type GroupedVideoSheetItem = {
 
 export async function fetchGroupedVideosSheet(
   spreadsheetId: string,
-  sheetName: string
+  sheetName: string,
 ): Promise<GroupedVideoSheetItem[]> {
   const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 },
+    next: { revalidate: 86400 }, // 24時間キャッシュ
   });
 
   const data = await res.json();
@@ -144,7 +146,7 @@ export type VoteSheetItem = {
 };
 
 export async function fetchVotesSheet(
-  sheetName: string
+  sheetName: string,
 ): Promise<VoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.voteformssheets.spreadsheetId}/${sheetName}`;
 
@@ -169,7 +171,7 @@ export type RankingItem = {
 };
 
 export async function fetchRankingSheet(
-  sheetName: string
+  sheetName: string,
 ): Promise<RankingItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.rankingsheets.spreadsheetId}/${sheetName}`;
 
