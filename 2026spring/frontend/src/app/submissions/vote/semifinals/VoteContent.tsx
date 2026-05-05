@@ -135,23 +135,9 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
   ========================= */
   useEffect(() => {
     Promise.all([
-      // fetch("/api/submissions/vote/semifinals/songs").then(r => r.json()),
       fetch("/api/submissions/vote/semifinals/forms").then(r => r.json()),
       fetch("/api/submissions/vote/semifinals/ranks").then(r => r.json()),
     ]).then(([voteRes, rankRes]) => {
-
-      // const mappedVideos: Video[] = videoRes.map((v: any) => ({
-      //   title: v.title,
-      //   creator: v.creator,
-      //   videoUrl: v.videoUrl,
-      //   thumbnailUrl: v.thumbnailUrl,
-      //   publishedAt: v.publishedAt,
-      //   description: v.description,
-      //   group: Number(v.group || 0),
-      //   videoId: v.videoId,
-      // }))
-
-      // setVideos(mappedVideos)
       setVotes(voteRes)
       setRanks(rankRes)
 
