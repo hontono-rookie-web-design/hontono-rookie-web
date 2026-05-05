@@ -114,11 +114,14 @@ function SkeletonCard() {
 /* =========================
    Page
 ========================= */
-export default function VoteContent() {
+export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
 
-  const [videos, setVideos] = useState<Video[]>([])
+  // const [videos, setVideos] = useState<Video[]>([])
+  const [videos, setVideos] = useState(initialSongs)
+  const mappedVideos = videos
+
   const [votes, setVotes] = useState<Vote[]>([])
   const [ranks, setRanks] = useState<Rank[]>([])
   const [loading, setLoading] = useState(true)
@@ -133,23 +136,23 @@ export default function VoteContent() {
   ========================= */
   useEffect(() => {
     Promise.all([
-      fetch("/api/submissions/vote/preliminaries/songs").then(r => r.json()),
+      // fetch("/api/submissions/vote/preliminaries/songs").then(r => r.json()),
       fetch("/api/submissions/vote/preliminaries/forms").then(r => r.json()),
       fetch("/api/submissions/vote/preliminaries/ranks").then(r => r.json()),
-    ]).then(([videoRes, voteRes, rankRes]) => {
+    ]).then(([voteRes, rankRes]) => {
 
-      const mappedVideos: Video[] = videoRes.map((v: any) => ({
-        title: v.title,
-        creator: v.creator,
-        videoUrl: v.videoUrl,
-        thumbnailUrl: v.thumbnailUrl,
-        publishedAt: v.publishedAt,
-        description: v.description,
-        group: Number(v.group || 0),
-        videoId: v.videoId,
-      }))
+      // const mappedVideos: Video[] = videoRes.map((v: any) => ({
+      //   title: v.title,
+      //   creator: v.creator,
+      //   videoUrl: v.videoUrl,
+      //   thumbnailUrl: v.thumbnailUrl,
+      //   publishedAt: v.publishedAt,
+      //   description: v.description,
+      //   group: Number(v.group || 0),
+      //   videoId: v.videoId,
+      // }))
 
-      setVideos(mappedVideos)
+      // setVideos(mappedVideos)
       setVotes(voteRes)
       setRanks(rankRes)
 
