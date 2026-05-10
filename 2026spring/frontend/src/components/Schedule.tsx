@@ -16,7 +16,7 @@ export default function Schedule() {
       title: "準決勝(Selection)",
       date: "2026年5月11日(月) 〜 5月17日(日)",
       description:
-        "各Discの予選順位に基づいて振り分け。各Selection上位2作品決勝進出",
+        "各Discの予選順位に基づいて振り分け。各Selection上位1作品決勝進出",
       color: "step-accent", // cherry
     },
     {
