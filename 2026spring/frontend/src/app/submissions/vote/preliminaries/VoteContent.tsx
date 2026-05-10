@@ -293,44 +293,76 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
             {DISC_LABEL} {activeGroup} 人気投票結果
           </h2>
 
-          <div className="grid grid-cols-[60px_60px_1fr_160px] text-sm mb-1 font-semibold text-gray-600">
-            <div>順位</div><div></div><div>タイトル</div><div>投稿者</div>
+          {/* ヘッダー */}
+          <div
+            className="
+              grid
+              grid-cols-[40px_56px_1fr_90px]
+              sm:grid-cols-[60px_60px_1fr_160px]
+              gap-2
+              text-sm mb-1 font-semibold text-gray-600
+            "
+          >
+            <div>順位</div>
+            <div></div>
+            <div>タイトル</div>
+            <div>投稿者</div>
           </div>
 
           <div className="flex flex-col gap-1">
-            {rankedVideos.map(({rank, video}) => (
+            {rankedVideos.map(({ rank, video }) => (
               <a
                 key={video.videoId}
                 href={video.videoUrl}
                 target="_blank"
                 className={`
-                  group grid grid-cols-[60px_60px_1fr_160px]
+                  group grid
+                  grid-cols-[40px_56px_1fr_90px]
+                  sm:grid-cols-[60px_60px_1fr_160px]
                   items-center gap-2 px-2 py-1 rounded
                   transition-all duration-200
                   hover:shadow-md hover:-translate-y-[1px]
                   ${medalClass(rank)}
                 `}
               >
-                <div className={`text-center font-bold ${rank<=3 ? "text-lg" : ""}`}>
+                {/* 順位 */}
+                <div
+                  className={`
+                    text-center font-bold
+                    text-base sm:text-lg
+                    ${rank <= 3 ? "text-lg sm:text-xl" : ""}
+                  `}
+                >
                   {rank}
                 </div>
 
-                <div className="overflow-hidden rounded relative w-12 h-8">
+                {/* サムネ */}
+                <div className="overflow-hidden rounded relative w-14 h-10 sm:w-12 sm:h-8">
                   <Image
                     src={video.thumbnailUrl}
                     alt={video.title}
                     fill
-                    sizes="48px"
+                    sizes="56px"
                     className="object-cover transition-transform duration-200 group-hover:scale-105"
                     unoptimized
                   />
                 </div>
 
-                <div className="truncate group-hover:underline">
+                {/* タイトル */}
+                <div
+                  className="
+                    text-sm sm:text-base
+                    leading-tight
+                    line-clamp-2 sm:line-clamp-1
+                    break-words
+                    group-hover:underline
+                  "
+                >
                   {video.title}
                 </div>
 
-                <div className="truncate">
+                {/* 投稿者 */}
+                <div className="truncate text-xs sm:text-base">
                   {video.creator}
                 </div>
               </a>
