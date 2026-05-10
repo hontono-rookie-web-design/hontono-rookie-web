@@ -370,7 +370,11 @@ export default function Rules() {
             <li>予選通過作品を改めて10作品単位のSelectionに分けます。</li>
             <li>
               予選と同様に人気投票をして
-              <strong>上位2曲を準決勝通過</strong>とします。
+              <strong>
+                <s>上位2曲</s>
+                <span className="text-cherry">上位1曲</span>を準決勝通過
+              </strong>
+              とします。
             </li>
             <li>スコアは全曲が公開されます。</li>
           </ul>
