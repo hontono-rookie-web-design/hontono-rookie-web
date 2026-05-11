@@ -127,12 +127,9 @@ export default function VoteContent({
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
 
-  // const [videos, setVideos] = useState<Video[]>([])
   const [videos, setVideos] = useState(initialSongs)
   const mappedVideos = videos
-  // const [votes, setVotes] = useState<Vote[]>([])
   const [votes, setVotes] = useState(initialForms)
-  // const [ranks, setRanks] = useState<Rank[]>([])
   const [ranks, setRanks] = useState(initialRanks)
   const [loading, setLoading] = useState(true)
 
@@ -145,13 +142,6 @@ export default function VoteContent({
      fetch
   ========================= */
   useEffect(() => {
-    // Promise.all([
-    //   fetch("/api/submissions/vote/preliminaries/forms").then(r => r.json()),
-    //   fetch("/api/submissions/vote/preliminaries/ranks").then(r => r.json()),
-    // ]).then(([voteRes, rankRes]) => {
-    //   setVotes(voteRes)
-    //   setRanks(rankRes)
-
       const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
 
       const groupParam = searchParams.get("group")

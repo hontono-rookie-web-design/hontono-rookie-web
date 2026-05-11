@@ -7,8 +7,6 @@ export async function getPreliminarySongs() {
     CONFIG.groupedvideosheets.spreadsheetId,
     CONFIG.groupedvideosheets.rookie.name
   );
-
-  // 転送量を減らすため、サーバーサイドで map を済ませる
   return items
     .filter((v) => v.videoUrl)
     .map((v) => ({
@@ -25,7 +23,6 @@ export async function getPreliminarySongs() {
 
 export async function getPreliminaryForms(){
   const items = await fetchVotesSheet(
-    // CONFIG.voteformssheets.spreadsheetId,
     CONFIG.voteformssheets.preliminaries.name
   );
   return items
@@ -40,7 +37,6 @@ export async function getPreliminaryForms(){
 }
 export async function getPreliminaryRanks(){
   const items = await fetchRankingSheet(
-    // CONFIG.rankingsheets.spreadsheetId,
     CONFIG.rankingsheets.preliminaries.name
   );
   return items
@@ -55,8 +51,6 @@ export async function getSemifinalSongs() {
     CONFIG.groupedvideosheets_semifinal.spreadsheetId,
     CONFIG.groupedvideosheets_semifinal.rookie.name
   );
-
-  // 転送量を減らすため、サーバーサイドで map を済ませる
   return items
     .filter((v) => v.videoUrl)
     .map((v) => ({
@@ -73,7 +67,6 @@ export async function getSemifinalSongs() {
 
 export async function getSemifinalForms(){
   const items = await fetchVotesSheet(
-    // CONFIG.voteformssheets.spreadsheetId,
     CONFIG.voteformssheets.semifinals.name
   );
   return items
@@ -88,7 +81,6 @@ export async function getSemifinalForms(){
 }
 export async function getSemifinalRanks(){
   const items = await fetchRankingSheet(
-    // CONFIG.rankingsheets.spreadsheetId,
     CONFIG.rankingsheets.semifinals.name
   );
   return items
@@ -104,8 +96,6 @@ export async function getFinalSongs() {
     CONFIG.videosheets_final.spreadsheetId,
     CONFIG.videosheets_final.rookie.name
   );
-
-  // 転送量を減らすため、サーバーサイドで map を済ませる
   return items
     .filter((v) => v.videoUrl)
     .map((v) => ({
