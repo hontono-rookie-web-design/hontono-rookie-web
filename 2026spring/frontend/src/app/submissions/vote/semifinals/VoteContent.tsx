@@ -114,15 +114,25 @@ function SkeletonCard() {
 /* =========================
    Page
 ========================= */
-export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
+export default function VoteContent({ 
+  initialSongs,
+  initialForms,
+  initialRanks
+ }: { 
+  initialSongs: any[],
+  initialForms: any[],
+  initialRanks: any[]
+ }) {
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
 
   // const [videos, setVideos] = useState<Video[]>([])
   const [videos, setVideos] = useState(initialSongs)
   const mappedVideos = videos
-  const [votes, setVotes] = useState<Vote[]>([])
-  const [ranks, setRanks] = useState<Rank[]>([])
+  // const [votes, setVotes] = useState<Vote[]>([])
+  const [votes, setVotes] = useState(initialForms)
+  // const [ranks, setRanks] = useState<Rank[]>([])
+  const [ranks, setRanks] = useState(initialRanks)
   const [loading, setLoading] = useState(true)
 
   const [activeGroup, setActiveGroup] = useState<number | null>(null)
@@ -134,12 +144,12 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
      fetch
   ========================= */
   useEffect(() => {
-    Promise.all([
-      fetch("/api/submissions/vote/semifinals/forms").then(r => r.json()),
-      fetch("/api/submissions/vote/semifinals/ranks").then(r => r.json()),
-    ]).then(([voteRes, rankRes]) => {
-      setVotes(voteRes)
-      setRanks(rankRes)
+    // Promise.all([
+    //   fetch("/api/submissions/vote/semifinals/forms").then(r => r.json()),
+    //   fetch("/api/submissions/vote/semifinals/ranks").then(r => r.json()),
+    // ]).then(([voteRes, rankRes]) => {
+    //   setVotes(voteRes)
+    //   setRanks(rankRes)
 
       const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
 
@@ -153,7 +163,7 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
       }
 
       setLoading(false)
-    })
+    // })
   }, [])
 
   /* =========================

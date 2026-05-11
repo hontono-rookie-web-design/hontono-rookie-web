@@ -151,7 +151,7 @@ export async function fetchVotesSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.voteformssheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 },
+    next: { revalidate: false },
   });
 
   const data = await res.json();
@@ -176,7 +176,7 @@ export async function fetchRankingSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.rankingsheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 },
+    next: { revalidate: false },
   });
 
   const data = await res.json();

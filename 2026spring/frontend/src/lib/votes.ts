@@ -1,5 +1,5 @@
 // lib/votes.ts
-import { fetchGroupedVideosSheet } from "@/lib/fetchSheet";
+import { fetchGroupedVideosSheet, fetchVotesSheet, fetchRankingSheet} from "@/lib/fetchSheet";
 import { CONFIG } from "@/config/config";
 
 export async function getPreliminarySongs() {
@@ -40,6 +40,34 @@ export async function getSemifinalSongs() {
       description: v.description,
       group: Number(v.group || 0),
       videoId: v.videoId,
+    }));
+}
+
+export async function getSemifinalForms(){
+  const items = await fetchVotesSheet(
+    // CONFIG.voteformssheets.spreadsheetId,
+    CONFIG.voteformssheets.semifinals.name
+  );
+  return items
+    .filter((f) => f.formUrl)
+    .map((f) => ({
+      group: f.group,
+      formUrl: f.formUrl,
+      mylistUrl: f.mylistUrl,
+      deadline: f.deadline,
+    }));
+
+}
+export async function getSemifinalRanks(){
+  const items = await fetchRankingSheet(
+    // CONFIG.rankingsheets.spreadsheetId,
+    CONFIG.rankingsheets.semifinals.name
+  );
+  return items
+    .map((r) => ({
+      videoId: r.videoId,
+      group: r.group,
+      rank: r.rank
     }));
 }
 
