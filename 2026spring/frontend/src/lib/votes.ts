@@ -22,6 +22,34 @@ export async function getPreliminarySongs() {
       videoId: v.videoId,
     }));
 }
+
+export async function getPreliminaryForms(){
+  const items = await fetchVotesSheet(
+    // CONFIG.voteformssheets.spreadsheetId,
+    CONFIG.voteformssheets.preliminaries.name
+  );
+  return items
+    .filter((f) => f.formUrl)
+    .map((f) => ({
+      group: f.group,
+      formUrl: f.formUrl,
+      mylistUrl: f.mylistUrl,
+      deadline: f.deadline,
+    }));
+
+}
+export async function getPreliminaryRanks(){
+  const items = await fetchRankingSheet(
+    // CONFIG.rankingsheets.spreadsheetId,
+    CONFIG.rankingsheets.preliminaries.name
+  );
+  return items
+    .map((r) => ({
+      videoId: r.videoId,
+      group: r.group,
+      rank: r.rank
+    }));
+}
 export async function getSemifinalSongs() {
   const items = await fetchGroupedVideosSheet(
     CONFIG.groupedvideosheets_semifinal.spreadsheetId,
