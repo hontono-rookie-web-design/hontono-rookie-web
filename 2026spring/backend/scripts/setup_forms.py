@@ -190,8 +190,8 @@ def load_spreadsheet(config, phase):
         video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_final"]["name"]
         video_sheetname = config["spreadsheets"]["grouped_video_catalog_final"]["rookie_sheet"]
     elif phase == "ex":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_ex"]["name"]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_ex"]["ex_sheet"]
+        video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
+        video_sheetname = config["vote_grouping"]["grouped_video_catalog"]["ex_sheet"]
 
     video_sheet = sheet_client.connect_sheet(service_account_credentials_path, video_spreadsheetname, video_sheetname)
     video_data = sheet_client.fetch_sheet_data(video_sheet)
