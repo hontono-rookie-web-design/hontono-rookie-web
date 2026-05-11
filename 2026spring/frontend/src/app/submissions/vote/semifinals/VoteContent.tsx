@@ -10,7 +10,7 @@ import Image from "next/image"
 /* =========================
    表示ラベル
 ========================= */
-const DISC_LABEL = "Selec."
+const DISC_LABEL = "Selec"
 const PHASE_LABEL = "準決勝"
 
 /* =========================
@@ -372,13 +372,13 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
           <a href={voteInfo.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
-            {DISC_LABEL} {activeGroup}の人気投票はこちら
+            {DISC_LABEL} {activeGroup} の人気投票はこちら
           </a>
         )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
           <a href={voteInfo.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
-            {DISC_LABEL}{activeGroup}楽曲マイリストはこちら
+            {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
           </a>
         )}
 

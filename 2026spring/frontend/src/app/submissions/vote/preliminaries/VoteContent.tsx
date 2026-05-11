@@ -380,7 +380,7 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
             target="_blank"
             className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
           >
-            {DISC_LABEL} {activeGroup}の人気投票はこちら
+            {DISC_LABEL} {activeGroup} の人気投票はこちら
           </a>
         )}
 
@@ -390,7 +390,7 @@ export default function VoteContent({ initialSongs }: { initialSongs: any[] }) {
             target="_blank"
             className="px-6 py-2 rounded bg-red-400 text-white text-sm"
           >
-            {DISC_LABEL}{activeGroup}楽曲マイリストはこちら
+            {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
           </a>
         )}
 
