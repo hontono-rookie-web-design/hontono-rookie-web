@@ -28,12 +28,15 @@ function getViewPhase(phase: string) {
     case EVENT_PHASES.OPENING:
     case EVENT_PHASES.ROOKIE:
     case EVENT_PHASES.PRELIM:
+    case EVENT_PHASES.PRELIM_COUNTING:
+    case EVENT_PHASES.SEMIFINAL_COUNTING:
       return VIEW_PHASE.BEFORE
 
     case EVENT_PHASES.SEMIFINAL:
       return VIEW_PHASE.DURING
 
     case EVENT_PHASES.FINAL:
+    case EVENT_PHASES.FINAL_COUNTING:
     case EVENT_PHASES.AFTER:
       return VIEW_PHASE.AFTER
 
@@ -222,7 +225,7 @@ export default function VoteContent({
         </h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」準決勝の楽曲を{DISC_LABEL}ごとに掲載しています。
+          「本当のルーキー祭り2026春」{PHASE_LABEL}の楽曲を{DISC_LABEL}ごとに掲載しています。
         </p>
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (

@@ -35,9 +35,14 @@ export const CONFIG = {
     rookie: { name: "rookie" },
   },
 
-  videosheets_final: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VIDEOS_FINAL!,
+  groupedvideosheets_final: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_FINAL!,
     rookie: { name: "rookie" },
+  },
+
+  groupedvideosheets_ex: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_EX!,
+    rookie: { name: "ex" },
   },
 
   voteformssheets: {

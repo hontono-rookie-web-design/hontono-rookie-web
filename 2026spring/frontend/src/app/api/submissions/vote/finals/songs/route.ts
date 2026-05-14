@@ -17,7 +17,7 @@ const CACHE_TTL = 1000 * 60 * 5; // 5分
 /* =========================
    description 最大文字数
 ========================= */
-const DESCRIPTION_MAX_LENGTH = 180;
+const DESCRIPTION_MAX_LENGTH = 180; // 概要欄取得文字数
 
 /* =========================
    日付パース
@@ -74,6 +74,7 @@ function trimDescription(text?: string) {
   return safeText + "…";
 }
 
+
 /* =========================
    API
 ========================= */
@@ -88,7 +89,8 @@ export async function GET() {
 
     // ✔ Sheets取得
     const items = await fetchGroupedVideosSheet(
-      CONFIG.videosheets_final.spreadsheetId, CONFIG.videosheets_final.rookie.name,
+      CONFIG.groupedvideosheets_final.spreadsheetId, 
+      CONFIG.groupedvideosheets_final.rookie.name,
     );
 
     const videos = items

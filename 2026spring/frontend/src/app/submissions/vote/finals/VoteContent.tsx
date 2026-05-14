@@ -10,8 +10,8 @@ import Image from "next/image"
 /* =========================
    表示ラベル
 ========================= */
-const DISC_LABEL = "Disc"
-const PHASE_LABEL = "予選"
+const DISC_LABEL = "Best"
+const PHASE_LABEL = "決勝"
 
 /* =========================
    表示フェーズ定義（安全化）
@@ -27,16 +27,16 @@ function getViewPhase(phase: string) {
     case EVENT_PHASES.BEFORE:
     case EVENT_PHASES.OPENING:
     case EVENT_PHASES.ROOKIE:
-    case EVENT_PHASES.PRELIM_COUNTING:
-      return VIEW_PHASE.BEFORE
-
     case EVENT_PHASES.PRELIM:
-      return VIEW_PHASE.DURING
-
+    case EVENT_PHASES.PRELIM_COUNTING:
     case EVENT_PHASES.SEMIFINAL:
     case EVENT_PHASES.SEMIFINAL_COUNTING:
-    case EVENT_PHASES.FINAL:
     case EVENT_PHASES.FINAL_COUNTING:
+      return VIEW_PHASE.BEFORE
+
+    case EVENT_PHASES.FINAL:
+      return VIEW_PHASE.DURING
+
     case EVENT_PHASES.AFTER:
       return VIEW_PHASE.AFTER
 
@@ -117,7 +117,7 @@ function SkeletonCard() {
 /* =========================
    Page
 ========================= */
-export default function VoteContent({
+export default function VoteContent({ 
   initialSongs,
   initialForms,
   initialRanks
@@ -125,7 +125,6 @@ export default function VoteContent({
   initialSongs: any[],
   initialForms: any[],
   initialRanks: any[]
-
  }) {
   const phase = getCurrentPhase()
   const viewPhase = getViewPhase(phase)
@@ -145,6 +144,7 @@ export default function VoteContent({
      fetch
   ========================= */
   useEffect(() => {
+
       const groups = [...new Set(mappedVideos.map(v => v.group))].sort((a,b)=>a-b)
 
       const groupParam = searchParams.get("group")
@@ -219,14 +219,13 @@ export default function VoteContent({
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
 
-      {/* TITLE */}
       <div className="text-center mb-6 w-full max-w-[900px]">
         <h1 className="text-3xl md:text-4xl font-bold">
           人気投票 {PHASE_LABEL}
         </h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」参加楽曲を{DISC_LABEL}ごとに掲載しています。
+          「本当のルーキー祭り2026春」{PHASE_LABEL}の楽曲を{DISC_LABEL}ごとに掲載しています。
         </p>
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (
@@ -288,7 +287,6 @@ export default function VoteContent({
 
       <div className="w-full max-w-[900px] border-b border-gray-200 mb-6" />
 
-      {/* RANK */}
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
         <div className="w-full max-w-[900px] mb-6">
 
@@ -374,40 +372,25 @@ export default function VoteContent({
         </div>
       )}
 
-      {/* BUTTONS */}
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
-          <a
-            href={voteInfo.formUrl}
-            target="_blank"
-            className="px-6 py-2 rounded bg-blue-500 text-white text-sm"
-          >
+          <a href={voteInfo.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
             {DISC_LABEL} {activeGroup} の人気投票はこちら
           </a>
         )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
-          <a
-            href={voteInfo.mylistUrl}
-            target="_blank"
-            className="px-6 py-2 rounded bg-red-400 text-white text-sm"
-          >
+          <a href={voteInfo.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
             {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
           </a>
         )}
 
-        <a
-          href={CONFIG.links.voteGuide}
-          target="_blank"
-          className="px-6 py-2 rounded bg-gray-500 text-white text-sm"
-        >
+        <a href={CONFIG.links.voteGuide} target="_blank" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
           人気投票の詳細はこちら
         </a>
-
       </div>
 
-      {/* LIST */}
       {loading ? (
         <div className="flex flex-col gap-6 items-center w-full">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -422,16 +405,9 @@ export default function VoteContent({
               href={item.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="
-                group w-full max-w-[900px]
-                rounded-xl bg-white p-4 shadow-sm
-                transition-all duration-200
-                hover:shadow-md hover:-translate-y-[1px]
-                block
-              "
+              className="group w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-[1px] block"
             >
               <div className="flex gap-4">
-
                 <div className="overflow-hidden rounded relative w-40 h-24">
                   <Image
                     src={item.thumbnailUrl}
@@ -460,13 +436,11 @@ export default function VoteContent({
                     {cleanDescription(item.description)}
                   </p>
                 </div>
-
               </div>
             </a>
           ))}
         </div>
       )}
-
     </div>
   )
 }
