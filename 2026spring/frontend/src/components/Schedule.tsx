@@ -14,14 +14,14 @@ export default function Schedule() {
     },
     {
       title: "準決勝(Selection)",
-      date: "2026年5月11日(月) 〜 5月17日(日)",
+      date: "2026年5月11日(月) 〜 5月23日(土) 17:00",
       description:
         "各Discの予選順位に基づいて振り分け。各Selection上位1作品決勝進出",
       color: "step-accent", // cherry
     },
     {
       title: "決勝(Best)",
-      date: "2026年5月18日(月) 〜",
+      date: "2026年5月24日(日) 〜",
       description: "各Selectionの上位作品による最終決戦！",
       color: "step-accent", // cherry
     },
@@ -97,7 +97,7 @@ export default function Schedule() {
                 exステージ
               </h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年5月18日(月) 〜 (決勝と同時開催)
+                2026年5月24日(日) 〜 (決勝と同時開催)
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
                 二次創作参加作品が対象となる特別なステージです。
