@@ -50,6 +50,10 @@ spreadsheets:
     name: "grouped_video_catalog_2026spring_final" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名
 
+  grouped_video_catalog_ex: # exステージ参加の全ての動画リスト。
+    name: "grouped_video_catalog_2026spring_ex" # スプレッドシート名
+    ex_sheet: "ex" # exステージ作品リストシート名
+
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
   group_num: 70
