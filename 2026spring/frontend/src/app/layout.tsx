@@ -1,7 +1,8 @@
+import Navigation from "@/components/Navigation";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
@@ -11,7 +12,8 @@ const notoSansJP = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   title: "本当のルーキー祭り2026春",
-  description: "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+  description:
+    "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
   icons: {
     icon: [
       { url: "/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
@@ -29,14 +31,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "本当のルーキー祭り2026春",
-    description: "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+    description:
+      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
     images: [{ url: "/ogp.png" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "本当のルーキー祭り2026春",
-    description: "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+    description:
+      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
     images: ["/ogp.png"],
   },
 };
@@ -47,11 +51,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${notoSansJP.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="ja"
+      className={`${notoSansJP.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full">
-        <Navigation>
-          {children}
-        </Navigation>
+        <Navigation>{children}</Navigation>
+        <GoogleAnalytics
+          gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
+        />
       </body>
     </html>
   );
