@@ -198,7 +198,15 @@ export default function Page() {
 
                 <button
                   onClick={handleShuffle}
-                  className="px-3 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200 active:scale-95 transition"
+                  className="
+                    border rounded
+                    px-3 py-1
+                    text-sm
+                    bg-blue-50 text-blue-700
+                    hover:bg-blue-100
+                    font-semibold
+                    active:scale-95 transition
+                  "
                 >
                   ランダムに並び替え
                 </button>
