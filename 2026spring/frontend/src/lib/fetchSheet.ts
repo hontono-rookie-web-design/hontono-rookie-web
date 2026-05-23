@@ -84,7 +84,7 @@ export async function fetchVideosSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 },
+    next: { revalidate: 86400 },
   });
 
   const data = await res.json();
