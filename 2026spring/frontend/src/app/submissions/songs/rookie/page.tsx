@@ -1,4 +1,4 @@
-import VideoList from "@/components/video/VideoList"
+import VideoList from "./VideoList"
 import { CONFIG } from "@/config/config"
 import { fetchVideosSheet } from "@/lib/fetchSheet"
 
