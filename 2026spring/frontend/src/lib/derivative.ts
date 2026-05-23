@@ -30,3 +30,9 @@ export async function getDerivativeStreams() {
     CONFIG.fanficsheets.streams.name
   )
 }
+
+export async function getDerivativeArchive() {
+  return await fetchFanficSheet(
+    CONFIG.fanficsheets.archive.name
+  )
+}
