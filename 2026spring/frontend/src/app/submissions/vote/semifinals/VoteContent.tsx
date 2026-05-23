@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
+import Counting from "@/components/Counting"
 import { useSearchParams, useRouter } from "next/navigation"
 import Image from "next/image"
 
@@ -207,6 +208,13 @@ export default function VoteContent({
 
     setActiveGroup(g)
     router.push(`?group=${g}`, { scroll: false })
+  }
+
+  /* =========================
+     Counting
+  ========================= */
+  if (phase === EVENT_PHASES.SEMIFINAL_COUNTING) {
+    return <Counting title={`人気投票 ${PHASE_LABEL}`} />
   }
 
   /* =========================

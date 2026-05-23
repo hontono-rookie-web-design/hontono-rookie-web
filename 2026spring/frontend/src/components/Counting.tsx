@@ -9,7 +9,7 @@ export default function Counting({ title }: { title: string }) {
       <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">{title}</h1>
       <p className="text-slate-500 font-medium leading-relaxed">
         ただいま集計中です。<br className="hidden sm:block" />
-        公開まで今しばらくお待ちください。
+        結果発表まで今しばらくお待ちください。
       </p>
     </div>
   );
