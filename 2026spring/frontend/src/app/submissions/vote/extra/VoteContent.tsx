@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { CONFIG } from "@/config/config"
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
+import { getCurrentPhaseEx, EVENT_PHASES_EX } from "@/config/phase"
 import TBA from "@/components/TBA"
 import { useSearchParams, useRouter } from "next/navigation"
 import Image from "next/image"
@@ -24,24 +24,19 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
-    case EVENT_PHASES.ROOKIE:
-    case EVENT_PHASES.PRELIM:
-    case EVENT_PHASES.PRELIM_COUNTING:
-    case EVENT_PHASES.SEMIFINAL:
-    case EVENT_PHASES.SEMIFINAL_COUNTING:
-    case EVENT_PHASES.FINAL_COUNTING:
+    case EVENT_PHASES_EX.BEFORE:
+    case EVENT_PHASES_EX.SUBMISSION:
+    case EVENT_PHASES_EX.COUNTING:
       return VIEW_PHASE.BEFORE
 
-    case EVENT_PHASES.FINAL:
+    case EVENT_PHASES_EX.VOTING:
       return VIEW_PHASE.DURING
 
-    case EVENT_PHASES.AFTER:
+    case EVENT_PHASES_EX.AFTER:
       return VIEW_PHASE.AFTER
 
     default:
-      return VIEW_PHASE.BEFORE
+      return EVENT_PHASES_EX.BEFORE
   }
 }
 
@@ -126,7 +121,7 @@ export default function VoteContent({
   initialForms: any[],
   initialRanks: any[]
  }) {
-  const phase = getCurrentPhase()
+  const phase = getCurrentPhaseEx()
   const viewPhase = getViewPhase(phase)
 
   const [videos, setVideos] = useState(initialSongs)
