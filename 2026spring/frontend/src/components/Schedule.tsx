@@ -101,6 +101,9 @@ export default function Schedule() {
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
                 二次創作参加作品が対象となる特別なステージです。
+                <span className="text-red-500 font-bold">
+                  投稿締切：5/31(日) AM4:00
+                </span>
               </p>
             </div>
           </div>
