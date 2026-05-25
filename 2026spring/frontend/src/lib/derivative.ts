@@ -1,4 +1,5 @@
 import { fetchFanficSheet } from "@/lib/fetchSheet"
+import { fetchNoteSheet } from "@/lib/fetchSheet";
 import { CONFIG } from "@/config/config"
 
 export async function getDerivativeArrangements() {
@@ -31,8 +32,14 @@ export async function getDerivativeStreams() {
   )
 }
 
-export async function getDerivativeArchive() {
+export async function getDerivativeArchives() {
   return await fetchFanficSheet(
     CONFIG.fanficsheets.archive.name
   )
+}
+
+export async function getDerivativeArticles() {
+  return await fetchNoteSheet(
+    CONFIG.notesheets.name
+  );
 }
