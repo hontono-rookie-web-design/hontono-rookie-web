@@ -32,10 +32,10 @@ export function getCurrentPhase(): EventPhase {
 export const EVENT_PHASES_EX = {
   BEFORE: "before",              // 開催前
 
-  SUBMISSION: "submission",      // 投稿期間
+  SUBMISSION: "submission",      // ex投稿期間
 
-  VOTING: "voting",              // 投票期間
-  COUNTING: "counting",          // 集計中
+  VOTING: "voting",              // ex投票期間
+  COUNTING: "counting",          // ex集計中
 
   AFTER: "after",                // 終了後
 } as const;
