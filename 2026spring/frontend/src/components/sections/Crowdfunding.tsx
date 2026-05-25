@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Crowdfunding() {
   return (
-    <section className="w-full py-24 bg-slate-50">
+    <section className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
           <HeartHandshake className="text-slate-500 w-8 h-8" />
@@ -28,8 +28,7 @@ export default function Crowdfunding() {
             rel="noopener noreferrer"
             className="text-sm font-medium text-mint hover:underline"
           >
-            ボカロが街を熱くした日を、永遠に―
-            本当の投稿祭セレクションCD制作PJー
+            ボカロが街を熱くした日を、永遠に― 本当の投稿祭セレクションCD制作PJー
           </a>
 
           <div className="mt-6 flex justify-center">
