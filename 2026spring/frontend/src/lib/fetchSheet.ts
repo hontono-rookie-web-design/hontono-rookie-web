@@ -17,7 +17,9 @@ export async function fetchFanficSheet(
 ): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    next: { revalidate: 600 },
+  })
   const data = await res.json();
 
   return data.map((row: any) => ({
@@ -49,7 +51,7 @@ export async function fetchNoteSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 }, // ISR（キャッシュ）
+    next: { revalidate: 600 }, // ISR（キャッシュ）
   });
 
   const data = await res.json();
