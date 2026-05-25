@@ -21,13 +21,13 @@ export default function Schedule() {
     },
     {
       title: "決勝(Best)",
-      date: "2026年5月24日(日) 〜",
+      date: "2026年5月25日(日) 〜",
       description: "各Selectionの上位作品による最終決戦！",
       color: "step-accent", // cherry
     },
     {
       title: "結果発表",
-      date: "2026年5月30日(土) 予定",
+      date: "2026年6月11日(土) 予定",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary", // skyblue
     },
@@ -97,10 +97,13 @@ export default function Schedule() {
                 exステージ
               </h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年5月24日(日) 〜 (決勝と同時開催)
+                2026年6月1日(日) 〜
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
                 二次創作参加作品が対象となる特別なステージです。
+                <span className="text-red-500 font-bold">
+                  投稿締切：5/31(日) AM4:00
+                </span>
               </p>
             </div>
           </div>

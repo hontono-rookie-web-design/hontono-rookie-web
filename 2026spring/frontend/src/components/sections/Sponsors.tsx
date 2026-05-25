@@ -2,7 +2,7 @@ import { HeartHandshake } from "lucide-react";
 
 export default function Sponsors() {
   return (
-    <section className="w-full py-24 bg-slate-50">
+    <section className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
           <HeartHandshake className="text-slate-500 w-8 h-8" />
@@ -13,9 +13,7 @@ export default function Sponsors() {
         </div>
 
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
-          <h4 className="text-xl font-bold text-slate-800 mb-2">
-            ヴォエ
-          </h4>
+          <h4 className="text-xl font-bold text-slate-800 mb-2">ヴォエ</h4>
 
           <p className="text-slate-600 text-sm mb-6">
             この投稿祭は「ヴォエ」が後援しています。
@@ -32,9 +30,7 @@ export default function Sponsors() {
         </div>
 
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
-          <h4 className="text-xl font-bold text-slate-800 mb-2">
-            NFRSラジオ
-          </h4>
+          <h4 className="text-xl font-bold text-slate-800 mb-2">NFRSラジオ</h4>
 
           <p className="text-slate-600 text-sm mb-6">
             この投稿祭は「NFRSラジオ」が後援しています。
