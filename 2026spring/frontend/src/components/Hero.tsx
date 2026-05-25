@@ -38,6 +38,9 @@ export default function Hero() {
           </Link>
         );
       case EVENT_PHASES.ROOKIE:
+      case EVENT_PHASES.PRELIM_COUNTING:
+      case EVENT_PHASES.SEMIFINAL_COUNTING:
+      case EVENT_PHASES.FINAL_COUNTING:
         return (
           <Link
             href="/submissions/songs/rookie"
@@ -84,7 +87,7 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-skyblue/30"
           >
-            結果発表を見る <ArrowRight className="ml-2 w-5 h-5" />
+            人気投票結果を見る <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       default:
