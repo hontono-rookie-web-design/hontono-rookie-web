@@ -18,7 +18,7 @@ def main():
     catalog_sheet_config = config["spreadsheets"]["video_catalog"]
     catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    catalog_sheetname = catalog_sheet_config[f"rookie_sheet"]
+    catalog_sheetname = catalog_sheet_config[f"ex_sheet"]
 
     # シートに接続
     videl_catalog_sheet = connect_sheet(
@@ -43,12 +43,12 @@ def main():
     # print(content_ids)
 
     # グループ分け
-    seed = config["vote_grouping"]["random_seed"]
+    seed = config["vote_grouping_ex"]["random_seed"]
     print(f"Using random seed: {seed}")
     grouper = ContentGrouper(content_ids, seed=seed)
 
     # グループ数によってグループ分け
-    group_num = config["vote_grouping"]["group_num"]
+    group_num = config["vote_grouping_ex"]["group_num"]
     print(f"Grouping by number: {group_num} groups")
     grouper.group_by_count(group_num)
 
@@ -58,8 +58,8 @@ def main():
     print(df)
 
     # グループ分けされたデータを新しいシートに書き込む
-    output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-    output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"rookie_sheet"]
+    output_spreadsheetname = config["vote_grouping_ex"]["grouped_video_catalog"]["name"]
+    output_sheetname = config["vote_grouping_ex"]["grouped_video_catalog"][f"ex_sheet"]
     output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
     sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
     sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
