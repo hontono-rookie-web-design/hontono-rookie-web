@@ -73,9 +73,6 @@ vote_semifinal: # 準決勝グループ分け関連パラメータ
 vote_grouping_ex: # exグループ分け関連パラメータ
   random_seed: 43
   group_num: 7
-  grouped_video_catalog:
-    name: "grouped_video_catalog_2026spring_ex"
-    ex_sheet: "ex"
 
 vote_form: # 投票フォーム関連パラメータ
   prelim: # 予選

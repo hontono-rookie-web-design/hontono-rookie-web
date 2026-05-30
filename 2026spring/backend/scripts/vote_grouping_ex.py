@@ -58,8 +58,8 @@ def main():
     print(df)
 
     # グループ分けされたデータを新しいシートに書き込む
-    output_spreadsheetname = config["vote_grouping_ex"]["grouped_video_catalog"]["name"]
-    output_sheetname = config["vote_grouping_ex"]["grouped_video_catalog"][f"ex_sheet"]
+    output_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_ex"]["name"]
+    output_sheetname = config["spreadsheets"]["grouped_video_catalog_ex"][f"ex_sheet"]
     output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
     sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
     sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
