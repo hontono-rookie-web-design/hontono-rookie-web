@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CONFIG } from "@/config/config";
 import Image from "next/image";
 
@@ -13,7 +13,6 @@ export type Item = {
   originalTitle: string;
   originalAuthor: string;
 };
-
 
 export function SkeletonCard() {
   return (
@@ -31,41 +30,73 @@ export function SkeletonCard() {
   );
 }
 
-
-
 type Props = {
   initialItems: Item[];
 };
 
+const PAGE_SIZE = 24;
+
 export default function IllustrationsContent({ initialItems }: Props) {
-  const [data, setData] = useState<Item[]>(initialItems);
+  const [data] = useState<Item[]>(initialItems);
   const [displayData, setDisplayData] = useState<Item[]>(initialItems);
   const [ready, setReady] = useState(false);
   const [searchText, setSearchText] = useState("");
 
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     let filtered = [...data];
 
     if (searchText.trim()) {
       const q = searchText.toLowerCase();
+
       filtered = filtered.filter((item) =>
         (
           item.title +
           item.creator +
           item.originalTitle +
           item.originalAuthor
-        ).toLowerCase().includes(q)
+        )
+          .toLowerCase()
+          .includes(q)
       );
     }
 
     setDisplayData(filtered);
+    setVisibleCount(PAGE_SIZE);
   }, [searchText, data]);
 
   useEffect(() => {
-    setTimeout(() => setReady(true), 50);
+    const timer = setTimeout(() => {
+      setReady(true);
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  /* 無限スクロール */
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) =>
+            Math.min(prev + PAGE_SIZE, displayData.length)
+          );
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [displayData]);
+
+  const visibleItems = displayData.slice(0, visibleCount);
 
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center w-full">
@@ -94,7 +125,7 @@ export default function IllustrationsContent({ initialItems }: Props) {
             ready ? "opacity-100" : "opacity-0"
           }`}
         >
-          {displayData.map((item, i) => {
+          {visibleItems.map((item, i) => {
             const img =
               item.imageUrl?.trim()
                 ? item.imageUrl
@@ -146,6 +177,11 @@ export default function IllustrationsContent({ initialItems }: Props) {
             );
           })}
         </div>
+      )}
+
+      {/* 無限スクロール監視用 */}
+      {displayData.length > visibleCount && (
+        <div ref={loadMoreRef} className="h-10 w-full" />
       )}
     </div>
   );
