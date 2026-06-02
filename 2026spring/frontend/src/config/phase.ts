@@ -28,3 +28,28 @@ export function getCurrentPhase(): EventPhase {
 
   return EVENT_PHASES.BEFORE;
 }
+
+export const EVENT_PHASES_EX = {
+  BEFORE: "before",              // 開催前
+
+  SUBMISSION: "submission",      // ex投稿期間
+
+  VOTING: "voting",              // ex投票期間
+  COUNTING: "counting",          // ex集計中
+
+  AFTER: "after",                // 終了後
+} as const;
+
+export type EventPhaseEx =
+  typeof EVENT_PHASES_EX[keyof typeof EVENT_PHASES_EX];
+
+export function getCurrentPhaseEx(): EventPhaseEx {
+  const env = process.env
+    .NEXT_PUBLIC_EVENT_PHASE_EX as EventPhaseEx | undefined;
+
+  if (env && Object.values(EVENT_PHASES_EX).includes(env)) {
+    return env;
+  }
+
+  return EVENT_PHASES_EX.BEFORE;
+}

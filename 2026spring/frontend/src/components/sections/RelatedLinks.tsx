@@ -63,7 +63,7 @@ export default function RelatedLinks() {
   ];
 
   return (
-    <section id="links" className="w-full py-24 bg-slate-50">
+    <section id="links" className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
           <LinkIcon className="text-mint w-8 h-8" />
@@ -90,9 +90,7 @@ export default function RelatedLinks() {
                   {link.title}
                 </div>
 
-                <div className="text-xs text-slate-500">
-                  {link.desc}
-                </div>
+                <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
             ))}
           </div>
@@ -114,9 +112,7 @@ export default function RelatedLinks() {
                   {link.title}
                 </div>
 
-                <div className="text-xs text-slate-500">
-                  {link.desc}
-                </div>
+                <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
             ))}
           </div>

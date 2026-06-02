@@ -383,23 +383,52 @@ export default function VoteContent({
         </div>
       )}
 
+      {/* BUTTONS */}
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
-          <a href={voteInfo.formUrl} target="_blank" className="px-6 py-2 rounded bg-blue-500 text-white text-sm">
+          <a
+            href={voteInfo.formUrl}
+            target="_blank"
+            className="
+              px-6 py-2 rounded
+              bg-blue-500 text-white text-sm
+              min-w-[260px]
+              text-center
+            "
+          >
             {DISC_LABEL} {activeGroup} の人気投票はこちら
           </a>
         )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
-          <a href={voteInfo.mylistUrl} target="_blank" className="px-6 py-2 rounded bg-red-400 text-white text-sm">
+          <a
+            href={voteInfo.mylistUrl}
+            target="_blank"
+            className="
+              px-6 py-2 rounded
+              bg-red-400 text-white text-sm
+              min-w-[260px]
+              text-center
+            "
+          >
             {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
           </a>
         )}
 
-        <a href={CONFIG.links.voteGuide} target="_blank" className="px-6 py-2 rounded bg-gray-500 text-white text-sm">
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="
+            px-6 py-2 rounded
+            bg-gray-500 text-white text-sm
+            min-w-[260px]
+            text-center
+          "
+        >
           人気投票の詳細はこちら
         </a>
+
       </div>
 
       {loading ? (

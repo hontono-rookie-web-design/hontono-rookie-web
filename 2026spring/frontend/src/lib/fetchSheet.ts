@@ -17,8 +17,15 @@ export async function fetchFanficSheet(
 ): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    next: { revalidate: 600 },
+  });
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("fetchFanficSheet: unexpected response (not array)", data);
+    return [];
+  }
 
   return data.map((row: any) => ({
     creator: row["二次創作者活動名"] ?? "",
@@ -49,10 +56,14 @@ export async function fetchNoteSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 }, // ISR（キャッシュ）
+    next: { revalidate: 600 }, // ISR（キャッシュ）
   });
-
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("fetchNoteSheet: unexpected response (not array)", data);
+    return [];
+  }
 
   return data.map((row: any) => ({
     title: row["Title"] ?? "",
@@ -84,10 +95,14 @@ export async function fetchVideosSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 },
+    next: { revalidate: 86400 },
   });
-
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("fetchVideosSheet: unexpected response (not array)", data);
+    return [];
+  }
 
   return data.map((row: any) => ({
     videoId: row["動画ID"] ?? "",
@@ -122,8 +137,15 @@ export async function fetchGroupedVideosSheet(
   const res = await fetch(url, {
     next: { revalidate: 86400 }, // 24時間キャッシュ
   });
-
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error(
+      "fetchGroupedVideosSheet: unexpected response (not array)",
+      data,
+    );
+    return [];
+  }
 
   return data.map((row: any) => ({
     videoId: row["動画ID"] ?? "",
@@ -153,8 +175,12 @@ export async function fetchVotesSheet(
   const res = await fetch(url, {
     next: { revalidate: false },
   });
-
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("fetchVotesSheet: unexpected response (not array)", data);
+    return [];
+  }
 
   return data.map((row: any) => ({
     group: Number(row["グループID"] ?? 0),
@@ -178,8 +204,12 @@ export async function fetchRankingSheet(
   const res = await fetch(url, {
     next: { revalidate: false },
   });
-
   const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("fetchRankingSheet: unexpected response (not array)", data);
+    return [];
+  }
 
   return data.map((row: any) => ({
     videoId: row["動画ID"] ?? "",
