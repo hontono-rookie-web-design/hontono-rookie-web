@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { CONFIG } from "@/config/config"
 import { getCurrentPhase, EVENT_PHASES } from "@/config/phase"
 import TBA from "@/components/TBA"
+import Counting from "@/components/Counting"
 import { useSearchParams, useRouter } from "next/navigation"
 import Image from "next/image"
 
@@ -20,6 +21,7 @@ const VIEW_PHASE = {
   BEFORE: "before",
   DURING: "during",
   AFTER: "after",
+  COUNTING: "counting"
 } as const
 
 function getViewPhase(phase: string) {
@@ -29,11 +31,13 @@ function getViewPhase(phase: string) {
     case EVENT_PHASES.ROOKIE:
     case EVENT_PHASES.PRELIM:
     case EVENT_PHASES.PRELIM_COUNTING:
-    case EVENT_PHASES.SEMIFINAL_COUNTING:
       return VIEW_PHASE.BEFORE
 
     case EVENT_PHASES.SEMIFINAL:
       return VIEW_PHASE.DURING
+
+    case EVENT_PHASES.SEMIFINAL_COUNTING:
+      return VIEW_PHASE.COUNTING
 
     case EVENT_PHASES.FINAL:
     case EVENT_PHASES.FINAL_COUNTING:
@@ -207,6 +211,13 @@ export default function VoteContent({
 
     setActiveGroup(g)
     router.push(`?group=${g}`, { scroll: false })
+  }
+
+  /* =========================
+     Counting
+  ========================= */
+  if (viewPhase === VIEW_PHASE.COUNTING) {
+    return <Counting title={`人気投票 ${PHASE_LABEL}`} />
   }
 
   /* =========================
