@@ -18,7 +18,8 @@ export async function fetchFanficSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 600 },
+    // next: { revalidate: 600 },
+    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
   });
   const data = await res.json();
 
@@ -56,7 +57,8 @@ export async function fetchNoteSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 600 }, // ISR（キャッシュ）
+    // next: { revalidate: 600 }, // ISR（キャッシュ）
+    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
   });
   const data = await res.json();
 
@@ -95,7 +97,8 @@ export async function fetchVideosSheet(
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 86400 },
+    // next: { revalidate: 86400 },
+    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
   });
   const data = await res.json();
 
@@ -135,7 +138,8 @@ export async function fetchGroupedVideosSheet(
   const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 86400 }, // 24時間キャッシュ
+    // next: { revalidate: 86400 }, // 24時間キャッシュ
+    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
   });
   const data = await res.json();
 

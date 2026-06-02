@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
+  images: {
+    unoptimized: true,
+  },
   // async headers() {
   //   return [
   //     // ビルド済み静的アセット（ハッシュ付き）: 長期キャッシュ
