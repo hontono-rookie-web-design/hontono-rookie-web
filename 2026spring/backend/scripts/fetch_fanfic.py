@@ -68,6 +68,9 @@ def main():
     rows = deduplicate_by_url(rows)
     print(f"total: {len(rows)} items")
 
+    # 順序を逆転
+    rows.reverse()
+
     grouped = defaultdict(list)
 
     # 二次創作作品情報取得
