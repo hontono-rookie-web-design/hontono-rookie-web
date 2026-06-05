@@ -69,9 +69,6 @@ def main():
     rows = deduplicate_by_url(rows)
     print(f"total: {len(rows)} items")
 
-    # 順序を逆転
-    rows.reverse()
-
     grouped = defaultdict(list)
 
     # 二次創作作品情報取得
@@ -84,7 +81,7 @@ def main():
 
         grouped[category].append({k: v for k, v in row.items() if k not in ["分類"]})
 
-    # 「紹介配信予定」だけ古い順に戻す
+    # 「紹介配信予定」以外を逆順にする
     for category, data in grouped.items():
         if category not in REVERSE_EXCLUDED_CATEGORIES:
             data.reverse()
