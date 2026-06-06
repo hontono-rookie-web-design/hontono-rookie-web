@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CONFIG } from "@/config/config";
 import Image from "next/image";
 
@@ -63,6 +63,8 @@ function SkeletonCard() {
   );
 }
 
+const PAGE_SIZE = 24;
+
 /* =========================
    Page
 ========================= */
@@ -70,8 +72,9 @@ export default function ArticlesContent({ initialData }: Props) {
   const [data] = useState<Item[]>(initialData);
   const [displayData, setDisplayData] = useState<Item[]>(initialData);
   const [ready, setReady] = useState(false);
-
   const [searchText, setSearchText] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTimeout(() => setReady(true), 50);
@@ -92,7 +95,30 @@ export default function ArticlesContent({ initialData }: Props) {
     }
 
     setDisplayData(filtered);
+    setVisibleCount(PAGE_SIZE)
   }, [searchText, data]);
+
+  /* 無限スクロール */
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) =>
+            Math.min(prev + PAGE_SIZE, displayData.length)
+          );
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [displayData]);
+
+  const visibleItems = displayData.slice(0, visibleCount);
 
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
@@ -134,7 +160,7 @@ export default function ArticlesContent({ initialData }: Props) {
             ready ? "opacity-100" : "opacity-0"
           }`}
         >
-          {displayData.map((item, i) => {
+          {visibleItems.map((item, i) => {
             const img =
               item.eyecatchUrl?.trim()
                 ? item.eyecatchUrl
@@ -210,6 +236,10 @@ export default function ArticlesContent({ initialData }: Props) {
             );
           })}
         </div>
+      )}
+      {/* 無限スクロール監視用 */}
+      {displayData.length > visibleCount && (
+        <div ref={loadMoreRef} className="h-10 w-full" />
       )}
     </div>
   );
