@@ -1,10 +1,32 @@
+function updateFormResponseCounts() {
+  writeCountsUsingDrive();
+}
+
+function getConfig() {
+  const props = PropertiesService.getScriptProperties();
+
+  const config = {
+    FORM_RESPONSE_COUNT_SPREADSHEET_ID: props.getProperty(
+      "FORM_RESPONSE_COUNT_SPREADSHEET_ID"
+    ),
+  };
+
+  if (!config.FORM_RESPONSE_COUNT_SPREADSHEET_ID) {
+    throw new Error(
+      "Script Property 'FORM_RESPONSE_COUNT_SPREADSHEET_ID' が設定されていません"
+    );
+  }
+
+  return config;
+}
+
 function writeCountsUsingDrive() {
+  const config = getConfig();
+
   // ===== 設定 =====
   const SOURCE_SHEET_NAME = "決勝";
   const GROUP_ID_COLUMN = "グループID";
   const FORM_URL_COLUMN = "人気投票FormURL";
-
-  const TARGET_SPREADSHEET_ID = "1AVRqWockbWZez3J0duv0drAwJ8GKcCLFBaO7MLc2e6E";
   const TARGET_SHEET_NAME = SOURCE_SHEET_NAME;
 
   const startTime = new Date();
@@ -35,7 +57,9 @@ function writeCountsUsingDrive() {
     const groupId = data[i][groupIndex];
     const url = data[i][urlIndex];
 
-    if (!url) continue;
+    if (!url) {
+      continue;
+    }
 
     try {
       const publicId = extractPublicId(url);
@@ -49,7 +73,6 @@ function writeCountsUsingDrive() {
       const count = form.getResponses().length;
 
       results.push([groupId, count, startTime]);
-
     } catch (e) {
       Logger.log(`ERROR at ${groupId}: ${e.message}`);
       results.push([groupId, "ERROR", startTime]);
@@ -62,7 +85,10 @@ function writeCountsUsingDrive() {
   }
 
   // ===== 書き込み =====
-  const targetSS = SpreadsheetApp.openById(TARGET_SPREADSHEET_ID);
+  const targetSS = SpreadsheetApp.openById(
+    config.FORM_RESPONSE_COUNT_SPREADSHEET_ID
+  );
+
   let targetSheet = targetSS.getSheetByName(TARGET_SHEET_NAME);
 
   if (!targetSheet) {
@@ -81,7 +107,6 @@ function writeCountsUsingDrive() {
 
 function buildFormMapFromDrive() {
   const files = DriveApp.getFilesByType(MimeType.GOOGLE_FORMS);
-
   const map = {};
 
   while (files.hasNext()) {
@@ -89,16 +114,12 @@ function buildFormMapFromDrive() {
 
     try {
       const form = FormApp.openById(file.getId());
-
-      // 公開URL取得
       const url = form.getPublishedUrl();
-
       const publicId = extractPublicId(url);
 
       map[publicId] = file;
-
     } catch (e) {
-      // 権限ないフォームはスキップ
+      // 権限がないフォームはスキップ
       continue;
     }
   }
@@ -108,7 +129,10 @@ function buildFormMapFromDrive() {
 
 function extractPublicId(url) {
   const match = url.match(/\/d\/e\/([a-zA-Z0-9_-]+)/);
-  if (match) return match[1];
 
-  throw new Error("公開ID取得失敗: " + url);
+  if (match) {
+    return match[1];
+  }
+
+  throw new Error(`公開ID取得失敗: ${url}`);
 }
