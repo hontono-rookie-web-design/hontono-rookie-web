@@ -176,6 +176,9 @@ export default function StreamsContent({
   const [archive] = useState<Item[]>(initialArchive);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const PAGE_SIZE = 24;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const sorted = useMemo(() => {
     return [...schedule].sort(
@@ -258,6 +261,32 @@ export default function StreamsContent({
       behavior: "smooth",
     });
   };
+
+  /* 無限スクロール */
+useEffect(() => {
+  if (!loadMoreRef.current) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleCount((prev) =>
+          Math.min(prev + PAGE_SIZE, archive.length)
+        );
+      }
+    },
+    { rootMargin: "200px" }
+  );
+
+  observer.observe(loadMoreRef.current);
+
+  return () => observer.disconnect();
+ }, [archive]);
+
+ const visibleArchive = archive.slice(
+  0,
+  visibleCount
+ );
+
 
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
@@ -420,20 +449,27 @@ export default function StreamsContent({
           </h2>
 
           {archive.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
-              紹介配信アーカイブはまだありません。
-            </div>
+           <div className="text-center py-10 text-gray-500">
+           紹介配信アーカイブはまだありません。
+           </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {archive.map((item, i) => (
-                <Card
-                  key={i}
-                  item={item}
-                  showDate={false}
-                  showFutureBadge={false}
-                />
-              ))}
-            </div>
+          <>
+           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {visibleArchive.map((item, i) => (
+            <Card
+            key={i}
+           item={item}
+            showDate={false}
+           showFutureBadge={false}
+           />
+           ))}
+        </div>
+
+       {/* 無限スクロール監視用 */}
+       {archive.length > visibleCount && (
+         <div ref={loadMoreRef} className="h-10 w-full" />
+           )}
+          </>
           )}
         </div>
       </div>
