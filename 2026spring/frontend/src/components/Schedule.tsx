@@ -27,7 +27,7 @@ export default function Schedule() {
     },
     {
       title: "結果発表",
-      date: "2026年6月11日(土) 予定",
+      date: "2026年6月11日(木) 予定",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary", // skyblue
     },
