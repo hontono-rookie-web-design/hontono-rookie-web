@@ -46,6 +46,7 @@ def remove_invalid(data: list[dict]) -> list[dict]:
 # メイン処理
 # ------------------------
 def main():
+    REVERSE_EXCLUDED_CATEGORIES = {"紹介配信予定"}
 
     config = utils.load_config()
     spreadsheet_name = config["spreadsheets"]["fanfic_list"]["name"]
@@ -79,6 +80,11 @@ def main():
             continue
 
         grouped[category].append({k: v for k, v in row.items() if k not in ["分類"]})
+
+    # 「紹介配信予定」以外を逆順にする
+    for category, data in grouped.items():
+        if category not in REVERSE_EXCLUDED_CATEGORIES:
+            data.reverse()
 
     # シート書き込み
     for category, data in grouped.items():
