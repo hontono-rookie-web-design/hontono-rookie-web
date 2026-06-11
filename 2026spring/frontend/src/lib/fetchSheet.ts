@@ -18,7 +18,7 @@ export async function fetchFanficSheet(
 ): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
-  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 600; // 開催終了後はキャッシュ無効、それ以外は10分キャッシュ
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
   const res = await fetch(url, {
     next: { revalidate: rev },
   });
@@ -57,7 +57,7 @@ export async function fetchNoteSheet(
 ): Promise<NoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
-  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 600; // 開催終了後はキャッシュ無効、それ以外は10分キャッシュ
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
   const res = await fetch(url, {
     next: { revalidate: rev }, // ISR（キャッシュ）
   });
