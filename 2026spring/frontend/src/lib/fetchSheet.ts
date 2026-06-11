@@ -1,4 +1,5 @@
 import { CONFIG } from "@/config/config";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 
 export type FanficSheetItem = {
   creator: string;
@@ -17,9 +18,9 @@ export async function fetchFanficSheet(
 ): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 600; // 開催終了後はキャッシュ無効、それ以外は10分キャッシュ
   const res = await fetch(url, {
-    // next: { revalidate: 600 },
-    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
+    next: { revalidate: rev },
   });
   const data = await res.json();
 
@@ -56,9 +57,9 @@ export async function fetchNoteSheet(
 ): Promise<NoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 600; // 開催終了後はキャッシュ無効、それ以外は10分キャッシュ
   const res = await fetch(url, {
-    // next: { revalidate: 600 }, // ISR（キャッシュ）
-    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
+    next: { revalidate: rev }, // ISR（キャッシュ）
   });
   const data = await res.json();
 
@@ -96,9 +97,9 @@ export async function fetchVideosSheet(
 ): Promise<VideoSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 86400; // 開催終了後はキャッシュ無効、それ以外は24時間キャッシュ
   const res = await fetch(url, {
-    // next: { revalidate: 86400 },
-    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
+    next: { revalidate: rev },
   });
   const data = await res.json();
 
@@ -137,9 +138,9 @@ export async function fetchGroupedVideosSheet(
 ): Promise<GroupedVideoSheetItem[]> {
   const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
 
+  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 86400; // 開催終了後はキャッシュ無効、それ以外は24時間キャッシュ
   const res = await fetch(url, {
-    // next: { revalidate: 86400 }, // 24時間キャッシュ
-    next: { revalidate: false }, // キャッシュしない（常に最新を取得）
+    next: { revalidate: rev }, // 24時間キャッシュ
   });
   const data = await res.json();
 
