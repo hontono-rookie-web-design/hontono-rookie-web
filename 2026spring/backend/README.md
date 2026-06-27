@@ -1,4 +1,4 @@
-# backend
+# 本当のルーキー祭り2026春 Webサイト backend
 
 \<yyyyseoson\> は開催期（「2026春」「2026spring」など）に置き換えてください。
 
@@ -25,7 +25,8 @@ backend
 │  ├ fetch_fanfic_forms_result.py 二次創作情報確認用シート更新スクリプト
 │  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
 │  ├ vote_grouping.py             投票グループ作成スクリプト
-│  └ setup_forms.py               投票フォーム作成スクリプト           
+│  ├ setup_forms.py               投票フォーム作成スクリプト
+│  └ update_videos_info.py        動画情報更新スクリプト           
 └ requirements.txt
 ```
 
@@ -81,11 +82,12 @@ GitHub Actionsで実行する。
    | `'0 15 * * *'` | 毎日実行（日本時間0時） |
 
    実行頻度は、例えば以下のように設定すれば良いと思う。
+   作品動画リストの更新は、ニコニコのAPIの更新が1日1回（AM5:00）なので、処理頻度を高くしてもあまり意味ない。
 
    | 時期 | 作品動画リスト更新関連処理 | 二次創作作品・Noteリスト更新関連処理 |
    | --- | --- | -- |
-   | 投稿期間 | 3時間おき実行 | 毎日実行 |
-   | 投票期間 | 毎日実行（exステージのみ） | 毎日実行 |
+   | 投稿期間 | 毎日実行 | 3時間おき実行 |
+   | 投票期間 | 毎日実行（exステージのみ） | 3時間おき実行 |
    | 終了後 | 実行なし | たまに手動実行 |
 
 
@@ -93,7 +95,14 @@ GitHub Actionsで実行する。
 
 1. 二次創作作品の情報を提出いただくGoogle Form（二次創作作品提出フォーム）を作成する。Note記事以外の二次創作作品は、このGoogle Formに回答いただいて情報を集め、リストを作成する。
    以下の情報を記入してもらうGoogle Formを作成する（形式は過去の二次創作作品提出フォームを参照）。
-   二次創作者活動名、分類、配信日時、投稿先サービス、二次創作作品URL、元作品URL、タイトル、画像URL
+   - 二次創作者活動名
+   - 分類（イラスト/歌ってみた/アレンジ/紹介配信/紹介配信アーカイブ/その他）
+   - 配信日時（紹介配信のみ）
+   - 投稿先サービス（ニコニコ動画/YouTube/その他）
+   - 二次創作作品URL
+   - 元作品URL
+   - タイトル
+   - 画像URL
 
 1. 作成した二次創作作品提出フォームの回答を「二次創作作品提出フォーム回答リスト」スプレッドシートのフォーム回答結果シート「Forms_result」にリンクさせる。
 
@@ -183,11 +192,15 @@ Googleスプレッドシートをデータベースとして利用している�
 | スプレッドシート名 | 概要 | 更新workflow |
 | --- | --- | --- |
 | video_catalog_\<yyyyseoson\> | 参加作品動画リスト | \<yyyyseoson\> Fetch Videos Rookie、\<yyyyseoson\> Fetch Videos ex |
-| grouped_video_catalog_\<yyyyseoson\> | 投票グループ分けした参加作品動画リスト | |
+| grouped_video_catalog_\<yyyyseoson\> | 予選投票グループ分けした参加作品動画リスト | |
+| grouped_video_catalog_\<yyyyseoson\>_semifinal | 準決勝投票グループ分けした参加作品動画リスト | |
+| grouped_video_catalog_\<yyyyseoson\>_final | 決勝投票グループ分けした参加作品動画リスト | |
+| grouped_video_catalog_\<yyyyseoson\>_ex | exステージ投票グループ分けした参加作品動画リスト | |
 | note_list_\<yyyyseoson\> | Note記事リスト | \<yyyyseoson\> Fetch Note |
 | fanfic_list_\<yyyyseoson\> | 二次創作作品リスト | \<yyyyseoson\> Fetch Videos Fanfic |
 | 動画除外リスト_\<yyyyseoson\> | 参加作品動画の除外リスト |  |
 | 二次創作作品提出フォーム回答_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |  |
+| updated_video_catalog_\<yyyyseoson\> | 再生数いいね数集計用参加作品動画リスト | \<yyyyseoson\> Update Videos Info |
 
 現状、workflowやスクリプトで更新するスプレッドシートは英語名、手動で更新するスプレッドシートは日本語名をつけている（この命名ルールは要議論）。
 
@@ -274,3 +287,15 @@ Googleスプレッドシートをデータベースとして利用している�
    python -m scripts.setup_forms 
    ```
    連番のついたGoogleフォームが作成される。
+
+
+### 再生数いいね数集計用参加動画一覧更新
+
+開催中に参加動画の再生数・いいね数を集計したいことがある。
+ただし、参加動画一覧を更新してしまうと、削除やタイトル変更があった場合に参加作品が変更されてしまうため、再生数いいね数集計用の参加動画一覧スプレッドシートを別に作って対応している。
+
+1. `backend`ディレクトリで以下を実行
+    ```
+    python -m scripts.update_videos_info
+    ```
+    再生数いいね数集計用参加作品動画リストが更新される。
