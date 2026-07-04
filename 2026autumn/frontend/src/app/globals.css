@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: pastel --default;
+}
+
+@theme {
+  --color-mint: #2DD4BF;
+  --color-skyblue: #38BDF8;
+  --color-cherry: #FB7185;
+}
+
+body {
+  font-family: var(--font-noto-sans-jp), sans-serif;
+  background-color: var(--color-base-100);
+}

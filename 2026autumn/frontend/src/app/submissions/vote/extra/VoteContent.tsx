@@ -1,0 +1,484 @@
+"use client";
+
+import Counting from "@/components/Counting";
+import TBA from "@/components/TBA";
+import { CONFIG } from "@/config/config";
+import { EVENT_PHASES_EX, getCurrentPhaseEx } from "@/config/phase";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+/* =========================
+   表示ラベル
+========================= */
+const DISC_LABEL = "ex";
+const PHASE_LABEL = "exステージ";
+
+/* =========================
+   表示フェーズ定義（安全化）
+========================= */
+const VIEW_PHASE = {
+  BEFORE: "before",
+  DURING: "during",
+  AFTER: "after",
+  COUNTING: "counting",
+} as const;
+
+function getViewPhase(phase: string) {
+  switch (phase) {
+    case EVENT_PHASES_EX.BEFORE:
+    case EVENT_PHASES_EX.SUBMISSION:
+      return VIEW_PHASE.BEFORE;
+
+    case EVENT_PHASES_EX.VOTING:
+      return VIEW_PHASE.DURING;
+
+    case EVENT_PHASES_EX.COUNTING:
+      return VIEW_PHASE.COUNTING;
+
+    case EVENT_PHASES_EX.AFTER:
+      return VIEW_PHASE.AFTER;
+
+    default:
+      return EVENT_PHASES_EX.BEFORE;
+  }
+}
+
+/* =========================
+   型
+========================= */
+type Video = {
+  title: string;
+  creator: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  publishedAt?: string;
+  description?: string;
+  group: number;
+  videoId?: string;
+};
+
+type Vote = {
+  group: number;
+  formUrl?: string;
+  mylistUrl?: string;
+  deadline?: string;
+};
+
+type Rank = {
+  videoId: string;
+  group: number;
+  rank: number;
+};
+
+/* =========================
+   util
+========================= */
+function formatDate(dateStr?: string) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "";
+
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+function cleanDescription(text?: string) {
+  if (!text) return "";
+  return text
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/\n/g, " ")
+    .trim();
+}
+
+function medalClass(rank: number) {
+  if (rank === 1) return "bg-yellow-100";
+  if (rank === 2) return "bg-gray-200";
+  if (rank === 3) return "bg-orange-100";
+  return "bg-gray-100";
+}
+
+/* =========================
+   Skeleton
+========================= */
+function SkeletonCard() {
+  return (
+    <div className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
+      <div className="flex gap-4">
+        <div className="w-40 h-24 bg-gray-200 rounded animate-pulse" />
+        <div className="flex flex-col flex-1 gap-2">
+          <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+          <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+          <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />
+          <div className="h-4 bg-gray-200 rounded w-full animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================
+   Page
+========================= */
+export default function VoteContent({
+  initialSongs,
+  initialForms,
+  initialRanks,
+}: {
+  initialSongs: any[];
+  initialForms: any[];
+  initialRanks: any[];
+}) {
+  const phase = getCurrentPhaseEx();
+  const viewPhase = getViewPhase(phase);
+
+  const [videos, setVideos] = useState(initialSongs);
+  const mappedVideos = videos;
+  const [votes, setVotes] = useState(initialForms);
+  const [ranks, setRanks] = useState(initialRanks);
+  const [loading, setLoading] = useState(true);
+
+  const [activeGroup, setActiveGroup] = useState<number | null>(null);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  /* =========================
+     fetch
+  ========================= */
+  useEffect(() => {
+    const groups = [...new Set(mappedVideos.map((v) => v.group))].sort(
+      (a, b) => a - b,
+    );
+
+    const groupParam = searchParams.get("group");
+    const groupFromUrl = groupParam ? Number(groupParam) : null;
+
+    if (groupFromUrl && groups.includes(groupFromUrl)) {
+      setActiveGroup(groupFromUrl);
+    } else {
+      setActiveGroup(groups[0] ?? null);
+    }
+
+    setLoading(false);
+    // })
+  }, []);
+
+  /* =========================
+     group
+  ========================= */
+  const groups = useMemo(() => {
+    return [...new Set(videos.map((v) => v.group))].sort((a, b) => a - b);
+  }, [videos]);
+
+  useEffect(() => {
+    if (groups.length === 0) return;
+
+    const groupParam = searchParams.get("group");
+    const groupFromUrl = groupParam ? Number(groupParam) : null;
+
+    if (groupFromUrl && groups.includes(groupFromUrl)) {
+      setActiveGroup(groupFromUrl);
+    }
+  }, [searchParams, groups]);
+
+  const displayVideos = useMemo(() => {
+    if (activeGroup === null) return [];
+    return videos.filter((v) => v.group === activeGroup);
+  }, [videos, activeGroup]);
+
+  const voteInfo = useMemo(() => {
+    return votes.find((v) => v.group === activeGroup);
+  }, [votes, activeGroup]);
+
+  const rankedVideos = useMemo(() => {
+    if (activeGroup === null) return [];
+    return ranks
+      .filter((r) => r.group === activeGroup && r.rank)
+      .sort((a, b) => a.rank - b.rank)
+      .map((r) => ({
+        rank: r.rank,
+        video: videos.find((v) => v.videoId === r.videoId),
+      }))
+      .filter(
+        (v): v is { rank: number; video: Video } => v.video !== undefined,
+      );
+  }, [ranks, videos, activeGroup]);
+
+  const selectRandomGroup = () => {
+    if (groups.length === 0) return;
+
+    const randomIndex = Math.floor(Math.random() * groups.length);
+    const g = groups[randomIndex];
+
+    setActiveGroup(g);
+    router.push(`?group=${g}`, { scroll: false });
+  };
+
+  /* =========================
+     Counting
+  ========================= */
+  if (viewPhase === VIEW_PHASE.COUNTING) {
+    return <Counting title={`人気投票 ${PHASE_LABEL}`} />;
+  }
+
+  /* =========================
+     BEFORE
+  ========================= */
+  if (viewPhase === VIEW_PHASE.BEFORE) {
+    return <TBA title={`人気投票 ${PHASE_LABEL}`} />;
+  }
+
+  return (
+    <div className="p-4 sm:p-6 flex flex-col items-center">
+      <div className="text-center mb-6 w-full max-w-[900px]">
+        <h1 className="text-3xl md:text-4xl font-bold">
+          人気投票 {PHASE_LABEL}
+        </h1>
+
+        <p className="text-sm text-gray-600 mt-2">
+          「本当のルーキー祭り2026春」{PHASE_LABEL}の楽曲を{DISC_LABEL}
+          グループごとに掲載しています。
+        </p>
+
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (
+          <p className="mt-2 text-sm font-semibold text-red-600">
+            投票締切：{formatDate(voteInfo.deadline)}
+          </p>
+        )}
+
+        {viewPhase === VIEW_PHASE.AFTER && (
+          <p className="mt-2 text-sm font-semibold text-gray-700">
+            人気投票は終了しました
+          </p>
+        )}
+
+        <div className="mt-4 border-b border-gray-200 w-full" />
+      </div>
+
+      {/* DISC SELECT */}
+      {!loading && (
+        <div className="w-full max-w-[900px]">
+          {/* Discボタン群 */}
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-2">
+            {groups.map((g) => (
+              <button
+                key={g}
+                onClick={() => {
+                  setActiveGroup(g);
+                  router.push(`?group=${g}`, { scroll: false });
+                }}
+                className={`text-xs py-1 rounded-md border
+                  ${activeGroup === g ? "bg-black text-white" : "bg-white text-gray-700"}
+                `}
+              >
+                <span className="font-medium">{DISC_LABEL} </span>
+                <span className="font-extrabold text-sm">{g}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* ランダムボタン（下中央） */}
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={selectRandomGroup}
+              className="
+                text-xs py-1 px-3
+                rounded-md border
+                bg-blue-50 text-blue-700
+                hover:bg-blue-100
+                font-semibold
+              "
+            >
+              {DISC_LABEL}をランダムに選ぶ
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="w-full max-w-[900px] border-b border-gray-200 mb-6" />
+
+      {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
+        <div className="w-full max-w-[900px] mb-6">
+          <h2 className="font-bold mb-2">
+            {DISC_LABEL} {activeGroup} 人気投票結果
+          </h2>
+
+          {/* ヘッダー */}
+          <div
+            className="
+              grid
+              grid-cols-[40px_56px_1fr_90px]
+              sm:grid-cols-[60px_60px_1fr_160px]
+              gap-2
+              text-sm mb-1 font-semibold text-gray-600
+            "
+          >
+            <div>順位</div>
+            <div></div>
+            <div>タイトル</div>
+            <div>投稿者</div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            {rankedVideos.map(({ rank, video }) => (
+              <a
+                key={video.videoId}
+                href={video.videoUrl}
+                target="_blank"
+                className={`
+                  group grid
+                  grid-cols-[40px_56px_1fr_90px]
+                  sm:grid-cols-[60px_60px_1fr_160px]
+                  items-center gap-2 px-2 py-1 rounded
+                  transition-all duration-200
+                  hover:shadow-md hover:-translate-y-[1px]
+                  ${medalClass(rank)}
+                `}
+              >
+                {/* 順位 */}
+                <div
+                  className={`
+                    text-center font-bold
+                    text-base sm:text-lg
+                    ${rank <= 3 ? "text-lg sm:text-xl" : ""}
+                  `}
+                >
+                  {rank}
+                </div>
+
+                {/* サムネ */}
+                <div className="overflow-hidden rounded relative w-14 h-10 sm:w-12 sm:h-8">
+                  <Image
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    fill
+                    sizes="56px"
+                    className="object-cover transition-transform duration-200 group-hover:scale-105"
+                    unoptimized
+                  />
+                </div>
+
+                {/* タイトル */}
+                <div
+                  className="
+                    text-sm sm:text-base
+                    leading-tight
+                    line-clamp-2 sm:line-clamp-1
+                    break-words
+                    group-hover:underline
+                  "
+                >
+                  {video.title}
+                </div>
+
+                {/* 投稿者 */}
+                <div className="truncate text-xs sm:text-base">
+                  {video.creator}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* BUTTONS */}
+      <div className="flex flex-wrap gap-3 mb-6 justify-center">
+        {viewPhase === VIEW_PHASE.DURING &&
+          voteInfo?.formUrl &&
+          voteInfo.formUrl !== "NaN" && (
+            <a
+              href={voteInfo.formUrl}
+              target="_blank"
+              className="
+              px-6 py-2 rounded
+              bg-blue-500 text-white text-sm
+              min-w-[260px]
+              text-center
+            "
+            >
+              {DISC_LABEL} {activeGroup} の人気投票はこちら
+            </a>
+          )}
+
+        {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
+          <a
+            href={voteInfo.mylistUrl}
+            target="_blank"
+            className="
+              px-6 py-2 rounded
+              bg-red-400 text-white text-sm
+              min-w-[260px]
+              text-center
+            "
+          >
+            {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
+          </a>
+        )}
+
+        <a
+          href={CONFIG.links.voteGuide}
+          target="_blank"
+          className="
+            px-6 py-2 rounded
+            bg-gray-500 text-white text-sm
+            min-w-[260px]
+            text-center
+          "
+        >
+          人気投票の詳細はこちら
+        </a>
+      </div>
+
+      {loading ? (
+        <div className="flex flex-col gap-6 items-center w-full">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-6 items-center w-full">
+          {displayVideos.map((item, i) => (
+            <a
+              key={i}
+              href={item.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-[1px] block"
+            >
+              <div className="flex gap-4">
+                <div className="overflow-hidden rounded relative w-40 h-24">
+                  <Image
+                    src={item.thumbnailUrl}
+                    alt={item.title}
+                    fill
+                    sizes="160px"
+                    className="object-cover group-hover:scale-105"
+                    unoptimized
+                  />
+                </div>
+
+                <div className="flex flex-col flex-1 min-w-0">
+                  <h2 className="font-bold line-clamp-2 group-hover:underline">
+                    {item.title}
+                  </h2>
+
+                  <p className="text-sm text-gray-700 truncate">
+                    {item.creator}
+                  </p>
+
+                  <p className="text-xs text-gray-500">
+                    {formatDate(item.publishedAt)}
+                  </p>
+
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-2 break-words">
+                    {cleanDescription(item.description)}
+                  </p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

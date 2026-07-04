@@ -1,0 +1,11 @@
+tag:
+  rookie: "本当のルーキー祭り2026春"
+
+spreadsheets:
+  grouped_video_catalog:
+    name: "grouped_video_catalog_2026spring_modified"
+    sheet: "rookie"
+
+  updated_video_catalog:
+    name: "updated_video_catalog_2026spring"
+    sheet: "rookie"

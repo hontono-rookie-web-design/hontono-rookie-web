@@ -1,0 +1,89 @@
+tag:
+  rookie: "本当のルーキー祭り2026春" # ルーキー参加タグ
+  ex: "本当のルーキー祭り2026春ex" # exステージ参加タグ
+  fanfic: "本当のルーキー祭り2026春二次創作" # 二次創作作品タグ
+
+period:
+  start_period: "2026-04-22T17:00:00+09:00" # ルーキー投稿期間開始時刻（opステージとルーキー作品を分けるために使用。ISO形式）
+
+spreadsheets:
+  video_catalog: # 参加作品動画リスト
+    name: "video_catalog_2026spring" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+    op_sheet: "op" # opステージ参加作品リストシート名
+    ex_sheet: "ex" # exステージ作品リストシート名
+    fanfic_sheet: "fanfic" # 二次創作作品リストシート名
+    excluded_rookie_sheet: "excluded_rookie" # 除外済動画リストシート名（opステージ、ルーキー）
+    excluded_ex_sheet: "excluded_ex" # 除外済動画リストシート名（exステージ）
+    excluded_fanfic_sheet: "excluded_fanfic" # 除外済動画リストシート名（二次創作）
+
+  video_exclusion_list: # 参加作品動画の除外リスト
+    name: "動画除外リスト_2026春" # スプレッドシート名
+    rookie_sheet: "ルーキー" # 除外対象動画リストシート名（opステージ、ルーキー）
+    ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
+    fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
+
+  video_catalog_semifinal: # 準決勝進出作品動画リスト
+    name: "video_catalog_2026spring_semifinal" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+
+  ranking_result: #投票結果のシート
+    name: "人気投票順位_2026春" #スプレッドシート名
+    preliminary_sheet: "予選" #予選結果シート名
+    semifinal_sheet: "準決勝" #準決勝結果シート名
+    final_sheet: "決勝" #決勝シート名
+    ex_sheet: "ex" #exシート名
+
+  note_list: # Note記事リスト
+    name: "note_list_2026spring" # スプレッドシート名
+    list_sheet: "list" # Note記事リストシート名
+
+  fanfic_list: # 二次創作作品リスト
+    name: "fanfic_list_2026spring" # スプレッドシート名
+
+  forms_result_fanfic: # 二次創作作品提出フォーム回答リスト
+    name: "二次創作作品提出フォーム回答_2026春" # スプレッドシート名
+    forms_result: "Forms_result" # フォーム回答結果シート名（二次創作作品提出フォームの回答をリンクさせるシート）
+    for_check: "二次創作作品情報確認用" # 二次創作作品情報確認用シート名
+
+  grouped_video_catalog_final: # 決勝参加の全ての動画リスト。
+    name: "grouped_video_catalog_2026spring_final" # スプレッドシート名
+    rookie_sheet: "rookie" # ルーキー参加作品リストシート名
+
+  grouped_video_catalog_ex: # exステージ参加の全ての動画リスト。
+    name: "grouped_video_catalog_2026spring_ex" # スプレッドシート名
+    ex_sheet: "ex" # exステージ作品リストシート名
+
+vote_grouping: # 投票グループ分け関連パラメータ
+  random_seed: 42
+  group_num: 70
+  grouped_video_catalog:
+    name: "grouped_video_catalog_2026spring"
+    rookie_sheet: "rookie"
+    op_sheet: "op"
+    ex_sheet: "ex"
+
+vote_semifinal: # 準決勝グループ分け関連パラメータ
+  semifinal_size: 3 #Selection数
+  semifinal_border: 5 #予選通過ボーダー
+  grouped_video_catalog_semifinal:
+    name: "grouped_video_catalog_2026spring_semifinal"
+    rookie_sheet: "rookie"
+
+vote_grouping_ex: # exグループ分け関連パラメータ
+  random_seed: 43
+  group_num: 8
+
+vote_form: # 投票フォーム関連パラメータ
+  prelim: # 予選
+    title: "本当のルーキー祭り2026春_Disc."
+    item_title: "好きな作品を教えてください。"
+  semifinal: # 準決勝
+    title: "本当のルーキー祭り2026春_Selection."
+    item_title: "好きな作品を教えてください。"
+  final: # 決勝
+    title: "本当のルーキー祭り2026春_Best."
+    item_title: "好きな作品を教えてください。"
+  ex: # exステージ
+    title: "本当のルーキー祭り2026春_ex."
+    item_title: "好きな作品を教えてください。"
