@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -17,9 +19,9 @@ jobs:
           persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-size: 20
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: "2026autumn/frontend/package-lock.json"
 
@@ -28,6 +30,7 @@ jobs:
         working-directory: "2026autumn/frontend"
 
       - name: Deploy to Cloudflare
+        if: ${{ github.event_name == 'push' }}
         run: npm run deploy
         working-directory: "2026autumn/frontend"
         env:
