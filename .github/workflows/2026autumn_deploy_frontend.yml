@@ -1,0 +1,38 @@
+name: Deploy 2026 Autumn Frontend
+
+on:
+  push:
+    branches: [main] # mainにマージされたら本番デプロイ
+    paths:
+      - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # リポジトリをチェックアウトしたあとにトークンなどの認証情報を Git の config に残さない
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: "2026autumn/frontend/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: "2026autumn/frontend"
+
+      - name: Deploy to Cloudflare
+        if: ${{ github.event_name == 'push' }}
+        run: npm run deploy
+        working-directory: "2026autumn/frontend"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
