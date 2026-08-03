@@ -4,8 +4,8 @@
 
 1. (Windowsのみ)WSLのインストール
    https://qiita.com/SAITO_Keita/items/148f794a5b358e5cb87b
-2. Node.jsのインストール（anyenvをインストールすると楽）<br>
-   anyenv: https://github.com/anyenv/anyenv
+2. Node.js v24のインストール（anyenvをインストールすると楽）<br>
+   anyenv: https://github.com/anyenv/anyenv <br>
    Node.js: https://nodejs.org/ja
 3. `.env.local`を共有ドライブからダウンロードして`2026spring/frontend`下に配置
 4. 以下を実行
@@ -19,7 +19,7 @@ npm run dev
 
 ## バックエンドのセットアップ方法
 
-1. Pythonのインストール
+1. Python 3.12のインストール
 2. 以下を実行
 
 ```bash
