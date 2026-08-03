@@ -14,11 +14,11 @@ Issueには、GitHubのIssueテンプレートに従って必要事項を記載�
 
 ---
 
-### 2. Issueからブランチを作成する
+### 2. IssueからBranchを作成する
 
-Issueを作成したら、Issueの **Development** からブランチを作成します。
+Issueを作成したら、Issue画面右側の **Development** からBranchを作成します。
 
-ブランチ名は以下の形式としてください。
+Branch名は以下の形式としてください。
 
 ```text
 feature/Issue番号-簡単な説明
@@ -34,18 +34,18 @@ feature/108-update-readme
 
 ---
 
-### 3. 開発を行う
+### 3. Developmentを行う
 
-作成したブランチで開発を行います。
+作成したBranchでDevelopmentを行います。
 
-作業が終わったら、変更をコミットし、GitHubへPushします。
+作業が終わったら、変更をCommitし、GitHubへPushします。
 
-#### 変更したファイルをステージング
+#### 変更したファイルをStageする
 
-変更したファイルを指定してステージングします。
+変更したファイルを指定してStageします。
 
 ```bash
-git add <ステージングするファイル・フォルダ>
+git add <Stageするファイル・フォルダ>
 ```
 
 例
@@ -62,9 +62,9 @@ git add 2026spring/frontend/src README.md
 ```
 
 > [!NOTE]
-> `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてステージングします。
+> `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてStageします。
 >
-> 意図していない変更や不要なファイルまで含まれる可能性があるため、ステージングするファイルを確認してからコミットしてください。
+> 意図していない変更や不要なファイルまで含まれる可能性があるため、Stageするファイルを確認してからCommitしてください。
 
 #### Commit
 
@@ -82,15 +82,15 @@ git push
 
 ### 4. Pull Requestを作成する
 
-開発が完了したら、`main` ブランチへ向けてPull Requestを作成します。
+Developmentが完了したら、`main` Branchへ向けてPull Requestを作成します。
 
 Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
 
 ---
 
-### 5. Pull Requestをマージする
+### 5. Pull RequestをMergeする
 
-レビュー・確認が完了したら、`main` ブランチへマージします。
+Review・確認が完了したら、`main` BranchへMergeします。
 
 ---
 
@@ -99,9 +99,9 @@ Pull Requestには、GitHubのPRテンプレートに従って必要事項を記
 ```text
 Issue作成
     ↓
-Issueからブランチ作成
+IssueからBranch作成
     ↓
-開発
+Development
     ↓
 Commit
     ↓
@@ -109,9 +109,9 @@ Push
     ↓
 Pull Request
     ↓
-レビュー
+Review
     ↓
-mainへマージ
+mainへMerge
 ```
 
 ---
@@ -150,7 +150,7 @@ config.secret.json
 > git rm --cached ファイル名
 > ```
 >
-> その後コミットすると、`.gitignore` の設定が有効になります。
+> その後Commitすると、`.gitignore` の設定が有効になります。
 
 ---
 
@@ -158,14 +158,14 @@ config.secret.json
 
 ### 必須
 
-#### `main` ブランチへ直接Pushしない
+#### `main` Branchへ直接Pushしない
 
-`main` ブランチへの直接Pushは禁止です。
+`main` Branchへの直接Pushは禁止です。
 
-必ず作業ブランチで開発し、Pull Requestを作成してからマージしてください。
+必ず作業BranchでDevelopmentし、Pull Requestを作成してからMergeしてください。
 
 > [!WARNING]
-> `main` ブランチへ直接Pushすると、レビューを経ずに変更が反映されてしまいます。
+> `main` Branchへ直接Pushすると、Reviewを経ずに変更が反映されてしまいます。
 >
 > 品質を保つため、必ずPull Request経由で変更を取り込んでください。
 
@@ -183,13 +183,13 @@ Pull Requestでは、対応するIssueと紐付けることを推奨します。
 Closes #12
 ```
 
-Pull Requestがマージされると、Issueも自動的にクローズされます。
+Pull RequestがMergeされると、Issueも自動的にCloseされます。
 
 ---
 
-#### 1つのIssueにつき1つのブランチにする
+#### 1つのIssueにつき1つのBranchにする
 
-1つのブランチでは、1つのIssueのみ対応することを推奨します。
+1つのBranchでは、1つのIssueのみ対応することを推奨します。
 
 **良い例**
 
@@ -204,15 +204,15 @@ Issue #11 → feature/11-fix-header-layout
 feature/work
 ```
 
-Issueごとにブランチを分けることで、レビューしやすくなり、変更履歴も追いやすくなります。
+IssueごとにBranchを分けることで、Reviewしやすくなり、変更履歴も追いやすくなります。
 
 ---
 
 ## お願い
 
 - 作業前にIssueを作成する
-- Issueからブランチを作成する
-- `main` ブランチへ直接Pushしない
+- IssueからBranchを作成する
+- `main` Branchへ直接Pushしない
 - 秘密情報をGitHubへPushしない
 - 作業完了後はPull Requestを作成する
-- 1つのIssueにつき1つのブランチで作業する
+- 1つのIssueにつき1つのBranchで作業する
