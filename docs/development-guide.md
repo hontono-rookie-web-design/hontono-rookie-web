@@ -45,29 +45,31 @@ feature/108-update-readme
 変更したファイルを指定してステージングします。
 
 ```bash
-git add <修正したファイル>
+git add <ステージングするファイル・フォルダ>
 ```
 
 例
 
 ```bash
-git add src/main.py
+git add 2026spring/frontend/src
 git add README.md
 ```
 
 複数のファイルをまとめて指定することもできます。
 
 ```bash
-git add src/main.py README.md
+git add 2026spring/frontend/src README.md
 ```
 
 > [!NOTE]
-> `git add .` を使用すると、意図しないファイル（`.env` や設定ファイルなど）までステージングしてしまう可能性があるので注意してください。
+> `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてステージングします。
+>
+> 意図していない変更や不要なファイルまで含まれる可能性があるため、ステージングするファイルを確認してからコミットしてください。
 
 #### Commit
 
 ```bash
-git commit -m "ログイン画面を追加"
+git commit -m "トップページを追加"
 ```
 
 #### Push
