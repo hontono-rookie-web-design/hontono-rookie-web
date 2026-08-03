@@ -34,18 +34,18 @@ feature/108-update-readme
 
 ---
 
-### 3. Developmentを行う
+### 3. 開発を行う
 
-作成したBranchでDevelopmentを行います。
+作成したBranchで開発を行います。
 
 作業が終わったら、変更をCommitし、GitHubへPushします。
 
-#### 変更したファイルをStageする
+#### 変更したファイルをステージングする
 
-変更したファイルを指定してStageします。
+変更したファイルを指定してステージングします。
 
 ```bash
-git add <Stageするファイル・フォルダ>
+git add <ステージングするファイル・フォルダ>
 ```
 
 例
@@ -62,9 +62,9 @@ git add 2026spring/frontend/src README.md
 ```
 
 > [!NOTE]
-> `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてStageします。
+> `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてステージングします。
 >
-> 意図していない変更や不要なファイルまで含まれる可能性があるため、Stageするファイルを確認してからCommitしてください。
+> 意図していない変更や不要なファイルまで含まれる可能性があるため、ステージングするファイルを確認してからCommitしてください。
 
 #### Commit
 
@@ -82,7 +82,7 @@ git push
 
 ### 4. Pull Requestを作成する
 
-Developmentが完了したら、`main` Branchへ向けてPull Requestを作成します。
+開発が完了したら、`main` Branchへ向けてPull Requestを作成します。
 
 Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
 
@@ -101,7 +101,7 @@ Issue作成
     ↓
 IssueからBranch作成
     ↓
-Development
+開発
     ↓
 Commit
     ↓
@@ -147,7 +147,7 @@ config.secret.json
 > その場合は、以下のコマンドでGitの管理対象から外してください。
 >
 > ```bash
-> git rm --cached ファイル名
+> git rm --cached <対象ファイル>
 > ```
 >
 > その後Commitすると、`.gitignore` の設定が有効になります。
@@ -162,7 +162,7 @@ config.secret.json
 
 `main` Branchへの直接Pushは禁止です。
 
-必ず作業BranchでDevelopmentし、Pull Requestを作成してからMergeしてください。
+必ず作業Branchで開発し、Pull Requestを作成してからMergeしてください。
 
 > [!WARNING]
 > `main` Branchへ直接Pushすると、Reviewを経ずに変更が反映されてしまいます。
