@@ -2,7 +2,6 @@
 
 このドキュメントでは、このリポジトリで開発を行う際の基本的な流れとルールを説明します。
 
----
 
 ## 開発の流れ
 
@@ -12,7 +11,6 @@
 
 Issueには、GitHubのIssueテンプレートに従って必要事項を記載してください。
 
----
 
 ### 2. IssueからBranchを作成する
 
@@ -21,18 +19,29 @@ Issueを作成したら、Issue画面右側の **Development** からBranchを�
 Branch名は以下の形式としてください。
 
 ```text
-feature/Issue番号-簡単な説明
+<種類>/Issue番号-簡単な説明
 ```
 
 例
 
 ```text
 feature/12-add-login-page
-feature/35-fix-header-layout
-feature/108-update-readme
+fix/35-fix-header-layout
+refactor/42-refactor-user-service
+perf/56-optimize-search
+docs/108-update-readme
 ```
 
----
+Branch名の `<種類>` には、作業内容に応じて以下を使用してください。
+
+| 種類 | 用途 |
+|  |  |
+| `feature` | 新機能の追加 |
+| `fix` | バグ修正 |
+| `refactor` | リファクタリング |
+| `perf` | パフォーマンス改善 |
+| `docs` | ドキュメント作成 |
+
 
 ### 3. 開発を行う
 
@@ -72,13 +81,16 @@ git add 2026spring/frontend/src README.md
 git commit -m "トップページを追加"
 ```
 
+コミットメッセージの指定はありません。変更内容が理解しやすい日本語で記述してください
+
+
 #### Push
 
 ```bash
-git push
+git push origin <ブランチ名>
+# 例）git push origin feature/12-add-login-page
 ```
 
----
 
 ### 4. Pull Requestを作成する
 
@@ -86,13 +98,13 @@ git push
 
 Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
 
----
+
 
 ### 5. Pull RequestをMergeする
 
 Review・確認が完了したら、`main` BranchへMergeします。
 
----
+
 
 ## 開発フロー
 
@@ -114,7 +126,7 @@ Review
 mainへMerge
 ```
 
----
+
 
 ## `.gitignore`について
 
@@ -152,7 +164,7 @@ config.secret.json
 >
 > その後Commitすると、`.gitignore` の設定が有効になります。
 
----
+
 
 ## 開発ルール
 
@@ -169,7 +181,7 @@ config.secret.json
 >
 > 品質を保つため、必ずPull Request経由で変更を取り込んでください。
 
----
+
 
 ### 推奨
 
@@ -185,7 +197,7 @@ Closes #12
 
 Pull RequestがMergeされると、Issueも自動的にCloseされます。
 
----
+
 
 #### 1つのIssueにつき1つのBranchにする
 
@@ -206,7 +218,7 @@ feature/work
 
 IssueごとにBranchを分けることで、Reviewしやすくなり、変更履歴も追いやすくなります。
 
----
+
 
 ## お願い
 
@@ -215,4 +227,3 @@ IssueごとにBranchを分けることで、Reviewしやすくなり、変更履
 - `main` Branchへ直接Pushしない
 - 秘密情報をGitHubへPushしない
 - 作業完了後はPull Requestを作成する
-- 1つのIssueにつき1つのBranchで作業する
