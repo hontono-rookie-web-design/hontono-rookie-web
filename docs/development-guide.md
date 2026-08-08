@@ -35,7 +35,7 @@ docs/108-update-readme
 Branch名の `<種類>` には、作業内容に応じて以下を使用してください。
 
 | 種類 | 用途 |
-|  |  |
+| --- | --- |
 | `feature` | 新機能の追加 |
 | `fix` | バグ修正 |
 | `refactor` | リファクタリング |
@@ -152,78 +152,3 @@ APIキーや認証情報などの秘密情報は、絶対にGitHubへPushしな�
 credentials.json
 config.secret.json
 ```
-
-> [!WARNING]
-> 一度Gitで管理されたファイルは、あとから `.gitignore` に追加しても管理対象のままです。
->
-> その場合は、以下のコマンドでGitの管理対象から外してください。
->
-> ```bash
-> git rm --cached <対象ファイル>
-> ```
->
-> その後Commitすると、`.gitignore` の設定が有効になります。
-
-
-
-## 開発ルール
-
-### 必須
-
-#### `main` Branchへ直接Pushしない
-
-`main` Branchへの直接Pushは禁止です。
-
-必ず作業Branchで開発し、Pull Requestを作成してからMergeしてください。
-
-> [!WARNING]
-> `main` Branchへ直接Pushすると、Reviewを経ずに変更が反映されてしまいます。
->
-> 品質を保つため、必ずPull Request経由で変更を取り込んでください。
-
-
-
-### 推奨
-
-#### IssueとPull Requestを紐付ける
-
-Pull Requestでは、対応するIssueと紐付けることを推奨します。
-
-例
-
-```text
-Closes #12
-```
-
-Pull RequestがMergeされると、Issueも自動的にCloseされます。
-
-
-
-#### 1つのIssueにつき1つのBranchにする
-
-1つのBranchでは、1つのIssueのみ対応することを推奨します。
-
-**良い例**
-
-```text
-Issue #10 → feature/10-add-login-page
-Issue #11 → feature/11-fix-header-layout
-```
-
-**避けたい例**
-
-```text
-feature/work
-```
-
-IssueごとにBranchを分けることで、Reviewしやすくなり、変更履歴も追いやすくなります。
-
-
-
-## お願い
-
-- 作業前にIssueを作成する
-- IssueからBranchを作成する
-- `main` Branchへ直接Pushしない
-- 秘密情報をGitHubへPushしない
-- 作業完了後はPull Requestを作成する
