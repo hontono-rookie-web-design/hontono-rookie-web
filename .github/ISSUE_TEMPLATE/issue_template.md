@@ -1,3 +1,12 @@
+---
+name: Issue
+about: 機能追加・修正などのIssueを作成します
+title: ''
+labels: ''
+assignees: ''
+---
+
+
 ## 概要
 
 <!-- 作成する機能や修正内容を簡潔に記載してください -->
