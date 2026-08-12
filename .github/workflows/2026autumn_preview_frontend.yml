@@ -2,9 +2,9 @@ name: Deploy 2026 Autumn Frontend - Preview
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened] # Pull Requestが作成されたらデプロイ
     paths:
-      - "2026autumn/frontend/**"
+      - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
 
 permissions:
   contents: read

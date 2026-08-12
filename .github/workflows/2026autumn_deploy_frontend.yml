@@ -2,9 +2,9 @@ name: Deploy 2026 Autumn Frontend - Production
 
 on:
   push:
-    branches: [main]
+    branches: [main] # mainにマージされたら本番デプロイ
     paths:
-      - "2026autumn/frontend/**"
+      - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
 
   # GitHub Actions画面から手動実行できるようにする
   workflow_dispatch:
