@@ -1,33 +1,32 @@
 export default function Schedule() {
   const scheduleItems = [
     {
+      title: "エキシビジョンステージ(ex)",
+      date: "2026年9月4日(金) 17:00 〜 9月7日(月) 16:00",
+      description: "人気投票に参加しない作品の投稿期間",
+      color: "step-primary", // mint
+    },
+    {
       title: "作品投稿期間",
-      date: "2026年4月22日(水) 17:00 〜 4月25日(土) 04:00",
+      date: "2026年9月7日(月) 17:00 〜 9月12日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
       color: "step-primary", // mint
     },
     {
       title: "予選(Disc)",
-      date: "2026年4月25日(土) 〜 5月10日(日)",
-      description: "各Discの上位5作品はスコア公開、準決勝進出",
+      date: "2026年9月14日(月) 〜 9月27日(日)",
+      description: "各Discの上位作品はスコア公開、決勝進出",
       color: "step-accent", // cherry
     },
     {
-      title: "準決勝(Selection)",
-      date: "2026年5月11日(月) 〜 5月23日(土) 17:00",
-      description:
-        "各Discの予選順位に基づいて振り分け。各Selection上位1作品決勝進出",
-      color: "step-accent", // cherry
-    },
-    {
-      title: "決勝(Best)",
-      date: "2026年5月26日(火) 〜",
-      description: "各Selectionの上位作品による最終決戦！",
+      title: "決勝(Best)・SPステージ",
+      date: "2026年10月5日(月) 〜 10月18日(日)",
+      description: "各Discの上位作品による最終決戦！",
       color: "step-accent", // cherry
     },
     {
       title: "結果発表",
-      date: "2026年6月11日(木) 予定",
+      date: "2026年XX月XX日(X) 予定",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary", // skyblue
     },

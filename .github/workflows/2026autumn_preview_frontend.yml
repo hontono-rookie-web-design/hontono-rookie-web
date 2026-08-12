@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 10
 
     environment:
-      name: preview-pr-${{ github.event.pull_request.number }}
+      name: preview
       url: https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/
 
     steps:
