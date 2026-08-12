@@ -1,13 +1,10 @@
-name: Deploy 2026 Autumn Frontend - Production
+name: Deploy 2026 Autumn Frontend - Preview
 
 on:
-  push:
-    branches: [main] # mainにマージされたら本番デプロイ
+  pull_request:
+    types: [opened, synchronize, reopened] # Pull Requestが作成されたらデプロイ
     paths:
       - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
-
-  # GitHub Actions画面から手動実行できるようにする
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,8 +16,8 @@ jobs:
     timeout-minutes: 10
 
     environment:
-      name: production
-      url: https://2026autumn.hontono-rookie-web.workers.dev/
+      name: preview-pr-${{ github.event.pull_request.number }}
+      url: https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/
 
     steps:
       - name: Checkout
@@ -40,8 +37,8 @@ jobs:
         run: npm ci
         working-directory: "2026autumn/frontend"
 
-      - name: Deploy to Cloudflare Production
-        run: npm run deploy
+      - name: Deploy to Cloudflare Preview
+        run: npm run upload -- --preview-alias "pr-${{ github.event.pull_request.number }}"
         working-directory: "2026autumn/frontend"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
