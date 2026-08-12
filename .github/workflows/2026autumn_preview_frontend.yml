@@ -2,9 +2,12 @@ name: Deploy 2026 Autumn Frontend - Preview
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened] # Pull Requestが作成されたらデプロイ
+    types:
+      - opened
+      - synchronize
+      - reopened
     paths:
-      - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
+      - "2026autumn/frontend/**"
 
 permissions:
   contents: read
@@ -15,15 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    environment:
-      name: preview
-      url: https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # リポジトリをチェックアウトしたあとにトークンなどの認証情報を Git の config に残さない
           persist-credentials: false
 
       - name: Setup Node.js
@@ -37,9 +35,67 @@ jobs:
         run: npm ci
         working-directory: "2026autumn/frontend"
 
+      # GitHubのPreview Deploymentを作成
+      - name: Create GitHub Preview deployment
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          response=$(gh api \
+            --method POST \
+            "/repos/${{ github.repository }}/deployments" \
+            --input - <<EOF
+          {
+            "ref": "${PR_REF}",
+            "environment": "preview",
+            "description": "Preview for Pull Request #${PR_NUMBER}",
+            "required_contexts": [],
+            "auto_merge": false,
+            "transient_environment": true,
+            "production_environment": false
+          }
+          EOF
+          )
+
+          deployment_id=$(echo "$response" | jq -r '.id')
+
+          echo "Created deployment: $deployment_id"
+
+          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
+
+      # Deploymentを「実行中」にする
+      - name: Mark deployment in progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
+        run: |
+          gh api \
+            --method POST \
+            "/repos/${{ github.repository }}/deployments/${DEPLOYMENT_ID}/statuses" \
+            -f state="in_progress" \
+            -f description="Deploying Preview to Cloudflare."
+
+      # CloudflareへPreviewをデプロイ
       - name: Deploy to Cloudflare Preview
         run: npm run upload -- --preview-alias "pr-${{ github.event.pull_request.number }}"
         working-directory: "2026autumn/frontend"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # Deploymentを「成功」にする
+      - name: Mark deployment successful
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
+          PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/
+        run: |
+          gh api \
+            --method POST \
+            "/repos/${{ github.repository }}/deployments/${DEPLOYMENT_ID}/statuses" \
+            -f state="success" \
+            -f description="Preview deployment completed successfully." \
+            -f environment_url="$PREVIEW_URL" \
+            -f auto_inactive=false

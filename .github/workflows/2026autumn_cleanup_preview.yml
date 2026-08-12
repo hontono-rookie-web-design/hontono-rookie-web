@@ -1,0 +1,72 @@
+name: Cleanup 2026 Autumn Preview
+
+on:
+  # PRがMerge / Closeされたとき
+  pull_request:
+    types:
+      - closed
+
+  # GitHub Actionsから手動実行
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cleanup Preview deployments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Searching Preview deployments..."
+
+          deployments=$(gh api \
+            --method GET \
+            "/repos/${{ github.repository }}/deployments?environment=preview&per_page=100")
+
+          echo "$deployments" | jq -c '.[]' | while read -r deployment; do
+            deployment_id=$(echo "$deployment" | jq -r '.id')
+            description=$(echo "$deployment" | jq -r '.description')
+            ref=$(echo "$deployment" | jq -r '.ref')
+
+            echo ""
+            echo "Deployment ID: $deployment_id"
+            echo "Description: $description"
+            echo "Ref: $ref"
+
+            # "Preview for Pull Request #123" の形式からPR番号を取得
+            pr_number=$(echo "$description" | sed -n 's/^Preview for Pull Request #\([0-9]\+\)$/\1/p')
+
+            if [ -z "$pr_number" ]; then
+              echo "Could not determine Pull Request number. Skipping."
+              continue
+            fi
+
+            echo "Pull Request: #$pr_number"
+
+            # PRの現在の状態を確認
+            pr_state=$(gh api \
+              "/repos/${{ github.repository }}/pulls/${pr_number}" \
+              --jq '.state')
+
+            echo "Pull Request state: $pr_state"
+
+            if [ "$pr_state" = "closed" ]; then
+              echo "Pull Request #$pr_number is closed."
+              echo "Marking deployment $deployment_id as inactive."
+
+              gh api \
+                --method POST \
+                "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
+                -f state="inactive" \
+                -f description="Pull Request #${pr_number} was closed." \
+                -f auto_inactive=false
+            else
+              echo "Pull Request #$pr_number is still open. Skipping."
+            fi
+          done
