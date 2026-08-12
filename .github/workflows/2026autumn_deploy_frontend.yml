@@ -1,4 +1,4 @@
-name: Deploy 2026 Autumn Frontend - Production
+name: 2026autumn Deploy - Production
 
 on:
   push:
