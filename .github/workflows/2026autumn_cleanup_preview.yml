@@ -1,0 +1,43 @@
+name: Cleanup 2026 Autumn Preview
+
+on:
+  pull_request:
+    types:
+      - closed
+    paths:
+      - "2026autumn/frontend/**"
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mark Preview deployments inactive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          deployments=$(gh api \
+            --method GET \
+            "/repos/${{ github.repository }}/deployments?environment=preview&ref=${PR_REF}&per_page=100" \
+            --jq '.[].id')
+
+          if [ -z "$deployments" ]; then
+            echo "No Preview deployments found for this Pull Request."
+            exit 0
+          fi
+
+          for deployment_id in $deployments; do
+            echo "Marking Preview deployment $deployment_id as inactive"
+
+            gh api \
+              --method POST \
+              "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
+              -f state="inactive" \
+              -f description="Pull Request #${{ github.event.pull_request.number }} was closed." \
+              -f auto_inactive=false
+          done

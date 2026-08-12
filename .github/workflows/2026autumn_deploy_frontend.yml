@@ -2,11 +2,10 @@ name: Deploy 2026 Autumn Frontend - Production
 
 on:
   push:
-    branches: [main] # mainにマージされたら本番デプロイ
+    branches: [main]
     paths:
-      - "2026autumn/frontend/**" # このフォルダに変更があったときだけ実行
+      - "2026autumn/frontend/**"
 
-  # GitHub Actions画面から手動実行できるようにする
   workflow_dispatch:
 
 permissions:
@@ -26,7 +25,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # リポジトリをチェックアウトしたあとにトークンなどの認証情報を Git の config に残さない
           persist-credentials: false
 
       - name: Setup Node.js
@@ -46,3 +44,24 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Mark previous Production deployments inactive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          deployments=$(gh api \
+            --method GET \
+            "/repos/${{ github.repository }}/deployments?environment=production&per_page=100" \
+            --jq '.[] | select(.sha != "'$CURRENT_SHA'") | .id')
+
+          for deployment_id in $deployments; do
+            echo "Marking Production deployment $deployment_id as inactive"
+
+            gh api \
+              --method POST \
+              "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
+              -f state="inactive" \
+              -f description="Superseded by a newer Production deployment." \
+              -f auto_inactive=false
+          done
