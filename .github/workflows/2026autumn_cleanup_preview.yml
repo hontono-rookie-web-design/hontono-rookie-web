@@ -29,44 +29,65 @@ jobs:
             --method GET \
             "/repos/${{ github.repository }}/deployments?environment=preview&per_page=100")
 
+          deployment_count=$(echo "$deployments" | jq 'length')
+
+          echo "Found $deployment_count Preview deployment(s)."
+
+          if [ "$deployment_count" -eq 0 ]; then
+            echo "No Preview deployments found."
+            exit 0
+          fi
+
           echo "$deployments" | jq -c '.[]' | while read -r deployment; do
             deployment_id=$(echo "$deployment" | jq -r '.id')
-            description=$(echo "$deployment" | jq -r '.description')
             ref=$(echo "$deployment" | jq -r '.ref')
+            description=$(echo "$deployment" | jq -r '.description')
 
             echo ""
-            echo "Deployment ID: $deployment_id"
-            echo "Description: $description"
-            echo "Ref: $ref"
+            echo "========================================"
+            echo "Deployment ID : $deployment_id"
+            echo "Ref           : $ref"
+            echo "Description   : $description"
 
-            # "Preview for Pull Request #123" の形式からPR番号を取得
-            pr_number=$(echo "$description" | sed -n 's/^Preview for Pull Request #\([0-9]\+\)$/\1/p')
+            # refs/pull/123/merge からPR番号を取得
+            pr_number=$(echo "$ref" | sed -n 's#^refs/pull/\([0-9]\+\)/merge$#\1#p')
 
             if [ -z "$pr_number" ]; then
-              echo "Could not determine Pull Request number. Skipping."
+              echo "Could not determine Pull Request number from ref."
+              echo "Skipping deployment $deployment_id."
               continue
             fi
 
-            echo "Pull Request: #$pr_number"
+            echo "Pull Request : #$pr_number"
 
             # PRの現在の状態を確認
             pr_state=$(gh api \
               "/repos/${{ github.repository }}/pulls/${pr_number}" \
               --jq '.state')
 
-            echo "Pull Request state: $pr_state"
+            merged=$(gh api \
+              "/repos/${{ github.repository }}/pulls/${pr_number}" \
+              --jq '.merged')
 
-            if [ "$pr_state" = "closed" ]; then
-              echo "Pull Request #$pr_number is closed."
+            echo "PR state     : $pr_state"
+            echo "PR merged    : $merged"
+
+            # PRがClose済み、またはMerge済みならinactiveにする
+            if [ "$pr_state" = "closed" ] || [ "$merged" = "true" ]; then
+              echo "PR #$pr_number is closed/merged."
               echo "Marking deployment $deployment_id as inactive."
 
               gh api \
                 --method POST \
                 "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
                 -f state="inactive" \
-                -f description="Pull Request #${pr_number} was closed." \
+                -f description="Pull Request #${pr_number} was closed or merged." \
                 -f auto_inactive=false
+
+              echo "Deployment $deployment_id marked as inactive."
+
             else
-              echo "Pull Request #$pr_number is still open. Skipping."
+              echo "PR #$pr_number is still open."
+              echo "Keeping deployment $deployment_id active."
             fi
           done
