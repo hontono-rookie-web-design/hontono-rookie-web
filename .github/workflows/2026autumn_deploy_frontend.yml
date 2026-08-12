@@ -6,6 +6,9 @@ on:
     paths:
       - "2026autumn/frontend/**"
 
+  # GitHub Actions画面から手動実行できるようにする
+  workflow_dispatch:
+
 permissions:
   contents: read
   deployments: write
