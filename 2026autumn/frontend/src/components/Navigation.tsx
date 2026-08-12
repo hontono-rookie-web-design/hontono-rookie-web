@@ -61,7 +61,7 @@ export default function Navigation({
             <h2 className="text-2xl font-bold text-slate-800">
               本当のルーキー祭り
               <br />
-              <span className="text-lg text-mint">2026春</span>
+              <span className="text-lg text-mint">2026秋</span>
             </h2>
           </div>
 
