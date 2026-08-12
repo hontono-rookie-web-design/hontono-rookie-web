@@ -1,4 +1,4 @@
-name: Deploy 2026 Autumn Frontend - Preview
+name: 2026autumn Deploy - Preview
 
 on:
   pull_request:
