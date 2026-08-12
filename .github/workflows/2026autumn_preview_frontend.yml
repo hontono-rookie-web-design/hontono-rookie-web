@@ -35,29 +35,37 @@ jobs:
         run: npm ci
         working-directory: "2026autumn/frontend"
 
+      # GitHubのPreview Deploymentを作成
       - name: Create GitHub Preview deployment
         id: deployment
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
         run: |
-          deployment_id=$(gh api \
+          response=$(gh api \
             --method POST \
             "/repos/${{ github.repository }}/deployments" \
-            -f ref="${{ github.ref }}" \
-            -f environment="preview" \
-            -f description="Preview for Pull Request #${{ github.event.pull_request.number }}" \
-            -F transient_environment=true \
-            -F production_environment=false \
-            --input - <<'EOF' \
-            | jq -r '.id'
+            --input - <<EOF
           {
+            "ref": "${PR_REF}",
+            "environment": "preview",
+            "description": "Preview for Pull Request #${PR_NUMBER}",
             "required_contexts": [],
-            "auto_merge": false
+            "auto_merge": false,
+            "transient_environment": true,
+            "production_environment": false
           }
           EOF
-          
+          )
+
+          deployment_id=$(echo "$response" | jq -r '.id')
+
+          echo "Created deployment: $deployment_id"
+
           echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
 
+      # Deploymentを「実行中」にする
       - name: Mark deployment in progress
         env:
           GH_TOKEN: ${{ github.token }}
@@ -69,6 +77,7 @@ jobs:
             -f state="in_progress" \
             -f description="Deploying Preview to Cloudflare."
 
+      # CloudflareへPreviewをデプロイ
       - name: Deploy to Cloudflare Preview
         run: npm run upload -- --preview-alias "pr-${{ github.event.pull_request.number }}"
         working-directory: "2026autumn/frontend"
@@ -76,6 +85,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+      # Deploymentを「成功」にする
       - name: Mark deployment successful
         env:
           GH_TOKEN: ${{ github.token }}

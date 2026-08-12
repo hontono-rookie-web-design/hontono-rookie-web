@@ -4,8 +4,6 @@ on:
   pull_request:
     types:
       - closed
-    paths:
-      - "2026autumn/frontend/**"
 
 permissions:
   contents: read
@@ -19,15 +17,15 @@ jobs:
       - name: Mark Preview deployments inactive
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           deployments=$(gh api \
             --method GET \
-            "/repos/${{ github.repository }}/deployments?environment=preview&ref=${PR_REF}&per_page=100" \
-            --jq '.[].id')
+            "/repos/${{ github.repository }}/deployments?environment=preview&per_page=100" \
+            --jq '.[] | select(.description == "Preview for Pull Request #'${PR_NUMBER}'") | .id')
 
           if [ -z "$deployments" ]; then
-            echo "No Preview deployments found for this Pull Request."
+            echo "No Preview deployments found for Pull Request #${PR_NUMBER}."
             exit 0
           fi
 
@@ -38,6 +36,6 @@ jobs:
               --method POST \
               "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
               -f state="inactive" \
-              -f description="Pull Request #${{ github.event.pull_request.number }} was closed." \
+              -f description="Pull Request #${PR_NUMBER} was closed." \
               -f auto_inactive=false
           done

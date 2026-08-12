@@ -2,7 +2,8 @@ name: Deploy 2026 Autumn Frontend - Production
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - "2026autumn/frontend/**"
 
@@ -54,6 +55,11 @@ jobs:
             --method GET \
             "/repos/${{ github.repository }}/deployments?environment=production&per_page=100" \
             --jq '.[] | select(.sha != "'$CURRENT_SHA'") | .id')
+
+          if [ -z "$deployments" ]; then
+            echo "No previous Production deployments found."
+            exit 0
+          fi
 
           for deployment_id in $deployments; do
             echo "Marking Production deployment $deployment_id as inactive"
