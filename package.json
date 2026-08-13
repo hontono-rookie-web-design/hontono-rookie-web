@@ -19,6 +19,6 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "prettier": "3.9.6"
+    "prettier": "3.8.5"
   }
 }
