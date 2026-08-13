@@ -9,6 +9,12 @@
 
 作業を始める前に、まず **Issue** を作成してください。
 
+Repositoryの **Issues → New issue** をクリックすると、Issueテンプレートの選択画面が表示されます。
+
+この画面では **Issue** を選択して、テンプレートを使用してIssueを作成してください。
+
+**Blank issue** はテンプレートを使用せずにIssueを作成するため、通常の開発では使用しません。
+
 Issueには、GitHubのIssueテンプレートに従って必要事項を記載してください。
 
 
@@ -98,15 +104,58 @@ git push origin <ブランチ名>
 
 Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
 
+デプロイ対象のフロントエンドに変更がある場合、Pull Requestの作成・更新にあわせてPreview環境へのデプロイが自動で実行されます。
+
+デプロイが完了すると、Repositoryの **Deployments** から、変更内容が反映されたPreviewページを確認できます。
+
+```text
+Repository
+↓
+Deployments
+↓
+対象開催期のPreview Environment
+↓
+対象のDeployment
+↓
+Previewページ
+```
+
+`main`へMergeする前に、Previewページで問題なく動作することを確認してください。
+
+デプロイの仕組みやPreviewページの確認方法については、`deployment-guide.md`を参照してください。
 
 
 ### 5. Pull RequestをMergeする
 
 Review・確認が完了したら、`main` BranchへMergeします。
 
+デプロイ対象のフロントエンドに変更がある場合、`main`へのMerge後にProduction環境へのデプロイが自動で実行されます。
+
+デプロイが完了すると、Repositoryの **Deployments** からProductionページを確認できます。
+
+```text
+Repository
+↓
+Deployments
+↓
+対象開催期のProduction Environment
+↓
+最新のDeployment
+↓
+Productionページ
+```
+
+また、MergeされたPull Requestに対応するPreview Deploymentは自動で`inactive`になります。
+
+デプロイの仕組みやProductionページの確認方法については、`deployment-guide.md`を参照してください。
+
 
 
 ## 開発フロー
+
+通常の開発は、以下の流れで行います。
+
+`（自動）`と記載されている工程はGitHub Actionsによって自動で実行されるため、操作は不要です。
 
 ```text
 Issue作成
@@ -119,11 +168,21 @@ Commit
     ↓
 Push
     ↓
-Pull Request
+Pull Request作成
     ↓
-Review
+（自動）Preview環境へデプロイ
+    ↓
+DeploymentsからPreviewページを確認
+    ↓
+Review・動作確認
     ↓
 mainへMerge
+    ↓
+（自動）Preview Deploymentをinactive化
+    ↓
+（自動）Production環境へデプロイ
+    ↓
+DeploymentsからProductionページを確認
 ```
 
 

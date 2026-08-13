@@ -7,25 +7,34 @@ on:
     paths:
       - "2026autumn/frontend/**"
 
+  # GitHub Actionsから手動でProductionへデプロイ
   workflow_dispatch:
 
 permissions:
   contents: read
   deployments: write
 
+# Productionへのデプロイが同時に複数実行されないようにする
+concurrency:
+  group: 2026autumn-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    # GitHub上では開催期ごとにEnvironmentを分けて管理する
     environment:
-      name: production
+      name: 2026autumn-production
       url: https://2026autumn.hontono-rookie-web.workers.dev/
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          # リポジトリをチェックアウトしたあとに
+          # トークンなどの認証情報をGitのconfigに残さない
           persist-credentials: false
 
       - name: Setup Node.js
@@ -39,6 +48,7 @@ jobs:
         run: npm ci
         working-directory: "2026autumn/frontend"
 
+      # CloudflareのProductionへデプロイ
       - name: Deploy to Cloudflare Production
         run: npm run deploy
         working-directory: "2026autumn/frontend"
@@ -46,22 +56,38 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+      # 最新のProduction Deployment以外をinactiveにする
+      #
+      # SHAではなくDeployment IDを基準にすることで、
+      # 同じコミットを手動で再デプロイした場合でも
+      # 過去のDeploymentを正しくinactiveにできる
       - name: Mark previous Production deployments inactive
         env:
           GH_TOKEN: ${{ github.token }}
-          CURRENT_SHA: ${{ github.sha }}
         run: |
           deployments=$(gh api \
             --method GET \
-            "/repos/${{ github.repository }}/deployments?environment=production&per_page=100" \
-            --jq '.[] | select(.sha != "'$CURRENT_SHA'") | .id')
+            "/repos/${{ github.repository }}/deployments?environment=2026autumn-production&per_page=100")
 
-          if [ -z "$deployments" ]; then
+          latest_deployment_id=$(echo "$deployments" | jq -r '.[0].id')
+
+          if [ -z "$latest_deployment_id" ] || [ "$latest_deployment_id" = "null" ]; then
+            echo "No Production deployments found."
+            exit 0
+          fi
+
+          echo "Latest Production deployment: $latest_deployment_id"
+
+          previous_deployments=$(echo "$deployments" | \
+            jq -r --argjson latest "$latest_deployment_id" \
+            '.[] | select(.id != $latest) | .id')
+
+          if [ -z "$previous_deployments" ]; then
             echo "No previous Production deployments found."
             exit 0
           fi
 
-          for deployment_id in $deployments; do
+          for deployment_id in $previous_deployments; do
             echo "Marking Production deployment $deployment_id as inactive"
 
             gh api \
@@ -69,5 +95,5 @@ jobs:
               "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
               -f state="inactive" \
               -f description="Superseded by a newer Production deployment." \
-              -f auto_inactive=false
+              -F auto_inactive=false
           done
