@@ -10,6 +10,10 @@
 
 作業を始める前に、まず **Issue** を作成してください。
 
+Issue一覧は以下から確認できます。
+
+https://github.com/hontono-rookie-web-design/hontono-rookie-web/issues
+
 Repositoryの **Issues → New issue** をクリックすると、Issueテンプレートの選択画面が表示されます。
 
 この画面では **Issue** を選択して、テンプレートを使用してIssueを作成してください。
@@ -141,7 +145,18 @@ git push origin feature/12-add-login-page
 
 開発が完了したら、`main` Branchへ向けてPull Requestを作成します。
 
+Pull Request一覧は以下から確認できます。
+
+https://github.com/hontono-rookie-web-design/hontono-rookie-web/pulls
+
 Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
+
+Pull Requestを作成する際は、あわせて以下を指定してください。
+
+* **Reviewer**：Reviewを依頼する開発者
+* **Assignee**：Pull Requestの対応担当者
+
+通常は、Pull Request作成者自身をAssigneeに指定し、Reviewを依頼する開発者をReviewerに指定してください。
 
 デプロイ対象のFrontendに変更がある場合、Pull Requestの作成・更新にあわせてPreview環境へのデプロイが自動で実行されます。
 
@@ -165,7 +180,7 @@ Previewページ
 
 ### 5. Reviewを依頼する
 
-Pull Requestを作成したら、他の開発者にReviewを依頼します。
+Pull Requestを作成したら、Reviewerに指定した開発者へReviewを依頼します。
 
 指摘があった場合は、同じBranchで修正してPushしてください。
 
@@ -227,6 +242,8 @@ Commit（pre-commitが自動実行）
 Push
     ↓
 Pull Request作成
+    ↓
+Reviewer・Assigneeを指定
     ↓
 （自動）Preview環境へデプロイ
     ↓
