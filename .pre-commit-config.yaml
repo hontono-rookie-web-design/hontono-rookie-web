@@ -1,0 +1,64 @@
+repos:
+  # ファイル全般の基本チェック
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # 行末の不要な空白を削除
+      - id: trailing-whitespace
+
+      # ファイル末尾に改行を追加
+      - id: end-of-file-fixer
+
+      # YAMLの構文チェック
+      - id: check-yaml
+
+      # JSONの構文チェック
+      - id: check-json
+
+      # TOMLの構文チェック
+      - id: check-toml
+
+      # GitのConflict Markerが残っていないかチェック
+      - id: check-merge-conflict
+
+      # 大文字・小文字だけが異なるファイル名の衝突をチェック
+      - id: check-case-conflict
+
+      # 秘密鍵が誤って追加されていないかチェック
+      - id: detect-private-key
+
+      # 大きなファイルが誤って追加されていないかチェック
+      # 5MBを上限とする
+      - id: check-added-large-files
+        args: ["--maxkb=5000"]
+
+  # Pythonのimportを整理
+  - repo: https://github.com/pycqa/isort
+    rev: 6.1.0
+    hooks:
+      - id: isort
+
+  # Pythonコードをフォーマット
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.5.1
+    hooks:
+      - id: black
+
+  # FrontendをPrettierでフォーマット
+  #
+  # 「4桁の開催年 + 開催期名」のディレクトリ配下にある
+  # frontendを対象とする
+  #
+  # 例：
+  # 2026spring/frontend/
+  # 2026autumn/frontend/
+  # 2026winter/frontend/
+  # 2027special/frontend/
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier (Frontend)
+        entry: npx --no-install prettier --write --ignore-unknown
+        language: system
+        files: ^[0-9]{4}[a-z0-9-]+/frontend/
+        exclude: (^|/)package-lock\.json$

@@ -20,8 +20,6 @@
 
 GitHub上では、Repositoryの **Deployments** から各環境のデプロイ状況と、デプロイされたWebサイトを確認できます。
 
-開催期ごとにEnvironmentを分けることで、複数の開催期のWebサイトが同じRepository内に存在する場合でも、それぞれのDeploymentを区別して管理できます。
-
 
 ## 開催期
 
