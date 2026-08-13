@@ -7,6 +7,9 @@ on:
       - closed
 
   # GitHub Actionsから手動実行
+  #
+  # 過去のClose済みPRに対応するPreview Deploymentを
+  # 一括でinactiveにしたい場合にも使用する
   workflow_dispatch:
 
 permissions:
@@ -23,13 +26,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Searching Preview deployments..."
+          echo "Searching 2026autumn Preview deployments..."
 
-          deployments=$(gh api \
-            --method GET \
-            "/repos/${{ github.repository }}/deployments?environment=preview&per_page=100")
+          # --paginateを使用し、
+          # Preview Deploymentが100件を超えた場合も全件取得する
+          gh api \
+            --paginate \
+            "/repos/${{ github.repository }}/deployments?environment=2026autumn-preview&per_page=100" \
+            --jq '.[]' > deployments.jsonl
 
-          deployment_count=$(echo "$deployments" | jq 'length')
+          deployment_count=$(wc -l < deployments.jsonl | tr -d ' ')
 
           echo "Found $deployment_count Preview deployment(s)."
 
@@ -38,7 +44,7 @@ jobs:
             exit 0
           fi
 
-          echo "$deployments" | jq -c '.[]' | while read -r deployment; do
+          while read -r deployment; do
             deployment_id=$(echo "$deployment" | jq -r '.id')
             ref=$(echo "$deployment" | jq -r '.ref')
             description=$(echo "$deployment" | jq -r '.description')
@@ -73,6 +79,9 @@ jobs:
             echo "PR merged    : $merged"
 
             # PRがClose済み、またはMerge済みならinactiveにする
+            #
+            # GitHubではMergeされたPRもstateはclosedになるが、
+            # 状態を分かりやすくするためmergedも確認する
             if [ "$pr_state" = "closed" ] || [ "$merged" = "true" ]; then
               echo "PR #$pr_number is closed/merged."
               echo "Marking deployment $deployment_id as inactive."
@@ -82,7 +91,7 @@ jobs:
                 "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
                 -f state="inactive" \
                 -f description="Pull Request #${pr_number} was closed or merged." \
-                -f auto_inactive=false
+                -F auto_inactive=false
 
               echo "Deployment $deployment_id marked as inactive."
 
@@ -90,4 +99,4 @@ jobs:
               echo "PR #$pr_number is still open."
               echo "Keeping deployment $deployment_id active."
             fi
-          done
+          done < deployments.jsonl

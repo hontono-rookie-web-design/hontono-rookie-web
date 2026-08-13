@@ -13,6 +13,12 @@ permissions:
   contents: read
   deployments: write
 
+# 同じPRに短時間で複数回pushされた場合、
+# 古いPreviewデプロイをキャンセルして最新のものだけを実行する
+concurrency:
+  group: 2026autumn-preview-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,6 +28,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          # リポジトリをチェックアウトしたあとに
+          # トークンなどの認証情報をGitのconfigに残さない
           persist-credentials: false
 
       - name: Setup Node.js
@@ -36,6 +44,9 @@ jobs:
         working-directory: "2026autumn/frontend"
 
       # GitHubのPreview Deploymentを作成
+      #
+      # Previewは複数のPull Requestが同時に存在するため、
+      # jobのenvironmentではなくDeployment APIを使用して明示的に作成する
       - name: Create GitHub Preview deployment
         id: deployment
         env:
@@ -49,7 +60,7 @@ jobs:
             --input - <<EOF
           {
             "ref": "${PR_REF}",
-            "environment": "preview",
+            "environment": "2026autumn-preview",
             "description": "Preview for Pull Request #${PR_NUMBER}",
             "required_contexts": [],
             "auto_merge": false,
@@ -62,7 +73,6 @@ jobs:
           deployment_id=$(echo "$response" | jq -r '.id')
 
           echo "Created deployment: $deployment_id"
-
           echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
 
       # Deploymentを「実行中」にする
@@ -78,6 +88,9 @@ jobs:
             -f description="Deploying Preview to Cloudflare."
 
       # CloudflareへPreviewをデプロイ
+      #
+      # PR番号をPreview Aliasとして使用することで、
+      # 同じPull Requestでは常に同じURLから最新のPreviewを確認できる
       - name: Deploy to Cloudflare Preview
         run: npm run upload -- --preview-alias "pr-${{ github.event.pull_request.number }}"
         working-directory: "2026autumn/frontend"
@@ -86,6 +99,9 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       # Deploymentを「成功」にする
+      #
+      # environment_urlを設定することで、
+      # GitHubのDeploymentsやPull RequestからPreviewページを確認できる
       - name: Mark deployment successful
         env:
           GH_TOKEN: ${{ github.token }}
@@ -98,4 +114,48 @@ jobs:
             -f state="success" \
             -f description="Preview deployment completed successfully." \
             -f environment_url="$PREVIEW_URL" \
-            -f auto_inactive=false
+            -F auto_inactive=false
+
+      # 同じPull Requestに対する過去のPreview Deploymentをinactiveにする
+      #
+      # これにより、同じPRを複数回更新しても
+      # 最新のPreview Deploymentだけがactiveになる
+      - name: Mark previous deployments for this Pull Request inactive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+          CURRENT_DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
+        run: |
+          deployments=$(gh api \
+            --paginate \
+            "/repos/${{ github.repository }}/deployments?environment=2026autumn-preview&per_page=100" \
+            --jq '.[] | select(.ref == env.PR_REF) | .id')
+
+          for deployment_id in $deployments; do
+            if [ "$deployment_id" = "$CURRENT_DEPLOYMENT_ID" ]; then
+              continue
+            fi
+
+            echo "Marking previous deployment $deployment_id as inactive"
+
+            gh api \
+              --method POST \
+              "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
+              -f state="inactive" \
+              -f description="Superseded by a newer deployment for this Pull Request." \
+              -F auto_inactive=false
+          done
+
+      # Cloudflareへのデプロイなどが失敗した場合は、
+      # GitHub Deploymentもfailureにする
+      - name: Mark deployment failed
+        if: failure() && steps.deployment.outputs.deployment_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
+        run: |
+          gh api \
+            --method POST \
+            "/repos/${{ github.repository }}/deployments/${DEPLOYMENT_ID}/statuses" \
+            -f state="failure" \
+            -f description="Preview deployment failed."
