@@ -105,10 +105,14 @@ function SkeletonCard() {
     <div className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4">
         <div className="w-40 h-24 bg-gray-200 rounded animate-pulse" />
+
         <div className="flex flex-col flex-1 gap-2">
           <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+
           <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+
           <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />
+
           <div className="h-4 bg-gray-200 rounded w-full animate-pulse" />
         </div>
       </div>
@@ -146,9 +150,7 @@ export default function VoteContent({
      fetch
   ========================= */
   useEffect(() => {
-    const groups = [...new Set(mappedVideos.map((v) => v.group))].sort(
-      (a, b) => a - b,
-    );
+    const groups = [...new Set(mappedVideos.map((v) => v.group))].sort((a, b) => a - b);
 
     const groupParam = searchParams.get("group");
     const groupFromUrl = groupParam ? Number(groupParam) : null;
@@ -199,9 +201,7 @@ export default function VoteContent({
         rank: r.rank,
         video: videos.find((v) => v.videoId === r.videoId),
       }))
-      .filter(
-        (v): v is { rank: number; video: Video } => v.video !== undefined,
-      );
+      .filter((v): v is { rank: number; video: Video } => v.video !== undefined);
   }, [ranks, videos, activeGroup]);
 
   const selectRandomGroup = () => {
@@ -231,34 +231,34 @@ export default function VoteContent({
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
       <div className="text-center mb-6 w-full max-w-[900px]">
-        <h1 className="text-3xl md:text-4xl font-bold">
-          人気投票 {PHASE_LABEL}
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-bold">人気投票 {PHASE_LABEL}</h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」{PHASE_LABEL}の楽曲を{DISC_LABEL}
+          「本当のルーキー祭り2026春」
+          {PHASE_LABEL}の楽曲を
+          {DISC_LABEL}
           グループごとに掲載しています。
         </p>
 
         {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (
           <p className="mt-2 text-sm font-semibold text-red-600">
-            投票締切：{formatDate(voteInfo.deadline)}
+            投票締切：
+            {formatDate(voteInfo.deadline)}
           </p>
         )}
 
         {viewPhase === VIEW_PHASE.AFTER && (
-          <p className="mt-2 text-sm font-semibold text-gray-700">
-            人気投票は終了しました
-          </p>
+          <p className="mt-2 text-sm font-semibold text-gray-700">人気投票は終了しました</p>
         )}
 
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
-
       {/* DISC SELECT */}
+
       {!loading && (
         <div className="w-full max-w-[900px]">
           {/* Discボタン群 */}
+
           <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-2">
             {groups.map((g) => (
               <button
@@ -272,12 +272,13 @@ export default function VoteContent({
                 `}
               >
                 <span className="font-medium">{DISC_LABEL} </span>
+
                 <span className="font-extrabold text-sm">{g}</span>
               </button>
             ))}
           </div>
-
           {/* ランダムボタン（下中央） */}
+
           <div className="flex justify-center mb-4">
             <button
               onClick={selectRandomGroup}
@@ -289,7 +290,8 @@ export default function VoteContent({
                 font-semibold
               "
             >
-              {DISC_LABEL}をランダムに選ぶ
+              {DISC_LABEL}
+              をランダムに選ぶ
             </button>
           </div>
         </div>
@@ -300,10 +302,12 @@ export default function VoteContent({
       {viewPhase === VIEW_PHASE.AFTER && rankedVideos.length > 0 && (
         <div className="w-full max-w-[900px] mb-6">
           <h2 className="font-bold mb-2">
-            {DISC_LABEL} {activeGroup} 人気投票結果
+            {DISC_LABEL}
+            {activeGroup}
+            人気投票結果
           </h2>
-
           {/* ヘッダー */}
+
           <div
             className="
               grid
@@ -336,6 +340,7 @@ export default function VoteContent({
                 `}
               >
                 {/* 順位 */}
+
                 <div
                   className={`
                     text-center font-bold
@@ -345,8 +350,8 @@ export default function VoteContent({
                 >
                   {rank}
                 </div>
-
                 {/* サムネ */}
+
                 <div className="overflow-hidden rounded relative w-14 h-10 sm:w-12 sm:h-8">
                   <Image
                     src={video.thumbnailUrl}
@@ -357,8 +362,8 @@ export default function VoteContent({
                     unoptimized
                   />
                 </div>
-
                 {/* タイトル */}
+
                 <div
                   className="
                     text-sm sm:text-base
@@ -370,35 +375,32 @@ export default function VoteContent({
                 >
                   {video.title}
                 </div>
-
                 {/* 投稿者 */}
-                <div className="truncate text-xs sm:text-base">
-                  {video.creator}
-                </div>
+                <div className="truncate text-xs sm:text-base">{video.creator}</div>
               </a>
             ))}
           </div>
         </div>
       )}
-
       {/* BUTTONS */}
+
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
-        {viewPhase === VIEW_PHASE.DURING &&
-          voteInfo?.formUrl &&
-          voteInfo.formUrl !== "NaN" && (
-            <a
-              href={voteInfo.formUrl}
-              target="_blank"
-              className="
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
+          <a
+            href={voteInfo.formUrl}
+            target="_blank"
+            className="
               px-6 py-2 rounded
               bg-blue-500 text-white text-sm
               min-w-[260px]
               text-center
             "
-            >
-              {DISC_LABEL} {activeGroup} の人気投票はこちら
-            </a>
-          )}
+          >
+            {DISC_LABEL}
+            {activeGroup}
+            の人気投票はこちら
+          </a>
+        )}
 
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
           <a
@@ -411,7 +413,9 @@ export default function VoteContent({
               text-center
             "
           >
-            {DISC_LABEL} {activeGroup} 楽曲マイリストはこちら
+            {DISC_LABEL}
+            {activeGroup}
+            楽曲マイリストはこちら
           </a>
         )}
 
@@ -458,17 +462,10 @@ export default function VoteContent({
                 </div>
 
                 <div className="flex flex-col flex-1 min-w-0">
-                  <h2 className="font-bold line-clamp-2 group-hover:underline">
-                    {item.title}
-                  </h2>
+                  <h2 className="font-bold line-clamp-2 group-hover:underline">{item.title}</h2>
+                  <p className="text-sm text-gray-700 truncate">{item.creator}</p>
 
-                  <p className="text-sm text-gray-700 truncate">
-                    {item.creator}
-                  </p>
-
-                  <p className="text-xs text-gray-500">
-                    {formatDate(item.publishedAt)}
-                  </p>
+                  <p className="text-xs text-gray-500">{formatDate(item.publishedAt)}</p>
 
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2 break-words">
                     {cleanDescription(item.description)}

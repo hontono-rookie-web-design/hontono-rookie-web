@@ -13,9 +13,7 @@ export type FanficSheetItem = {
   publishedAt: string;
 };
 
-export async function fetchFanficSheet(
-  sheetName: string,
-): Promise<FanficSheetItem[]> {
+export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
@@ -52,9 +50,7 @@ export type NoteSheetItem = {
   userProfileImageUrl: string;
 };
 
-export async function fetchNoteSheet(
-  sheetName: string,
-): Promise<NoteSheetItem[]> {
+export async function fetchNoteSheet(sheetName: string): Promise<NoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
@@ -92,9 +88,7 @@ export type VideoSheetItem = {
   thumbnailUrl: string;
 };
 
-export async function fetchVideosSheet(
-  sheetName: string,
-): Promise<VideoSheetItem[]> {
+export async function fetchVideosSheet(sheetName: string): Promise<VideoSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 86400; // 開催終了後はキャッシュ無効、それ以外は24時間キャッシュ
@@ -145,10 +139,7 @@ export async function fetchGroupedVideosSheet(
   const data = await res.json();
 
   if (!Array.isArray(data)) {
-    console.error(
-      "fetchGroupedVideosSheet: unexpected response (not array)",
-      data,
-    );
+    console.error("fetchGroupedVideosSheet: unexpected response (not array)", data);
     return [];
   }
 
@@ -172,9 +163,7 @@ export type VoteSheetItem = {
   deadline?: string;
 };
 
-export async function fetchVotesSheet(
-  sheetName: string,
-): Promise<VoteSheetItem[]> {
+export async function fetchVotesSheet(sheetName: string): Promise<VoteSheetItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.voteformssheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {
@@ -201,9 +190,7 @@ export type RankingItem = {
   rank?: number;
 };
 
-export async function fetchRankingSheet(
-  sheetName: string,
-): Promise<RankingItem[]> {
+export async function fetchRankingSheet(sheetName: string): Promise<RankingItem[]> {
   const url = `https://opensheet.elk.sh/${CONFIG.rankingsheets.spreadsheetId}/${sheetName}`;
 
   const res = await fetch(url, {

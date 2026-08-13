@@ -12,9 +12,7 @@ export async function GET() {
     return Response.json(cache);
   }
 
-  const data = await fetchRankingSheet(
-    CONFIG.rankingsheets.ex.name
-  );
+  const data = await fetchRankingSheet(CONFIG.rankingsheets.ex.name);
 
   cache = data;
   timestamp = now;

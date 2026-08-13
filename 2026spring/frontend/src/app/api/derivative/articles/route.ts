@@ -9,22 +9,13 @@ function parseDate(dateStr?: string) {
 
   const cleaned = dateStr.replace(/^'/, "").trim();
 
-  const match = cleaned.match(
-    /^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?:?(\d{2})?/
-  );
+  const match = cleaned.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?:?(\d{2})?/);
 
   if (!match) return 0;
 
   const [, y, m, d, h = "0", min = "0", s = "0"] = match;
 
-  return new Date(
-    Number(y),
-    Number(m) - 1,
-    Number(d),
-    Number(h),
-    Number(min),
-    Number(s)
-  ).getTime();
+  return new Date(Number(y), Number(m) - 1, Number(d), Number(h), Number(min), Number(s)).getTime();
 }
 
 export async function GET() {
@@ -35,9 +26,7 @@ export async function GET() {
       // 空データ除外（任意）
       .filter((item) => item.noteUrl)
       // ソート（新しい順）
-      .sort(
-        (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
-      )
+      .sort((a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt))
       // 整形
       .map((item) => ({
         title: item.title,
@@ -56,9 +45,6 @@ export async function GET() {
       },
     });
   } catch (e) {
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch notes" }),
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "Failed to fetch notes" }), { status: 500 });
   }
 }

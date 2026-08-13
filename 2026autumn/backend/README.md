@@ -26,7 +26,7 @@ backend
 │  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
 │  ├ vote_grouping.py             投票グループ作成スクリプト
 │  ├ setup_forms.py               投票フォーム作成スクリプト
-│  └ update_videos_info.py        動画情報更新スクリプト           
+│  └ update_videos_info.py        動画情報更新スクリプト
 └ requirements.txt
 ```
 
@@ -56,15 +56,15 @@ GitHub Actionsで実行する。
 
    | スプレッドシート名 | 概要 |
    | --- | --- |
-   | video_catalog_\<yyyyseoson\> | 参加作品動画リスト | 
-   | grouped_video_catalog_\<yyyyseoson\> | 投票グループ分けした参加作品動画リスト | 
-   | note_list_\<yyyyseoson\> | Note記事リスト | 
-   | fanfic_list_\<yyyyseoson\> | 二次創作作品リスト | 
-   | 動画除外リスト_\<yyyyseoson\> | 参加作品動画の除外リスト | 
-   | 二次創作作品提出フォーム回答_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト | 
+   | video_catalog_\<yyyyseoson\> | 参加作品動画リスト |
+   | grouped_video_catalog_\<yyyyseoson\> | 投票グループ分けした参加作品動画リスト |
+   | note_list_\<yyyyseoson\> | Note記事リスト |
+   | fanfic_list_\<yyyyseoson\> | 二次創作作品リスト |
+   | 動画除外リスト_\<yyyyseoson\> | 参加作品動画の除外リスト |
+   | 二次創作作品提出フォーム回答_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |
 
    スプレッドシートのシート名は`config/setting.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
-   
+
 
 #### workflow準備
 
@@ -111,7 +111,7 @@ GitHub Actionsで実行する。
 #### 除外動画の設定
 
 1. 参加タグがついた動画の中で事情があり作品動画リストから除外する必要がある動画を、参加作品動画の除外リストに記載する。
-   
+
    opステージ、ルーキー参加動画については「rookie」シート、exステージ参加動画は「ex」シートに以下のように記載する。
    - 期間外投稿動画、インスト動画などをリストから除外する場合
      | 動画ID | 移動先 |
@@ -147,7 +147,7 @@ GitHub Actionsで実行する。
     ```
     pyenv install 3.12
 
-    cd 2026spring/backend
+    cd 2026spring
     pyenv local 3.12
     ```
 
@@ -284,7 +284,7 @@ Googleスプレッドシートをデータベースとして利用している�
        - 回答を1回に制限する: オン
 5. `backend`ディレクトリで以下を実行
    ```
-   python -m scripts.setup_forms 
+   python -m scripts.setup_forms
    ```
    連番のついたGoogleフォームが作成される。
 
