@@ -1,0 +1,105 @@
+name: Frontend Check
+
+# main向けのPull Requestが作成・更新されたときに実行する
+#
+# pathsによる絞り込みは行わない。
+# このWorkflowをRequired Status Checkに設定するため、
+# Frontendに変更がない場合でもWorkflow自体は実行し、
+# 正常終了させる必要がある。
+on:
+  pull_request:
+    branches:
+      - main
+
+# このWorkflowではRepositoryの内容を読み取るだけなので、
+# 必要最低限の権限のみ付与する
+permissions:
+  contents: read
+
+jobs:
+  frontend-check:
+    # RulesetでRequired Status Checkとして指定する名前
+    name: Frontend Check
+
+    runs-on: ubuntu-latest
+
+    # 何らかの理由で処理が停止し続けることを防ぐ
+    timeout-minutes: 20
+
+    steps:
+      # Repositoryのコードを取得する
+      #
+      # PRの変更ファイルをgit diffで確認するため、
+      # fetch-depth: 0としてGitの履歴を取得する
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # FrontendのLint・型チェック・Buildに使用するNode.jsを準備する
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # PRで変更されたFrontendを検出し、
+      # 対象のFrontendだけチェックする
+      #
+      # 対象例:
+      #   2026spring/frontend
+      #   2026autumn/frontend
+      #   2027winter/frontend
+      #
+      # Frontendに変更がない場合は何も実行せず正常終了する。
+      # これによりFrontend以外の変更でも
+      # Required Status CheckがPendingになることを防ぐ。
+      - name: Run Frontend checks
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+        run: |
+          frontend_dirs=$(
+            git diff --name-only "$BASE_SHA" "$HEAD_SHA" |
+              awk -F/ '
+                NF >= 3 &&
+                $2 == "frontend" &&
+                $1 ~ /^[0-9][0-9][0-9][0-9][a-z0-9-]+$/ {
+                  print $1 "/" $2
+                }
+              ' |
+              sort -u
+          )
+
+          # Frontendに変更がなければチェック対象がないため正常終了する
+          if [ -z "$frontend_dirs" ]; then
+            echo "No Frontend changes found."
+            exit 0
+          fi
+
+          # 変更されたFrontendごとにチェックを実行する
+          for frontend_dir in $frontend_dirs; do
+            echo "========================================"
+            echo "Checking $frontend_dir"
+            echo "========================================"
+
+            # package-lock.jsonに固定された依存パッケージをインストールする
+            npm --prefix "$frontend_dir" ci
+
+            # ESLintによる静的解析
+            echo "Running ESLint..."
+            npm --prefix "$frontend_dir" run lint
+
+            # TypeScriptの型チェック
+            echo "Running TypeScript type check..."
+            npm --prefix "$frontend_dir" run typecheck
+
+            # Next.jsのProduction Buildが成功することを確認する
+            #
+            # Preview DeploymentでもBuildは実行されるが、
+            # Build成功をPull RequestのMerge条件として保証するため、
+            # Status CheckでもBuildを実行する
+            echo "Running Production Build..."
+            npm --prefix "$frontend_dir" run build
+          done
