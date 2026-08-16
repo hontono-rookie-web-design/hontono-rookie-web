@@ -18,7 +18,7 @@
 2026autumn-production
 ```
 
-GitHub上では、Repositoryの **Deployments** から各環境のデプロイ状況と、デプロイされたWebサイトを確認できます。
+GitHub上では、Repositoryの [**Deployments**](https://github.com/hontono-rookie-web-design/hontono-rookie-web/deployments) から各環境のデプロイ状況と、デプロイされたWebサイトを確認できます。
 
 
 ## 開催期
