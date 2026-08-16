@@ -33,3 +33,4 @@ soupsieve==2.8.3
 typing_extensions==4.15.0
 uritemplate==4.2.0
 urllib3==2.6.3
+pre-commit==4.6.2
