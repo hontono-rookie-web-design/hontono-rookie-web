@@ -16,11 +16,9 @@ https://github.com/hontono-rookie-web-design/hontono-rookie-web/issues
 
 Repositoryの **Issues → New issue** をクリックすると、Issueテンプレートの選択画面が表示されます。
 
-この画面では **Issue** を選択して、テンプレートを使用してIssueを作成してください。
+**Issue** を選択して、テンプレートに従って必要事項を記載してください。
 
-**Blank issue** はテンプレートを使用せずにIssueを作成するため、通常の開発では使用しません。
-
-Issueには、GitHubのIssueテンプレートに従って必要事項を記載してください。
+**Blank issue** は通常の開発では使用しません。
 
 ### 2. IssueからBranchを作成する
 
@@ -44,19 +42,19 @@ docs/108-update-readme
 
 Branch名の `<種類>` には、作業内容に応じて以下を使用してください。
 
-| 種類         | 用途        |
-| ---------- | --------- |
-| `feature`  | 新機能の追加    |
-| `fix`      | バグ修正      |
-| `refactor` | リファクタリング  |
-| `perf`     | パフォーマンス改善 |
-| `docs`     | ドキュメント作成  |
+| 種類 | 用途 |
+| --- | --- |
+| `feature` | 新機能の追加 |
+| `fix` | バグ修正 |
+| `refactor` | リファクタリング |
+| `perf` | パフォーマンス改善 |
+| `docs` | ドキュメント作成 |
 
 ### 3. 開発を行う
 
 作成したBranchで開発を行います。
 
-Pythonを使用する場合は、対象開催期の仮想環境を使用します。
+Pythonを使用する場合は、対象開催期の仮想環境を有効にします。
 
 Repositoryルートから以下を実行します。
 
@@ -79,7 +77,7 @@ cd <開催期>/frontend
 npm run dev
 ```
 
-作業が終わったら、変更をCommitし、GitHubへPushします。
+作業が終わったら、変更をCommitしてGitHubへPushします。
 
 #### 変更したファイルをステージングする
 
@@ -105,31 +103,43 @@ git add 2026spring/frontend/src README.md
 > [!NOTE]
 > `git add .` を使用すると、現在のディレクトリ以下にある変更ファイルをすべてステージングします。
 >
-> 意図していない変更や不要なファイルまで含まれる可能性があるため、ステージングするファイルを確認してからCommitしてください。
+> 意図していない変更まで含まれないよう、Commit前に変更内容を確認してください。
 
 #### Commit
+
+以下のようにCommitします。
 
 ```bash
 git commit -m "トップページを追加"
 ```
 
-コミットメッセージの指定はありません。
+コミットメッセージの形式に指定はありません。
 
-変更内容が理解しやすい日本語で記述してください。
+変更内容が分かりやすい日本語で記述してください。
 
-Commit時には **pre-commitが自動で実行**され、基本的なファイルチェックやコードフォーマットが行われます。
+<details>
+<summary><strong>pre-commitを使用している場合（任意）</strong></summary>
 
-pre-commitの処理によってファイルが自動修正された場合、Commitは一度中断されますので、修正内容を確認したうえで、修正されたファイルをステージングして再度Commitしてください。
+pre-commitを設定している場合は、`git commit` 時にコードフォーマットや基本的なファイルチェックが自動で実行されます。
+
+すべてのチェックが `Passed` になれば、そのままCommitが完了します。
+
+Black、isort、Prettierなどによってファイルが自動修正された場合は、Commitが一度中断されます。
+
+修正内容を確認し、修正されたファイルを再度ステージングしてCommitしてください。
 
 ```bash
 git add <修正されたファイル>
 git commit -m "トップページを追加"
 ```
 
-> [!NOTE]
-> `git commit --no-verify` を使用するとpre-commitをスキップできますが、通常の開発では使用しないでください。
+pre-commitの導入方法については、`setup-guide.md` を参照してください。
+
+</details>
 
 #### Push
+
+Commitした内容をGitHubへPushします。
 
 ```bash
 git push origin <ブランチ名>
@@ -149,18 +159,44 @@ Pull Request一覧は以下から確認できます。
 
 https://github.com/hontono-rookie-web-design/hontono-rookie-web/pulls
 
-Pull Requestには、GitHubのPRテンプレートに従って必要事項を記載してください。
+Pull Requestには、PRテンプレートに従って必要事項を記載してください。
 
-Pull Requestを作成する際は、あわせて以下を指定してください。
+Pull Requestを作成する際は、以下も指定してください。
 
-* **Reviewer**：Reviewを依頼する開発者
-* **Assignee**：Pull Requestの対応担当者
+- **Reviewer**：Reviewを依頼する開発者
+- **Assignee**：Pull Requestの対応担当者
 
 通常は、Pull Request作成者自身をAssigneeに指定し、Reviewを依頼する開発者をReviewerに指定してください。
 
+#### Status Checkを確認する
+
+Pull Requestを作成・更新すると、GitHub ActionsによるStatus Checkが自動で実行されます。
+
+Frontendについては、以下を確認します。
+
+| Check | 内容 |
+| --- | --- |
+| `Frontend ESLint` | ESLintによる静的解析 |
+| `Frontend Type Check` | TypeScriptの型チェック |
+| `Frontend Build` | Production Build |
+
+Checkが `Failed` になった場合は、該当するCheckのログを確認して修正してください。
+
+修正後、同じBranchへCommit・PushするとStatus Checkが再実行されます。
+
+```bash
+git add <修正したファイル>
+git commit -m "エラーを修正"
+git push origin <ブランチ名>
+```
+
+必要なStatus Checkがすべて成功していることを確認してください。
+
+#### Previewページを確認する
+
 デプロイ対象のFrontendに変更がある場合、Pull Requestの作成・更新にあわせてPreview環境へのデプロイが自動で実行されます。
 
-デプロイが完了すると、Repositoryの **Deployments** から変更内容が反映されたPreviewページを確認できます。
+デプロイが完了すると、Repositoryの **Deployments** からPreviewページを確認できます。
 
 ```text
 Repository
@@ -174,7 +210,7 @@ Deployments
 Previewページ
 ```
 
-`main`へMergeする前に、Previewページで問題なく動作することを確認してください。
+`main` へMergeする前に、Previewページで問題なく動作することを確認してください。
 
 デプロイの仕組みやPreviewページの確認方法については、`deployment-guide.md` を参照してください。
 
@@ -198,13 +234,13 @@ ReviewのConversationが残っている場合は、対応内容を確認した�
 
 ### 6. Pull RequestをMergeする
 
-Review・動作確認が完了したら、`main` BranchへMergeします。
+Review・Status Check・動作確認が完了したら、`main` BranchへMergeします。
 
 通常はRulesetによって、必要なReviewやStatus Checkなどの条件を満たしたPull RequestのみMergeできます。
 
 緊急時などにRulesetをBypassする必要がある場合は、Bypass権限を持つ開発者が必要性を判断して実行してください。
 
-デプロイ対象のFrontendに変更がある場合、`main`へのMerge後にProduction環境へのデプロイが自動で実行されます。
+デプロイ対象のFrontendに変更がある場合、`main` へのMerge後にProduction環境へのデプロイが自動で実行されます。
 
 デプロイが完了すると、Repositoryの **Deployments** からProductionページを確認できます。
 
@@ -237,13 +273,15 @@ IssueからBranch作成
     ↓
 開発
     ↓
-Commit（pre-commitが自動実行）
+Commit
     ↓
 Push
     ↓
 Pull Request作成
     ↓
 Reviewer・Assigneeを指定
+    ↓
+（自動）Status Check
     ↓
 （自動）Preview環境へデプロイ
     ↓
@@ -262,35 +300,46 @@ mainへMerge
 DeploymentsからProductionページを確認
 ```
 
-## pre-commitについて
+<details>
+<summary><strong>pre-commitについて（任意）</strong></summary>
+
+pre-commitを使用すると、Commit時にコードフォーマットや基本的なファイルチェックを自動で実行できます。
+
+主に以下の処理を行います。
+
+- BlackによるPythonコードのフォーマット
+- isortによるPythonのimport順序の整理
+- PrettierによるFrontendコードのフォーマット
+- YAML / JSONなどの基本的なファイルチェック
 
 pre-commitの設定は、Repositoryルートの `.pre-commit-config.yaml` で管理しています。
 
-pre-commit本体は、対象開催期のPython仮想環境にインストールされています。
-
-通常はCommit時に自動で実行されるため、個別に実行する必要はありません。
-
-手動でpre-commitを実行する場合は、対象開催期の仮想環境を有効にしてください。
-
-Repositoryルートから以下を実行します。
+手動でpre-commitを実行する場合は、対象開催期の仮想環境を有効にします。
 
 ```bash
 source <開催期>/.venv/bin/activate
 ```
 
-すべてのファイルに対して手動でチェックを実行したい場合は、以下を使用できます。
+すべての対象ファイルをチェックする場合は、Repositoryルートで以下を実行します。
 
 ```bash
 pre-commit run --all-files
 ```
 
-pre-commitの設定ファイルを確認する場合は、以下を使用できます。
+設定ファイルを確認する場合は、以下を実行します。
 
 ```bash
 pre-commit validate-config
 ```
 
 pre-commitのインストールやGit Hookの設定方法については、`setup-guide.md` を参照してください。
+
+> [!NOTE]
+> pre-commitの使用は任意です。
+>
+> `pre-commit install` を実行していない場合でも、通常どおりCommit・Push・Pull Requestを行うことができます。
+
+</details>
 
 ## `.gitignore`について
 
@@ -300,13 +349,13 @@ APIキーや認証情報などの秘密情報は、絶対にGitHubへPushしな�
 
 例えば、以下のようなファイル・ディレクトリはGitで管理しないようにします。
 
-* `.env`
-* `.env.local`
-* 各開催期の `.venv`
-* APIキーやアクセストークンを含む設定ファイル
-* 認証情報を含むJSONファイル
-* その他、公開してはいけない情報
+- `.env`
+- `.env.local`
+- 各開催期の `.venv`
+- APIキーやアクセストークンを含む設定ファイル
+- 認証情報を含むJSONファイル
+- その他、公開してはいけない情報
 
-これらは `.gitignore` に追加することで、Gitの管理対象から除外します。
+これらは `.gitignore` に追加することでGitの管理対象から除外します。
 
 秘密情報を含むファイルを新しく使用する場合は、Commitする前に必ず `.gitignore` の対象になっていることを確認してください。

@@ -135,15 +135,6 @@ Host github.com
 
 SSH鍵を別のファイル名で作成した場合は、`IdentityFile` をそのPathに変更してください。
 
-例
-
-```text
-Host github.com
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_github
-    IdentitiesOnly yes
-```
 
 すでに `~/.ssh/config` に設定がある場合は、既存の設定を削除せず、内容を確認したうえでGitHub用の設定を追加してください。
 
@@ -221,18 +212,7 @@ GitHubへのSSH接続で問題が発生した場合は、以下の記事も参�
 https://qiita.com/aki4000/items/4c81bc2747bbd5e96d85
 
 
-## 8. Repositoryへのアクセス権限を確認する
-
-GitHub上で以下のRepositoryを閲覧できることを確認してください。
-
-```text
-hontono-rookie-web-design/hontono-rookie-web
-```
-
-Repositoryへのアクセス権限がない場合は、管理者からOrganizationまたはRepositoryへの招待を受けてください。
-
-
-## 9. RepositoryをCloneする
+## 8. RepositoryをCloneする
 
 SSHを使用してRepositoryをCloneします。
 
@@ -262,33 +242,3 @@ origin  git@github.com:hontono-rookie-web-design/hontono-rookie-web.git (push)
 これでGitHubの初期設定は完了です。
 
 続いて `setup-guide.md` を参照し、開発環境を構築してください。
-
-
-## Windows WSLを使用する場合
-
-WindowsでWSLを使用する場合は、Git・SSH・Python・Node.jsなどの開発環境を基本的にWSL側へ構築してください。
-
-SSH鍵やSSH設定もWSL側の以下のディレクトリで管理します。
-
-```text
-~/.ssh/
-```
-
-例えば以下のような構成になります。
-
-```text
-~/.ssh/
-├── config
-├── id_ed25519
-└── id_ed25519.pub
-```
-
-Repositoryも可能であればWSL側のファイルシステムにCloneしてください。
-
-例
-
-```text
-~/projects/hontono-rookie-web
-```
-
-Windows側とWSL側ではGitやSSHの設定が別になる場合があるため、このガイドのコマンドはWSLのTerminal上で実行してください。
