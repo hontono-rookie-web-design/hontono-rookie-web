@@ -216,7 +216,7 @@ python -m scripts.<ファイル名>
 
 Backendの一部の処理では、Google APIやGoogleスプレッドシートを利用します。
 
-Repositoryルートに `data` ディレクトリを作成し、共有されたJSONファイルを格納してください。
+Repositoryルートに `data` ディレクトリを作成し、共有フォルダ内のJSONファイルを格納してください。
 
 そのファイルのPathを環境変数に設定します。
 
