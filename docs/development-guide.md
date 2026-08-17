@@ -54,23 +54,33 @@ Branch名の `<種類>` には、作業内容に応じて以下を使用して�
 
 作成したBranchで開発を行います。
 
-Pythonを使用する場合は、対象開催期の仮想環境を有効にします。
+#### Backendを開発する場合
+
+対象開催期の仮想環境を有効にします。
 
 Repositoryルートから以下を実行します。
 
 ```bash
-source <開催期>/.venv/bin/activate
+source <開催期>/backend/.venv/bin/activate
 ```
 
 例
 
 ```bash
-source 2026autumn/.venv/bin/activate
+source 2026autumn/backend/.venv/bin/activate
+```
+
+対象開催期のBackendディレクトリで作業します。
+
+```bash
+cd <開催期>/backend
 ```
 
 仮想環境の作成や依存パッケージのインストール方法については、`setup-guide.md` を参照してください。
 
-Frontendを開発する場合は、対象開催期のFrontendディレクトリで作業します。
+#### Frontendを開発する場合
+
+対象開催期のFrontendディレクトリで作業します。
 
 ```bash
 cd <開催期>/frontend
@@ -132,6 +142,8 @@ Black、isort、Prettierなどによってファイルが自動修正された�
 git add <修正されたファイル>
 git commit -m "トップページを追加"
 ```
+
+pre-commitはBackendのPython仮想環境とは独立してインストールされているため、pre-commitを使用するために `.venv` を有効にする必要はありません。
 
 pre-commitの導入方法については、`setup-guide.md` を参照してください。
 
@@ -314,11 +326,9 @@ pre-commitを使用すると、Commit時にコードフォーマットや基本�
 
 pre-commitの設定は、Repositoryルートの `.pre-commit-config.yaml` で管理しています。
 
-手動でpre-commitを実行する場合は、対象開催期の仮想環境を有効にします。
+pre-commit本体はBackendの `.venv` にはインストールせず、各開発者のPCにインストールします。
 
-```bash
-source <開催期>/.venv/bin/activate
-```
+そのため、pre-commitを実行するためにBackendの仮想環境を有効にする必要はありません。
 
 すべての対象ファイルをチェックする場合は、Repositoryルートで以下を実行します。
 
@@ -351,7 +361,7 @@ APIキーや認証情報などの秘密情報は、絶対にGitHubへPushしな�
 
 - `.env`
 - `.env.local`
-- 各開催期の `.venv`
+- 各開催期の `backend/.venv`
 - APIキーやアクセストークンを含む設定ファイル
 - 認証情報を含むJSONファイル
 - その他、公開してはいけない情報

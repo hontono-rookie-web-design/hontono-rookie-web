@@ -26,7 +26,21 @@ npm --version
 
 環境によってPythonのコマンドが `python3` の場合は、以降の `python` を `python3` に読み替えてください。
 
-## 2. Pythonのバージョンを確認する
+## 2. Backendの環境を構築する
+
+Backendを開発する場合は、対象開催期のBackendディレクトリへ移動します。
+
+```bash
+cd <開催期>/backend
+```
+
+例えば、`2026autumn` の場合は以下です。
+
+```bash
+cd 2026autumn/backend
+```
+
+### Pythonのバージョンを確認する
 
 Backendで使用するPythonのバージョンは、対象開催期の `backend/README.md` を確認してください。
 
@@ -36,23 +50,9 @@ python --version
 
 必要に応じて、pyenvなどのPythonバージョン管理ツールを利用しても構いません。
 
-## 3. Pythonの仮想環境を作成する
+### Pythonの仮想環境を作成する
 
-このRepositoryでは、開催期ごとにPythonの仮想環境を作成します。
-
-Repositoryルートから対象開催期のディレクトリへ移動します。
-
-```bash
-cd <開催期>
-```
-
-例えば、`2026autumn` の場合は以下です。
-
-```bash
-cd 2026autumn
-```
-
-仮想環境 `.venv` を作成します。
+Backendディレクトリ直下に `.venv` を作成します。
 
 ```bash
 python -m venv .venv
@@ -70,32 +70,26 @@ source .venv/bin/activate
 which python
 ```
 
-対象開催期の `.venv` を指していれば問題ありません。
+対象Backendの `.venv` を指していれば問題ありません。
 
 ```text
-.../hontono-rookie-web/2026autumn/.venv/bin/python
+.../hontono-rookie-web/2026autumn/backend/.venv/bin/python
 ```
 
 > [!NOTE]
 > `.venv` は各開発者のローカル環境で作成するため、Gitでは管理しません。
 
-## 4. Pythonの依存パッケージをインストールする
+### Pythonの依存パッケージをインストールする
 
-仮想環境を有効にした状態で、対象開催期の `requirements.txt` を使用します。
+仮想環境を有効にした状態で、Backendの `requirements.txt` を使用します。
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-`requirements.txt` から、Backendの実行や開発に必要なPythonパッケージがインストールされます。
+Backendで使用するPythonパッケージは、各開催期の `backend/requirements.txt` で管理します。
 
-インストール後、Repositoryルートへ戻ります。
-
-```bash
-cd ..
-```
-
-## 5. Frontendの環境を構築する
+## 3. Frontendの環境を構築する
 
 Frontendを開発する場合は、Repositoryルートから対象開催期のFrontendディレクトリへ移動します。
 
@@ -109,13 +103,13 @@ cd <開催期>/frontend
 cd 2026autumn/frontend
 ```
 
-Frontendの依存パッケージをインストールします。
+依存パッケージをインストールします。
 
 ```bash
 npm ci
 ```
 
-各Frontendの `package.json` / `package-lock.json` で、Next.js、React、ESLint、TypeScript、Prettierなどの依存パッケージを管理しています。
+Frontendで使用するNext.js、React、ESLint、TypeScript、Prettierなどのパッケージは、各開催期の `frontend/package.json` / `frontend/package-lock.json` で管理します。
 
 開発サーバを起動する場合は以下を実行します。
 
@@ -125,12 +119,10 @@ npm run dev
 
 その他のコマンドについては、対象Frontendの `package.json` やREADMEを確認してください。
 
-
 <details>
-<summary><strong>6. pre-commitを設定する（任意）</strong></summary>
+<summary><strong>4. pre-commitを設定する（任意）</strong></summary>
 
-
-## 6. pre-commitを設定する（任意）
+## 4. pre-commitを設定する（任意）
 
 pre-commitを使用すると、Commit時にコードフォーマットや基本的なファイルチェックを自動で実行できます。
 
@@ -143,21 +135,56 @@ pre-commitでは、主に以下を実行します。
 - PrettierによるFrontendコードのフォーマット
 - YAML / JSONなどの基本的なチェック
 
-FrontendのPrettierは、各開催期の `frontend` にインストールされたものを使用します。
+pre-commit本体はBackendの `.venv` にはインストールせず、各開発者のPCにインストールします。
 
-そのため、Frontendを開発する場合は、先に対象Frontendで以下を実行しておいてください。
+### macOS
+
+Homebrewを使用してインストールします。
 
 ```bash
-npm ci
+brew install pre-commit
 ```
 
-対象開催期の `.venv` を有効にした状態で、Repositoryルートから以下を実行します。
+### Windows（WSL）
+
+WSL内にpipxをインストールします。
+
+Ubuntu 23.04以降の場合は、以下を実行します。
+
+```bash
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+```
+
+`pipx ensurepath` を実行した後は、Terminalを一度開き直してください。
+
+その後、pipxを使用してpre-commitをインストールします。
+
+```bash
+pipx install pre-commit
+```
+
+### インストールを確認する
+
+以下のコマンドが実行できればインストール完了です。
+
+```bash
+pre-commit --version
+```
+
+### Git Hookを設定する
+
+Repositoryルートへ移動して、以下を実行します。
 
 ```bash
 pre-commit install
 ```
 
 これ以降、このRepositoryで `git commit` を実行するとpre-commitが自動で実行されます。
+
+> [!NOTE]
+> FrontendのPrettierを実行するため、Frontendを変更する場合は、対象Frontendで事前に `npm ci` を実行しておいてください。
 
 設定を確認する場合は以下を実行できます。
 
@@ -188,14 +215,20 @@ pre-commit uninstall
 
 </details>
 
-## 7. Backendの環境を確認する
+## 5. Backendをローカルで実行する
 
-Backendでは、対象開催期の直下に作成した `.venv` を使用します。
+Backendを使用する場合は、対象開催期のBackend用仮想環境を有効にします。
 
-仮想環境が有効になっていない場合は、Repositoryルートから以下を実行します。
+Repositoryルートから以下を実行します。
 
 ```bash
-source <開催期>/.venv/bin/activate
+source <開催期>/backend/.venv/bin/activate
+```
+
+例えば、`2026autumn` の場合は以下です。
+
+```bash
+source 2026autumn/backend/.venv/bin/activate
 ```
 
 対象開催期のBackendディレクトリへ移動します。
@@ -212,7 +245,7 @@ python -m scripts.<ファイル名>
 
 必要な設定や環境変数については、対象開催期の `backend/README.md` を参照してください。
 
-## 8. Backendをローカルで実行する場合の認証情報
+## 6. Backendをローカルで実行する場合の認証情報
 
 Backendの一部の処理では、Google APIやGoogleスプレッドシートを利用します。
 
@@ -227,7 +260,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=<JSONのPath>
 > [!WARNING]
 > APIキー、アクセストークン、サービスアカウントのJSONなどの秘密情報はGitHubへCommitしないでください。
 
-## 9. 環境構築後の動作確認
+## 7. 環境構築後の動作確認
 
 Frontendを開発する場合は、対象Frontendで開発サーバが起動できることを確認します。
 
@@ -253,32 +286,48 @@ npm run build
 
 Backendについては、対象開催期の `backend/README.md` を参照してください。
 
-## 10. 2回目以降の開発
+## 8. 2回目以降の開発
 
 一度環境構築が完了していれば、毎回仮想環境や依存パッケージを作り直す必要はありません。
 
-Pythonを使用する場合は、Repositoryルートから対象開催期の仮想環境を有効にします。
+### Backendを開発する場合
+
+対象開催期の仮想環境を有効にします。
 
 ```bash
-source <開催期>/.venv/bin/activate
+source <開催期>/backend/.venv/bin/activate
 ```
 
 例えば、`2026autumn` の場合は以下です。
 
 ```bash
-source 2026autumn/.venv/bin/activate
+source 2026autumn/backend/.venv/bin/activate
 ```
 
-`requirements.txt` が更新された場合は、対象開催期のディレクトリで以下を実行します。
+`requirements.txt` が更新された場合は、対象Backendのディレクトリで以下を実行します。
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Frontendの `package-lock.json` が更新された場合は、対象Frontendのディレクトリで以下を実行します。
+### Frontendを開発する場合
+
+対象Frontendのディレクトリへ移動します。
+
+```bash
+cd <開催期>/frontend
+```
+
+`package-lock.json` が更新された場合は、以下を実行します。
 
 ```bash
 npm ci
+```
+
+開発サーバを起動します。
+
+```bash
+npm run dev
 ```
 
 環境構築後の通常の開発手順については、`development-guide.md` を参照してください。
