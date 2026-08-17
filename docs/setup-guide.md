@@ -4,7 +4,7 @@
 
 GitHubへのSSH接続やRepositoryのCloneが完了していない場合は、先に `github-setup-guide.md` を参照してください。
 
-MacおよびWindowsのWSLなど、bashを利用できる環境を想定しています。
+macOSおよびWindowsのWSLなど、bashを利用できる環境を想定しています。
 
 ## 1. 必要なツールをインストールする
 
@@ -29,6 +29,16 @@ https://github.com/anyenv/anyenv
 > PythonおよびNode.jsの正しいバージョンは、対象開催期の `backend/README.md`、`frontend/README.md` を確認してください。
 >
 > 以下では、Python `3.12`、Node.js `24.11.1` を使用する場合を例として説明します。
+
+### Windowsの場合はWSLをインストールする
+
+Windowsを使用する場合は、WSL（Windows Subsystem for Linux）を使用します。
+
+WSLがインストールされていない場合は、以下を参考にインストールしてください。
+
+https://qiita.com/SAITO_Keita/items/148f794a5b358e5cb87b
+
+以降のWindows向けの操作は、WSL上で行います。
 
 ### anyenvをインストールする
 
@@ -215,6 +225,8 @@ python -m venv .venv
 
 仮想環境を有効にします。
 
+macOSおよびWindows（WSL）では、以下を実行します。
+
 ```bash
 source .venv/bin/activate
 ```
@@ -230,6 +242,11 @@ which python
 ```text
 .../hontono-rookie-web/2026autumn/backend/.venv/bin/python
 ```
+
+> [!NOTE]
+> このガイドでは、WindowsはWSL上で開発することを想定しています。
+>
+> WSLを使用せずWindows PowerShell上で直接仮想環境を使用する場合は、activate方法が異なります。
 
 > [!NOTE]
 > `.venv` は各開発者のローカル環境で作成するため、Gitでは管理しません。
@@ -258,7 +275,22 @@ cd <開催期>/frontend
 cd 2026autumn/frontend
 ```
 
-依存パッケージをインストールします。
+### `.env.local`を配置する
+
+Frontendの実行に必要な `.env.local` を共有フォルダからダウンロードし、対象Frontendのディレクトリ直下に配置してください。
+
+例えば、`2026autumn` の場合は以下の位置に配置します。
+
+```text
+2026autumn/frontend/.env.local
+```
+
+> [!NOTE]
+> `.env.local` には環境変数などの公開してはいけない情報が含まれるため、GitHubへCommitしないでください。
+
+### 依存パッケージをインストールする
+
+以下を実行します。
 
 ```bash
 npm ci
@@ -266,18 +298,20 @@ npm ci
 
 Frontendで使用するNext.js、React、ESLint、TypeScript、Prettierなどのパッケージは、各開催期の `frontend/package.json` / `frontend/package-lock.json` で管理します。
 
-開発サーバを起動する場合は以下を実行します。
+### 開発サーバを起動する
+
+以下を実行します。
 
 ```bash
 npm run dev
 ```
 
+`.env.local` はNext.jsによって自動的に読み込まれるため、通常は事前に `source .env.local` を実行する必要はありません。
+
 その他のコマンドについては、対象Frontendの `package.json` やREADMEを確認してください。
 
 <details>
 <summary><strong>4. pre-commitを設定する（任意）</strong></summary>
-
-## 4. pre-commitを設定する（任意）
 
 pre-commitを使用すると、Commit時にコードフォーマットや基本的なファイルチェックを自動で実行できます。
 
@@ -447,7 +481,7 @@ Backendについては、対象開催期の `backend/README.md` を参照して�
 
 ### Backendを開発する場合
 
-仮想環境を有効にするために、以下を実行します。
+Repositoryルートから仮想環境を有効にします。
 
 ```bash
 source <開催期>/backend/.venv/bin/activate
@@ -459,9 +493,10 @@ source <開催期>/backend/.venv/bin/activate
 source 2026autumn/backend/.venv/bin/activate
 ```
 
-`requirements.txt` が更新された場合は、対象Backendのディレクトリで以下を実行します。
+`requirements.txt` が更新された場合は、対象Backendのディレクトリへ移動して依存パッケージを更新します。
 
 ```bash
+cd <開催期>/backend
 python -m pip install -r requirements.txt
 ```
 
