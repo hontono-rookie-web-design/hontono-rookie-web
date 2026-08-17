@@ -6,25 +6,190 @@ GitHubへのSSH接続やRepositoryのCloneが完了していない場合は、�
 
 MacおよびWindowsのWSLなど、bashを利用できる環境を想定しています。
 
-## 1. 必要なツールを確認する
+## 1. 必要なツールをインストールする
 
-以下のツールを使用します。
+このRepositoryでは、主に以下のツールを使用します。
 
 - Python
 - pip
 - Node.js
 - npm
 
-以下のコマンドで利用できることを確認します。
+PythonとNode.jsのバージョン管理には、`anyenv`、`pyenv`、`nodenv` の使用を推奨します。
+
+- `anyenv`：複数のバージョン管理ツールをまとめて管理するツール
+- `pyenv`：Pythonのバージョンを管理するツール
+- `nodenv`：Node.jsのバージョンを管理するツール
+
+anyenvについては、以下を参照してください。
+
+https://github.com/anyenv/anyenv
+
+> [!NOTE]
+> PythonおよびNode.jsの正しいバージョンは、対象開催期の `backend/README.md` を確認してください。
+>
+> 以下では、Python `3.12`、Node.js `24.11.1` を使用する場合を例として説明します。
+
+### anyenvをインストールする
+
+#### macOS
+
+Homebrewを使用してanyenvをインストールします。
+
+```bash
+brew install anyenv
+```
+
+続いて、anyenvをShellで使用できるように設定します。
+
+```bash
+anyenv init
+```
+
+表示された指示に従ってShellの設定ファイルを更新してください。
+
+設定後、Terminalを一度閉じて開き直します。
+
+#### Windows（WSL）
+
+WSLでは、Gitを使用してanyenvをインストールします。
+
+```bash
+git clone https://github.com/anyenv/anyenv ~/.anyenv
+```
+
+anyenvへPathを通します。
+
+```bash
+echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bashrc
+```
+
+anyenvの初期設定を行います。
+
+```bash
+~/.anyenv/bin/anyenv init
+```
+
+表示された指示に従ってShellの設定ファイルを更新してください。
+
+設定後、Terminalを一度閉じて開き直します。
+
+### anyenvを初期化する
+
+初回のみ、anyenvが使用するインストール定義を初期化します。
+
+```bash
+anyenv install --init
+```
+
+確認を求められた場合は、内容を確認して続行してください。
+
+### pyenvとnodenvをインストールする
+
+anyenvを使用して、Pythonのバージョン管理に使用する `pyenv` をインストールします。
+
+```bash
+anyenv install pyenv
+```
+
+続いて、Node.jsのバージョン管理に使用する `nodenv` をインストールします。
+
+```bash
+anyenv install nodenv
+```
+
+インストール後、Shellを再読み込みします。
+
+```bash
+exec $SHELL -l
+```
+
+以下のコマンドが実行できることを確認します。
+
+```bash
+pyenv --version
+nodenv --version
+```
+
+### Pythonをインストールする
+
+使用するPythonの正しいバージョンは、対象開催期の `backend/README.md` を確認してください。
+
+Python `3.12` を使用する場合は以下を実行します。
+
+```bash
+pyenv install 3.12
+```
+
+`3.12` のように指定した場合は、pyenvが認識しているPython 3.12系の最新バージョンがインストールされます。
+
+インストールしたPythonを使用するように設定します。
+
+```bash
+pyenv global 3.12
+```
+
+Pythonのバージョンを確認します。
 
 ```bash
 python --version
+```
+
+以下のようにPython 3.12系が表示されれば問題ありません。
+
+```text
+Python 3.12.x
+```
+
+### pipを確認する
+
+Pythonとあわせてpipが利用できることを確認します。
+
+```bash
 python -m pip --version
+```
+
+バージョン情報が表示されれば問題ありません。
+
+### Node.jsをインストールする
+
+使用するNode.jsの正しいバージョンは、対象開催期の `frontend/README.md` を確認してください。
+
+Node.js `24.11.1` を使用する場合は以下を実行します。
+
+```bash
+nodenv install 24.11.1
+```
+
+インストールしたNode.jsを使用するように設定します。
+
+```bash
+nodenv global 24.11.1
+```
+
+Node.jsのバージョンを確認します。
+
+```bash
 node --version
+```
+
+以下のように表示されれば問題ありません。
+
+```text
+v24.11.1
+```
+
+### npmを確認する
+
+Node.jsとあわせてnpmが利用できることを確認します。
+
+```bash
 npm --version
 ```
 
-環境によってPythonのコマンドが `python3` の場合は、以降の `python` を `python3` に読み替えてください。
+バージョン情報が表示されれば問題ありません。
+
+以上で、BackendおよびFrontendの環境構築に必要な基本ツールの準備は完了です。
 
 ## 2. Backendの環境を構築する
 
@@ -39,16 +204,6 @@ cd <開催期>/backend
 ```bash
 cd 2026autumn/backend
 ```
-
-### Pythonのバージョンを確認する
-
-Backendで使用するPythonのバージョンは、対象開催期の `backend/README.md` を確認してください。
-
-```bash
-python --version
-```
-
-必要に応じて、pyenvなどのPythonバージョン管理ツールを利用しても構いません。
 
 ### Pythonの仮想環境を作成する
 
@@ -217,7 +372,7 @@ pre-commit uninstall
 
 ## 5. Backendをローカルで実行する
 
-Backendを使用する場合は、対象開催期のBackend用仮想環境を有効にします。
+対象開催期の仮想環境を有効にします。
 
 Repositoryルートから以下を実行します。
 
@@ -292,7 +447,7 @@ Backendについては、対象開催期の `backend/README.md` を参照して�
 
 ### Backendを開発する場合
 
-対象開催期の仮想環境を有効にします。
+仮想環境を有効にするために、以下を実行します。
 
 ```bash
 source <開催期>/backend/.venv/bin/activate
