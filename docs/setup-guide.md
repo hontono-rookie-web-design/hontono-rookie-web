@@ -26,7 +26,7 @@ anyenvについては、以下を参照してください。
 https://github.com/anyenv/anyenv
 
 > [!NOTE]
-> PythonおよびNode.jsの正しいバージョンは、対象開催期の `backend/README.md` を確認してください。
+> PythonおよびNode.jsの正しいバージョンは、対象開催期の `backend/README.md`、`frontend/README.md` を確認してください。
 >
 > 以下では、Python `3.12`、Node.js `24.11.1` を使用する場合を例として説明します。
 
