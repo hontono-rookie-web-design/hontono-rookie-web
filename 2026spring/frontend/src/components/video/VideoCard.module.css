@@ -1,16 +1,18 @@
-.card{
- position:relative;
- border:1px solid #ccc;
- border-radius: 5px;
- padding:10px;
- width:250px;
- aspect-ratio: 1 / 1;
- display:flex;
- flex-direction:column;
- cursor:pointer;
- transition:transform 0.2s ease, box-shadow 0.2s ease;
- overflow: hidden;
- box-shadow:0 4px 10px rgba(0,0,0,0.5);
+.card {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 250px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .card h3 {
@@ -35,42 +37,42 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height:1.5em;
-  margin:0;
+  height: 1.5em;
+  margin: 0;
 }
 
-.card:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 8px 10px rgba(0,0,0,0.15)
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
 }
 
 .thumbnail {
   width: 100%;
-  aspect-ratio: 16 / 9; 
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 5px;
-  display:block;
+  display: block;
   pointer-events: none;
-  flex-shrink:0;
+  flex-shrink: 0;
 }
 
 .card:hover .menuButton {
   opacity: 1;
 }
 
-.title{
- font-size: 16px;
- font-weight: bold;
+.title {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.author{
- font-size: 12px !important;
- color: #666;
- margin-top: 4px;
- width: 100%;
- overflow: hidden;
- white-space: nowrap;
- text-overflow: ellipsis;
+.author {
+  font-size: 12px !important;
+  color: #666;
+  margin-top: 4px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .container {
@@ -128,12 +130,7 @@
 .skeletonThumbnail,
 .skeletonText,
 .skeletonTextSmall {
-  background: linear-gradient(
-    90deg,
-    #eee 25%,
-    #f5f5f5 50%,
-    #eee 75%
-  );
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 }

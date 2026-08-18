@@ -66,7 +66,6 @@ export const CONFIG = {
   },
 
   links: {
-    voteGuide:
-      "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
+    voteGuide: "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
   },
-}
+};

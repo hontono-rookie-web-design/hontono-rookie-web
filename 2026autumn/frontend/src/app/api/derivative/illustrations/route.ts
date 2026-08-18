@@ -18,9 +18,7 @@ export async function GET() {
   }
 
   // 重い処理（Sheets取得）
-  const items = await fetchFanficSheet(
-    CONFIG.fanficsheets.illustrations.name
-  );
+  const items = await fetchFanficSheet(CONFIG.fanficsheets.illustrations.name);
 
   const result = items.reverse();
 

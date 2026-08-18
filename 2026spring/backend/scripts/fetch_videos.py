@@ -1,11 +1,9 @@
-import os
-import datetime
-import warnings
 import argparse
+import datetime
+import os
+import warnings
 
-from lib import sheet_client
-from lib import niconico
-from lib import utils
+from lib import niconico, sheet_client, utils
 
 
 def connect_sheet(spreadsheet_name, sheet_name):

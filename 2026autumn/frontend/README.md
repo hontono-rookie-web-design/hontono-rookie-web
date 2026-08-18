@@ -48,18 +48,18 @@ http://localhost:3000
 
 ### 設定可能な値
 
-| 値                    | 内容             |
-| -------------------- | -------------- |
-| `before`             | 開催前            |
+| 値                   | 内容                         |
+| -------------------- | ---------------------------- |
+| `before`             | 開催前                       |
 | `opening`            | オープニングステージ投稿期間 |
-| `rookie`             | ルーキー投稿期間       |
-| `prelim`             | 予選投票期間         |
-| `prelim_counting`    | 予選集計中          |
-| `semifinal`          | 準決勝投票期間        |
-| `semifinal_counting` | 準決勝集計中         |
-| `final`              | 決勝投票期間         |
-| `final_counting`     | 決勝集計中          |
-| `after`              | イベント終了後        |
+| `rookie`             | ルーキー投稿期間             |
+| `prelim`             | 予選投票期間                 |
+| `prelim_counting`    | 予選集計中                   |
+| `semifinal`          | 準決勝投票期間               |
+| `semifinal_counting` | 準決勝集計中                 |
+| `final`              | 決勝投票期間                 |
+| `final_counting`     | 決勝集計中                   |
+| `after`              | イベント終了後               |
 
 ### 設定例
 
@@ -75,13 +75,13 @@ Exステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_EX` �
 
 ### 設定可能な値
 
-| 値            | 内容   |
-| ------------ | ---- |
-| `before`     | 開催前  |
+| 値           | 内容     |
+| ------------ | -------- |
+| `before`     | 開催前   |
 | `submission` | 投稿期間 |
 | `voting`     | 投票期間 |
-| `counting`   | 集計中  |
-| `after`      | 終了後  |
+| `counting`   | 集計中   |
+| `after`      | 終了後   |
 
 ### 設定例
 
@@ -147,8 +147,8 @@ const viewPhase = getViewPhase(phase);
 
 Next.js の詳細については、以下のリソースを参照してください。
 
-* [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
-* [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
 
 You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
@@ -162,4 +162,4 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 詳細については、以下のドキュメントを参照してください。
 
-* [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying)
+- [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying)
