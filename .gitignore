@@ -1,8 +1,10 @@
-.venv
+**/.venv/
 .env
+**/.env.local
 *.csv
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 data/
+**/node_modules/
