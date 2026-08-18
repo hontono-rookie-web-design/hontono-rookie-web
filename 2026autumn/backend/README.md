@@ -147,7 +147,7 @@ GitHub Actionsで実行する。
     ```
     pyenv install 3.12
 
-    cd 2026spring
+    cd 2026spring/backend
     pyenv local 3.12
     ```
 
