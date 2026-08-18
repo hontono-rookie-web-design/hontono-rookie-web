@@ -1,6 +1,10 @@
-# Editing Commit・Pull Request時の自動チェックについて
+# Commit・Pull Request時の自動チェックについて
 
-このRepositoryでは、コードの品質を保つために、**Commit時**と**Pull Request作成・更新時**に自動チェックが実行されます。
+このRepositoryでは、コードの品質を保つために、Pull Requestの作成・更新時にGitHub Actionsによる **Status Check** が自動で実行されます。
+
+また、任意でpre-commitを導入すると、Commit時にもコードフォーマットや基本的なファイルチェックを自動で実行できます。
+
+基本的な流れは以下です。
 
 ```text
 コードを変更
@@ -8,8 +12,6 @@
 git add
     ↓
 git commit
-    ↓
-pre-commit
     ↓
 git push
     ↓
@@ -22,11 +24,10 @@ Review・Merge
 
 このページでは、それぞれのチェックと、`Failed` になった場合の対応方法を説明します。
 
+<details>
+<summary><strong>Commit時にpre-commitを使用する（任意）</strong></summary>
 
-
-## Commit時のpre-commit
-
-`git commit` を実行すると、Commitの前に **pre-commit** が自動で実行されます。
+pre-commitを設定している場合は、`git commit` を実行するとCommitの前にpre-commitが自動で実行されます。
 
 pre-commitでは、主に以下を行います。
 
@@ -35,14 +36,18 @@ pre-commitでは、主に以下を行います。
 - YAML / JSONなどの基本的な構文チェック
 - merge conflictや秘密鍵などの基本的なチェック
 
-通常は、変更したファイルをステージングしてCommitします。
+pre-commitの使用は任意です。
+
+導入していない場合は、通常どおり以下の操作でCommitできます。
 
 ```bash
 git add <変更したファイル>
 git commit -m "変更内容"
 ```
 
-### Passedになった場合
+pre-commitのインストールやGit Hookの設定方法については、`setup-guide.md` を参照してください。
+
+## Passedになった場合
 
 以下のように、すべてのチェックが `Passed` になればCommitは完了します。
 
@@ -58,15 +63,13 @@ Prettier (Frontend).............................................Passed
 git push origin <ブランチ名>
 ```
 
+## Failedになった場合
 
-
-### Failedになった場合
-
-`Failed` になった場合、**Commitは完了していません**。
+`Failed` になった場合、Commitは完了していません。
 
 エラーの内容を確認してから、再度Commitします。
 
-#### ファイルが自動修正された場合
+### ファイルが自動修正された場合
 
 Black、isort、Prettierなどがファイルを自動修正すると、例えば以下のように表示されます。
 
@@ -108,7 +111,7 @@ Commit完了
 > [!NOTE]
 > pre-commitがファイルを書き換えた場合、その変更をCommitに含めるために再度 `git add` が必要です。
 
-#### 自動修正されないエラーの場合
+### 自動修正されないエラーの場合
 
 エラーメッセージを確認してコードを修正し、再度以下を実行してください。
 
@@ -117,16 +120,18 @@ git add <修正したファイル>
 git commit -m "変更内容"
 ```
 
-> [!WARNING]
-> `git commit --no-verify` を使用するとpre-commitをスキップできますが、通常の開発では使用しないでください。
+> [!NOTE]
+> `git commit --no-verify` を使用すると、設定しているpre-commitを一時的にスキップできます。
+>
+> 通常はpre-commitで発生した問題を確認・修正してからCommitしてください。
 
-
+</details>
 
 ## Pull Request時のStatus Check
 
 Pull Requestを作成・更新すると、GitHub Actionsによる **Status Check** が自動で実行されます。
 
-Frontendに変更がある場合、以下の3つを確認します。
+Frontendについては、以下の3つを確認します。
 
 | Check | 内容 |
 | --- | --- |
@@ -146,7 +151,7 @@ Frontendに変更がある場合、以下の3つを確認します。
 
 となっている場合は、TypeScriptの型チェックに問題があります。
 
-
+必要なStatus Checkがすべて成功してからPull RequestをMergeしてください。
 
 ## Status CheckがFailedになった場合
 
@@ -180,8 +185,6 @@ git push
 Status Check再実行
 ```
 
-
-
 ## WarningとError
 
 ESLintでは、問題によって `warning` または `error` が表示されます。
@@ -207,13 +210,18 @@ ESLintでは、問題によって `warning` または `error` が表示されま
 
 warningについても、必要に応じて順次修正してください。
 
----
+<details>
+<summary><strong>ローカルでStatus Checkと同じ確認をする（任意）</strong></summary>
 
-## ローカルでStatus Checkと同じ確認をする
+GitHubへPushする前に、自分のPCでStatus Checkと同じ確認をすることもできます。
 
-GitHubへPushする前に、自分のPCで確認することもできます。
+対象開催期のFrontendディレクトリへ移動します。
 
-対象開催期のFrontendディレクトリで以下を実行します。
+```bash
+cd <開催期>/frontend
+```
+
+以下を実行します。
 
 ```bash
 npm run lint
@@ -221,17 +229,17 @@ npm run typecheck
 npm run build
 ```
 
-それぞれ、
+それぞれ以下の確認を行います。
 
-- `npm run lint`：ESLint
-- `npm run typecheck`：TypeScriptの型チェック
-- `npm run build`：Production Build
+| コマンド | 内容 |
+| --- | --- |
+| `npm run lint` | ESLintによる静的解析 |
+| `npm run typecheck` | TypeScriptの型チェック |
+| `npm run build` | Production Build |
 
-を実行します。
+大きな変更を行った場合などは、Push前に実行しておくとエラーに早く気づくことができます。
 
-大きな変更を行った場合などは、Push前に確認しておくとエラーに早く気づくことができます。
-
-
+</details>
 
 ## Frontendを変更していない場合
 
@@ -245,8 +253,6 @@ No Frontend changes found.
 
 として正常終了します。
 
-
-
 ## 困ったとき
 
 まず現在の状態を確認します。
@@ -255,19 +261,17 @@ No Frontend changes found.
 git status
 ```
 
-変更内容を確認する場合は、
+変更内容を確認する場合は、以下を使用します。
 
 ```bash
 git diff
 ```
 
-ステージング済みの変更を確認する場合は、
+ステージング済みの変更を確認する場合は、以下を使用します。
 
 ```bash
 git diff --cached
 ```
-
-を使用できます。
 
 解決できない場合は、以下を共有して他の開発者へ確認してください。
 
@@ -275,18 +279,11 @@ git diff --cached
 - 表示されたエラーメッセージ
 - FailedになったCheck
 
-
-
 ## まとめ
 
-このRepositoryでは、以下の2段階で自動チェックを行います。
+このRepositoryでは、Pull Request時のStatus Checkによってコードを自動で確認します。
 
 ```text
-Commit
-↓
-pre-commit
-→ フォーマット・基本チェック
-
 Pull Request
 ↓
 Status Check
@@ -295,12 +292,20 @@ Status Check
 └─ Frontend Build
 ```
 
+必要に応じてpre-commitを導入すると、Commit時にもフォーマットや基本的なファイルチェックを自動化できます。
+
+```text
+Commit
+↓
+pre-commit（任意）
+→ フォーマット・基本チェック
+```
+
 覚えておくポイントは以下です。
 
-1. `git commit` するとpre-commitが自動で実行される
-2. pre-commitが `Failed` の場合、Commitは完了していない
-3. 自動修正された場合は、再度 `git add` → `git commit` する
-4. Pull Requestを作成・更新するとStatus Checkが実行される
-5. Status Checkが `Failed` の場合は、ログを確認して修正する
-6. 修正後は同じBranchへCommit・Pushすれば、Status Checkが再実行される
-7. 必要なStatus Checkがすべて成功してからMergeする
+1. Pull Requestを作成・更新するとStatus Checkが自動で実行される
+2. Status Checkが `Failed` の場合は、ログを確認して修正する
+3. 修正後は同じBranchへCommit・Pushすれば、Status Checkが再実行される
+4. 必要なStatus Checkがすべて成功してからMergeする
+5. pre-commitは任意で導入できる
+6. pre-commitを使用している場合、自動修正されたファイルは再度 `git add` → `git commit` する
