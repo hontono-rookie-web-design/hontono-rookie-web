@@ -26,7 +26,7 @@ export default function Schedule() {
     },
     {
       title: "結果発表",
-      date: "2026年xx月xx日(x) 予定",
+      date: "2026年XX月XX日(X) 予定",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary", // skyblue
     },
