@@ -1,0 +1,235 @@
+name: Frontend Check
+
+# main Branch向けのPull Requestが作成・更新されたときに実行する。
+#
+# pathsによる絞り込みは行わない。
+# このWorkflow内の各JobをRequired Status Checkとして使用するため、
+# Frontendに変更がないPull RequestでもWorkflow自体は実行し、
+# 各Jobを正常終了させる。
+on:
+  pull_request:
+    branches:
+      - main
+
+# このWorkflowではRepositoryの内容を読み取るだけなので、
+# 必要最低限の権限のみ付与する。
+permissions:
+  contents: read
+
+jobs:
+  # ============================================================
+  # ESLint
+  # ============================================================
+  #
+  # JavaScript / TypeScriptコードに対して、
+  # ESLintによる静的解析を行う。
+  #
+  # Type CheckやBuildとは独立したJobとして実行するため、
+  # ESLintが失敗しても他のJobは実行される。
+  eslint:
+    name: Frontend ESLint
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # PRで変更されたファイルをgit diffで確認するため、
+      # fetch-depth: 0としてGitの履歴をすべて取得する。
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # ESLintの実行に使用するNode.jsを準備する。
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      # PRで変更された開催期のFrontendを検出し、
+      # 対象のFrontendだけESLintを実行する。
+      #
+      # 対象例:
+      #   2026spring/frontend
+      #   2026autumn/frontend
+      #   2027winter/frontend
+      #
+      # Frontendに変更がない場合は、
+      # Required Status Checkを正常終了させるためexit 0とする。
+      - name: Run ESLint
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          frontend_dirs=$(
+            git diff --name-only "$BASE_SHA" "$HEAD_SHA" |
+              awk -F/ '
+                NF >= 3 &&
+                $2 == "frontend" &&
+                $1 ~ /^[0-9][0-9][0-9][0-9][a-z0-9-]+$/ {
+                  print $1 "/" $2
+                }
+              ' |
+              sort -u
+          )
+
+          if [ -z "$frontend_dirs" ]; then
+            echo "No Frontend changes found."
+            exit 0
+          fi
+
+          for frontend_dir in $frontend_dirs; do
+            echo "========================================"
+            echo "Running ESLint: $frontend_dir"
+            echo "========================================"
+
+            # package-lock.jsonに固定された依存パッケージを
+            # クリーンインストールする。
+            npm --prefix "$frontend_dir" ci
+
+            # ESLintによる静的解析を実行する。
+            npm --prefix "$frontend_dir" run lint
+          done
+
+  # ============================================================
+  # TypeScript Type Check
+  # ============================================================
+  #
+  # tsc --noEmitを使用してTypeScriptの型チェックを行う。
+  #
+  # ESLintやBuildとは独立したJobとして実行するため、
+  # 他のJobが失敗しても型チェックの結果を確認できる。
+  typecheck:
+    name: Frontend Type Check
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # PRで変更されたファイルをgit diffで確認するため、
+      # Gitの履歴をすべて取得する。
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # TypeScriptの型チェックに使用するNode.jsを準備する。
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      # PRで変更された開催期のFrontendを検出し、
+      # 対象のFrontendだけTypeScriptの型チェックを実行する。
+      #
+      # 各Frontendのpackage.jsonには、以下のscriptが必要。
+      #
+      #   "typecheck": "tsc --noEmit"
+      #
+      # Frontendに変更がない場合は正常終了する。
+      - name: Run TypeScript Type Check
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          frontend_dirs=$(
+            git diff --name-only "$BASE_SHA" "$HEAD_SHA" |
+              awk -F/ '
+                NF >= 3 &&
+                $2 == "frontend" &&
+                $1 ~ /^[0-9][0-9][0-9][0-9][a-z0-9-]+$/ {
+                  print $1 "/" $2
+                }
+              ' |
+              sort -u
+          )
+
+          if [ -z "$frontend_dirs" ]; then
+            echo "No Frontend changes found."
+            exit 0
+          fi
+
+          for frontend_dir in $frontend_dirs; do
+            echo "========================================"
+            echo "Running Type Check: $frontend_dir"
+            echo "========================================"
+
+            # package-lock.jsonに固定された依存パッケージを
+            # クリーンインストールする。
+            npm --prefix "$frontend_dir" ci
+
+            # TypeScriptの型チェックのみを実行する。
+            # JavaScriptなどのファイル出力は行わない。
+            npm --prefix "$frontend_dir" run typecheck
+          done
+
+  # ============================================================
+  # Production Build
+  # ============================================================
+  #
+  # Next.jsのProduction Buildが成功することを確認する。
+  #
+  # Preview DeploymentでもBuildは行われるが、
+  # Build成功をPull RequestのMerge条件として保証するため、
+  # Required Status Checkとして独立して実行する。
+  build:
+    name: Frontend Build
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      # PRで変更されたファイルをgit diffで確認するため、
+      # Gitの履歴をすべて取得する。
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Next.jsのProduction Buildに使用するNode.jsを準備する。
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      # PRで変更された開催期のFrontendを検出し、
+      # 対象のFrontendだけProduction Buildを実行する。
+      #
+      # Frontendに変更がない場合は正常終了する。
+      - name: Run Production Build
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          frontend_dirs=$(
+            git diff --name-only "$BASE_SHA" "$HEAD_SHA" |
+              awk -F/ '
+                NF >= 3 &&
+                $2 == "frontend" &&
+                $1 ~ /^[0-9][0-9][0-9][0-9][a-z0-9-]+$/ {
+                  print $1 "/" $2
+                }
+              ' |
+              sort -u
+          )
+
+          if [ -z "$frontend_dirs" ]; then
+            echo "No Frontend changes found."
+            exit 0
+          fi
+
+          for frontend_dir in $frontend_dirs; do
+            echo "========================================"
+            echo "Running Build: $frontend_dir"
+            echo "========================================"
+
+            # package-lock.jsonに固定された依存パッケージを
+            # クリーンインストールする。
+            npm --prefix "$frontend_dir" ci
+
+            # Next.jsのProduction Buildを実行する。
+            npm --prefix "$frontend_dir" run build
+          done
