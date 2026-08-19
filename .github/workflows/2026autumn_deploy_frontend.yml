@@ -56,44 +56,98 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      # 最新のProduction Deployment以外をinactiveにする
-      #
-      # SHAではなくDeployment IDを基準にすることで、
-      # 同じコミットを手動で再デプロイした場合でも
-      # 過去のDeploymentを正しくinactiveにできる
+  # Productionへのデプロイ成功後、
+  # 最新以外の有効なGitHub Deploymentをinactiveにする
+  cleanup-deployments:
+    name: Cleanup previous Production deployments
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
       - name: Mark previous Production deployments inactive
+        # Deploymentの整理に失敗しても、
+        # CloudflareへのProductionデプロイ自体は失敗扱いにしない
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          deployments=$(gh api \
-            --method GET \
-            "/repos/${{ github.repository }}/deployments?environment=2026autumn-production&per_page=100")
+          deployments=$(gh api graphql \
+            -F owner="${{ github.repository_owner }}" \
+            -F name="${{ github.event.repository.name }}" \
+            -f query='
+              query($owner: String!, $name: String!) {
+                repository(owner: $owner, name: $name) {
+                  deployments(
+                    first: 100
+                    environments: ["2026autumn-production"]
+                    orderBy: {
+                      field: CREATED_AT
+                      direction: DESC
+                    }
+                  ) {
+                    nodes {
+                      databaseId
+                      state
+                      createdAt
+                    }
+                  }
+                }
+              }
+            ')
 
-          latest_deployment_id=$(echo "$deployments" | jq -r '.[0].id')
+          latest_deployment_id=$(echo "$deployments" | \
+            jq -r '.data.repository.deployments.nodes[0].databaseId // empty')
 
-          if [ -z "$latest_deployment_id" ] || [ "$latest_deployment_id" = "null" ]; then
+          if [ -z "$latest_deployment_id" ]; then
             echo "No Production deployments found."
             exit 0
           fi
 
           echo "Latest Production deployment: $latest_deployment_id"
 
-          previous_deployments=$(echo "$deployments" | \
-            jq -r --argjson latest "$latest_deployment_id" \
-            '.[] | select(.id != $latest) | .id')
+          # 最新Deployment以外で、
+          # まだ有効な状態になっているDeploymentをすべて取得する
+          previous_active_deployments=$(echo "$deployments" | \
+            jq -r '
+              .data.repository.deployments.nodes[1:][]
+              | select(.state == "ACTIVE" or .state == "SUCCESS")
+              | .databaseId
+            ')
 
-          if [ -z "$previous_deployments" ]; then
-            echo "No previous Production deployments found."
+          if [ -z "$previous_active_deployments" ]; then
+            echo "No previous active Production deployments found."
             exit 0
           fi
 
-          for deployment_id in $previous_deployments; do
+          for deployment_id in $previous_active_deployments; do
             echo "Marking Production deployment $deployment_id as inactive"
 
-            gh api \
-              --method POST \
-              "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
-              -f state="inactive" \
-              -f description="Superseded by a newer Production deployment." \
-              -F auto_inactive=false
+            success=false
+
+            for attempt in 1 2 3; do
+              if gh api \
+                --method POST \
+                "/repos/${{ github.repository }}/deployments/${deployment_id}/statuses" \
+                -f state="inactive" \
+                -f description="Superseded by a newer Production deployment." \
+                -F auto_inactive=false; then
+
+                success=true
+                break
+              fi
+
+              echo "Attempt $attempt failed for deployment $deployment_id."
+
+              if [ "$attempt" -lt 3 ]; then
+                sleep $((attempt * 5))
+              fi
+            done
+
+            if [ "$success" != "true" ]; then
+              echo "::warning::Failed to mark deployment $deployment_id as inactive after 3 attempts."
+            fi
+
+            # GitHub APIへ短時間に連続して書き込まないよう間隔を空ける
+            sleep 2
           done
