@@ -57,7 +57,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   # Productionへのデプロイ成功後、
-  # 最新以外の有効なGitHub Deploymentをinactiveにする
+  # 最新以外のGitHub Deploymentをinactiveにする
   cleanup-deployments:
     name: Cleanup previous Production deployments
     needs: deploy
@@ -66,11 +66,12 @@ jobs:
 
     steps:
       - name: Mark previous Production deployments inactive
-        # Deploymentの整理に失敗しても、
+        # GitHub上のDeployment整理に失敗しても、
         # CloudflareへのProductionデプロイ自体は失敗扱いにしない
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+
         run: |
           deployments=$(gh api graphql \
             -F owner="${{ github.repository_owner }}" \
@@ -106,21 +107,31 @@ jobs:
 
           echo "Latest Production deployment: $latest_deployment_id"
 
-          # 最新Deployment以外で、
-          # まだ有効な状態になっているDeploymentをすべて取得する
-          previous_active_deployments=$(echo "$deployments" | \
+          # 最新Deployment以外から、
+          # inactiveにする必要があるDeploymentをすべて取得する
+          #
+          # INACTIVE / DESTROYED はすでに無効化されているため除外する
+          # PENDING / QUEUED / IN_PROGRESS / WAITING は
+          # 実行中の可能性があるため対象にしない
+          previous_deployments=$(echo "$deployments" | \
             jq -r '
               .data.repository.deployments.nodes[1:][]
-              | select(.state == "ACTIVE" or .state == "SUCCESS")
+              | select(
+                  .state == "ACTIVE"
+                  or .state == "SUCCESS"
+                  or .state == "FAILURE"
+                  or .state == "ERROR"
+                  or .state == "ABANDONED"
+                )
               | .databaseId
             ')
 
-          if [ -z "$previous_active_deployments" ]; then
-            echo "No previous active Production deployments found."
+          if [ -z "$previous_deployments" ]; then
+            echo "No previous Production deployments to deactivate."
             exit 0
           fi
 
-          for deployment_id in $previous_active_deployments; do
+          for deployment_id in $previous_deployments; do
             echo "Marking Production deployment $deployment_id as inactive"
 
             success=false
@@ -140,7 +151,7 @@ jobs:
               echo "Attempt $attempt failed for deployment $deployment_id."
 
               if [ "$attempt" -lt 3 ]; then
-                sleep $((attempt * 5))
+                sleep $((attempt * 10))
               fi
             done
 
