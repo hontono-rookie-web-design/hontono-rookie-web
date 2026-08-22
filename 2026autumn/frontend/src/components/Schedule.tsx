@@ -43,7 +43,7 @@ export default function Schedule() {
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">
+          <h2 className="text-sm font-bold tracking-widest text-rose-900 uppercase mb-2">
             Schedule
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">
@@ -62,7 +62,7 @@ export default function Schedule() {
                   <h4 className="text-lg font-bold text-slate-800 mb-1">
                     {item.title}
                   </h4>
-                  <p className="text-sm text-mint font-semibold tracking-wide mb-3">
+                  <p className="text-sm text-rose-900 font-semibold tracking-wide mb-3">
                     {item.date}
                   </p>
                   <p className="text-xs text-slate-500 max-w-[200px] mx-auto">
@@ -81,7 +81,7 @@ export default function Schedule() {
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-5 rounded-xl border border-mint/10 shadow-sm">
-              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">
+              <h5 className="font-bold text-rose-900 text-xl tracking-wide mb-2">
                 opステージ
               </h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
@@ -92,7 +92,7 @@ export default function Schedule() {
               </p>
             </div>
             <div className="bg-white p-5 rounded-xl border border-cherry/10 shadow-sm">
-              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">
+              <h5 className="font-bold text-amber-500 text-xl tracking-wide mb-2">
                 exステージ
               </h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">

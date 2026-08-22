@@ -30,7 +30,7 @@ export default function Navigation({
             <label
               htmlFor="main-drawer"
               aria-label="open sidebar"
-              className="btn btn-square btn-ghost text-mint"
+              className="btn btn-square btn-ghost text-rose-900"
             >
               <Menu size={24} />
             </label>
@@ -39,7 +39,7 @@ export default function Navigation({
             <Link
               href="/"
               prefetch={false}
-              className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-mint to-skyblue"
+              className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-rose-900"
             >
               本当のルーキー祭り
             </Link>
@@ -61,7 +61,7 @@ export default function Navigation({
             <h2 className="text-2xl font-bold text-slate-800">
               本当のルーキー祭り
               <br />
-              <span className="text-lg text-mint">2026秋</span>
+              <span className="text-lg text-rose-900">2026秋</span>
             </h2>
           </div>
 
@@ -76,7 +76,7 @@ export default function Navigation({
             </Link>
           </li>
 
-          <li className="menu-title mt-4 text-skyblue font-bold tracking-widest text-xs uppercase">
+          <li className="menu-title mt-4 text-purple-400 font-bold tracking-widest text-xs uppercase">
             投稿作品
           </li>
           <li>

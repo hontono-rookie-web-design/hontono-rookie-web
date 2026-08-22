@@ -22,7 +22,7 @@ export default function Hero() {
           <Link
             href="#rules"
             prefetch={false}
-            className="btn btn-primary btn-lg rounded-full text-white shadow-lg shadow-mint/30"
+            className="btn btn-lg rounded-full text-white shadow-lg shadow-orange-900/30 bg-orange-500 hover:bg-orange-800 border-none"
           >
             参加ルールを読む <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
@@ -247,7 +247,7 @@ export default function Hero() {
             href="https://x.com/SynNightPsub?s=20"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-skyblue font-medium text-fg-brand hover:underline"
+            className="text-amber-500 font-medium text-fg-brand hover:underline"
           >
             公式Xアカウント
           </a>

@@ -565,7 +565,7 @@ export default function Rules() {
     <section id="rules" className="w-full py-24 bg-base-100/50">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">
+          <h2 className="text-sm font-bold tracking-widest text-rose-900 uppercase mb-2">
             Rules
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800">
