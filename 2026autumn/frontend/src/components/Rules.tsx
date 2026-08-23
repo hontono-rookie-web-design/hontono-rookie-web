@@ -34,21 +34,14 @@ export default function Rules() {
               3曲に満たない場合は0いいね、0再生とカウントします。再生300が1作品のみの方は(300+0+0)/3=平均100再生とします。
             </li>
             <li>
-              開催期間が重複する
-              <strong>「植物ソング投稿祭2026」</strong>
-              との同時参加OKです。
-              <br />
-              （同時参加する場合は本当のルーキー祭りの投稿期間に合わせて4月22日以降に投稿してください）
-            </li>
-            <li>
               条件を満たしておらず投稿できない方は、人気投票、二次創作、exステージ、本当のNEXTAGE投稿祭などに参加できます。
             </li>
             <li>
-              本当のルーキー祭り2026春に参加した場合は
+              本当のルーキー祭り2026秋に参加した場合は
               <strong>「本当のNEXTAGE投稿祭」</strong>
               には参加できません。（本当のNEXTAGEの参加条件、本当のルーキー祭りに参加できないことに反するため）
               <br />
-              ただし、本当のルーキー祭り2026春に参加した結果、それ以降に作品が伸びて、本当のルーキー祭りに参加できなくなり、本当のNEXTAGE投稿祭に参加するのはOKです。
+              ただし、本当のルーキー祭り2026秋に参加した結果、それ以降に作品が伸びて、本当のルーキー祭りに参加できなくなり、本当のNEXTAGE投稿祭に参加するのはOKです。
               <div className="my-4 bg-slate-100 border-slate-200 pl-4 py-4">
                 <h4 className="text-md font-semibold">
                   本当のNEXTAGE参加OKの例
@@ -80,12 +73,12 @@ export default function Rules() {
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
               ニコニコ動画に投稿して、
-              <strong>「本当のルーキー祭り2026春」</strong>
+              <strong>「本当のルーキー祭り2026秋」</strong>
               のタグを設定し、タグロックしてください。
             </li>
             <li>
               投稿作品とは別にMV作品を投稿する場合は、MV作品側に
-              <strong>「本当のルーキー祭り2026春MV」</strong>
+              <strong>「本当のルーキー祭り2026秋MV」</strong>
               のタグを設定し、タグロックしてください。
             </li>
             <li>
@@ -116,9 +109,9 @@ export default function Rules() {
                 （URLは２５日あたりに発行されますので少々お待ちください）
                 <br />
                 【日程（予定）】 <br />
-                予選(Disc) 4/25～5/10 準決勝(Selection)5/11～5/17
+                予選(Disc) 9/14～9/27 
                 <br />
-                決勝(Best)・EX5/18～
+                決勝(Best)・SP 10/5～10/18
                 <br />
                 【参加方法】
                 <br />
@@ -155,7 +148,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026春投稿者募集要項
+              本当のルーキー祭り2026秋投稿者募集要項
             </a>
             をご確認ください。
           </p>
@@ -280,7 +273,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026春投稿者募集要項
+              本当のルーキー祭り2026秋投稿者募集要項
             </a>
             をご確認ください。
           </p>
@@ -393,7 +386,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026春人気投票募集要項
+              本当のルーキー祭り2026秋人気投票募集要項
             </a>
             をご確認ください。
           </p>
@@ -411,7 +404,7 @@ export default function Rules() {
             </li>
             <li>人気投票の対象から除外されます。</li>
             <li>
-              参加タグは通常と同じ<strong>「本当のルーキー祭り2026春」</strong>
+              参加タグは通常と同じ<strong>「本当のルーキー祭り2026秋」</strong>
               です。
             </li>
             <li>
@@ -427,7 +420,7 @@ export default function Rules() {
             </li>
             <li>
               参加タグは
-              <strong>「本当のルーキー祭り2026春ex」</strong>
+              <strong>「本当のルーキー祭り2026秋ex」</strong>
               となります。
             </li>
             <li>
@@ -448,7 +441,7 @@ export default function Rules() {
           <ul className="list-disc list-outside ml-12 space-y-2">
             <li>
               参加作品に
-              <strong>「本当のルーキー祭り2026春ex」</strong>
+              <strong>「本当のルーキー祭り2026秋ex」</strong>
               をタグロックしてください。
             </li>
             <li>
@@ -484,12 +477,12 @@ export default function Rules() {
             <li>歌ってみた、ファンアートなどの二次創作を強く歓迎します。</li>
             <li>
               ニコニコ動画にアップロードする場合、
-              <strong>「本当のルーキー祭り2026春二次創作」</strong>
+              <strong>「本当のルーキー祭り2026秋二次創作」</strong>
               をタグロックしてください。
             </li>
             <li>
               noteに投稿する場合、
-              <strong>「本当のルーキー祭り2026春二次創作」</strong>
+              <strong>「本当のルーキー祭り2026秋二次創作」</strong>
               のタグをつけてください。
             </li>
             <li>
@@ -524,7 +517,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026春二次創作者募集要項
+              本当のルーキー祭り2026秋二次創作者募集要項
             </a>
             をご確認ください。
           </p>
