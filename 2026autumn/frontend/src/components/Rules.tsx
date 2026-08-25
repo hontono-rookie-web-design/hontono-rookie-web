@@ -143,7 +143,7 @@ export default function Rules() {
           <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
             詳しいルールについては
             <a
-              href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
+              href="https://note.com/syn523/n/n15ed59e49077?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
@@ -245,7 +245,7 @@ export default function Rules() {
           <p className="text-sm text-slate-500 mt-2">
             参考：
             <a
-              href="https://x.com/sumobi126759/status/2040464042284941327?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2040464042284941327%7Ctwgr%5E8b84d798f038a4b0f023c300f5ca46140c77cd4a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fnote.com%2Fsyn523%2Fn%2Fn5ee5e731c3d6"
+              href="https://x.com/sumobi126759/status/2040464042284941327?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2040464042284941327%7Ctwgr%5E8b84d798f038a4b0f023c300f5ca46140c77cd4a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fnote.com%2Fsyn523%2Fn%2Fn15ed59e49077"
               target="_blank"
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
@@ -269,7 +269,7 @@ export default function Rules() {
           <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
             詳しいルールについては
             <a
-              href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
+              href="https://note.com/syn523/n/n15ed59e49077?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"

@@ -147,7 +147,7 @@ export default function Navigation({
               onClick={closeDrawer}
             >
               <Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票
-              exステージ
+              SPステージ
             </Link>
           </li>
 
