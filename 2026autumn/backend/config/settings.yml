@@ -35,8 +35,10 @@ spreadsheets:
     ex_sheet: "ex" #exシート名
 
   note_list: # Note記事リスト
-    name: "note_list_2026spring" # スプレッドシート名
-    list_sheet: "list" # Note記事リストシート名
+    # スプレッドシート名（本番用）。開発用スプレッドシート（note_list_dev）でテストする場合は
+    # このファイルを書き換えず、環境変数NOTE_LIST_SPREADSHEET_NAMEに"note_list_dev"を設定して実行する
+    name: "note_list_pro" # スプレッドシート名
+    list_sheet: "note_list" # Note記事リストシート名
 
   fanfic_list: # 二次創作作品リスト
     name: "fanfic_list_2026spring" # スプレッドシート名

@@ -124,15 +124,13 @@ def update_sheet(spreadsheetname, sheetname, data):
 
 def format_df(df):  # データフレームの整理
     # dfからurl重複を削除
-    df = df.drop_duplicates("note_url")
+    df = df.drop_duplicates("article_url")
     # 日付順でソート
-    df = df.sort_values(by="Published Date", ascending=False)
+    df = df.sort_values(by="posted_at", ascending=False)
     # 日付データ形式整理
-    df["Published Date"] = pd.to_datetime(df["Published Date"]).dt.strftime(
-        "%Y-%m-%d %H:%M"
-    )
-    # No.列の上書き
-    df["No."] = range(1, len(df) + 1)
+    df["posted_at"] = pd.to_datetime(df["posted_at"]).dt.strftime("%Y-%m-%d %H:%M")
+    # article_id列の上書き
+    df["article_id"] = range(1, len(df) + 1)
     return df
 
 
@@ -141,7 +139,12 @@ def main():
     config = utils.load_config()
     tag_config: dict[str, str] = config["tag"]
     catalog_sheet_config = config["spreadsheets"]["note_list"]
-    catalog_spreadsheetname = catalog_sheet_config["name"]
+    # 環境変数NOTE_LIST_SPREADSHEET_NAMEが設定されていればそちらを優先する
+    # （ローカルでの開発用スプレッドシート向けテスト実行用。未設定時はsettings.ymlの値＝本番用を使う）
+    catalog_spreadsheetname = os.environ.get(
+        "NOTE_LIST_SPREADSHEET_NAME", catalog_sheet_config["name"]
+    )
+    print(f"接続先スプレッドシート: {catalog_spreadsheetname}")
     catalog_sheetname = catalog_sheet_config["list_sheet"]
 
     # hashtag = "本当のルーキー祭り2025秋"
@@ -166,12 +169,12 @@ def main():
     df = pd.DataFrame(
         data_list,
         columns=[
-            "No.",
-            "Title",
-            "Author",
-            "Published Date",
-            "note_url",
-            "user_url",
+            "article_id",
+            "article_title",
+            "article_author",
+            "posted_at",
+            "article_url",
+            "author_url",
             "eyecatch_url",
             "user_profile_img_url",
         ],
