@@ -1,9 +1,7 @@
 import os
-from typing import List, Dict
+from typing import Dict, List
 
-from lib import sheet_client
-from lib import niconico
-from lib import utils
+from lib import niconico, sheet_client, utils
 
 
 def connect(spreadsheet_name: str, sheet_name: str):

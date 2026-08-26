@@ -58,7 +58,30 @@ repos:
     hooks:
       - id: prettier
         name: Prettier (Frontend)
-        entry: npx --no-install prettier --write --ignore-unknown
         language: system
+        entry: >-
+          bash -c '
+            status=0
+
+            for file in "$@"; do
+              frontend_dir="${file%%/frontend/*}/frontend"
+              prettier="$frontend_dir/node_modules/.bin/prettier"
+
+              if [ ! -x "$prettier" ]; then
+                echo "Prettier is not installed in $frontend_dir"
+                echo "Run: cd $frontend_dir && npm ci"
+                status=1
+                continue
+              fi
+
+              "$prettier" \
+                --write \
+                --ignore-unknown \
+                --ignore-path .prettierignore \
+                "$file" || status=1
+            done
+
+            exit $status
+          ' --
         files: ^[0-9]{4}[a-z0-9-]+/frontend/
         exclude: (^|/)package-lock\.json$

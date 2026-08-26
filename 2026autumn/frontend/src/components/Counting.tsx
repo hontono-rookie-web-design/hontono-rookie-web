@@ -6,9 +6,14 @@ export default function Counting({ title }: { title: string }) {
       <div className="w-24 h-24 bg-mint/10 rounded-full flex items-center justify-center mb-8 text-mint shadow-inner">
         <Anchor size={48} className="animate-pulse" />
       </div>
-      <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">{title}</h1>
+
+      <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">
+        {title}
+      </h1>
+
       <p className="text-slate-500 font-medium leading-relaxed">
-        ただいま集計中です。<br className="hidden sm:block" />
+        ただいま集計中です。
+        <br className="hidden sm:block" />
         結果発表まで今しばらくお待ちください。
       </p>
     </div>

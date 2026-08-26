@@ -28,11 +28,13 @@ function SkeletonCard() {
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+
             <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
           </div>
 
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-24 animate-pulse" />
+
             <div className="h-10 bg-gray-200 rounded w-full animate-pulse" />
           </div>
         </div>
@@ -46,14 +48,9 @@ const PAGE_SIZE = 24;
 /* =========================
    Content
 ========================= */
-export default function ArrangementContent({
-  initialData,
-}: {
-  initialData: Item[];
-}) {
+export default function ArrangementContent({ initialData }: { initialData: Item[] }) {
   const [data] = useState<Item[]>(initialData);
-  const [displayData, setDisplayData] =
-    useState<Item[]>(initialData);
+  const [displayData, setDisplayData] = useState<Item[]>(initialData);
 
   const [ready, setReady] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -74,14 +71,9 @@ export default function ArrangementContent({
       const q = searchText.toLowerCase();
 
       filtered = filtered.filter((item) =>
-        (
-          item.title +
-          item.creator +
-          item.originalTitle +
-          item.originalAuthor
-        )
+        (item.title + item.creator + item.originalTitle + item.originalAuthor)
           .toLowerCase()
-          .includes(q)
+          .includes(q),
       );
     }
 
@@ -96,12 +88,10 @@ export default function ArrangementContent({
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount((prev) =>
-            Math.min(prev + PAGE_SIZE, displayData.length)
-          );
+          setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, displayData.length));
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     );
 
     observer.observe(loadMoreRef.current);
@@ -114,19 +104,19 @@ export default function ArrangementContent({
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
       {/* ヘッダー */}
+
       <div className="text-center mb-8 w-full max-w-[760px]">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          二次創作（アレンジ）
-        </h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">二次創作（アレンジ）</h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」の二次創作アレンジ作品を掲載しています。
+          「{CONFIG.event.name}
+          」の二次創作アレンジ作品を掲載しています。
         </p>
 
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
-
       {/* 検索 */}
+
       <div className="w-full max-w-[760px] mb-4 flex">
         <input
           type="text"
@@ -136,15 +126,15 @@ export default function ArrangementContent({
           className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
         />
       </div>
-
       {/* EMPTY */}
+
       {displayData.length === 0 && (
         <div className="text-center py-20 text-gray-600 w-full max-w-[760px]">
           二次創作（アレンジ）はまだありません。
         </div>
       )}
-
       {/* CONTENT */}
+
       {displayData.length > 0 && (
         <div
           className={`flex flex-col gap-4 sm:gap-6 items-center w-full transition-opacity duration-300 ${
@@ -152,10 +142,7 @@ export default function ArrangementContent({
           }`}
         >
           {visibleItems.map((item, i) => {
-            const img =
-              item.imageUrl?.trim()
-                ? item.imageUrl
-                : CONFIG.images.defaultIllustration;
+            const img = item.imageUrl?.trim() ? item.imageUrl : CONFIG.images.defaultIllustration;
 
             return (
               <div
@@ -164,6 +151,7 @@ export default function ArrangementContent({
               >
                 <div className="flex gap-3 sm:gap-4 w-full">
                   {/* サムネ */}
+
                   <a
                     href={item.workUrl}
                     target="_blank"
@@ -181,15 +169,11 @@ export default function ArrangementContent({
                       />
                     </div>
                   </a>
-
                   {/* テキスト */}
+
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
-                      <a
-                        href={item.workUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                      <a href={item.workUrl} target="_blank" rel="noopener noreferrer">
                         <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug line-clamp-2 h-[2.6em] overflow-hidden group-hover:underline">
                           {item.title}
                         </h2>
@@ -200,12 +184,11 @@ export default function ArrangementContent({
                           {item.creator}
                         </p>
 
-                        {item.service &&
-                          item.service !== "その他" && (
-                            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 shrink-0">
-                              {item.service}
-                            </span>
-                          )}
+                        {item.service && item.service !== "その他" && (
+                          <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 shrink-0">
+                            {item.service}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -219,8 +202,8 @@ export default function ArrangementContent({
                             className="block truncate underline hover:text-gray-800"
                           >
                             {item.originalTitle}
-                            {item.originalAuthor &&
-                              ` / ${item.originalAuthor}`}
+
+                            {item.originalAuthor && ` / ${item.originalAuthor}`}
                           </a>
                         </div>
                       )}
@@ -233,9 +216,7 @@ export default function ArrangementContent({
         </div>
       )}
       {/* 無限スクロール監視用 */}
-      {displayData.length > visibleCount && (
-        <div ref={loadMoreRef} className="h-10 w-full" />
-      )}
+      {displayData.length > visibleCount && <div ref={loadMoreRef} className="h-10 w-full" />}
     </div>
   );
 }

@@ -24,7 +24,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-primary btn-lg rounded-full text-white shadow-lg shadow-mint/30"
           >
-            参加ルールを読む <ArrowRight className="ml-2 w-5 h-5" />
+            参加ルールを読む
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.OPENING:
@@ -34,7 +35,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
-            参加楽曲ページへ <ArrowRight className="ml-2 w-5 h-5" />
+            参加楽曲ページへ
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.ROOKIE:
@@ -47,7 +49,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
-            参加楽曲ページへ <ArrowRight className="ml-2 w-5 h-5" />
+            参加楽曲ページへ
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.PRELIM:
@@ -57,7 +60,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
-            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
+            人気投票ページへ
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.SEMIFINAL:
@@ -67,7 +71,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
-            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
+            人気投票ページへ
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.FINAL:
@@ -77,7 +82,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
-            人気投票ページへ <ArrowRight className="ml-2 w-5 h-5" />
+            人気投票ページへ
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       case EVENT_PHASES.AFTER:
@@ -87,7 +93,8 @@ export default function Hero() {
             prefetch={false}
             className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-skyblue/30"
           >
-            人気投票結果を見る <ArrowRight className="ml-2 w-5 h-5" />
+            人気投票結果を見る
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
       default:
@@ -108,6 +115,7 @@ export default function Hero() {
             strokeWidth="1"
             className="animate-[pulse_4s_ease-in-out_infinite]"
           />
+
           <line
             x1="30%"
             y1="40%"
@@ -117,6 +125,7 @@ export default function Hero() {
             strokeWidth="1"
             className="animate-[pulse_5s_ease-in-out_infinite]"
           />
+
           <line
             x1="60%"
             y1="15%"
@@ -126,6 +135,7 @@ export default function Hero() {
             strokeWidth="1"
             className="animate-[pulse_3s_ease-in-out_infinite]"
           />
+
           <line
             x1="30%"
             y1="40%"
@@ -135,6 +145,7 @@ export default function Hero() {
             strokeWidth="1"
             className="animate-[pulse_4.5s_ease-in-out_infinite]"
           />
+
           <line
             x1="45%"
             y1="70%"
@@ -144,6 +155,7 @@ export default function Hero() {
             strokeWidth="1"
             className="animate-[pulse_3.5s_ease-in-out_infinite]"
           />
+
           <line
             x1="60%"
             y1="15%"
@@ -155,58 +167,28 @@ export default function Hero() {
             className="animate-[pulse_6s_ease-in-out_infinite]"
           />
 
-          <circle
-            cx="10%"
-            cy="20%"
-            r="4"
-            fill="#2DD4BF"
-            className="animate-ping"
-          />
+          <circle cx="10%" cy="20%" r="4" fill="#2DD4BF" className="animate-ping" />
+
           <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
 
-          <circle
-            cx="30%"
-            cy="40%"
-            r="4"
-            fill="#38BDF8"
-            className="animate-pulse"
-          />
+          <circle cx="30%" cy="40%" r="4" fill="#38BDF8" className="animate-pulse" />
+
           <circle cx="30%" cy="40%" r="8" fill="#38BDF8" opacity="0.8" />
 
-          <circle
-            cx="60%"
-            cy="15%"
-            r="3"
-            fill="#2DD4BF"
-            className="animate-ping"
-          />
+          <circle cx="60%" cy="15%" r="3" fill="#2DD4BF" className="animate-ping" />
+
           <circle cx="60%" cy="15%" r="5" fill="#2DD4BF" />
 
-          <circle
-            cx="85%"
-            cy="35%"
-            r="4"
-            fill="#FB7185"
-            className="animate-pulse"
-          />
+          <circle cx="85%" cy="35%" r="4" fill="#FB7185" className="animate-pulse" />
+
           <circle cx="85%" cy="35%" r="7" fill="#FB7185" opacity="0.9" />
 
-          <circle
-            cx="45%"
-            cy="70%"
-            r="5"
-            fill="#FB7185"
-            className="animate-ping"
-          />
+          <circle cx="45%" cy="70%" r="5" fill="#FB7185" className="animate-ping" />
+
           <circle cx="45%" cy="70%" r="8" fill="#FB7185" />
 
-          <circle
-            cx="75%"
-            cy="80%"
-            r="4"
-            fill="#38BDF8"
-            className="animate-pulse"
-          />
+          <circle cx="75%" cy="80%" r="4" fill="#38BDF8" className="animate-pulse" />
+
           <circle cx="75%" cy="80%" r="6" fill="#38BDF8" opacity="0.8" />
         </svg>
       </div>
