@@ -1,8 +1,7 @@
 import os
 from collections import defaultdict
 
-from lib import utils
-from lib import sheet_client
+from lib import sheet_client, utils
 
 
 def deduplicate_by_url(data: list[dict]) -> list[dict]:

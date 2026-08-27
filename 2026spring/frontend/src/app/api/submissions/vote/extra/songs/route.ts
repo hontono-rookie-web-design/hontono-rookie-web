@@ -27,21 +27,13 @@ function parseDate(dateStr?: string) {
 
   const cleaned = dateStr.replace(/^'/, "").trim();
 
-  const match = cleaned.match(
-    /^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?/
-  );
+  const match = cleaned.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?/);
 
   if (!match) return 0;
 
   const [, y, m, d, h = "0", min = "0"] = match;
 
-  return new Date(
-    Number(y),
-    Number(m) - 1,
-    Number(d),
-    Number(h),
-    Number(min)
-  ).getTime();
+  return new Date(Number(y), Number(m) - 1, Number(d), Number(h), Number(min)).getTime();
 }
 
 /* =========================
@@ -66,14 +58,10 @@ function trimDescription(text?: string) {
   // 最後のスペース位置まで戻す（英語対策）
   const lastSpace = truncated.lastIndexOf(" ");
 
-  const safeText =
-    lastSpace > slicePoint - 20
-      ? truncated.slice(0, lastSpace)
-      : truncated;
+  const safeText = lastSpace > slicePoint - 20 ? truncated.slice(0, lastSpace) : truncated;
 
   return safeText + "…";
 }
-
 
 /* =========================
    API
@@ -89,15 +77,13 @@ export async function GET() {
 
     // ✔ Sheets取得
     const items = await fetchGroupedVideosSheet(
-      CONFIG.groupedvideosheets_ex.spreadsheetId, 
+      CONFIG.groupedvideosheets_ex.spreadsheetId,
       CONFIG.groupedvideosheets_ex.rookie.name,
     );
 
     const videos = items
       .filter((item) => item.videoUrl)
-      .sort(
-        (a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)
-      )
+      .sort((a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt))
       .map((v) => ({
         title: v.title,
         creator: v.creator,
@@ -116,9 +102,6 @@ export async function GET() {
 
     return Response.json(videos);
   } catch {
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch videos" }),
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "Failed to fetch videos" }), { status: 500 });
   }
 }

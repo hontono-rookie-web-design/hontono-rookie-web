@@ -4,11 +4,7 @@ import { Home, Menu, Music, PlusCircle, Star, Vote } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Navigation({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Navigation({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const closeDrawer = () => setIsOpen(false);
@@ -25,6 +21,7 @@ export default function Navigation({
 
       <div className="drawer-content flex flex-col min-h-screen relative">
         {/* Navbar */}
+
         <div className="navbar bg-white/80 backdrop-blur-md border-b border-mint/10 sticky top-0 z-50 px-4">
           <div className="flex-none lg:hidden">
             <label
@@ -35,6 +32,7 @@ export default function Navigation({
               <Menu size={24} />
             </label>
           </div>
+
           <div className="flex-1 lg:ml-4">
             <Link
               href="/"
@@ -45,17 +43,13 @@ export default function Navigation({
             </Link>
           </div>
         </div>
-
         {/* Page Content */}
         <main className="flex-1 flex flex-col">{children}</main>
       </div>
 
       <div className="drawer-side z-[100]">
-        <label
-          htmlFor="main-drawer"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+        <label htmlFor="main-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+
         <ul className="menu p-4 w-72 min-h-full bg-base-100 text-slate-700 border-r border-mint/10 shadow-sm">
           <div className="mb-6 mt-2 px-2">
             <h2 className="text-2xl font-bold text-slate-800">
@@ -66,29 +60,23 @@ export default function Navigation({
           </div>
 
           <li className="mb-2">
-            <Link
-              href="/"
-              prefetch={false}
-              onClick={closeDrawer}
-              className="font-semibold"
-            >
-              <Home className="w-5 h-5 mr-3 text-slate-400" /> トップページ
+            <Link href="/" prefetch={false} onClick={closeDrawer} className="font-semibold">
+              <Home className="w-5 h-5 mr-3 text-slate-400" />
+              トップページ
             </Link>
           </li>
 
           <li className="menu-title mt-4 text-skyblue font-bold tracking-widest text-xs uppercase">
             投稿作品
           </li>
+
           <li>
-            <Link
-              href="/submissions/songs/rookie"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
-              ルーキー
+            <Link href="/submissions/songs/rookie" prefetch={false} onClick={closeDrawer}>
+              <Music className="w-4 h-4 mr-3 text-slate-400" />
+              楽曲一覧 ルーキー
             </Link>
           </li>
+
           <li>
             <Link
               href="/submissions/songs/opening"
@@ -99,6 +87,7 @@ export default function Navigation({
               exステージ
             </Link>
           </li>
+
           <li>
             <Link
               href="/submissions/songs/extra"
@@ -113,102 +102,81 @@ export default function Navigation({
           <li className="menu-title mt-4 text-cherry font-bold tracking-widest text-xs uppercase">
             人気投票
           </li>
+
           <li>
-            <Link
-              href="/submissions/vote/preliminaries"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 予選
+            <Link href="/submissions/vote/preliminaries" prefetch={false} onClick={closeDrawer}>
+              <Vote className="w-4 h-4 mr-3 text-slate-400" />
+              人気投票 予選
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/submissions/vote/semifinals"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 準決勝
+            <Link href="/submissions/vote/semifinals" prefetch={false} onClick={closeDrawer}>
+              <Vote className="w-4 h-4 mr-3 text-slate-400" />
+              人気投票 準決勝
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/submissions/vote/finals"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票 決勝
+            <Link href="/submissions/vote/finals" prefetch={false} onClick={closeDrawer}>
+              <Vote className="w-4 h-4 mr-3 text-slate-400" />
+              人気投票 決勝
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/submissions/vote/extra"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Vote className="w-4 h-4 mr-3 text-slate-400" /> 人気投票
-              SPステージ
+            <Link href="/submissions/vote/extra" prefetch={false} onClick={closeDrawer}>
+              <Vote className="w-4 h-4 mr-3 text-slate-400" />
+              人気投票 SPステージ
             </Link>
           </li>
 
           <li className="menu-title mt-4 text-yellow-500 font-bold tracking-widest text-xs uppercase">
             二次創作
           </li>
+
           <li>
-            <Link
-              href="/derivative/streams"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> 紹介配信
+            <Link href="/derivative/streams" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              紹介配信
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/derivative/articles"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> note記事
+            <Link href="/derivative/articles" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              note記事
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/derivative/illustrations"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 イラスト
+            <Link href="/derivative/illustrations" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              二次創作 イラスト
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/derivative/arrangements"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 アレンジ
+            <Link href="/derivative/arrangements" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              二次創作 アレンジ
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/derivative/coversongs"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作
-              歌ってみた
+            <Link href="/derivative/coversongs" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              二次創作 歌ってみた
             </Link>
           </li>
+
           <li>
-            <Link
-              href="/derivative/others"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Star className="w-4 h-4 mr-3 text-slate-400" /> 二次創作 その他
+            <Link href="/derivative/others" prefetch={false} onClick={closeDrawer}>
+              <Star className="w-4 h-4 mr-3 text-slate-400" />
+              二次創作 その他
             </Link>
           </li>
+
           <li className="mt-2">
             <Link
               href="/derivative/Postingform"

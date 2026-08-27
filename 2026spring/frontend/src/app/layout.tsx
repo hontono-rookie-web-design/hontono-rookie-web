@@ -25,9 +25,7 @@ export const metadata: Metadata = {
       { url: "/icons/icon-384x384.png", sizes: "384x384", type: "image/png" },
       { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [
-      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
-    ],
+    apple: [{ url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" }],
   },
   openGraph: {
     title: "本当のルーキー祭り2026春",
@@ -58,9 +56,8 @@ export default function RootLayout({
     >
       <body className="min-h-full">
         <Navigation>{children}</Navigation>
-        <GoogleAnalytics
-          gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
-        />
+
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""} />
       </body>
     </html>
   );

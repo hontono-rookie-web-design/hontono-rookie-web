@@ -34,15 +34,15 @@ class ContentGrouper:
         """
         if size <= 0:
             raise ValueError("Size must be positive")
-            
-        shuffled = self.content_ids[:] # 元のリストを変更しないようにコピー
-        self.rng.shuffle(shuffled) # IDをランダムにシャッフル
-        
+
+        shuffled = self.content_ids[:]  # 元のリストを変更しないようにコピー
+        self.rng.shuffle(shuffled)  # IDをランダムにシャッフル
+
         # 実際にグループ分けを行い、リストのリストを作成
         groups = []
         for i in range(0, len(shuffled), size):
-            groups.append(shuffled[i:i + size])
-            
+            groups.append(shuffled[i : i + size])
+
         # content_to_groupとgroup_to_contentsを更新
         self._populate_lookups(groups)
         return self.group_to_contents
@@ -55,17 +55,17 @@ class ContentGrouper:
         if count <= 0:
             raise ValueError("Count must be positive")
         if count > len(self.content_ids):
-             raise ValueError("Count cannot be larger than number of items")
+            raise ValueError("Count cannot be larger than number of items")
 
-        shuffled = self.content_ids[:] # 元のリストを変更しないようにコピー
-        self.rng.shuffle(shuffled) # IDをランダムにシャッフル
-        
+        shuffled = self.content_ids[:]  # 元のリストを変更しないようにコピー
+        self.rng.shuffle(shuffled)  # IDをランダムにシャッフル
+
         # グループ分け後に生成されるリストのリストを作成
         groups = [[] for _ in range(count)]
         for i, item in enumerate(shuffled):
             # idを前から順番にグループに割り当てる
             groups[i % count].append(item)
-            
+
         # content_to_groupとgroup_to_contentsを更新
         self._populate_lookups(groups)
         return self.group_to_contents
@@ -84,9 +84,9 @@ class ContentGrouper:
             print("No grouping has been performed yet.")
             return
 
-        with open(filename, mode='w', newline='', encoding='utf-8') as f:
+        with open(filename, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(['content_id', 'group_id'])
+            writer.writerow(["content_id", "group_id"])
             for content_id, group_id in self.content_to_group.items():
                 writer.writerow([content_id, group_id])
         print(f"Exported to {filename}")

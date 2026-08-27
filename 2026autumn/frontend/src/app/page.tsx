@@ -14,14 +14,20 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <Hero />
+
       <About />
+
       <Rules />
+
       <Schedule />
 
       <RelatedLinks />
       <PastEventLink />
+
       <Sponsors />
+
       <Contact />
+
       <PrivacyPolicy />
 
       <footer className="w-full py-8 text-center text-sm text-slate-400 bg-white">

@@ -1,13 +1,12 @@
-import sys
-import os
-
-from lib import utils
-from lib import sheet_client
-from gspread_dataframe import set_with_dataframe
-import pandas as pd
 import datetime
-import requests
+import os
+import sys
 import time
+
+import pandas as pd
+import requests
+from gspread_dataframe import set_with_dataframe
+from lib import sheet_client, utils
 
 
 def connect_sheet(spreadsheet_name, sheet_name):

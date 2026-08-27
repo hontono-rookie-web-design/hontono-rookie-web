@@ -18,9 +18,7 @@ export async function GET() {
   }
 
   // データ取得
-  const data = await fetchVotesSheet(
-    CONFIG.voteformssheets.semifinals.name
-  );
+  const data = await fetchVotesSheet(CONFIG.voteformssheets.semifinals.name);
 
   // キャッシュ更新
   cache = {

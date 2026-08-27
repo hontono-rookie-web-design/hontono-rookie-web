@@ -21,10 +21,12 @@ export function SkeletonCard() {
 
       <div className="mt-2 space-y-2">
         <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
+
         <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
       </div>
 
       <div className="mt-2 h-4 bg-gray-200 rounded w-1/3 animate-pulse" />
+
       <div className="mt-2 h-10 bg-gray-200 rounded w-full animate-pulse" />
     </div>
   );
@@ -53,14 +55,9 @@ export default function IllustrationsContent({ initialItems }: Props) {
       const q = searchText.toLowerCase();
 
       filtered = filtered.filter((item) =>
-        (
-          item.title +
-          item.creator +
-          item.originalTitle +
-          item.originalAuthor
-        )
+        (item.title + item.creator + item.originalTitle + item.originalAuthor)
           .toLowerCase()
-          .includes(q)
+          .includes(q),
       );
     }
 
@@ -83,12 +80,10 @@ export default function IllustrationsContent({ initialItems }: Props) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount((prev) =>
-            Math.min(prev + PAGE_SIZE, displayData.length)
-          );
+          setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, displayData.length));
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     );
 
     observer.observe(loadMoreRef.current);
@@ -101,6 +96,7 @@ export default function IllustrationsContent({ initialItems }: Props) {
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center w-full">
       {/* 検索 */}
+
       <div className="w-full max-w-6xl mb-4">
         <input
           type="text"
@@ -110,15 +106,15 @@ export default function IllustrationsContent({ initialItems }: Props) {
           className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
         />
       </div>
-
       {/* EMPTY */}
+
       {displayData.length === 0 && (
         <div className="flex justify-center items-center min-h-[40vh] text-gray-600 w-full max-w-6xl">
           二次創作（イラスト）はまだありません。
         </div>
       )}
-
       {/* CONTENT */}
+
       {displayData.length > 0 && (
         <div
           className={`w-full max-w-6xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 transition-opacity duration-300 ${
@@ -126,14 +122,12 @@ export default function IllustrationsContent({ initialItems }: Props) {
           }`}
         >
           {visibleItems.map((item, i) => {
-            const img =
-              item.imageUrl?.trim()
-                ? item.imageUrl
-                : CONFIG.images.defaultIllustration;
+            const img = item.imageUrl?.trim() ? item.imageUrl : CONFIG.images.defaultIllustration;
 
             return (
               <div key={i} className="group flex flex-col">
                 {/* 画像 */}
+
                 <a href={item.workUrl} target="_blank">
                   <div className="aspect-square overflow-hidden rounded-xl relative">
                     <Image
@@ -146,23 +140,23 @@ export default function IllustrationsContent({ initialItems }: Props) {
                     />
                   </div>
                 </a>
-
                 {/* タイトル */}
+
                 <a href={item.workUrl} target="_blank">
                   <h2 className="mt-2 font-bold text-sm sm:text-sm md:text-base leading-snug line-clamp-2 min-h-[3rem] group-hover:underline">
                     {item.title}
                   </h2>
                 </a>
-
                 {/* 作者 */}
+
                 <p className="text-xs sm:text-sm text-gray-700 mt-1 font-medium line-clamp-1 min-h-[1.5rem]">
                   {item.creator}
                 </p>
-
                 {/* Original */}
+
                 {item.originalTitle && (
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2 min-h-[2rem]">
-                    Original:{" "}
+                    Original:
                     <a
                       href={item.originalUrl}
                       target="_blank"
@@ -178,11 +172,8 @@ export default function IllustrationsContent({ initialItems }: Props) {
           })}
         </div>
       )}
-
       {/* 無限スクロール監視用 */}
-      {displayData.length > visibleCount && (
-        <div ref={loadMoreRef} className="h-10 w-full" />
-      )}
+      {displayData.length > visibleCount && <div ref={loadMoreRef} className="h-10 w-full" />}
     </div>
   );
 }
