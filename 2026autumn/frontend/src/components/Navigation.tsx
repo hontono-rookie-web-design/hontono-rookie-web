@@ -96,7 +96,7 @@ export default function Navigation({
               onClick={closeDrawer}
             >
               <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
-              opステージ
+              exステージ
             </Link>
           </li>
           <li>
@@ -106,7 +106,7 @@ export default function Navigation({
               onClick={closeDrawer}
             >
               <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
-              exステージ
+              SPステージ
             </Link>
           </li>
 

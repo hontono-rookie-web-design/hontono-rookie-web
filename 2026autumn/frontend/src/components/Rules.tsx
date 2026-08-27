@@ -312,7 +312,7 @@ export default function Rules() {
             <li>各グループの投票用Googleフォームにアクセスしてください。</li>
             <li>
               1番好きな作品から順番に
-              <strong>1位、2位、3位・・5位</strong>
+              <strong>1位、2位、3位、4位、5位</strong>
               を投票してください。
             </li>
             <li>全曲を順位づけする形式のため、1曲だけ選ぶことはできません</li>
@@ -523,18 +523,6 @@ export default function Rules() {
 	      をタグロックしてください。
             </li>
           </ul>
-          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            セレクションCDについては
-            <a
-              href="https://twipla.jp/events/704387"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のNEXTAGE祭2026【開催日2026/X/XX】with 大阪新世界フェス
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },

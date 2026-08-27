@@ -19,7 +19,6 @@ export default function Home() {
       <Schedule />
 
       <RelatedLinks />
-      <Crowdfunding />
       <PastEventLink />
       <Sponsors />
       <Contact />

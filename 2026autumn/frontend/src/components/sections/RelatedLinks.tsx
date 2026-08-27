@@ -6,22 +6,7 @@ export default function RelatedLinks() {
       title: "本当のルーキー祭り2026秋投稿者募集要項",
       desc: "投稿者向け募集要項です。",
       url: "https://note.com/syn523/n/n15ed59e49077?sub_rt=share_pw",
-    },
-    {
-      title: "本当のルーキー祭り2026秋二次創作者募集要項",
-      desc: "二次創作者向け募集要項です。",
-      url: "https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw",
-    },
-    {
-      title: "本当のルーキーイラスト投稿祭募集要項",
-      desc: "絵師の二次創作者向け投稿祭です。",
-      url: "https://note.com/syn523/n/nabf1e9f2e437?sub_rt=share_pw",
-    },
-    {
-      title: "本当のルーキー祭り2026秋人気投票募集要項",
-      desc: "リスナー向け人気投票募集要項です。",
-      url: "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw",
-    },
+    }
   ];
 
   const resourceLinks = [
@@ -39,11 +24,6 @@ export default function RelatedLinks() {
       title: "本当のルーキー祭り2026秋TwiPla",
       desc: "イベントの詳細やスケジュールを掲載しています。",
       url: "https://twipla.jp/events/731912",
-    },
-    {
-      title: "本当のルーキー祭り2026秋 - 初音ミク Wiki",
-      desc: "イベントの概要や関連情報が掲載されています。",
-      url: "https://w.atwiki.jp/hmiku/pages/72938.html",
     },
     {
       title: "認定活動者",

@@ -11,9 +11,9 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "本当のルーキー祭り2026春",
+  title: "本当のルーキー祭り2026秋",
   description:
-    "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+    "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026秋」の特設サイト",
   icons: {
     icon: [
       { url: "/icons/icon-72x72.png", sizes: "72x72", type: "image/png" },
@@ -30,17 +30,17 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "本当のルーキー祭り2026春",
+    title: "本当のルーキー祭り2026秋",
     description:
-      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026秋」の特設サイト",
     images: [{ url: "/ogp.png" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "本当のルーキー祭り2026春",
+    title: "本当のルーキー祭り2026秋",
     description:
-      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
+      "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026秋」の特設サイト",
     images: ["/ogp.png"],
   },
 };
