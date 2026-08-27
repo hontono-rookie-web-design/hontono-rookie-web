@@ -2,13 +2,13 @@ export default function Schedule() {
   const scheduleItems = [
     {
       title: "エキシビジョンステージ(ex)",
-      date: "2026年9月4日(金) 17:00 〜 9月7日(月) 16:00",
+      date: "2026年9月4日(金) 17:00 〜 9月6日(月) 16:00",
       description: "人気投票に参加しない作品の投稿期間",
       color: "step-primary", // mint
     },
     {
       title: "作品投稿期間",
-      date: "2026年9月7日(月) 17:00 〜 9月12日(土) 04:00",
+      date: "2026年9月6日(月) 17:00 〜 9月12日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
       color: "step-primary", // mint
     },
