@@ -23,7 +23,7 @@ const VIEW_PHASE = {
 function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
+    case EVENT_PHASES.EXTRA:
       return VIEW_PHASE.BEFORE;
     default:
       return VIEW_PHASE.DURING;
@@ -141,11 +141,11 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* ヘッダー */}
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 opステージ</h1>
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 spステージ</h1>
 
           <p className="text-sm text-gray-500 mt-1">
             「{CONFIG.event.name}
-            」のopステージ参加楽曲を掲載しています。
+            」のspステージ参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
@@ -226,7 +226,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* 空 */}
 
         {!loading && displayData.length === 0 && (
-          <div className="text-center py-20 text-gray-600">opステージ楽曲はまだありません。</div>
+          <div className="text-center py-20 text-gray-600">spステージ楽曲はまだありません。</div>
         )}
         {/* グリッド */}
 

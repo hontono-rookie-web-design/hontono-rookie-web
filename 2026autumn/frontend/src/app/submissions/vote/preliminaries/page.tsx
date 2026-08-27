@@ -1,17 +1,17 @@
 import { Suspense } from "react";
 import VoteContent from "./VoteContent";
-import { getPreliminarySongs, getPreliminaryForms, getPreliminaryRanks } from "@/lib/votes";
+import { fetchVideosSheet, fetchVotesSheet } from "@/lib/fetchSheet";
+import { CONFIG } from "@/config/config";
 
 export default async function Page() {
-  const [songs, forms, ranks] = await Promise.all([
-    getPreliminarySongs(),
-    getPreliminaryForms(),
-    getPreliminaryRanks(),
+  const [songs, forms] = await Promise.all([
+    fetchVideosSheet(CONFIG.videosheets.status.rookie.name, CONFIG.videosheets.stage.preliminaries),
+    fetchVotesSheet(CONFIG.voteformssheets.preliminaries.name)
   ]);
 
   return (
     <Suspense fallback={<div className="p-4">Loading...</div>}>
-      <VoteContent initialSongs={songs} initialForms={forms} initialRanks={ranks} />
+      <VoteContent initialSongs={songs} initialForms={forms} />
     </Suspense>
   );
 }

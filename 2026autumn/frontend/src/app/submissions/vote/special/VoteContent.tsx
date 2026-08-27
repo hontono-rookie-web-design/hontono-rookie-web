@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { CONFIG } from "@/config/config";
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
-import TBA from "@/components/TBA";
 import Counting from "@/components/Counting";
-import { useSearchParams, useRouter } from "next/navigation";
+import TBA from "@/components/TBA";
+import { CONFIG } from "@/config/config";
+import { EVENT_PHASES_EX, getCurrentPhaseEx } from "@/config/phase";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 /* =========================
    表示ラベル
 ========================= */
-const DISC_LABEL = "Selec";
-const PHASE_LABEL = "準決勝";
+const DISC_LABEL = "ex";
+const PHASE_LABEL = "exステージ";
 
 /* =========================
    表示フェーズ定義（安全化）
@@ -26,26 +26,21 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
-    case EVENT_PHASES.ROOKIE:
-    case EVENT_PHASES.PRELIM:
-    case EVENT_PHASES.PRELIM_COUNTING:
+    case EVENT_PHASES_EX.BEFORE:
+    case EVENT_PHASES_EX.SUBMISSION:
       return VIEW_PHASE.BEFORE;
 
-    case EVENT_PHASES.SEMIFINAL:
+    case EVENT_PHASES_EX.VOTING:
       return VIEW_PHASE.DURING;
 
-    case EVENT_PHASES.SEMIFINAL_COUNTING:
+    case EVENT_PHASES_EX.COUNTING:
       return VIEW_PHASE.COUNTING;
 
-    case EVENT_PHASES.FINAL:
-    case EVENT_PHASES.FINAL_COUNTING:
-    case EVENT_PHASES.AFTER:
+    case EVENT_PHASES_EX.AFTER:
       return VIEW_PHASE.AFTER;
 
     default:
-      return VIEW_PHASE.BEFORE;
+      return EVENT_PHASES_EX.BEFORE;
   }
 }
 
@@ -61,19 +56,6 @@ type Video = {
   description?: string;
   group: number;
   videoId?: string;
-};
-
-type Vote = {
-  group: number;
-  formUrl?: string;
-  mylistUrl?: string;
-  deadline?: string;
-};
-
-type Rank = {
-  videoId: string;
-  group: number;
-  rank: number;
 };
 
 /* =========================
@@ -131,19 +113,16 @@ function SkeletonCard() {
 export default function VoteContent({
   initialSongs,
   initialForms,
-  initialRanks,
 }: {
   initialSongs: any[];
   initialForms: any[];
-  initialRanks: any[];
 }) {
-  const phase = getCurrentPhase();
+  const phase = getCurrentPhaseEx();
   const viewPhase = getViewPhase(phase);
 
-  const [videos, setVideos] = useState(initialSongs);
+  const [videos, setVideos] = useState(initialSongs.filter((video) => video.group !== undefined));
   const mappedVideos = videos;
   const [votes, setVotes] = useState(initialForms);
-  const [ranks, setRanks] = useState(initialRanks);
   const [loading, setLoading] = useState(true);
 
   const [activeGroup, setActiveGroup] = useState<number | null>(null);
@@ -199,7 +178,7 @@ export default function VoteContent({
 
   const rankedVideos = useMemo(() => {
     if (activeGroup === null) return [];
-    return ranks
+    return videos
       .filter((r) => r.group === activeGroup && r.rank)
       .sort((a, b) => a.rank - b.rank)
       .map((r) => ({
@@ -207,7 +186,7 @@ export default function VoteContent({
         video: videos.find((v) => v.videoId === r.videoId),
       }))
       .filter((v): v is { rank: number; video: Video } => v.video !== undefined);
-  }, [ranks, videos, activeGroup]);
+  }, [videos, activeGroup]);
 
   const selectRandomGroup = () => {
     if (groups.length === 0) return;
@@ -240,14 +219,15 @@ export default function VoteContent({
 
         <p className="text-sm text-gray-600 mt-2">
           「本当のルーキー祭り2026春」
-          {PHASE_LABEL}の楽曲を {DISC_LABEL}
-          ごとに掲載しています。
+          {PHASE_LABEL}の楽曲を
+          {DISC_LABEL}
+          グループごとに掲載しています。
         </p>
 
-        {viewPhase === VIEW_PHASE.DURING && voteInfo?.deadline && (
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.vote_ends_at && (
           <p className="mt-2 text-sm font-semibold text-red-600">
             投票締切：
-            {formatDate(voteInfo.deadline)}
+            {formatDate(voteInfo.vote_ends_at)}
           </p>
         )}
 
@@ -276,6 +256,7 @@ export default function VoteContent({
                 `}
               >
                 <span className="font-medium">{DISC_LABEL} </span>
+
                 <span className="font-extrabold text-sm">{g}</span>
               </button>
             ))}
@@ -309,7 +290,6 @@ export default function VoteContent({
             {activeGroup}
             人気投票結果
           </h2>
-
           {/* ヘッダー */}
 
           <div
@@ -380,7 +360,6 @@ export default function VoteContent({
                   {video.title}
                 </div>
                 {/* 投稿者 */}
-
                 <div className="truncate text-xs sm:text-base">{video.creator}</div>
               </a>
             ))}
@@ -468,7 +447,6 @@ export default function VoteContent({
 
                 <div className="flex flex-col flex-1 min-w-0">
                   <h2 className="font-bold line-clamp-2 group-hover:underline">{item.title}</h2>
-
                   <p className="text-sm text-gray-700 truncate">{item.creator}</p>
 
                   <p className="text-xs text-gray-500">{formatDate(item.publishedAt)}</p>

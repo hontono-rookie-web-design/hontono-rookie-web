@@ -225,7 +225,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* 空 */}
 
         {!loading && displayData.length === 0 && (
-          <div className="text-center py-20 text-gray-600">opステージ楽曲はまだありません。</div>
+          <div className="text-center py-20 text-gray-600">exステージ楽曲はまだありません。</div>
         )}
         {/* グリッド */}
 

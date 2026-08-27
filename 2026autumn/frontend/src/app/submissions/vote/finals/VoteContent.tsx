@@ -27,7 +27,7 @@ const VIEW_PHASE = {
 function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
+    case EVENT_PHASES.EXTRA:
     case EVENT_PHASES.ROOKIE:
     case EVENT_PHASES.PRELIM:
     case EVENT_PHASES.PRELIM_COUNTING:
@@ -61,19 +61,6 @@ type Video = {
   description?: string;
   group: number;
   videoId?: string;
-};
-
-type Vote = {
-  group: number;
-  formUrl?: string;
-  mylistUrl?: string;
-  deadline?: string;
-};
-
-type Rank = {
-  videoId: string;
-  group: number;
-  rank: number;
 };
 
 /* =========================
@@ -131,19 +118,16 @@ function SkeletonCard() {
 export default function VoteContent({
   initialSongs,
   initialForms,
-  initialRanks,
 }: {
   initialSongs: any[];
   initialForms: any[];
-  initialRanks: any[];
 }) {
   const phase = getCurrentPhase();
   const viewPhase = getViewPhase(phase);
 
-  const [videos, setVideos] = useState(initialSongs);
+  const [videos, setVideos] = useState(initialSongs.filter((video) => video.group !== undefined));
   const mappedVideos = videos;
   const [votes, setVotes] = useState(initialForms);
-  const [ranks, setRanks] = useState(initialRanks);
   const [loading, setLoading] = useState(true);
 
   const [activeGroup, setActiveGroup] = useState<number | null>(null);
@@ -199,7 +183,7 @@ export default function VoteContent({
 
   const rankedVideos = useMemo(() => {
     if (activeGroup === null) return [];
-    return ranks
+    return videos
       .filter((r) => r.group === activeGroup && r.rank)
       .sort((a, b) => a.rank - b.rank)
       .map((r) => ({
@@ -207,7 +191,7 @@ export default function VoteContent({
         video: videos.find((v) => v.videoId === r.videoId),
       }))
       .filter((v): v is { rank: number; video: Video } => v.video !== undefined);
-  }, [ranks, videos, activeGroup]);
+  }, [videos, activeGroup]);
 
   const selectRandomGroup = () => {
     if (groups.length === 0) return;

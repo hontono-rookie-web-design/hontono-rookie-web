@@ -432,10 +432,10 @@ export default function Rules() {
       ),
     },
     {
-      title: "opステージ・exステージ",
+      title: "exステージ・spステージ",
       content: (
         <div>
-          <h3 className="text-lg font-bold text-slate-700 mb-2">opステージ</h3>
+          <h3 className="text-lg font-bold text-slate-700 mb-2">exステージ</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -450,7 +450,7 @@ export default function Rules() {
             </li>
             <li>人気投票不参加以外は全て同じです。（参加条件、オフボ必須など）</li>
           </ul>
-          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">exステージ</h3>
+          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">spステージ</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>

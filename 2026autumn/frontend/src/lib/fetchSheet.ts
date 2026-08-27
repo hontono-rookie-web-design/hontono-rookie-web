@@ -8,13 +8,11 @@ export type FanficSheetItem = {
   title: string;
   imageUrl: string;
   originalUrl: string;
-  originalTitle: string;
-  originalAuthor: string;
   publishedAt: string;
 };
 
-export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/${sheetName}`;
+export async function fetchFanficSheet(category: string): Promise<FanficSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.fanficsheets.spreadsheetId}/1`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
   const res = await fetch(url, {
@@ -27,17 +25,17 @@ export async function fetchFanficSheet(sheetName: string): Promise<FanficSheetIt
     return [];
   }
 
-  return data.map((row: any) => ({
-    creator: row["二次創作者活動名"] ?? "",
-    service: row["投稿先サービス"] ?? "",
-    workUrl: row["二次創作作品URL"] ?? "",
-    title: row["タイトル"] ?? "",
-    imageUrl: row["画像URL"] ?? "",
-    originalUrl: row["元作品URL"] ?? "",
-    originalTitle: row["元作品タイトル"] ?? "",
-    originalAuthor: row["元作品投稿者名"] ?? "",
-    publishedAt: row["配信日時"] ?? "",
-  }));
+  return data
+    .filter((row: any) => row["category"] === category)
+    .map((row: any) => ({
+      creator: row["creator_name"] ?? "",
+      service: row["posted_service"] ?? "",
+      workUrl: row["fanart_url"] ?? "",
+      title: row["fanart_title"] ?? "",
+      imageUrl: row["fanart_img_url"] ?? "",
+      originalUrl: row["original_id"] ?? "",
+      publishedAt: row["stream_at"] ?? "",
+    }));
 }
 
 export type NoteSheetItem = {
@@ -50,8 +48,8 @@ export type NoteSheetItem = {
   userProfileImageUrl: string;
 };
 
-export async function fetchNoteSheet(sheetName: string): Promise<NoteSheetItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/${sheetName}`;
+export async function fetchNoteSheet(): Promise<NoteSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.notesheets.spreadsheetId}/1`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? 86400 : 600; // 開催終了後は1日キャッシュ、それ以外は10分キャッシュ
   const res = await fetch(url, {
@@ -65,17 +63,15 @@ export async function fetchNoteSheet(sheetName: string): Promise<NoteSheetItem[]
   }
 
   return data.map((row: any) => ({
-    title: row["Title"] ?? "",
-    author: row["Author"] ?? "",
-    publishedAt: row["Published Date"] ?? "",
-    noteUrl: row["note_url"] ?? "",
-    userUrl: row["user_url"] ?? "",
+    title: row["article_title"] ?? "",
+    author: row["article_author"] ?? "",
+    publishedAt: row["posted_at"] ?? "",
+    noteUrl: row["article_url"] ?? "",
+    userUrl: row["author_url"] ?? "",
     eyecatchUrl: row["eyecatch_url"] ?? "",
     userProfileImageUrl: row["user_profile_img_url"] ?? "",
   }));
 }
-
-// lib/fetchSheet.ts に追加
 
 export type VideoSheetItem = {
   videoId: string;
@@ -86,10 +82,12 @@ export type VideoSheetItem = {
   description: string;
   videoUrl: string;
   thumbnailUrl: string;
+  group?: number;
+  rank?: number;
 };
 
-export async function fetchVideosSheet(sheetName: string): Promise<VideoSheetItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/${sheetName}`;
+export async function fetchVideosSheet(status: string, stage?: any): Promise<VideoSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.videosheets.spreadsheetId}/1`;
 
   const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 86400; // 開催終了後はキャッシュ無効、それ以外は24時間キャッシュ
   const res = await fetch(url, {
@@ -102,69 +100,33 @@ export async function fetchVideosSheet(sheetName: string): Promise<VideoSheetIte
     return [];
   }
 
-  return data.map((row: any) => ({
-    videoId: row["動画ID"] ?? "",
-    title: row["タイトル"] ?? "",
-    creatorId: row["投稿者ID"] ?? "",
-    creator: row["投稿者名"] ?? "",
-    publishedAt: (row["投稿日時"] ?? "").replace(/^'/, ""),
-    description: row["概要欄"] ?? "",
-    videoUrl: row["URL"] ?? "",
-    thumbnailUrl: row["サムネイルURL"] ?? "",
-  }));
-}
-
-export type GroupedVideoSheetItem = {
-  videoId: string;
-  title: string;
-  creatorId: string;
-  creator: string;
-  publishedAt: string;
-  description: string;
-  videoUrl: string;
-  thumbnailUrl: string;
-  group: number;
-};
-
-export async function fetchGroupedVideosSheet(
-  spreadsheetId: string,
-  sheetName: string,
-): Promise<GroupedVideoSheetItem[]> {
-  const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
-
-  const rev = getCurrentPhase() === EVENT_PHASES.AFTER ? false : 86400; // 開催終了後はキャッシュ無効、それ以外は24時間キャッシュ
-  const res = await fetch(url, {
-    next: { revalidate: rev }, // 24時間キャッシュ
-  });
-  const data = await res.json();
-
-  if (!Array.isArray(data)) {
-    console.error("fetchGroupedVideosSheet: unexpected response (not array)", data);
-    return [];
-  }
-
-  return data.map((row: any) => ({
-    videoId: row["動画ID"] ?? "",
-    title: row["タイトル"] ?? "",
-    creatorId: row["投稿者ID"] ?? "",
-    creator: row["投稿者名"] ?? "",
-    publishedAt: (row["投稿日時"] ?? "").replace(/^'/, ""),
-    description: row["概要欄"] ?? "",
-    videoUrl: row["URL"] ?? "",
-    thumbnailUrl: row["サムネイルURL"] ?? "",
-    group: Number(row["グループID"] ?? 0), // ← 追加
-  }));
+  return data
+    .filter((row: any) => row["status"] === status)
+    .filter((row: any) => row["excluded"] !== "TRUE")
+    .map((row: any) => ({
+      videoId: row["video_id"] ?? "",
+      title: row["title"] ?? "",
+      creatorId: row["user_id"] ?? "",
+      creator: row["user_name"] ?? "",
+      publishedAt: (row["posted_at"] ?? "").replace(/^'/, ""),
+      description: row["description"] ?? "",
+      videoUrl: row["video_url"] ?? "",
+      thumbnailUrl: row["thumbnail_url"] ?? "",
+      group: stage ? row[stage.group_id] ? Number(row[stage.group_id]) : undefined : undefined,
+      rank: stage ? row[stage.rank] ? Number(row[stage.rank]) : undefined : undefined,
+    }));
 }
 
 export type VoteSheetItem = {
   group: number;
   formUrl: string;
   mylistUrl: string;
-  deadline?: string;
+  vote_starts_at?: string;
+  vote_ends_at?: string;
 };
 
-export async function fetchVotesSheet(sheetName: string): Promise<VoteSheetItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.voteformssheets.spreadsheetId}/${sheetName}`;
+export async function fetchVotesSheet(stage: string): Promise<VoteSheetItem[]> {
+  const url = `https://opensheet.elk.sh/${CONFIG.voteformssheets.spreadsheetId}/1`;
 
   const res = await fetch(url, {
     next: { revalidate: false },
@@ -176,36 +138,13 @@ export async function fetchVotesSheet(sheetName: string): Promise<VoteSheetItem[
     return [];
   }
 
-  return data.map((row: any) => ({
-    group: Number(row["グループID"] ?? 0),
-    formUrl: row["人気投票FormURL"] ?? "",
-    mylistUrl: row["マイリストURL"] ?? "",
-    deadline: (row["投票締切"] ?? "").replace(/^'/, ""),
-  }));
-}
-
-export type RankingItem = {
-  videoId: string;
-  group: number;
-  rank?: number;
-};
-
-export async function fetchRankingSheet(sheetName: string): Promise<RankingItem[]> {
-  const url = `https://opensheet.elk.sh/${CONFIG.rankingsheets.spreadsheetId}/${sheetName}`;
-
-  const res = await fetch(url, {
-    next: { revalidate: false },
-  });
-  const data = await res.json();
-
-  if (!Array.isArray(data)) {
-    console.error("fetchRankingSheet: unexpected response (not array)", data);
-    return [];
-  }
-
-  return data.map((row: any) => ({
-    videoId: row["動画ID"] ?? "",
-    group: Number(row["グループID"] ?? 0),
-    rank: row["順位"] ? Number(row["順位"]) : undefined,
-  }));
+  return data
+    .filter((row: any) => row["stage"] === stage)
+    .map((row: any) => ({
+      group: Number(row["group_id"] ?? 0),
+      formUrl: row["form_url"] ?? "",
+      mylistUrl: row["mylist_url"] ?? "",
+      vote_starts_at: (row["vote_starts_at"] ?? "").replace(/^'/, ""),
+      vote_ends_at: (row["vote_ends_at"] ?? "").replace(/^'/, ""),
+    }));
 }
