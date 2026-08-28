@@ -1,4 +1,4 @@
-# 本当のルーキー祭り2026春 Webサイト frontend
+# 本当のルーキー祭り2026秋 Webサイト frontend
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
@@ -93,7 +93,11 @@ NEXT_PUBLIC_EVENT_PHASE_EX=submission
 
 ## フェーズの変更方法
 
-ローカル開発では `.env.local` の環境変数を変更してください。
+ローカル開発をする場合、まずGoogleドライブ共有フォルダからフロンドエンドの `.env.local.example` をダウンロードしてください。
+
+それをこのフォルダ内に配置し、名前を `.env.local` に変更してください。
+
+ファイルの中身のうち、`<>`で囲まれているところがあれば、あなたの環境に合わせて書き換えてください。
 
 例：
 

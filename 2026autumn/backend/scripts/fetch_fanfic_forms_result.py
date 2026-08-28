@@ -3,7 +3,10 @@ import re
 
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from lib import niconico, sheet_client, utils, youtube
+
+load_dotenv()
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
@@ -153,7 +156,7 @@ def main():
     output_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["for_check"]
     video_catalog_spreadsheet_name = config["spreadsheets"]["video_catalog"]["name"]
 
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     # 入力取得
     input_ws = sheet_client.connect_sheet(
