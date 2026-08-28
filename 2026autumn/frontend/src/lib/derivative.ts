@@ -27,5 +27,5 @@ export async function getDerivativeArchives() {
 }
 
 export async function getDerivativeArticles() {
-  return await fetchNoteSheet(CONFIG.notesheets.name);
+  return await fetchNoteSheet();
 }

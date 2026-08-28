@@ -76,7 +76,7 @@ export default function Schedule() {
               <h5 className="font-bold text-mint text-xl tracking-wide mb-2">exステージ</h5>
 
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年4月18日(土) 0:00 〜 4月22日(水) 16:59
+                2026年9月4日(金) 17:00 〜 9月7日(月) 16:00
               </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
@@ -87,11 +87,12 @@ export default function Schedule() {
             <div className="bg-white p-5 rounded-xl border border-cherry/10 shadow-sm">
               <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">spステージ</h5>
 
-              <p className="text-xs text-slate-400 font-semibold mb-3">2026年6月1日(月) 〜</p>
+              <p className="text-xs text-slate-400 font-semibold mb-3">
+                2026年10月5日(月) 〜 10月18日(日)
+              </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                二次創作参加作品が対象となる特別なステージです。
-                <span className="text-red-500 font-bold">投稿締切：5/30(土) 24:00</span>
+                二次創作参加作品などが対象となる、人気投票ありの特別なステージです。
               </p>
             </div>
           </div>

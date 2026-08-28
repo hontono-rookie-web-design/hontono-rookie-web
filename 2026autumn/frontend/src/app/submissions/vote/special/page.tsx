@@ -6,7 +6,7 @@ import { CONFIG } from "@/config/config";
 export default async function Page() {
   const [songs, forms] = await Promise.all([
     fetchVideosSheet(CONFIG.videosheets.status.sp.name, CONFIG.videosheets.stage.sp),
-    fetchVotesSheet(CONFIG.voteformssheets.sp.name)
+    fetchVotesSheet(CONFIG.voteformssheets.sp.name),
   ]);
 
   return (
@@ -15,4 +15,3 @@ export default async function Page() {
     </Suspense>
   );
 }
-    

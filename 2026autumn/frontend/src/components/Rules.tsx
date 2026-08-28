@@ -81,7 +81,7 @@ export default function Rules() {
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
               ニコニコ動画に投稿して、
-              <strong>「本当のルーキー祭り2026春」</strong>
+              <strong>「本当のルーキー祭り2026秋」</strong>
               のタグを設定し、タグロックしてください。
             </li>
 
@@ -120,9 +120,9 @@ export default function Rules() {
                 <br />
                 【日程（予定）】
                 <br />
-                予選(Disc) 4/25～5/10 準決勝(Selection)5/11～5/17
+                予選(Disc) 9/14～9/27
                 <br />
-                決勝(Best)・EX5/18～
+                決勝(Best)・SP 10/5～10/18
                 <br />
                 【参加方法】
                 <br />
@@ -393,26 +393,10 @@ export default function Rules() {
             </li>
           </ul>
 
-          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">準決勝（Selection）</h3>
-
-          <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>予選通過作品を改めて10作品単位のSelectionに分けます。</li>
-
-            <li>
-              予選と同様に人気投票をして
-              <strong>
-                <s>上位2曲</s>
-                <span className="text-cherry">上位1曲</span>
-                を準決勝通過
-              </strong>
-              とします。
-            </li>
-            <li>スコアは全曲が公開されます。</li>
-          </ul>
           <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">決勝（Best）</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>準決勝通過作品に対して同様の人気投票をします。</li>
+            <li>予選通過作品に対して同様の人気投票をします。</li>
             <li>スコアは全曲が公開されます。</li>
           </ul>
 
@@ -460,18 +444,18 @@ export default function Rules() {
 
             <li>
               参加タグは
-              <strong>「本当のルーキー祭り2026春ex」</strong>
+              <strong>「本当のルーキー祭り2026秋sp」</strong>
               となります。
             </li>
 
             <li>
-              exでは本投稿祭と同様に
+              spでは本投稿祭と同様に
               <strong>人気投票</strong>
               をします。
             </li>
 
             <li>
-              exステージは参加条件がなく、
+              spステージは参加条件がなく、
               <strong>誰でも参加できます</strong>
               。（MVアリ、再生数不問、既投稿曲アリ）
             </li>
@@ -481,12 +465,12 @@ export default function Rules() {
               （人気投票が難しくなるため）
             </li>
           </ul>
-          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">exステージ参加方法</h4>
+          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">spステージ参加方法</h4>
 
           <ul className="list-disc list-outside ml-12 space-y-2">
             <li>
               参加作品に
-              <strong>「本当のルーキー祭り2026春ex」</strong>
+              <strong>「本当のルーキー祭り2026秋sp」</strong>
               をタグロックしてください。
             </li>
 
@@ -496,7 +480,7 @@ export default function Rules() {
             </li>
           </ul>
 
-          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">二次創作以外でexに参加する方法</h4>
+          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">二次創作以外でspに参加する方法</h4>
 
           <ul className="list-disc list-outside ml-12 space-y-2">
             <li>

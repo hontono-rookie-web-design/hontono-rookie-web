@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/config/config";
-import { getCurrentPhaseEx, EVENT_PHASES_EX } from "@/config/phase";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import TBA from "@/components/TBA";
 
 // Video型の定義（必要に応じてインポートしてください）
@@ -22,7 +22,8 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES_EX.BEFORE:
+    case EVENT_PHASES.BEFORE:
+    case EVENT_PHASES.EXTRA:
       return VIEW_PHASE.BEFORE;
     default:
       return VIEW_PHASE.DURING;
@@ -55,7 +56,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const phase = getCurrentPhaseEx();
+  const phase = getCurrentPhase();
   const viewPhase = getViewPhase(phase);
 
   /* 初期ロード */

@@ -1,19 +1,13 @@
 "use client";
 
 import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
+import { CONFIG } from "@/config/config";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const phase = mounted ? getCurrentPhase() : EVENT_PHASES.BEFORE;
+  const phase = getCurrentPhase();
 
   const renderCTA = () => {
     switch (phase) {
@@ -28,10 +22,10 @@ export default function Hero() {
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         );
-      case EVENT_PHASES.OPENING:
+      case EVENT_PHASES.EXTRA:
         return (
           <Link
-            href="/submissions/songs/opening"
+            href="/submissions/songs/extra"
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
@@ -41,7 +35,6 @@ export default function Hero() {
         );
       case EVENT_PHASES.ROOKIE:
       case EVENT_PHASES.PRELIM_COUNTING:
-      case EVENT_PHASES.SEMIFINAL_COUNTING:
       case EVENT_PHASES.FINAL_COUNTING:
         return (
           <Link
@@ -57,17 +50,6 @@ export default function Hero() {
         return (
           <Link
             href="/submissions/vote/preliminaries"
-            prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
-          >
-            人気投票ページへ
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Link>
-        );
-      case EVENT_PHASES.SEMIFINAL:
-        return (
-          <Link
-            href="/submissions/vote/semifinals"
             prefetch={false}
             className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
           >
@@ -196,7 +178,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
         <Image
           src="/images/2026spring_logoTransparentHigh.png"
-          alt="本当のルーキー祭り2026春"
+          alt={CONFIG.event.name}
           width={1200}
           height={600}
           priority

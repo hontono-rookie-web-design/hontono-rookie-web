@@ -3,16 +3,17 @@
 import Counting from "@/components/Counting";
 import TBA from "@/components/TBA";
 import { CONFIG } from "@/config/config";
-import { EVENT_PHASES_EX, getCurrentPhaseEx } from "@/config/phase";
+import { EVENT_PHASES_SP, getCurrentPhaseSp } from "@/config/phase";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import type { VideoSheetItem, VoteSheetItem } from "@/lib/fetchSheet";
 
 /* =========================
    表示ラベル
 ========================= */
-const DISC_LABEL = "ex";
-const PHASE_LABEL = "exステージ";
+const DISC_LABEL = "SP";
+const PHASE_LABEL = "spステージ";
 
 /* =========================
    表示フェーズ定義（安全化）
@@ -26,37 +27,28 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES_EX.BEFORE:
-    case EVENT_PHASES_EX.SUBMISSION:
+    case EVENT_PHASES_SP.BEFORE:
+    case EVENT_PHASES_SP.SUBMISSION:
       return VIEW_PHASE.BEFORE;
 
-    case EVENT_PHASES_EX.VOTING:
+    case EVENT_PHASES_SP.VOTING:
       return VIEW_PHASE.DURING;
 
-    case EVENT_PHASES_EX.COUNTING:
+    case EVENT_PHASES_SP.COUNTING:
       return VIEW_PHASE.COUNTING;
 
-    case EVENT_PHASES_EX.AFTER:
+    case EVENT_PHASES_SP.AFTER:
       return VIEW_PHASE.AFTER;
 
     default:
-      return EVENT_PHASES_EX.BEFORE;
+      return VIEW_PHASE.BEFORE;
   }
 }
 
 /* =========================
    型
 ========================= */
-type Video = {
-  title: string;
-  creator: string;
-  videoUrl: string;
-  thumbnailUrl: string;
-  publishedAt?: string;
-  description?: string;
-  group: number;
-  videoId?: string;
-};
+type Video = VideoSheetItem & { group: number };
 
 /* =========================
    util
@@ -114,40 +106,19 @@ export default function VoteContent({
   initialSongs,
   initialForms,
 }: {
-  initialSongs: any[];
-  initialForms: any[];
+  initialSongs: VideoSheetItem[];
+  initialForms: VoteSheetItem[];
 }) {
-  const phase = getCurrentPhaseEx();
+  const phase = getCurrentPhaseSp();
   const viewPhase = getViewPhase(phase);
 
-  const [videos, setVideos] = useState(initialSongs.filter((video) => video.group !== undefined));
-  const mappedVideos = videos;
-  const [votes, setVotes] = useState(initialForms);
-  const [loading, setLoading] = useState(true);
-
-  const [activeGroup, setActiveGroup] = useState<number | null>(null);
-
+  const videos = useMemo(
+    () => initialSongs.filter((video): video is Video => video.group !== undefined),
+    [initialSongs],
+  );
+  const votes = initialForms;
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  /* =========================
-     fetch
-  ========================= */
-  useEffect(() => {
-    const groups = [...new Set(mappedVideos.map((v) => v.group))].sort((a, b) => a - b);
-
-    const groupParam = searchParams.get("group");
-    const groupFromUrl = groupParam ? Number(groupParam) : null;
-
-    if (groupFromUrl && groups.includes(groupFromUrl)) {
-      setActiveGroup(groupFromUrl);
-    } else {
-      setActiveGroup(groups[0] ?? null);
-    }
-
-    setLoading(false);
-    // })
-  }, []);
 
   /* =========================
      group
@@ -156,16 +127,14 @@ export default function VoteContent({
     return [...new Set(videos.map((v) => v.group))].sort((a, b) => a - b);
   }, [videos]);
 
-  useEffect(() => {
-    if (groups.length === 0) return;
-
-    const groupParam = searchParams.get("group");
-    const groupFromUrl = groupParam ? Number(groupParam) : null;
-
-    if (groupFromUrl && groups.includes(groupFromUrl)) {
-      setActiveGroup(groupFromUrl);
-    }
-  }, [searchParams, groups]);
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const groupFromUrl = Number(searchParams.get("group"));
+  const activeGroup = groups.includes(groupFromUrl)
+    ? groupFromUrl
+    : selectedGroup && groups.includes(selectedGroup)
+      ? selectedGroup
+      : (groups[0] ?? null);
+  const loading = false;
 
   const displayVideos = useMemo(() => {
     if (activeGroup === null) return [];
@@ -179,7 +148,7 @@ export default function VoteContent({
   const rankedVideos = useMemo(() => {
     if (activeGroup === null) return [];
     return videos
-      .filter((r) => r.group === activeGroup && r.rank)
+      .filter((r): r is Video & { rank: number } => r.group === activeGroup && r.rank !== undefined)
       .sort((a, b) => a.rank - b.rank)
       .map((r) => ({
         rank: r.rank,
@@ -194,7 +163,7 @@ export default function VoteContent({
     const randomIndex = Math.floor(Math.random() * groups.length);
     const g = groups[randomIndex];
 
-    setActiveGroup(g);
+    setSelectedGroup(g);
     router.push(`?group=${g}`, { scroll: false });
   };
 
@@ -218,16 +187,15 @@ export default function VoteContent({
         <h1 className="text-3xl md:text-4xl font-bold">人気投票 {PHASE_LABEL}</h1>
 
         <p className="text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」
-          {PHASE_LABEL}の楽曲を
+          「{CONFIG.event.name}」{PHASE_LABEL}の楽曲を
           {DISC_LABEL}
           グループごとに掲載しています。
         </p>
 
-        {viewPhase === VIEW_PHASE.DURING && voteInfo?.vote_ends_at && (
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.voteEndsAt && (
           <p className="mt-2 text-sm font-semibold text-red-600">
             投票締切：
-            {formatDate(voteInfo.vote_ends_at)}
+            {formatDate(voteInfo.voteEndsAt)}
           </p>
         )}
 
@@ -248,7 +216,7 @@ export default function VoteContent({
               <button
                 key={g}
                 onClick={() => {
-                  setActiveGroup(g);
+                  setSelectedGroup(g);
                   router.push(`?group=${g}`, { scroll: false });
                 }}
                 className={`text-xs py-1 rounded-md border
