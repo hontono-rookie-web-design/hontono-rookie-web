@@ -1,4 +1,4 @@
-# 本当のルーキー祭り2026春 Webサイト frontend
+# 本当のルーキー祭り2026秋 Webサイト frontend
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
