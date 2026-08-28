@@ -168,23 +168,6 @@ export default function Hero() {
           />
 
           <circle cx="10%" cy="20%" r="4" fill="#2DD4BF" className="animate-ping" />
-<<<<<<< HEAD
-          <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
-
-          <circle cx="30%" cy="40%" r="4" fill="#38BDF8" className="animate-pulse" />
-          <circle cx="30%" cy="40%" r="8" fill="#38BDF8" opacity="0.8" />
-
-          <circle cx="60%" cy="15%" r="3" fill="#2DD4BF" className="animate-ping" />
-          <circle cx="60%" cy="15%" r="5" fill="#2DD4BF" />
-
-          <circle cx="85%" cy="35%" r="4" fill="#FB7185" className="animate-pulse" />
-          <circle cx="85%" cy="35%" r="7" fill="#FB7185" opacity="0.9" />
-
-          <circle cx="45%" cy="70%" r="5" fill="#FB7185" className="animate-ping" />
-          <circle cx="45%" cy="70%" r="8" fill="#FB7185" />
-
-          <circle cx="75%" cy="80%" r="4" fill="#38BDF8" className="animate-pulse" />
-=======
 
           <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
 
@@ -206,7 +189,6 @@ export default function Hero() {
 
           <circle cx="75%" cy="80%" r="4" fill="#38BDF8" className="animate-pulse" />
 
->>>>>>> main
           <circle cx="75%" cy="80%" r="6" fill="#38BDF8" opacity="0.8" />
         </svg>
       </div>

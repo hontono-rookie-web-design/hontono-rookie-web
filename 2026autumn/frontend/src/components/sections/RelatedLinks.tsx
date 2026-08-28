@@ -66,16 +66,8 @@ export default function RelatedLinks() {
     <section id="links" className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
-<<<<<<< HEAD
           <LinkIcon className="text-amber-500 w-8 h-8" />
-          <h3 className="text-2xl md:text-3xl font-bold text-slate-800">
-            関連リンク
-          </h3>
-=======
-          <LinkIcon className="text-mint w-8 h-8" />
-
           <h3 className="text-2xl md:text-3xl font-bold text-slate-800">関連リンク</h3>
->>>>>>> main
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -92,13 +84,7 @@ export default function RelatedLinks() {
                 rel="noopener noreferrer"
                 className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-mint/50 hover:shadow-md transition-all"
               >
-<<<<<<< HEAD
-                <div className="font-bold text-rose-900 text-sm mb-1">
-                  {link.title}
-                </div>
-=======
-                <div className="font-bold text-mint text-sm mb-1">{link.title}</div>
->>>>>>> main
+                <div className="font-bold text-rose-900 text-sm mb-1">{link.title}</div>
 
                 <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
@@ -118,13 +104,7 @@ export default function RelatedLinks() {
                 rel="noopener noreferrer"
                 className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-skyblue/50 hover:shadow-md transition-all"
               >
-<<<<<<< HEAD
-                <div className="font-bold text-amber-500 text-sm mb-1">
-                  {link.title}
-                </div>
-=======
-                <div className="font-bold text-skyblue text-sm mb-1">{link.title}</div>
->>>>>>> main
+                <div className="font-bold text-amber-500 text-sm mb-1">{link.title}</div>
 
                 <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
