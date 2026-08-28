@@ -22,7 +22,7 @@ export default function Hero() {
           <Link
             href="#rules"
             prefetch={false}
-            className="btn btn-lg rounded-full text-white shadow-lg shadow-orange-900/30 bg-orange-500 hover:bg-orange-800 border-none"
+            className="btn btn-lg rounded-full text-white shadow-lg shadow-rose-900/30 bg-rose-400 hover:bg-rose-900 border-none"
           >
             参加ルールを読む <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
@@ -96,7 +96,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-base-100 to-mint/10">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-base-100 to-rose/10">
       <div className="absolute inset-0 pointer-events-none opacity-40">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <line
@@ -155,58 +155,22 @@ export default function Hero() {
             className="animate-[pulse_6s_ease-in-out_infinite]"
           />
 
-          <circle
-            cx="10%"
-            cy="20%"
-            r="4"
-            fill="#2DD4BF"
-            className="animate-ping"
-          />
+          <circle cx="10%" cy="20%" r="4" fill="#2DD4BF" className="animate-ping" />
           <circle cx="10%" cy="20%" r="6" fill="#2DD4BF" />
 
-          <circle
-            cx="30%"
-            cy="40%"
-            r="4"
-            fill="#38BDF8"
-            className="animate-pulse"
-          />
+          <circle cx="30%" cy="40%" r="4" fill="#38BDF8" className="animate-pulse" />
           <circle cx="30%" cy="40%" r="8" fill="#38BDF8" opacity="0.8" />
 
-          <circle
-            cx="60%"
-            cy="15%"
-            r="3"
-            fill="#2DD4BF"
-            className="animate-ping"
-          />
+          <circle cx="60%" cy="15%" r="3" fill="#2DD4BF" className="animate-ping" />
           <circle cx="60%" cy="15%" r="5" fill="#2DD4BF" />
 
-          <circle
-            cx="85%"
-            cy="35%"
-            r="4"
-            fill="#FB7185"
-            className="animate-pulse"
-          />
+          <circle cx="85%" cy="35%" r="4" fill="#FB7185" className="animate-pulse" />
           <circle cx="85%" cy="35%" r="7" fill="#FB7185" opacity="0.9" />
 
-          <circle
-            cx="45%"
-            cy="70%"
-            r="5"
-            fill="#FB7185"
-            className="animate-ping"
-          />
+          <circle cx="45%" cy="70%" r="5" fill="#FB7185" className="animate-ping" />
           <circle cx="45%" cy="70%" r="8" fill="#FB7185" />
 
-          <circle
-            cx="75%"
-            cy="80%"
-            r="4"
-            fill="#38BDF8"
-            className="animate-pulse"
-          />
+          <circle cx="75%" cy="80%" r="4" fill="#38BDF8" className="animate-pulse" />
           <circle cx="75%" cy="80%" r="6" fill="#38BDF8" opacity="0.8" />
         </svg>
       </div>
