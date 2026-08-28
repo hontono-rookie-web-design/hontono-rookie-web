@@ -19,9 +19,7 @@ type Item = {
 function parseDate(dt?: string) {
   if (!dt) return null;
 
-  const m = dt.replace(/^'/, "").match(
-    /^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/
-  );
+  const m = dt.replace(/^'/, "").match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})/);
 
   if (!m) return null;
 
@@ -29,10 +27,7 @@ function parseDate(dt?: string) {
 
   return {
     raw: new Date(+y, +mo - 1, +d, +h, +mi),
-    label: `${y}/${mo.padStart(2, "0")}/${d.padStart(
-      2,
-      "0"
-    )} ${h.padStart(2, "0")}:${mi}`,
+    label: `${y}/${mo.padStart(2, "0")}/${d.padStart(2, "0")} ${h.padStart(2, "0")}:${mi}`,
   };
 }
 
@@ -47,11 +42,7 @@ function getDayLabel(date?: Date) {
 
   const diff =
     new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() -
-    new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    ).getTime();
+    new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
   const d = diff / (1000 * 60 * 60 * 24);
 
@@ -77,18 +68,11 @@ function Card({
   const future = isFuture(parsed?.raw);
   const dayLabel = getDayLabel(parsed?.raw);
 
-  const img =
-    item.imageUrl?.trim() ||
-    CONFIG.images.defaultIllustration;
+  const img = item.imageUrl?.trim() || CONFIG.images.defaultIllustration;
 
   return (
     <div className="flex flex-col group border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-md bg-white">
-      <a
-        href={item.workUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col"
-      >
+      <a href={item.workUrl} target="_blank" rel="noopener noreferrer" className="flex flex-col">
         <div className="relative aspect-video overflow-hidden">
           <Image
             src={img}
@@ -130,10 +114,7 @@ function Card({
           <h2 className="text-sm font-bold leading-snug line-clamp-2 min-h-[2.8rem]">
             {item.title}
           </h2>
-
-          <p className="text-xs text-gray-600 mt-1 truncate">
-            {item.creator}
-          </p>
+          <p className="text-xs text-gray-600 mt-1 truncate">{item.creator}</p>
         </div>
       </a>
     </div>
@@ -151,11 +132,14 @@ function SkeletonCard() {
       <div className="flex flex-col mt-2 px-2 pb-2 space-y-2">
         <div className="flex gap-1">
           <div className="h-5 w-10 bg-gray-200 rounded animate-pulse" />
+
           <div className="h-5 w-24 bg-gray-200 rounded animate-pulse" />
         </div>
 
         <div className="h-4 bg-gray-200 rounded animate-pulse" />
+
         <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
+
         <div className="h-3 w-1/2 bg-gray-200 rounded animate-pulse" />
       </div>
     </div>
@@ -184,7 +168,7 @@ export default function StreamsContent({
     return [...schedule].sort(
       (a, b) =>
         (parseDate(a.publishedAt)?.raw?.getTime() || 0) -
-        (parseDate(b.publishedAt)?.raw?.getTime() || 0)
+        (parseDate(b.publishedAt)?.raw?.getTime() || 0),
     );
   }, [schedule]);
 
@@ -203,9 +187,7 @@ export default function StreamsContent({
   useEffect(() => {
     if (!scrollRef.current) return;
 
-    const el = scrollRef.current.children[
-      initialIndex
-    ] as HTMLElement;
+    const el = scrollRef.current.children[initialIndex] as HTMLElement;
 
     if (!el) return;
 
@@ -243,9 +225,7 @@ export default function StreamsContent({
   }, [sorted]);
 
   const scrollTo = (i: number) => {
-    const el = scrollRef.current?.children[
-      i
-    ] as HTMLElement;
+    const el = scrollRef.current?.children[i] as HTMLElement;
 
     if (!el || !scrollRef.current) return;
 
@@ -263,152 +243,108 @@ export default function StreamsContent({
   };
 
   /* 無限スクロール */
-useEffect(() => {
-  if (!loadMoreRef.current) return;
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        setVisibleCount((prev) =>
-          Math.min(prev + PAGE_SIZE, archive.length)
-        );
-      }
-    },
-    { rootMargin: "200px" }
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, archive.length));
+        }
+      },
+      { rootMargin: "200px" },
+    );
 
-  observer.observe(loadMoreRef.current);
+    observer.observe(loadMoreRef.current);
 
-  return () => observer.disconnect();
- }, [archive]);
+    return () => observer.disconnect();
+  }, [archive]);
 
- const visibleArchive = archive.slice(
-  0,
-  visibleCount
- );
-
+  const visibleArchive = archive.slice(0, visibleCount);
 
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
       <div className="w-full max-w-6xl space-y-10">
         {/* ヘッダー */}
+
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold">
-            紹介配信
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold">紹介配信</h1>
 
           <p className="text-sm text-gray-500 mt-1">
-            「{CONFIG.event.name}」の紹介配信を掲載しています。
+            「{CONFIG.event.name}
+            」の紹介配信を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
         </div>
 
         {/* ========================= 予定 ========================= */}
+
         <div>
-          <h2 className="text-xl font-bold mb-4">
-            紹介配信予定
-          </h2>
+          <h2 className="text-xl font-bold mb-4">紹介配信予定</h2>
 
           {sorted.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
-              紹介配信予定はまだありません。
-            </div>
+            <div className="text-center py-10 text-gray-500">紹介配信予定はまだありません。</div>
           ) : (
             <>
               {/* カレンダー */}
+
               <div className="flex gap-4 overflow-x-auto mb-6">
                 {calendar.map((m: any, idx) => {
                   const { year, month, days } = m;
-                  const last = new Date(
-                    year,
-                    month + 1,
-                    0
-                  ).getDate();
+                  const last = new Date(year, month + 1, 0).getDate();
 
                   return (
-                    <div
-                      key={idx}
-                      className="min-w-[220px] border rounded-xl p-3"
-                    >
+                    <div key={idx} className="min-w-[220px] border rounded-xl p-3">
                       <div className="text-sm font-semibold text-center mb-2">
                         {year}/{month + 1}
                       </div>
 
                       <div className="grid grid-cols-7 gap-1 text-xs">
-                        {[
-                          "日",
-                          "月",
-                          "火",
-                          "水",
-                          "木",
-                          "金",
-                          "土",
-                        ].map((w) => (
-                          <div
-                            key={w}
-                            className="text-center text-gray-500 text-[10px]"
-                          >
+                        {["日", "月", "火", "水", "木", "金", "土"].map((w) => (
+                          <div key={w} className="text-center text-gray-500 text-[10px]">
                             {w}
                           </div>
                         ))}
 
                         {(() => {
-                          const firstDay = new Date(
-                            year,
-                            month,
-                            1
-                          ).getDay();
+                          const firstDay = new Date(year, month, 1).getDay();
 
                           return Array.from({
                             length: firstDay,
-                          }).map((_, i) => (
-                            <div key={`empty-${i}`} />
-                          ));
+                          }).map((_, i) => <div key={`empty-${i}`} />);
                         })()}
 
-                        {Array.from(
-                          { length: last },
-                          (_, i) => {
-                            const d = i + 1;
-                            const index = days.get(d);
+                        {Array.from({ length: last }, (_, i) => {
+                          const d = i + 1;
+                          const index = days.get(d);
 
-                            const today = new Date();
+                          const today = new Date();
 
-                            const isToday =
-                              year === today.getFullYear() &&
-                              month === today.getMonth() &&
-                              d === today.getDate();
+                          const isToday =
+                            year === today.getFullYear() &&
+                            month === today.getMonth() &&
+                            d === today.getDate();
 
-                            return (
-                              <button
-                                key={d}
-                                onClick={() =>
-                                  index !== undefined &&
-                                  scrollTo(index)
-                                }
-                                className={`h-7 rounded ${
-                                  index !== undefined
-                                    ? "bg-blue-100 hover:bg-blue-200"
-                                    : ""
-                                } ${
-                                  isToday
-                                    ? "ring-2 ring-blue-500"
-                                    : ""
-                                }`}
-                              >
-                                {d}
-                              </button>
-                            );
-                          }
-                        )}
+                          return (
+                            <button
+                              key={d}
+                              onClick={() => index !== undefined && scrollTo(index)}
+                              className={`h-7 rounded ${
+                                index !== undefined ? "bg-blue-100 hover:bg-blue-200" : ""
+                              } ${isToday ? "ring-2 ring-blue-500" : ""}`}
+                            >
+                              {d}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   );
                 })}
               </div>
-
               {/* 横スクロール */}
+
               <div className="relative">
                 <button
                   onClick={() => scrollBy(-1)}
@@ -417,15 +353,9 @@ useEffect(() => {
                   ‹
                 </button>
 
-                <div
-                  ref={scrollRef}
-                  className="flex gap-4 overflow-x-auto pb-2"
-                >
+                <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-2">
                   {sorted.map((item, i) => (
-                    <div
-                      key={i}
-                      className="w-1/2 sm:w-[240px] flex-shrink-0"
-                    >
+                    <div key={i} className="w-1/2 sm:w-[240px] flex-shrink-0">
                       <Card item={item} />
                     </div>
                   ))}
@@ -441,35 +371,26 @@ useEffect(() => {
             </>
           )}
         </div>
-
         {/* ========================= アーカイブ ========================= */}
+
         <div>
-          <h2 className="text-xl font-bold mb-4">
-            紹介配信アーカイブ
-          </h2>
+          <h2 className="text-xl font-bold mb-4">紹介配信アーカイブ</h2>
 
           {archive.length === 0 ? (
-           <div className="text-center py-10 text-gray-500">
-           紹介配信アーカイブはまだありません。
-           </div>
+            <div className="text-center py-10 text-gray-500">
+              紹介配信アーカイブはまだありません。
+            </div>
           ) : (
-          <>
-           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {visibleArchive.map((item, i) => (
-            <Card
-            key={i}
-           item={item}
-            showDate={false}
-           showFutureBadge={false}
-           />
-           ))}
-        </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {visibleArchive.map((item, i) => (
+                  <Card key={i} item={item} showDate={false} showFutureBadge={false} />
+                ))}
+              </div>
+              {/* 無限スクロール監視用 */}
 
-       {/* 無限スクロール監視用 */}
-       {archive.length > visibleCount && (
-         <div ref={loadMoreRef} className="h-10 w-full" />
-           )}
-          </>
+              {archive.length > visibleCount && <div ref={loadMoreRef} className="h-10 w-full" />}
+            </>
           )}
         </div>
       </div>

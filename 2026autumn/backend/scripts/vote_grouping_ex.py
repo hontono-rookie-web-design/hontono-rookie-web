@@ -11,6 +11,7 @@ def connect_sheet(spreadsheet_name, sheet_name):
 
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 
+
 def main():
 
     # シートに接続
@@ -21,9 +22,7 @@ def main():
     catalog_sheetname = catalog_sheet_config[f"ex_sheet"]
 
     # シートに接続
-    videl_catalog_sheet = connect_sheet(
-        catalog_spreadsheetname, catalog_sheetname
-    )
+    videl_catalog_sheet = connect_sheet(catalog_spreadsheetname, catalog_sheetname)
 
     # シートからデータを取得
     video_data = sheet_client.fetch_sheet_data(videl_catalog_sheet)
@@ -62,9 +61,14 @@ def main():
     output_sheetname = config["spreadsheets"]["grouped_video_catalog_ex"][f"ex_sheet"]
     output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
     sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
-    sheet_client.update_sheet(output_sheet, df.to_dict(orient='records')) # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
+    sheet_client.update_sheet(
+        output_sheet, df.to_dict(orient="records")
+    )  # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
 
-    print(f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data.")
+    print(
+        f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data."
+    )
+
 
 if __name__ == "__main__":
     main()

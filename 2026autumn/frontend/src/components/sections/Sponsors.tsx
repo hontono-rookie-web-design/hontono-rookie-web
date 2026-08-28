@@ -6,18 +6,13 @@ export default function Sponsors() {
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
           <HeartHandshake className="text-slate-500 w-8 h-8" />
-
-          <h3 className="text-2xl md:text-3xl font-bold text-slate-800">
-            後援
-          </h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-slate-800">後援</h3>
         </div>
 
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
           <h4 className="text-xl font-bold text-slate-800 mb-2">ヴォエ</h4>
 
-          <p className="text-slate-600 text-sm mb-6">
-            この投稿祭は「ヴォエ」が後援しています。
-          </p>
+          <p className="text-slate-600 text-sm mb-6">この投稿祭は「ヴォエ」が後援しています。</p>
 
           <a
             href="https://x.com/vliverofepic"
@@ -66,9 +61,7 @@ export default function Sponsors() {
         </div>
 
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
-          <h4 className="text-xl font-bold text-slate-800 mb-2">
-            楽曲収益化サービス
-          </h4>
+          <h4 className="text-xl font-bold text-slate-800 mb-2">楽曲収益化サービス</h4>
 
           <p className="text-slate-600 text-sm mb-6">
             この投稿祭は「楽曲収益化サービス」が後援しています。

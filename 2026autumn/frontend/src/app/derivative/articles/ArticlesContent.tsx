@@ -26,9 +26,7 @@ function formatDate(dateStr?: string) {
 
   const cleaned = dateStr.replace(/^'/, "").trim();
 
-  const match = cleaned.match(
-    /^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?/
-  );
+  const match = cleaned.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s*(\d{1,2})?:?(\d{2})?/);
 
   if (!match) return cleaned;
 
@@ -49,12 +47,15 @@ function SkeletonCard() {
         <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
           <div className="space-y-2">
             <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
+
             <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+
             <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />
           </div>
 
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+
             <div className="h-4 bg-gray-200 rounded w-24 animate-pulse" />
           </div>
         </div>
@@ -89,13 +90,11 @@ export default function ArticlesContent({ initialData }: Props) {
     if (searchText.trim()) {
       const q = searchText.toLowerCase();
 
-      filtered = filtered.filter((item) =>
-        (item.title + item.author).toLowerCase().includes(q)
-      );
+      filtered = filtered.filter((item) => (item.title + item.author).toLowerCase().includes(q));
     }
 
     setDisplayData(filtered);
-    setVisibleCount(PAGE_SIZE)
+    setVisibleCount(PAGE_SIZE);
   }, [searchText, data]);
 
   /* 無限スクロール */
@@ -105,12 +104,10 @@ export default function ArticlesContent({ initialData }: Props) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount((prev) =>
-            Math.min(prev + PAGE_SIZE, displayData.length)
-          );
+          setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, displayData.length));
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     );
 
     observer.observe(loadMoreRef.current);
@@ -123,19 +120,19 @@ export default function ArticlesContent({ initialData }: Props) {
   return (
     <div className="p-4 sm:p-6 flex flex-col items-center">
       {/* ヘッダー */}
+
       <div className="text-center mb-8 w-full max-w-[760px]">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          note記事
-        </h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">note記事</h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「{CONFIG.event.name}」に関するnote記事を掲載しています。
+          「{CONFIG.event.name}
+          」に関するnote記事を掲載しています。
         </p>
 
         <div className="mt-4 border-b border-gray-200 w-full" />
       </div>
-
       {/* 検索 */}
+
       <div className="w-full max-w-[760px] mb-4 flex">
         <input
           type="text"
@@ -145,15 +142,15 @@ export default function ArticlesContent({ initialData }: Props) {
           className="w-40 sm:w-56 border rounded px-2 py-1 text-sm"
         />
       </div>
-
       {/* EMPTY */}
+
       {displayData.length === 0 && (
         <div className="text-center py-20 text-gray-600 w-full max-w-[760px]">
           note記事はまだありません。
         </div>
       )}
-
       {/* CONTENT */}
+
       {displayData.length > 0 && (
         <div
           className={`flex flex-col gap-4 sm:gap-6 items-center w-full transition-opacity duration-300 ${
@@ -161,10 +158,9 @@ export default function ArticlesContent({ initialData }: Props) {
           }`}
         >
           {visibleItems.map((item, i) => {
-            const img =
-              item.eyecatchUrl?.trim()
-                ? item.eyecatchUrl
-                : CONFIG.images.defaultIllustration;
+            const img = item.eyecatchUrl?.trim()
+              ? item.eyecatchUrl
+              : CONFIG.images.defaultIllustration;
 
             const hasProfileImage = !!item.userProfileImageUrl?.trim();
 
@@ -175,6 +171,7 @@ export default function ArticlesContent({ initialData }: Props) {
               >
                 <div className="flex gap-3 sm:gap-4 w-full">
                   {/* サムネ */}
+
                   <a
                     href={item.noteUrl}
                     target="_blank"
@@ -191,8 +188,8 @@ export default function ArticlesContent({ initialData }: Props) {
                       />
                     </div>
                   </a>
-
                   {/* テキスト */}
+
                   <div className="flex flex-col justify-between flex-1 min-w-0">
                     <div className="min-w-0">
                       <a href={item.noteUrl} target="_blank">
@@ -202,6 +199,7 @@ export default function ArticlesContent({ initialData }: Props) {
                       </a>
 
                       {/* 投稿者 */}
+
                       <div className="mt-2 flex items-center gap-2 min-w-0">
                         {hasProfileImage && (
                           <div className="relative w-6 h-6 sm:w-8 sm:h-8">
@@ -226,9 +224,8 @@ export default function ArticlesContent({ initialData }: Props) {
                       </div>
 
                       {/* 投稿日 */}
-                      <p className="text-xs text-gray-500 mt-1">
-                        {formatDate(item.publishedAt)}
-                      </p>
+
+                      <p className="text-xs text-gray-500 mt-1">{formatDate(item.publishedAt)}</p>
                     </div>
                   </div>
                 </div>
@@ -238,9 +235,7 @@ export default function ArticlesContent({ initialData }: Props) {
         </div>
       )}
       {/* 無限スクロール監視用 */}
-      {displayData.length > visibleCount && (
-        <div ref={loadMoreRef} className="h-10 w-full" />
-      )}
+      {displayData.length > visibleCount && <div ref={loadMoreRef} className="h-10 w-full" />}
     </div>
   );
 }

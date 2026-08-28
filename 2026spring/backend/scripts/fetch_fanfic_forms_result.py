@@ -1,13 +1,9 @@
 import os
 import re
+
 import requests
 from bs4 import BeautifulSoup
-
-from lib import utils
-from lib import sheet_client
-from lib import niconico
-from lib import youtube
-
+from lib import niconico, sheet_client, utils, youtube
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
