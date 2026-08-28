@@ -1,16 +1,17 @@
-# 本当のルーキー祭り2026春 Webサイト backend
+# 本当のルーキー祭り2026秋 Webサイト backend
 
-\<yyyyseoson\> は開催期（「2026春」「2026spring」など）に置き換えてください。
+\<yyyyseoson\> は開催期（「2026秋」「2026autumn」など）に置き換えてください。
 
 ## 構成
 
 ### ディレクトリ構成
 
-`2026spring/backend`内のディレクトリ構成は以下。
+`2026autumn/backend`内のディレクトリ構成は以下。
 
 ```
 backend
 ├ README.md
+├ .env
 ├ config
 │  └ settings.yml                 設定ファイル
 ├ lib
@@ -30,19 +31,18 @@ backend
 └ requirements.txt
 ```
 
-
 ### workflow
 
 backend処理関連のworkflowは以下があり、workflowファイルは`.github/workflows`以下にある。
 GitHub Actionsで実行する。
 
-| workflow | workflowファイル | 処理内容 |
-| --- | --- | --- |
-| \<yyyyseoson\> Fetch Videos Rookie | `<yyyyseoson>_fetch_videos_rookie.yml` | Rookie、opステージの動画リストを更新する |
-| \<yyyyseoson\> Fetch Videos ex | `<yyyyseoson>_fetch_videos_ex.yml` | exステージ（、二次創作）の動画リストを更新する |
-| \<yyyyseoson\> Fetch Note | `<yyyyseoson>_fetch_note.yml` | Note記事リストを更新する |
-| \<yyyyseoson\> Fetch Fanfic From Result | `<yyyyseoson>_fetch_fanfic_from_result.yml` | 二次創作作品提出フォーム回答リストを更新する |
-| \<yyyyseoson\> Fetch Fanfic | `<yyyyseoson>_fetch_fanfic.yml` | 二次創作作品リストを更新する |
+| workflow                                | workflowファイル                            | 処理内容                                       |
+| --------------------------------------- | ------------------------------------------- | ---------------------------------------------- |
+| \<yyyyseoson\> Fetch Videos Rookie      | `<yyyyseoson>_fetch_videos_rookie.yml`      | Rookie、opステージの動画リストを更新する       |
+| \<yyyyseoson\> Fetch Videos ex          | `<yyyyseoson>_fetch_videos_ex.yml`          | exステージ（、二次創作）の動画リストを更新する |
+| \<yyyyseoson\> Fetch Note               | `<yyyyseoson>_fetch_note.yml`               | Note記事リストを更新する                       |
+| \<yyyyseoson\> Fetch Fanfic From Result | `<yyyyseoson>_fetch_fanfic_from_result.yml` | 二次創作作品提出フォーム回答リストを更新する   |
+| \<yyyyseoson\> Fetch Fanfic             | `<yyyyseoson>_fetch_fanfic.yml`             | 二次創作作品リストを更新する                   |
 
 ## 運用方法
 
@@ -54,17 +54,16 @@ GitHub Actionsで実行する。
 
 1. 本当のルーキー祭りWebデザイン部のGoogle Driveに以下のスプレッドシートを作成する。
 
-   | スプレッドシート名 | 概要 |
-   | --- | --- |
-   | video_catalog_\<yyyyseoson\> | 参加作品動画リスト |
-   | grouped_video_catalog_\<yyyyseoson\> | 投票グループ分けした参加作品動画リスト |
-   | note_list_\<yyyyseoson\> | Note記事リスト |
-   | fanfic_list_\<yyyyseoson\> | 二次創作作品リスト |
-   | 動画除外リスト_\<yyyyseoson\> | 参加作品動画の除外リスト |
-   | 二次創作作品提出フォーム回答_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |
+   | スプレッドシート名                           | 概要                                   |
+   | -------------------------------------------- | -------------------------------------- |
+   | video*catalog*\<yyyyseoson\>                 | 参加作品動画リスト                     |
+   | grouped*video_catalog*\<yyyyseoson\>         | 投票グループ分けした参加作品動画リスト |
+   | note*list*\<yyyyseoson\>                     | Note記事リスト                         |
+   | fanfic*list*\<yyyyseoson\>                   | 二次創作作品リスト                     |
+   | 動画除外リスト\_\<yyyyseoson\>               | 参加作品動画の除外リスト               |
+   | 二次創作作品提出フォーム回答\_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト     |
 
    スプレッドシートのシート名は`config/setting.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
-
 
 #### workflow準備
 
@@ -84,12 +83,11 @@ GitHub Actionsで実行する。
    実行頻度は、例えば以下のように設定すれば良いと思う。
    作品動画リストの更新は、ニコニコのAPIの更新が1日1回（AM5:00）なので、処理頻度を高くしてもあまり意味ない。
 
-   | 時期 | 作品動画リスト更新関連処理 | 二次創作作品・Noteリスト更新関連処理 |
-   | --- | --- | -- |
-   | 投稿期間 | 毎日実行 | 3時間おき実行 |
-   | 投票期間 | 毎日実行（exステージのみ） | 3時間おき実行 |
-   | 終了後 | 実行なし | たまに手動実行 |
-
+   | 時期     | 作品動画リスト更新関連処理 | 二次創作作品・Noteリスト更新関連処理 |
+   | -------- | -------------------------- | ------------------------------------ |
+   | 投稿期間 | 毎日実行                   | 3時間おき実行                        |
+   | 投票期間 | 毎日実行（exステージのみ） | 3時間おき実行                        |
+   | 終了後   | 実行なし                   | たまに手動実行                       |
 
 #### 二次創作作品提出フォームの作成
 
@@ -125,7 +123,7 @@ GitHub Actionsで実行する。
      | 動画ID | 移動先 |
      | --- | --- |
      | 移動させる動画ID | ルーキー |
-   「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
+     「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
 
 #### 二次創作作品の確認
 
@@ -144,31 +142,57 @@ GitHub Actionsで実行する。
 ### ローカルで実行する場合の環境設定手順
 
 1. pyenvなどでPython 3.12をインストール
-    ```
-    pyenv install 3.12
 
-    cd 2026spring/backend
-    pyenv local 3.12
-    ```
+   ```
+   pyenv install 3.12
 
-1. 仮想環境を作成し、仮想環境に入る
-    ```
-    python -m venv .venv
-    source .venv/bin/activate
-    ```
+   cd 2026autumn/backend
+   pyenv local 3.12
+   ```
 
-1. `requirements.txt`を使って必要なパッケージをインストール
-    ```
-    pip install -r requirements.txt
-    ```
+2. 仮想環境を作成し、仮想環境に入る
 
-1. パッケージが新たに必要になった場合は以下のようにしてインストール
+   ```
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
 
-    requirements.txtも更新
-    ```
-    pip install [パッケージ名]
-    pip freeze > requirements.txt
-    ```
+3. `requirements.txt`を使って必要なパッケージをインストール
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. パッケージが新たに必要になった場合は以下のようにしてインストール
+
+   requirements.txtも更新
+
+   ```
+   pip install [パッケージ名]
+   pip freeze > requirements.txt
+   ```
+
+5. Googleドライブ共有フォルダからバックエンドフォルダの `.env.example` をダウンロード
+
+6. この階層（backendの下）に置き、`.env`に名前を変える
+
+7. ファイルの中身のうち、`<>`で囲まれた部分を自分の環境に合わせて書き換える
+
+```bash
+# Google API アクセストークンのJSONのPathを指定する。
+GOOGLE_APPLICATION_CREDENTIALS="<GoogleサービスアカウントのJSONファイルのパス>"
+# Google API アクセストークンのJSONのPathを指定する。
+GOOGLE_OAUTH_CREDENTIALS="<Google OAuthクライアントIDのJSONファイルのパス>"
+# `FORMS_FOLDER_ID`で指定したフォルダの下に、作成時刻を名前としたフォルダが作成され、その下にフォームが作成される（指定フォルダ/yyyy-MM-dd_hh-mm-ss/本当のルーキー祭り2025秋_Disc.***）
+# URLからフォルダIDがわかる。<br>例）`https://drive.google.com/drive/folders/<folder_id>`
+FORMS_FOLDER_ID="1AFw64c80F5GZTYgT7wcFX3vDT1gb-NR6"
+# 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
+# Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
+TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
+FANFIC_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
+
+APP_ENV="development"
+```
 
 ## 設定
 
@@ -179,7 +203,6 @@ GitHub Actionsで実行する。
 
 スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で設定内容が取得できる。
 
-
 ## スプレッドシート
 
 backendの処理で利用するGoogleスプレッドシートを説明する。
@@ -189,21 +212,20 @@ Googleスプレッドシートをデータベースとして利用している�
 
 スプレッドシートは以下がある。
 
-| スプレッドシート名 | 概要 | 更新workflow |
-| --- | --- | --- |
-| video_catalog_\<yyyyseoson\> | 参加作品動画リスト | \<yyyyseoson\> Fetch Videos Rookie、\<yyyyseoson\> Fetch Videos ex |
-| grouped_video_catalog_\<yyyyseoson\> | 予選投票グループ分けした参加作品動画リスト | |
-| grouped_video_catalog_\<yyyyseoson\>_semifinal | 準決勝投票グループ分けした参加作品動画リスト | |
-| grouped_video_catalog_\<yyyyseoson\>_final | 決勝投票グループ分けした参加作品動画リスト | |
-| grouped_video_catalog_\<yyyyseoson\>_ex | exステージ投票グループ分けした参加作品動画リスト | |
-| note_list_\<yyyyseoson\> | Note記事リスト | \<yyyyseoson\> Fetch Note |
-| fanfic_list_\<yyyyseoson\> | 二次創作作品リスト | \<yyyyseoson\> Fetch Videos Fanfic |
-| 動画除外リスト_\<yyyyseoson\> | 参加作品動画の除外リスト |  |
-| 二次創作作品提出フォーム回答_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |  |
-| updated_video_catalog_\<yyyyseoson\> | 再生数いいね数集計用参加作品動画リスト | \<yyyyseoson\> Update Videos Info |
+| スプレッドシート名                              | 概要                                             | 更新workflow                                                       |
+| ----------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------ |
+| video*catalog*\<yyyyseoson\>                    | 参加作品動画リスト                               | \<yyyyseoson\> Fetch Videos Rookie、\<yyyyseoson\> Fetch Videos ex |
+| grouped*video_catalog*\<yyyyseoson\>            | 予選投票グループ分けした参加作品動画リスト       |                                                                    |
+| grouped*video_catalog*\<yyyyseoson\>\_semifinal | 準決勝投票グループ分けした参加作品動画リスト     |                                                                    |
+| grouped*video_catalog*\<yyyyseoson\>\_final     | 決勝投票グループ分けした参加作品動画リスト       |                                                                    |
+| grouped*video_catalog*\<yyyyseoson\>\_ex        | exステージ投票グループ分けした参加作品動画リスト |                                                                    |
+| note*list*\<yyyyseoson\>                        | Note記事リスト                                   | \<yyyyseoson\> Fetch Note                                          |
+| fanfic*list*\<yyyyseoson\>                      | 二次創作作品リスト                               | \<yyyyseoson\> Fetch Videos Fanfic                                 |
+| 動画除外リスト\_\<yyyyseoson\>                  | 参加作品動画の除外リスト                         |                                                                    |
+| 二次創作作品提出フォーム回答\_\<yyyyseoson\>    | 二次創作作品提出フォーム回答リスト               |                                                                    |
+| updated*video_catalog*\<yyyyseoson\>            | 再生数いいね数集計用参加作品動画リスト           | \<yyyyseoson\> Update Videos Info                                  |
 
 現状、workflowやスクリプトで更新するスプレッドシートは英語名、手動で更新するスプレッドシートは日本語名をつけている（この命名ルールは要議論）。
-
 
 ## 実行
 
@@ -212,82 +234,71 @@ Googleスプレッドシートをデータベースとして利用している�
 ### 共通準備
 
 1. `config/settings.yml`に設定を記載する。
-
-1. 環境変数`GOOGLE_APPLICATION_CREDENTIALS`に、Google API アクセストークンのJSONのPathを指定する。以下を実行すれば設定できる。
-    ```
-    export GOOGLE_APPLICATION_CREDENTIALS=<JSONのPath>
-    ```
+2. Google Cloud Platformを開き、テストユーザにOAuth認証をするユーザのメールアドレスを登録する。
 
 ### 参加動画一覧更新
 
-1. 「動画除外リスト_2026春」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
+1. 「動画除外リスト\_2026秋」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
 
-1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.fetch_videos
-    ```
-    参加作品動画リストが更新される。
+2. `backend`ディレクトリで以下を実行
+   ```
+   python -m scripts.fetch_videos
+   ```
+   参加作品動画リストが更新される。
 
 ### note記事一覧更新
 
 1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.fetch_note
-    ```
-    Note記事リストが更新される。
+   ```
+   python -m scripts.fetch_note
+   ```
+   Note記事リストが更新される。
 
 ### 二次創作作品一覧更新
 
 1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.fetch_fanfic_forms_result
-    ```
-    二次創作作品提出フォーム回答リストの二次創作作品情報確認用シートが更新される。
-1. 二次創作作品情報確認用シートを確認し、二次創作作品リストに載せる作品は「掲載可否」欄を1にする。
-1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.fetch_fanfic
-    ```
-    二次創作作品リストが更新される。
+   ```
+   python -m scripts.fetch_fanfic_forms_result
+   ```
+   二次創作作品提出フォーム回答リストの二次創作作品情報確認用シートが更新される。
+2. 二次創作作品情報確認用シートを確認し、二次創作作品リストに載せる作品は「掲載可否」欄を1にする。
+3. `backend`ディレクトリで以下を実行
+   ```
+   python -m scripts.fetch_fanfic
+   ```
+   二次創作作品リストが更新される。
 
 ### 投票グループ分け
 
 1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.vote_grouping
-    ```
-    グループ番号の列が追加された動画情報のリストが更新される。
+   ```
+   python -m scripts.vote_grouping
+   ```
+   グループ番号の列が追加された動画情報のリストが更新される。
 
 ### 投票フォーム作成
 
 投票フォームの作成には、サービスアカウントに加え、OAuthによる認証も利用する。
 
-1. Google Cloud Platformを開き、テストユーザにOAuth認証をするユーザのメールアドレスを登録する。
-2. 環境変数`GOOGLE_OAUTH_CREDENTIALS`に、Google API アクセストークンのJSONのPathを指定する。以下を実行すれば設定できる。
-    ```
-    export GOOGLE_OAUTH_CREDENTIALS=<JSONのPath>
-    ```
-3. 環境変数`FORMS_FOLDER_ID`に、生成されたフォームを保存するフォルダのIDを指定する。
-   - Google Driveでフォルダを作成する。URLからフォルダIDがわかる。<br>例）`https://drive.google.com/drive/folders/<folder_id>`
-   - `FORMS_FOLDER_ID`で指定したフォルダの下に、作成時刻を名前としたフォルダが作成され、その下にフォームが作成される（指定フォルダ/yyyy-MM-dd_hh-mm-ss/本当のルーキー祭り2025秋_Disc.***）
-   - 以下を実行すれば設定できる。
-   ```
-   export FORMS_FOLDER_ID=<folder_id>
-   ```
-4. 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
-   - Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
+> [!NOTE]
+>
+> OAuth認証を利用するにはGCPへのテストユーザとして登録が必要です。
+>
+> 1. Google Cloud Platform -> APIとサービス > OAuth同意画面 > 対象
+> 2. テストユーザに追加（100人まで）
+
+1. 投票フォームのテンプレートを作成し、IDを環境変数`TEMPLATE_FORM_ID`に指定する。
    - フォームは以下に注意して作成すること
      - 「質問」タブにて、「選択式（グリッド）」の質問を一つ持つ。「各行で1つの回答を必須にする」をオンにする
      - 「設定」タブにて、
        - メールアドレスを収集する: 回答者からの入力
        - 回答のコピーを回答者に送信: 常に表示
        - 回答を1回に制限する: オン
-5. `backend`ディレクトリで以下を実行
+2. `backend`ディレクトリで以下を実行
    ```
    python -m scripts.setup_forms
    ```
    連番のついたGoogleフォームが作成される。
-
 
 ### 再生数いいね数集計用参加動画一覧更新
 
@@ -295,7 +306,7 @@ Googleスプレッドシートをデータベースとして利用している�
 ただし、参加動画一覧を更新してしまうと、削除やタイトル変更があった場合に参加作品が変更されてしまうため、再生数いいね数集計用の参加動画一覧スプレッドシートを別に作って対応している。
 
 1. `backend`ディレクトリで以下を実行
-    ```
-    python -m scripts.update_videos_info
-    ```
-    再生数いいね数集計用参加作品動画リストが更新される。
+   ```
+   python -m scripts.update_videos_info
+   ```
+   再生数いいね数集計用参加作品動画リストが更新される。
