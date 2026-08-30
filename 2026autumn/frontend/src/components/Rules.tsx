@@ -13,19 +13,17 @@ export default function Rules() {
             <li>
               ニコニコ動画に投稿した作品について、
               <strong>以下のどちらかを満たす方</strong>
-              （2026/4/1時点の実績で判定）
+              （2026/8/24 17:00 時点の実績で判定）
               <br />
               <ul className="list-disc list-outside ml-6 mt-2 space-y-2">
                 <li>
                   いいね数上位3曲のいいね数の平均が
-                  <strong>概ね50以下</strong>
-                  （～70程度を想定）
+                  <strong>50以下</strong>
                 </li>
 
                 <li>
                   再生数上位3曲の再生数の平均が
-                  <strong>概ね500以下</strong>
-                  （～700程度を想定）
+                  <strong>500以下</strong>
                 </li>
               </ul>
             </li>
@@ -46,25 +44,13 @@ export default function Rules() {
             </li>
 
             <li>
-              条件を満たしておらず投稿できない方は、人気投票、二次創作、exステージ、本当のNEXTAGE投稿祭などに参加できます。
+              条件を満たしておらず投稿できない方は、人気投票、二次創作、SPステージ、本当のNEXTAGE投稿祭などに参加できます。
             </li>
 
             <li>
               本当のルーキー祭り2026秋に参加した場合は
               <strong>「本当のNEXTAGE投稿祭」</strong>
               には参加できません。（本当のNEXTAGEの参加条件、本当のルーキー祭りに参加できないことに反するため）
-              <br />
-              ただし、本当のルーキー祭り2026秋に参加した結果、それ以降に作品が伸びて、本当のルーキー祭りに参加できなくなり、本当のNEXTAGE投稿祭に参加するのはOKです。
-              <div className="my-4 bg-slate-100 border-slate-200 pl-4 py-4">
-                <h4 className="text-md font-semibold">本当のNEXTAGE参加OKの例</h4>
-                本当のルーキー後に伸びた場合
-                <br />
-                例）本ルー400 ボカコレ夏600
-                <h4 className="text-md font-semibold mt-2">本当のNEXTAGE参加NGの例</h4>
-                本当のルーキー時点でNEXTAGEを選べる条件で、本ルーに参加したのに、NEXTAGEに参加する。
-                <br />
-                例）本ルー600 ボカコレ夏600
-              </div>
               本当のNEXTAGEを創設の目的は、本当のルーキー祭りのレベルインフレに歯止めを掛け、初心者の参加障壁を下げるためです。参加機会の増加ではありません。
               趣旨のご理解をお願いします。
             </li>
@@ -567,7 +553,7 @@ export default function Rules() {
       ),
     },
     {
-      title: "セレクションCD企画",
+      title: "セレクションCD企画・打ち上げ祭",
       content: (
         <div>
           <ul className="list-disc list-outside ml-6 space-y-2">
@@ -577,6 +563,13 @@ export default function Rules() {
               <strong>「本当のNEXTAGE祭2026」</strong>
               のセレクションCD企画に参加しており、セレクションCDに収録される場合があります。同意しない場合は
               <strong>「セレクションCD企画NG」</strong>
+	      をタグロックしてください。
+            </li>
+            <li>
+              <strong>打ち上げ祭り:</strong>
+              <strong>「本当の打ち上げ祭り」</strong>
+              で作品が使用される場合があります(商用利用)。同意しない場合は
+              <strong>「打ち上げ祭りNG」</strong>
 	      をタグロックしてください。
             </li>
           </ul>

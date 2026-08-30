@@ -37,8 +37,9 @@ export default function About() {
             </h4>
 
             <p className="text-slate-600 leading-relaxed text-sm">
+	      原則として
               <strong>全投稿作品を紹介配信</strong>
-              します。また、投稿期間終了後、
+              を実施します。また、投稿期間終了後、
               <strong>人気投票</strong>
               を行います。
             </p>

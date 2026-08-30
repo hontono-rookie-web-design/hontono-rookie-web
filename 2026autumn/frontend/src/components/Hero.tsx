@@ -196,7 +196,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
         <Image
           src="/images/2026spring_logoTransparentHigh.png"
-          alt="本当のルーキー祭り2026春"
+          alt="本当のルーキー祭り2026秋"
           width={1200}
           height={600}
           priority
@@ -212,16 +212,6 @@ export default function Hero() {
           {renderCTA()}
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a
-            href="https://www.nicovideo.jp/watch/sm46006887"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-sm btn-outline border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-slate-400"
-          >
-            説明会動画を見る
-          </a>
-        </div>
 
         <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
           投稿祭の進行は
