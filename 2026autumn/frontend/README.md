@@ -69,7 +69,7 @@ NEXT_PUBLIC_EVENT_PHASE=prelim
 
 ## SPステージフェーズ
 
-spステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_SP` により制御します。
+SPステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_SP` により制御します。
 
 ### 設定可能な値
 

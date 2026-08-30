@@ -13,7 +13,7 @@ import type { VideoSheetItem, VoteSheetItem } from "@/lib/fetchSheet";
    表示ラベル
 ========================= */
 const DISC_LABEL = "SP";
-const PHASE_LABEL = "spステージ";
+const PHASE_LABEL = "SPステージ";
 
 /* =========================
    表示フェーズ定義（安全化）

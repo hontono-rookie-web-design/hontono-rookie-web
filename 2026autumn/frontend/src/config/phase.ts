@@ -39,7 +39,7 @@ export const EVENT_PHASES_SP = {
 export type EventPhaseSp = (typeof EVENT_PHASES_SP)[keyof typeof EVENT_PHASES_SP];
 
 export function getCurrentPhaseSp(): EventPhaseSp {
-  const env = (process.env.NEXT_PUBLIC_EVENT_PHASE_SP ?? process.env.NEXT_PUBLIC_EVENT_PHASE_EX) as
+  const env = process.env.NEXT_PUBLIC_EVENT_PHASE_SP as
     | EventPhaseSp
     | undefined;
 

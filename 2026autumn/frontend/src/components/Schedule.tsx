@@ -66,33 +66,32 @@ export default function Schedule() {
             ))}
           </ul>
         </div>
-        {/* exステージ・spステージの付記 */}
+        {/* opステージ・exステージの付記 */}
 
         <div className="mt-16 p-6 md:p-8 bg-slate-50/80 backdrop-blur-sm rounded-2xl border border-slate-100 shadow-sm max-w-3xl mx-auto">
           <h4 className="text-lg font-extrabold text-slate-700 mb-6 text-center">併催ステージ</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-5 rounded-xl border border-mint/10 shadow-sm">
-              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">exステージ</h5>
+              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">opステージ</h5>
 
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年9月4日(金) 17:00 〜 9月7日(月) 16:00
+                2026年4月18日(土) 0:00 〜 4月22日(水) 16:59
               </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                人気投票に参加したくない作品はex期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
+                人気投票に参加したくない作品はop期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-cherry/10 shadow-sm">
-              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">spステージ</h5>
+              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">exステージ</h5>
 
-              <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年10月5日(月) 〜 10月18日(日)
-              </p>
+              <p className="text-xs text-slate-400 font-semibold mb-3">2026年6月1日(月) 〜</p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                二次創作参加作品などが対象となる、人気投票ありの特別なステージです。
+                二次創作参加作品が対象となる特別なステージです。
+                <span className="text-red-500 font-bold">投稿締切：5/30(土) 24:00</span>
               </p>
             </div>
           </div>

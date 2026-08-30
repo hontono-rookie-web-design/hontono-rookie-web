@@ -23,8 +23,8 @@ const VIEW_PHASE = {
 function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.EXTRA:
       return VIEW_PHASE.BEFORE;
+    case EVENT_PHASES.EXTRA:
     default:
       return VIEW_PHASE.DURING;
   }
@@ -130,7 +130,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
   }, [displayData]);
 
   if (viewPhase === VIEW_PHASE.BEFORE) {
-    return <TBA title={`楽曲一覧 ルーキー`} />;
+    return <TBA title={`楽曲一覧　exステージ`} />;
   }
 
   const visibleItems = displayData.slice(0, visibleCount);

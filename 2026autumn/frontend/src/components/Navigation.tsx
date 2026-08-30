@@ -87,7 +87,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li>
             <Link href="/submissions/songs/special" prefetch={false} onClick={closeDrawer}>
               <Music className="w-4 h-4 mr-3 text-slate-400" />
-              楽曲一覧 spステージ
+              楽曲一覧 SPステージ
             </Link>
           </li>
 
@@ -112,7 +112,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li>
             <Link href="/submissions/vote/special" prefetch={false} onClick={closeDrawer}>
               <Vote className="w-4 h-4 mr-3 text-slate-400" />
-              人気投票 spステージ
+              人気投票 SPステージ
             </Link>
           </li>
 

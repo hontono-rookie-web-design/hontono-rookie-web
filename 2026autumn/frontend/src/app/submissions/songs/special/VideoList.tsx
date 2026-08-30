@@ -129,7 +129,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
   }, [displayData]);
 
   if (viewPhase === VIEW_PHASE.BEFORE) {
-    return <TBA title="楽曲一覧 spステージ" />;
+    return <TBA title="楽曲一覧 SPステージ" />;
   }
 
   const visibleItems = displayData.slice(0, visibleCount);
@@ -140,11 +140,11 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* ヘッダー */}
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 spステージ</h1>
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 SPステージ</h1>
 
           <p className="text-sm text-gray-500 mt-1">
             「{CONFIG.event.name}
-            」のspステージ参加楽曲を掲載しています。
+            」のSPステージ参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
@@ -225,7 +225,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* 空 */}
 
         {!loading && displayData.length === 0 && (
-          <div className="text-center py-20 text-gray-600">spステージ楽曲はまだありません。</div>
+          <div className="text-center py-20 text-gray-600">SPステージ楽曲はまだありません。</div>
         )}
         {/* グリッド */}
 
