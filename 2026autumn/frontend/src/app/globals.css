@@ -3,7 +3,7 @@
   themes: bumblebee --default;
 }
 
-:root {
+@theme inline {
   --color-primary: var(--color-amber-500);
   --color-primary-content: var(--color-amber-950);
   --color-secondary: var(--color-rose-900);
