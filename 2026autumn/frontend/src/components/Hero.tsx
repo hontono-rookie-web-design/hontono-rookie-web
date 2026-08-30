@@ -33,7 +33,7 @@ export default function Hero() {
           <Link
             href="/submissions/songs/opening"
             prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             参加楽曲ページへ
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -47,7 +47,7 @@ export default function Hero() {
           <Link
             href="/submissions/songs/rookie"
             prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             参加楽曲ページへ
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -58,7 +58,7 @@ export default function Hero() {
           <Link
             href="/submissions/vote/preliminaries"
             prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             人気投票ページへ
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -69,7 +69,7 @@ export default function Hero() {
           <Link
             href="/submissions/vote/semifinals"
             prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             人気投票ページへ
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -80,7 +80,7 @@ export default function Hero() {
           <Link
             href="/submissions/vote/finals"
             prefetch={false}
-            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-cherry/30"
+            className="btn btn-accent btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             人気投票ページへ
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -91,7 +91,7 @@ export default function Hero() {
           <Link
             href="/submissions/vote/finals"
             prefetch={false}
-            className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-skyblue/30"
+            className="btn btn-secondary btn-lg rounded-full text-white shadow-lg shadow-rose-900/30"
           >
             人気投票結果を見る
             <ArrowRight className="ml-2 w-5 h-5" />
