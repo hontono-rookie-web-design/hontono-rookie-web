@@ -46,7 +46,7 @@ export default function About() {
           </div>
 
           <div className="flex flex-col items-center text-center p-6 bg-base-100 rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1 duration-300">
-            <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-6 text-accent">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary">
               <Star size={32} />
             </div>
 

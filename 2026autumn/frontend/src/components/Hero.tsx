@@ -229,7 +229,7 @@ export default function Hero() {
             href="https://x.com/SynNightPsub?s=20"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary font-medium hover:underline"
+            className="text-link font-medium hover:underline"
           >
             公式Xアカウント
           </a>

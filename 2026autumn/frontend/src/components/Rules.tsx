@@ -76,7 +76,7 @@ export default function Rules() {
       title: "投稿方法",
       content: (
         <div>
-          <p className="text-sm font-semibold text-accent mb-2">※ タグに#や「」は不要です。</p>
+          <p className="text-sm font-semibold text-primary mb-2">※ タグに#や「」は不要です。</p>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -159,7 +159,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のルーキー祭り2026春投稿者募集要項
             </a>
@@ -273,7 +273,7 @@ export default function Rules() {
               href="https://x.com/sumobi126759/status/2040464042284941327?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2040464042284941327%7Ctwgr%5E8b84d798f038a4b0f023c300f5ca46140c77cd4a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fnote.com%2Fsyn523%2Fn%2Fn5ee5e731c3d6"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               musescoreでの楽譜作成方法
             </a>
@@ -287,7 +287,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n9150f6246aef?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               ルーキー祭り認定活動者
             </a>
@@ -299,7 +299,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のルーキー祭り2026春投稿者募集要項
             </a>
@@ -422,7 +422,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のルーキー祭り2026春人気投票募集要項
             </a>
@@ -574,7 +574,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のルーキー祭り2026春二次創作者募集要項
             </a>
@@ -604,7 +604,7 @@ export default function Rules() {
               href="https://twipla.jp/events/704387"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary font-medium hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のNEXTAGE祭2026【開催日2026/9/18】with 大阪新世界フェス
             </a>

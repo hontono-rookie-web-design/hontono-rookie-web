@@ -28,7 +28,7 @@ export default function Page() {
             href="https://docs.google.com/forms/d/e/1FAIpQLSczlIrsD3P3AEpbpKirIp8ZZFF6MWlLU2uSPXNTPHw3oicgBA/viewform"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline mx-1"
+            className="text-link underline mx-1"
           >
             こちらのフォーム
           </a>
@@ -84,7 +84,7 @@ export default function Page() {
               href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline ml-1"
+              className="text-link underline ml-1"
             >
               本当のルーキー祭り2026春二次創作者募集要項
             </a>

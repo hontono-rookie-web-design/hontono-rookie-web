@@ -174,7 +174,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
               href="/derivative/Postingform"
               prefetch={false}
               onClick={closeDrawer}
-              className="flex items-center font-semibold text-primary hover:text-primary transition"
+              className="flex items-center font-semibold transition"
             >
               <PlusCircle className="w-4 h-4 mr-3 text-slate-400" />
               二次創作 提出フォーム
