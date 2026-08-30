@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "本当のルーキー祭り2026秋",
     description:
       "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
-    images: [{ url: "/ogp.png" }],
+    images: [{ url: "/images/2026autumn_ogp.png" }],
     type: "website",
   },
   twitter: {
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "本当のルーキー祭り2026秋",
     description:
       "ボカロPなどの新人クリエイターを対象とした楽曲投稿・投票イベント「本当のルーキー祭り2026春」の特設サイト",
-    images: ["/ogp.png"],
+    images: ["/images/2026autumn_ogp.png"],
   },
 };
 

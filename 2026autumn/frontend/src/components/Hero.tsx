@@ -195,13 +195,13 @@ export default function Hero() {
 
       <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
         <Image
-          src="/images/2026spring_logoTransparentHigh.png"
-          alt="本当のルーキー祭り2026春"
-          width={1200}
-          height={600}
+          src="/images/2026autumn_logo.png"
+          alt="本当のルーキー祭り2026秋"
+          width={2000}
+          height={1300}
           priority
-          sizes="(max-width: 768px) 420px, (max-width: 1024px) 630px, 780px"
-          className="w-[420px] md:w-[630px] lg:w-[780px] h-auto mb-6 drop-shadow-sm"
+          sizes="(max-width: 768px) 357px, (max-width: 1024px) 535px, 663px"
+          className="w-[357px] md:w-[535px] lg:w-[663px] h-auto mt-20 mb-6 drop-shadow-sm"
         />
 
         <p className="text-xl md:text-2xl text-slate-600 mb-10 font-medium">
