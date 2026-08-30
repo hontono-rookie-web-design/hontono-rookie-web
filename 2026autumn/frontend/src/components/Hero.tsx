@@ -22,7 +22,7 @@ export default function Hero() {
           <Link
             href="#rules"
             prefetch={false}
-            className="btn btn-lg rounded-full text-white shadow-lg shadow-rose-900/30 bg-rose-400 hover:bg-rose-900 border-none"
+            className="btn btn-primary btn-lg rounded-full text-white shadow-lg shadow-rose-900/30 border-none"
           >
             参加ルールを読む
             <ArrowRight className="ml-2 w-5 h-5" />
