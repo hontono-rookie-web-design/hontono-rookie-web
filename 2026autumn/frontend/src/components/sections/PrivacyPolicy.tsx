@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
           href="https://marketingplatform.google.com/about/analytics/terms/jp/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-500 hover:underline"
+          className="text-primary hover:underline"
         >
           Googleアナリティクスサービス利用規約
         </a>
@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
           href="https://policies.google.com/technologies/ads?hl=ja"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-500 hover:underline"
+          className="text-primary hover:underline"
         >
           Googleポリシーと規約
         </a>

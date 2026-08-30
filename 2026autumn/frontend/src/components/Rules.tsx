@@ -76,7 +76,7 @@ export default function Rules() {
       title: "投稿方法",
       content: (
         <div>
-          <p className="text-sm font-semibold text-cherry mb-2">※ タグに#や「」は不要です。</p>
+          <p className="text-sm font-semibold text-accent mb-2">※ タグに#や「」は不要です。</p>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -159,7 +159,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               本当のルーキー祭り2026春投稿者募集要項
             </a>
@@ -273,7 +273,7 @@ export default function Rules() {
               href="https://x.com/sumobi126759/status/2040464042284941327?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2040464042284941327%7Ctwgr%5E8b84d798f038a4b0f023c300f5ca46140c77cd4a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fnote.com%2Fsyn523%2Fn%2Fn5ee5e731c3d6"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               musescoreでの楽譜作成方法
             </a>
@@ -287,7 +287,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n9150f6246aef?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               ルーキー祭り認定活動者
             </a>
@@ -299,7 +299,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n5ee5e731c3d6?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               本当のルーキー祭り2026春投稿者募集要項
             </a>
@@ -402,7 +402,7 @@ export default function Rules() {
               予選と同様に人気投票をして
               <strong>
                 <s>上位2曲</s>
-                <span className="text-cherry">上位1曲</span>
+                <span className="text-accent">上位1曲</span>
                 を準決勝通過
               </strong>
               とします。
@@ -422,7 +422,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               本当のルーキー祭り2026春人気投票募集要項
             </a>
@@ -548,7 +548,7 @@ export default function Rules() {
               <Link
                 href="/derivative/Postingform"
                 prefetch={false}
-                className="text-skyblue font-medium text-fg-brand hover:underline"
+                className="text-secondary font-medium hover:underline"
               >
                 Googleフォーム
               </Link>
@@ -574,7 +574,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               本当のルーキー祭り2026春二次創作者募集要項
             </a>
@@ -604,7 +604,7 @@ export default function Rules() {
               href="https://twipla.jp/events/704387"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-secondary font-medium hover:underline"
             >
               本当のNEXTAGE祭2026【開催日2026/9/18】with 大阪新世界フェス
             </a>
@@ -619,10 +619,10 @@ export default function Rules() {
     <section id="rules" className="w-full py-24 bg-base-100/50">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-rose-900 uppercase mb-2">Rules</h2>
+          <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">Rules</h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800">参加ルール・要項</h3>
           <p className="text-slate-500 mt-4 text-sm mt-6 flex items-center justify-center gap-2">
-            <AlertCircle size={16} className="text-cherry" />
+            <AlertCircle size={16} className="text-accent" />
             エントリー前に必ずすべての項目をご確認ください
           </p>
         </div>

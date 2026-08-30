@@ -24,7 +24,7 @@ export default function Crowdfunding() {
             href="https://camp-fire.jp/projects/916894/view"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-rose-900 hover:underline"
+            className="text-sm font-medium text-secondary hover:underline"
           >
             ボカロが街を熱くした日を、永遠に― 本当の投稿祭セレクションCD制作PJー
           </a>

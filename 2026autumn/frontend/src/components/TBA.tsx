@@ -3,7 +3,7 @@ import { Anchor } from "lucide-react";
 export default function TBA({ title }: { title: string }) {
   return (
     <div className="w-full min-h-[70vh] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500">
-      <div className="w-24 h-24 bg-mint/10 rounded-full flex items-center justify-center mb-8 text-rose-900 shadow-inner">
+      <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-8 text-secondary shadow-inner">
         <Anchor size={48} className="animate-pulse" />
       </div>
 

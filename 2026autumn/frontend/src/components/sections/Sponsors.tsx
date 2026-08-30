@@ -18,7 +18,7 @@ export default function Sponsors() {
             href="https://x.com/vliverofepic"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-rose-900 hover:underline"
+            className="text-sm font-medium text-secondary hover:underline"
           >
             公式X
           </a>
@@ -35,7 +35,7 @@ export default function Sponsors() {
             href="https://x.com/nfrs_radio"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-rose-900 hover:underline"
+            className="text-sm font-medium text-secondary hover:underline"
           >
             公式X
           </a>
@@ -54,7 +54,7 @@ export default function Sponsors() {
             href="https://x.com/YU_WineRed"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-rose-900 hover:underline"
+            className="text-sm font-medium text-secondary hover:underline"
           >
             公式X
           </a>
@@ -72,7 +72,7 @@ export default function Sponsors() {
               href="https://site.nrc-form.jp/?transit_from=userfes"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-rose-900 hover:underline"
+              className="text-sm font-medium text-secondary hover:underline"
             >
               公式サイト
             </a>
@@ -81,7 +81,7 @@ export default function Sponsors() {
               href="https://x.com/dwango_nrc"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-amber-500 hover:underline"
+              className="text-sm font-medium text-primary hover:underline"
             >
               公式X
             </a>
@@ -90,7 +90,7 @@ export default function Sponsors() {
               href="https://discord.gg/WtWVvVzwpj"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-cherry hover:underline"
+              className="text-sm font-medium text-accent hover:underline"
             >
               公式Discord
             </a>
