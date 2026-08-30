@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: bumblebee --default;
-}
+@plugin "daisyui";
 
-@theme inline {
+@plugin "daisyui/theme" {
+  name: "bumblebee";
+  default: "true";
   --color-primary: var(--color-amber-500);
   --color-primary-content: var(--color-amber-950);
   --color-secondary: var(--color-rose-900);
