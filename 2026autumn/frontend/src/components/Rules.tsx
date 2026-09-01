@@ -58,6 +58,7 @@ export default function Rules() {
         </div>
       ),
     },
+
     {
       title: "投稿方法",
       content: (
@@ -69,36 +70,26 @@ export default function Rules() {
               ニコニコ動画に投稿して、
               <strong>「本当のルーキー祭り2026秋」</strong>
               のタグを設定し、タグロックしてください。
-	    <br />
-	      ※参加作品以外（MV、二次創作、宣伝用のショート動画など）への使用は禁止
             </li>
 
             <li>
               投稿作品とは別にMV作品を投稿する場合は、MV作品側に
-              <strong>「本当のルーキー祭り2026秋二次創作」</strong>
+              <strong>「本当のルーキー祭り2026秋MV」</strong>
               のタグを設定し、タグロックしてください。
             </li>
 
             <li>
-	      動画説明欄に投稿者名と動画のタイトルの読みおよび以下の説明文をご記載ください。紹介放送で読み上げます。記号も含めて正確にお願いします。
-	    <br />
-	      例
-	    <br />
-	      True Rookie5 (とぅるーるーきーふぁいぶ)
-	    <br />
-	      SynNightP (しんないとぴー)
+              セレクションCD企画にも参加する方は、さらに
+              <strong>「セレクションCD企画参加曲」</strong>
+              のタグも設定し、タグロックしてください。
             </li>
-            <li>
-	      下記の文章を動画説明欄に記載してください。
-	    <br />
-	      「本楽曲は本当のルーキー祭り2026秋 DiscXX収録曲です。
-	    <br />
-	      下記公式Webサイトから人気投票に参加できます。」
-	    <br />
-	      公式webサイト:XXXXXXXX
-	    <br />
-	      ※収録Discは現時点で未定です。確定次第更新します。
-            </li>
+          </ul>
+
+          <p className="text-sm text-slate-500 ml-6 mt-2">
+            ※ セレクションCD企画に参加した場合、
+            <strong>大阪新世界フェスで有償販売するコンピCDへの収録に同意したものとします。</strong>
+            大阪新世界フェスの思い出に持ち帰ってほしい、家でも楽しんでもらうことでボカロ楽曲に興味を持ってほしい！という想いです。手に取った方には大切に扱って欲しいため有償にしてます。収益化が目的ではありません。
+          </p>
           <h3 className="text-lg font-semibold mt-4 mb-2">任意</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
@@ -148,35 +139,6 @@ export default function Rules() {
               二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
             </li>
           </ul>
-            <li>
-	     <strong>本ルーに関する紹介・宣伝目的での作品利用</strong>
-              <br />
-	     <strong>本ルーに関する紹介記事、紹介画像、配信、広報等での作品利用</strong>
-              <br />
-	     <strong>本当の打ち上げ祭りでの作品の使用（商用利用）</strong>
-              <br />
-	     <strong>新世界フェスによるセレクションCDへの作品提供（商用利用）</strong>
-              <br />
-	     <strong>本ルー参加作品を題材とした二次創作の制作および利用</strong>
-            </li>
-            <li>
-	      本当の打ち上げ祭りおよびセレクションCDへの作品提供については、同意しない選択ができます。
-              <br />
-	      同意しない場合は、投稿作品に以下のタグをロックしてください。
-              <br />
-	      
-	      「セレクションCD企画NG」
-              <br />
-	      「打ち上げ祭りNG」
-            </li>
-            <li>
-	      なお、本ルー参加作品を起点に二次創作者自身が新たに制作したイラストについては、Pへの個別確認を必要とせず、二次創作者が自由に公開・利用・頒布できるものとします。
-              <br />
-	      本規約における「頒布」には、有償・無償を問わず、第三者への配布・提供を含みます。
-              <br />
-	      
-	      ただし、本ルー参加作品についてP以外に別途権利者が存在する場合、その権利者が有する権利については本規約の対象外とします。 必要な場合は、各権利者の許諾を得てください。
-            </li>
 
           <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
             詳しいルールについては
@@ -186,7 +148,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026秋募集要項
+              本当のルーキー祭り2026秋投稿者募集要項
             </a>
             をご確認ください。
           </p>
@@ -201,143 +163,276 @@ export default function Rules() {
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
-              <strong>投稿期間内に楽曲をニコニコ動画へ投稿すること。</strong>
-              <br />
-              投稿が期間内でも、タグ設定が期間外の場合は参加できません。
+              他媒体を含めて未投稿の新曲
             </li>
 
             <li>
-              他媒体も含めて
-              <strong>未投稿の新曲</strong>
-              であること。
-              <br />
-              過去曲にタグをつけただけ、過去曲のRemix、YouTube版をニコニコ動画に投稿しただけは不可。
-              WIP、告知、知人にのみ公開などはOK。
+              既投稿曲のRemix不可
             </li>
 
             <li>
-              YouTubeへの同時投稿、投コメでのYoutubeへの誘導もOKです。
-              <br />
-              MV版をYouTubeに投稿する場合など活用してください。
+              生成AIによる楽曲の自動生成作品不可
             </li>
 
             <li>
-              <strong>初心者が敷居を感じないようなシンプルな動画であること。</strong>
-              <br />
-              歌詞表示や複数枚のイラストを使用した紙芝居形式可。
-              別に用意したMV作品をYoutubeに投稿するのは可（別タグでニコ動でも可）
+              ボカロ・合成音声作品
             </li>
 
             <li>
-              <strong>投稿は1アカウント1作品であること。</strong>
-              <br />
-              中の人が複数人いる場合は人数分参加OKです。事前にその旨を連絡してください。
+              ニコニコ動画へ投稿
             </li>
 
             <li>
-              <strong>ボカロ（合成音声）作品であること。</strong>
-              <br />
-              歌い手ボーカルだと人気投票での判断が難しくなるためです。
-	      生成AIによる楽曲の自動生成作品は参加できません。
+              1アカウント1作品
             </li>
 
             <li>
-              <strong>オフボーカル音源が用意されていること。</strong>
-              <br />
-              動画ではなく、音声ファイルでお願いします。 歌みたミックスするためです。
-              二次創作で使用します。 オフボーカルの公開は作品の投稿日前でもOKです。
-              (投コメにリンクを貼るため)
+              オフボーカル音源を用意
             </li>
 
             <li>
-              <strong>BPM・歌詞が用意されていること。</strong>
-              <br />
-              投稿者コメントに貼る、テキストファイルでオフボと一緒にアップする、ピアプロ投稿など分かれば何でもいいです。
-              歌ってみたの練習に必要です。動画内歌詞表示のみだと追うのが大変です。
+              歌詞を用意
+            </li>
+
+            <li>
+              BPMを記載
+            </li>
+
+            <li>
+              投稿者名の読みを記載
+            </li>
+
+            <li>
+              作品名の読みを記載
+            </li>
+
+            <li>
+              シンプルな動画であること
             </li>
           </ul>
-
-            <li>
-              <strong>投稿者名・作品名の読みを記載</strong>
-              <br />
-	     紹介配信で読み上げる可能性があるため。
-            </li>
-
-          </ul>
-          <p className="text-sm text-slate-500 mt-2">
-            ※ オフボーカル音源、歌詞が用意できない場合は相談、連絡してください。
-          </p>
-
-          <h3 className="text-lg font-semibold mt-4 mb-2">任意条件</h3>
-
+        </div>
+      ),
+    },
+    {
+      title: "動画について",
+      content: (
+        <div>
+          <div className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            <p>
+              本投稿祭は初心者が参加しやすい環境を重視しています。
+            </p>
+            <p>
+              そのため、動画演出による競争を避ける目的でシンプルな動画での参加をお願いします。告知動画などに制約はありません。
+            </p>
+            <br />
+              シンプルと目安としては、
+          </div>
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
-              <strong>原曲のMP3を提出。</strong>
-              <br />
-              ルーキーイラスト投稿祭、歌みた練習などに使用するため
+              静止画
             </li>
 
             <li>
-              <strong>作品をMIDI形式で用意。</strong>
-              <br />
-              二次創作を簡易化して促進するため
+              歌詞表示
             </li>
 
             <li>
-              <strong>作品のメロディを楽譜で用意。</strong>
-              <br />
-              二次創作を簡易化して促進するため。 楽譜作成にはMusescoreが使えます。
+              イラスト差し替え
+            </li>
+
+            <li>
+              カメラの寄る・引く程度の演出
+            </li>
+
+            <li>
+              パワポ程度のアニメーション
             </li>
           </ul>
-
-          <p className="text-sm text-slate-500 mt-2">
-            オフボーカル音源、MIDIなどの関連ファイルは提出方法の例として以下があります。基本的に所在が分かれば自由です。投稿作品の投稿者コメントに貼って頂くのが分かりやすいです。
+          <p>
+            を想定しています。
           </p>
-
-          <ul className="list-disc list-outside ml-6 text-sm text-slate-500 space-y-2 mt-2">
-            <li>ギガファイル便にまとめて投稿者コメントにリンクを貼る。</li>
-            <li>ピアプロに投稿する。</li>
-            <li>ニコニコモンズを活用する。</li>
-          </ul>
-
-          <p className="text-sm text-slate-500 mt-2">
-            参考：
-            <a
-              href="https://x.com/sumobi126759/status/2040464042284941327?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2040464042284941327%7Ctwgr%5E8b84d798f038a4b0f023c300f5ca46140c77cd4a%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fnote.com%2Fsyn523%2Fn%2Fn15ed59e49077"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              musescoreでの楽譜作成方法
+          <br />
+            参考動画
+          <br />
+            <a href="https://nico.ms/sm46643101?ref=thumb_watch" target="_blank" rel="noopener noreferrer" className="text-skyblue font-medium text-fg-brand hover:underline">
+              本当のルーキー祭り2026秋告知曲　True Rookie5
             </a>
-          </p>
-
-          <p className="text-sm text-slate-500 mt-2">
-            ルーキー祭りでは創作のサポートとしてクリエーターを斡旋しています。
-            認定活動者はルーキー祭り界隈では有名な方達です。認定活動者とコラボすることにより、大きな注目を集めることが期待できます。
-            <br />
-            <a
-              href="https://note.com/syn523/n/n9150f6246aef?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              ルーキー祭り認定活動者
-            </a>
-          </p>
-
           <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n15ed59e49077?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026秋投稿者募集要項
-            </a>
-            をご確認ください。
+            動画表現を厳密にルール化すると運営負担が大きくなるため、個別判断やパトロールは行いません。目安以外も許容しますが、参加者自身が趣旨を理解した上で判断してください。
+          <br />
+            なお、他参加者や視聴者から見て趣旨から大きく外れていると判断される場合があります。その場合の評価や反応については自己責任となります。
           </p>
+        <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            凝ったMV作品を制作したい場合は、YouTubeや「本当のルーキー祭り2026秋二次創作」タグをご活用ください。これらの動画から本投稿作品への誘導ありです。(逆もOK)
+        </p>
+        </div>
+      ),
+    },
+    {
+      title: "生成AIについて",
+      content: (
+        <div>
+          <div className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            <p>
+              生成AIによる楽曲の自動生成作品は参加できません。
+            </p>
+            <p>
+              例
+            </p>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>
+              Suno
+            </li>
+
+            <li>
+              Udio
+            </li>
+
+            <li>
+              その他AIへ指示を与えて生成した楽曲
+            </li>
+          </ul>
+
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+              なお、制作補助としてのAI利用を一律に禁止するものではありません。
+            </p>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+              判断が難しい場合は主催へご相談ください。
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "新曲・Remixについて",
+      content: (
+        <div>
+          <div className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            <p>
+              本投稿祭は未投稿の新曲を対象とします。
+            </p>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-0">
+              他媒体を含め既投稿曲のRemix作品は参加できません。
+            </p>
+            <p>
+              これは投稿作品数の増加による運営負荷を抑え、参加作品へ十分な対応を行うためです。
+            </p>
+            <p>
+              また、Remixの定義を厳密に定めることは困難であり、判断基準の統一も難しいため、一律に対象外としています。
+            </p>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+              告知動画や制作途中の公開などは問題ありません。
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "オフボーカル・歌詞・BPMについて",
+      content: (
+        <div>
+          <div className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            <p>
+              本投稿祭の参加曲は後日開催予定の「本当のルーキー歌い手2026秋」の課題曲として使用されます。  
+            </p>
+            <br />
+              そのため以下の公開を必須とします。
+            <ul className="list-disc list-outside ml-6 mt-4 mb-4 space-y-2">
+              <li>
+                オフボーカル音源 (オーディオ形式wavまたはmp3のどちらかは必須)
+              </li>
+
+              <li>
+                歌詞の記載
+              </li>
+
+              <li>
+                BPMの記載
+              </li>
+            </ul>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-0">
+              公開方法は自由です。
+            </p>
+            <p>
+              原曲ファイル、オフボーカルなど作品公開前に投稿してもOKです。
+            </p>
+            <p>
+              (動画概要にリンクを貼るため)
+            </p>
+            <br />
+              例
+            <ul className="list-disc list-outside ml-6 space-y-2">
+              <li>
+                ニコニ・コモンズ
+              </li>
+
+              <li>
+                Googleドライブ
+              </li>
+
+              <li>
+                その他ダウンロード可能なサービス
+              </li>
+
+              <li>
+                ピアプロ
+              </li>
+            </ul>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-0">
+              なるべく期限の保存期限がないものが望ましいです。
+            </p>
+            <p>
+              難しい場合はギガファイル便で良いです。
+            </p>
+            <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+              動画説明欄などからアクセスできる状態にしてください。
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "任意公開",
+      content: (
+        <div>
+          <div className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            <p>
+              公開すると二次創作されやすくなります。
+            </p>
+            <p>
+              原曲MP3は以下の投稿祭で使用する場合があります。
+            </p>
+              <ul className="list-disc list-outside ml-6 space-y-2">  
+                <li>
+                  本当の打ち上げ祭り
+                </li>
+
+                <li>
+                  本当のルーキーイラスト祭り
+                </li>
+                </ul>
+                <ul className="list-disc list-outside ml-6 mt-6 mb-4 space-y-2">
+                <li>
+                  原曲MP3
+                </li>
+
+                <li>
+                  MIDI
+                </li>
+
+                <li>
+                  VSQ
+                </li>
+
+                <li>
+                  楽譜
+                </li>
+
+                <li>
+                  その他関連ファイル (オフボーカルMVなど)
+                </li>
+                </ul>
+          </div>
         </div>
       ),
     },
@@ -383,7 +478,7 @@ export default function Rules() {
             </li>
             <li>全曲を順位づけする形式のため、1曲だけ選ぶことはできません</li>
 
-            <li>Disc内で相対評価人気投票をします。(1位作品:5点、・・・、5位作品:1点)</li>
+            <li>Disc内で相対評価人気投票をします。(1位作品:10点、・・・、10位作品:1点)</li>
 
             <li>
               自分の独断で投票してください。
@@ -392,10 +487,8 @@ export default function Rules() {
 
             <li>
               <strong>1グループから投票できます。</strong>
-	      全グループ投票しなくても大丈夫です。 
+              全グループ投票しなくても大丈夫です。
             </li>
-            <li> サビのみ、ワンコーラスのみなど部分視聴での評価も可。 </li>
-            <li>公序良俗に反する投票は禁止です。（恣意的に低得点にする行為など) </li>
 
             <li>期間中に非公開になった動画は1点にしてください。</li>
             <li>自分はこの曲を1位に投票したよ！は自己責任で公開してもOKです。</li>
@@ -435,14 +528,26 @@ export default function Rules() {
             <li>スコアは全曲が公開されます。</li>
           </ul>
 
+          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
+            詳しいルールについては
+            <a
+              href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-skyblue font-medium text-fg-brand hover:underline"
+            >
+              本当のルーキー祭り2026秋人気投票募集要項
+            </a>
+            をご確認ください。
+          </p>
         </div>
       ),
     },
     {
-      title: "exステージ・SPステージ",
+      title: "opステージ・exステージ",
       content: (
         <div>
-          <h3 className="text-lg font-bold text-slate-700 mb-2">exステージ</h3>
+          <h3 className="text-lg font-bold text-slate-700 mb-2">opステージ</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -478,7 +583,7 @@ export default function Rules() {
 
             <li>
               SPステージは参加条件がなく、<strong>誰でも参加できます</strong>
-              。（MVアリ、再生数不問、既投稿曲アリ、歌い手ボーカル可）
+              。（MVアリ、再生数不問、既投稿曲アリ）
             </li>
 
             <li>
