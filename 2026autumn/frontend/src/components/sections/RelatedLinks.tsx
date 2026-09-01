@@ -30,11 +30,6 @@ export default function RelatedLinks() {
       desc: "作品制作に活用してください。",
       url: "https://note.com/syn523/n/n9150f6246aef?sub_rt=share_pw",
     },
-    {
-      title: "ボカロPルーキー図鑑",
-      desc: "申請だけで掲載されます。参加記念としてどうぞ。",
-      url: "https://www.vocalop-rookie.com/",
-    },
   ];
 
   return (

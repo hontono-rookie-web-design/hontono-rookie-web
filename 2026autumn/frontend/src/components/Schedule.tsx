@@ -2,13 +2,13 @@ export default function Schedule() {
   const scheduleItems = [
     {
       title: "エキシビジョンステージ(ex)",
-      date: "2026年9月4日(金) 17:00 〜 9月6日(月) 16:00",
+      date: "2026年9月4日(金) 17:00 〜 9月6日(日) 16:00",
       description: "人気投票に参加しない作品の投稿期間",
       color: "step-primary", // mint
     },
     {
       title: "作品投稿期間",
-      date: "2026年9月6日(月) 17:00 〜 9月12日(土) 04:00",
+      date: "2026年9月6日(日) 17:00 〜 9月12日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
       color: "step-primary", // mint
     },
@@ -66,7 +66,7 @@ export default function Schedule() {
             ))}
           </ul>
         </div>
-        {/* opステージ・exステージの付記 */}
+        {/* exステージ・SPステージの付記 */}
 
         <div className="mt-16 p-6 md:p-8 bg-slate-50/80 backdrop-blur-sm rounded-2xl border border-slate-100 shadow-sm max-w-3xl mx-auto">
           <h4 className="text-lg font-extrabold text-slate-700 mb-6 text-center">併催ステージ</h4>
@@ -77,7 +77,7 @@ export default function Schedule() {
                 exステージ
               </h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年9月4日(金) 17:00 〜 9月7日(月) 16:00
+                2026年9月4日(金) 17:00 〜 9月6日(日) 16:00
               </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">

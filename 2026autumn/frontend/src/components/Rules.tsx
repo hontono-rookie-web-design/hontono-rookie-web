@@ -69,26 +69,36 @@ export default function Rules() {
               ニコニコ動画に投稿して、
               <strong>「本当のルーキー祭り2026秋」</strong>
               のタグを設定し、タグロックしてください。
+	    <br />
+	      ※参加作品以外（MV、二次創作、宣伝用のショート動画など）への使用は禁止
             </li>
 
             <li>
               投稿作品とは別にMV作品を投稿する場合は、MV作品側に
-              <strong>「本当のルーキー祭り2026秋MV」</strong>
+              <strong>「本当のルーキー祭り2026秋二次創作」</strong>
               のタグを設定し、タグロックしてください。
             </li>
 
             <li>
-              セレクションCD企画にも参加する方は、さらに
-              <strong>「セレクションCD企画参加曲」</strong>
-              のタグも設定し、タグロックしてください。
+	      動画説明欄に投稿者名と動画のタイトルの読みおよび以下の説明文をご記載ください。紹介放送で読み上げます。記号も含めて正確にお願いします。
+	    <br />
+	      例
+	    <br />
+	      True Rookie5 (とぅるーるーきーふぁいぶ)
+	    <br />
+	      SynNightP (しんないとぴー)
             </li>
-          </ul>
-
-          <p className="text-sm text-slate-500 ml-6 mt-2">
-            ※ セレクションCD企画に参加した場合、
-            <strong>大阪新世界フェスで有償販売するコンピCDへの収録に同意したものとします。</strong>
-            大阪新世界フェスの思い出に持ち帰ってほしい、家でも楽しんでもらうことでボカロ楽曲に興味を持ってほしい！という想いです。手に取った方には大切に扱って欲しいため有償にしてます。収益化が目的ではありません。
-          </p>
+            <li>
+	      下記の文章を動画説明欄に記載してください。
+	    <br />
+	      「本楽曲は本当のルーキー祭り2026秋 DiscXX収録曲です。
+	    <br />
+	      下記公式Webサイトから人気投票に参加できます。」
+	    <br />
+	      公式webサイト:XXXXXXXX
+	    <br />
+	      ※収録Discは現時点で未定です。確定次第更新します。
+            </li>
           <h3 className="text-lg font-semibold mt-4 mb-2">任意</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
@@ -138,6 +148,35 @@ export default function Rules() {
               二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
             </li>
           </ul>
+            <li>
+	     <strong>本ルーに関する紹介・宣伝目的での作品利用</strong>
+              <br />
+	     <strong>本ルーに関する紹介記事、紹介画像、配信、広報等での作品利用</strong>
+              <br />
+	     <strong>本当の打ち上げ祭りでの作品の使用（商用利用）</strong>
+              <br />
+	     <strong>新世界フェスによるセレクションCDへの作品提供（商用利用）</strong>
+              <br />
+	     <strong>本ルー参加作品を題材とした二次創作の制作および利用</strong>
+            </li>
+            <li>
+	      本当の打ち上げ祭りおよびセレクションCDへの作品提供については、同意しない選択ができます。
+              <br />
+	      同意しない場合は、投稿作品に以下のタグをロックしてください。
+              <br />
+	      
+	      「セレクションCD企画NG」
+              <br />
+	      「打ち上げ祭りNG」
+            </li>
+            <li>
+	      なお、本ルー参加作品を起点に二次創作者自身が新たに制作したイラストについては、Pへの個別確認を必要とせず、二次創作者が自由に公開・利用・頒布できるものとします。
+              <br />
+	      本規約における「頒布」には、有償・無償を問わず、第三者への配布・提供を含みます。
+              <br />
+	      
+	      ただし、本ルー参加作品についてP以外に別途権利者が存在する場合、その権利者が有する権利については本規約の対象外とします。 必要な場合は、各権利者の許諾を得てください。
+            </li>
 
           <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
             詳しいルールについては
@@ -147,7 +186,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026秋投稿者募集要項
+              本当のルーキー祭り2026秋募集要項
             </a>
             をご確認ください。
           </p>
@@ -172,7 +211,7 @@ export default function Rules() {
               <strong>未投稿の新曲</strong>
               であること。
               <br />
-              過去曲にタグをつけただけ、YouTube版をニコニコ動画に投稿しただけは不可。
+              過去曲にタグをつけただけ、過去曲のRemix、YouTube版をニコニコ動画に投稿しただけは不可。
               WIP、告知、知人にのみ公開などはOK。
             </li>
 
@@ -211,13 +250,20 @@ export default function Rules() {
             </li>
 
             <li>
-              <strong>歌詞が用意されていること。</strong>
+              <strong>BPM・歌詞が用意されていること。</strong>
               <br />
               投稿者コメントに貼る、テキストファイルでオフボと一緒にアップする、ピアプロ投稿など分かれば何でもいいです。
               歌ってみたの練習に必要です。動画内歌詞表示のみだと追うのが大変です。
             </li>
           </ul>
 
+            <li>
+              <strong>投稿者名・作品名の読みを記載</strong>
+              <br />
+	     紹介配信で読み上げる可能性があるため。
+            </li>
+
+          </ul>
           <p className="text-sm text-slate-500 mt-2">
             ※ オフボーカル音源、歌詞が用意できない場合は相談、連絡してください。
           </p>
@@ -337,7 +383,7 @@ export default function Rules() {
             </li>
             <li>全曲を順位づけする形式のため、1曲だけ選ぶことはできません</li>
 
-            <li>Disc内で相対評価人気投票をします。(1位作品:10点、・・・、10位作品:1点)</li>
+            <li>Disc内で相対評価人気投票をします。(1位作品:5点、・・・、5位作品:1点)</li>
 
             <li>
               自分の独断で投票してください。
@@ -346,8 +392,10 @@ export default function Rules() {
 
             <li>
               <strong>1グループから投票できます。</strong>
-              全グループ投票しなくても大丈夫です。
+	      全グループ投票しなくても大丈夫です。 
             </li>
+            <li> サビのみ、ワンコーラスのみなど部分視聴での評価も可。 </li>
+            <li>公序良俗に反する投票は禁止です。（恣意的に低得点にする行為など) </li>
 
             <li>期間中に非公開になった動画は1点にしてください。</li>
             <li>自分はこの曲を1位に投票したよ！は自己責任で公開してもOKです。</li>
@@ -387,26 +435,14 @@ export default function Rules() {
             <li>スコアは全曲が公開されます。</li>
           </ul>
 
-          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026秋人気投票募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
     {
-      title: "opステージ・exステージ",
+      title: "exステージ・SPステージ",
       content: (
         <div>
-          <h3 className="text-lg font-bold text-slate-700 mb-2">opステージ</h3>
+          <h3 className="text-lg font-bold text-slate-700 mb-2">exステージ</h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -442,7 +478,7 @@ export default function Rules() {
 
             <li>
               SPステージは参加条件がなく、<strong>誰でも参加できます</strong>
-              。（MVアリ、再生数不問、既投稿曲アリ）
+              。（MVアリ、再生数不問、既投稿曲アリ、歌い手ボーカル可）
             </li>
 
             <li>

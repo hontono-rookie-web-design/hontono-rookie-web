@@ -60,6 +60,7 @@ export default function Sponsors() {
           </a>
         </div>
 
+<!--
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
           <h4 className="text-xl font-bold text-slate-800 mb-2">楽曲収益化サービス</h4>
 
@@ -96,6 +97,7 @@ export default function Sponsors() {
             </a>
           </div>
         </div>
+-->
       </div>
     </section>
   );
