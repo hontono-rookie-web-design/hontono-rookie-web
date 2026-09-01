@@ -10,5 +10,5 @@ data/
 **/node_modules/
 
 # Credentials
-client_secret_53950461716-r53s726794a275t00jgouimdpbch094k.apps.googleusercontent.com.json
+# client_secret_53950461716-r53s726794a275t00jgouimdpbch094k.apps.googleusercontent.com.json
 Backup-codes-*.txt
