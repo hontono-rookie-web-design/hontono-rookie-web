@@ -48,6 +48,9 @@ export default function Rules() {
             </li>
 
             <li>
+              原則として基準を超えている場合は参加できませんが、特別な事情がある場合は個別にご相談ください。
+            </li>
+            <li>
               本当のルーキー祭り2026秋に参加した場合は
               <strong>「本当のNEXTAGE投稿祭」 には参加できません</strong>
               （本当のNEXTAGEの参加条件、本当のルーキー祭りに参加できないことに反するため）。
@@ -143,7 +146,7 @@ export default function Rules() {
               rel="noopener noreferrer"
               className="text-skyblue font-medium text-fg-brand hover:underline"
             >
-              本当のルーキー祭り2026秋投稿者募集要項
+              本当のルーキー祭り2026秋募集要項
             </a>
             をご確認ください。
           </p>
@@ -350,15 +353,7 @@ export default function Rules() {
               <strong>動画は採点の対象外です。</strong>
               (動画不慣れな方への配慮)
             </li>
-            <li>5作品毎に分けられたマイリスを用意します。</li>
             <li>各グループの投票用Googleフォームにアクセスしてください。</li>
-
-            <li>
-              1番好きな作品から順番に
-              <strong>1位、2位、3位、4位、5位</strong>
-              を投票してください。
-            </li>
-            <li>全曲を順位づけする形式のため、1曲だけ選ぶことはできません</li>
 
             <li>Disc内で相対評価人気投票をします。(1位作品: 5点、・・・、5位作品: 1点)</li>
 
@@ -375,7 +370,8 @@ export default function Rules() {
             <li>期間中に非公開になった動画は1点にしてください。</li>
             <li>自分はこの曲を1位に投票したよ！は自己責任で公開してもOKです。</li>
 
-            <li>“みんなで作品を聴き合う”ことを何より大切にしています。</li>
+            <li>サビのみ、ワンコーラスのみなど部分視聴での評価も可。</li>
+            <li>公序良俗に反する投票は禁止（恣意的に低得点にする行為など）。</li>
 
             <li>
               投票期間中は
@@ -407,19 +403,6 @@ export default function Rules() {
             <li>通過作品に対して同様の人気投票をします。</li>
             <li>スコアは全曲が公開されます。</li>
           </ul>
-
-          <p className="text-slate-600 leading-relaxed text-sm mt-2 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026秋人気投票募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
@@ -440,7 +423,8 @@ export default function Rules() {
               <strong>「本当のルーキー祭り2026秋」</strong>
               です。
             </li>
-            <li>人気投票不参加以外は全て同じです。（参加条件、オフボ必須など）</li>
+            <li>合成音声を使用しない歌い手ボーカル作品も投稿できます。</li>
+            <li>二次創作、紹介放送の対象になります。</li>
           </ul>
           <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">SPステージ</h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
@@ -471,38 +455,28 @@ export default function Rules() {
           </ul>
           <h4 className="text-md font-semibold ml-6 mt-4 mb-2">SPステージ参加方法</h4>
           <ul className="list-disc list-outside ml-12 space-y-2">
-            <li>
-              参加作品に
-              <strong>「本当のルーキー祭り2026秋SP」</strong>
-              をタグロックしてください。
-            </li>
-
-            <li>
-              <strong>二次創作のエビデンス（Xポストのリンクなど）</strong>
-              を投コメに貼ってください。
-            </li>
-          </ul>
-          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">二次創作以外でSPに参加する方法</h4>
-          <ul className="list-disc list-outside ml-12 space-y-2">
+            <li>本ルー作品の二次創作を行う。</li>
             <li>
               <strong>20Disc以上</strong>の人気投票をする。
             </li>
 
             <li>
               参加作品に
-              <strong>トータル5000pt以上</strong>
+              <strong>合計5000pt以上</strong>
               のニコニ広告をする。
             </li>
 
             <li>
               参加作品の
               <strong>10曲以上</strong>
-              の公開マイリスを作成する。
+              の公開マイリストを作成する。
             </li>
 
             <li>
-              二次創作をしたライバーの枠に行き
+              二次創作ライバーへ
               <strong>ギフトを贈る</strong>。
+              <br />
+              ※ギフトの価格は問いません。ログインボーナスなど実質無償範囲の応援も対象です。
             </li>
           </ul>
         </div>
@@ -515,6 +489,10 @@ export default function Rules() {
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>歌ってみた、ファンアートなどの二次創作を強く歓迎します。</li>
 
+            <li>
+              Xでのポストを推奨します。原曲ポストを引用リポストし、
+              <strong>#本当のルーキー祭り2026秋二次創作</strong>のハッシュタグを付けてください。
+            </li>
             <li>
               ニコニコ動画にアップロードする場合、
               <strong>「本当のルーキー祭り2026秋二次創作」</strong>
@@ -541,23 +519,10 @@ export default function Rules() {
             </li>
 
             <li>
-              商業目的の利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
+              なお、本ルー関連の紹介・宣伝目的に限り、運営または第三者が二次創作作品を利用する場合があります。
             </li>
             <li>楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。</li>
           </ul>
-
-          <p className="text-slate-600 leading-relaxed text-sm mt-2 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026秋二次創作者募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
