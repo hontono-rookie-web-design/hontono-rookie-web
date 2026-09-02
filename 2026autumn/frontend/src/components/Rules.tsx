@@ -70,44 +70,70 @@ export default function Rules() {
               ニコニコ動画に投稿して、
               <strong>「本当のルーキー祭り2026秋」</strong>
               のタグを設定し、タグロックしてください。
+              <br />
+              ※参加作品以外（MV、二次創作、宣伝用のショート動画など）への使用は禁止
             </li>
-
             <li>
-              投稿作品とは別にMV作品を投稿する場合は、MV作品側に
-              <strong>「本当のルーキー祭り2026秋MV」</strong>
-              のタグを設定し、タグロックしてください。
+              動画説明欄に投稿者名と動画のタイトルの読みおよび以下の説明文をご記載ください。紹介放送で読み上げます。
+              <strong>記号も含めて正確に</strong>お願いします。
             </li>
-
-            <li>
-              セレクションCD企画にも参加する方は、さらに
-              <strong>「セレクションCD企画参加曲」</strong>
-              のタグも設定し、タグロックしてください。
-            </li>
+            <div className="my-4 bg-slate-100 border-slate-200 pl-4 py-4">
+              例 <br />
+              True Rookie5 (とぅるーるーきーふぁいぶ) <br />
+              SynNightP (しんないとぴー)
+            </div>
+            <li>下記の文章を動画説明欄に記載してください。</li>
+            <div className="my-4 bg-slate-100 border-slate-200 pl-4 py-4">
+              「本楽曲は本当のルーキー祭り2026秋 DiscXX収録曲です。
+              <br />
+              下記公式Webサイトから人気投票に参加できます。」 <br />
+              公式webサイト: https://2026autumn.hontono-rookie-web.workers.dev/
+            </div>
+            <p className="text-slate-600 leading-relaxed text-sm mt-2">
+              ※収録Discは現時点で未定です。確定次第更新します。
+            </p>
           </ul>
-
-          <p className="text-sm text-slate-500 ml-6 mt-2">
-            ※ セレクションCD企画に参加した場合、
-            <strong>大阪新世界フェスで有償販売するコンピCDへの収録に同意したものとします。</strong>
-            大阪新世界フェスの思い出に持ち帰ってほしい、家でも楽しんでもらうことでボカロ楽曲に興味を持ってほしい！という想いです。手に取った方には大切に扱って欲しいため有償にしてます。収益化が目的ではありません。
-          </p>
 
           <h3 className="text-lg font-semibold mt-4 mb-2">
             投稿を以って下記の趣旨に同意したものとします。
           </h3>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>
-              <strong>人気投票によるランキング付けをします。</strong>
-              <br />
-              作品をじっくり聴いてもらうため、推してくれてる人を可視化するのが目的です。作品に序列をつけるのが目的ではありません。
-            </li>
+            <li>人気投票によるランキングの実施</li>
+            <li>紹介配信等での作品の使用 </li>
+            <li>本ルーに関する紹介・宣伝目的での作品利用 </li>
+            <li>本ルーに関する紹介記事、紹介画像、配信、広報等での作品利用 </li>
+            <li>本当の打ち上げ祭りでの作品の使用（商用利用） </li>
+            <li>新世界フェスによるセレクションCDへの作品提供（商用利用） </li>
+            <li>本ルー参加作品を題材とした二次創作の制作および利用 </li>
+          </ul>
 
+          <p className="text-slate-600 leading-relaxed text-sm mt-2">
+            本当の打ち上げ祭りおよびセレクションCDへの作品提供については、同意しない選択ができます。
+            同意しない場合は、投稿作品に以下のタグをロックしてください。
+          </p>
+
+          <ul className="list-disc list-outside mt-2 ml-6 space-y-2">
             <li>
-              <strong>投稿作品は二次創作として許可なく無断で使用される場合があります。</strong>
-              <br />
-              二次創作による手続きを簡素化し、本家の紹介、宣伝を促進するのが目的です。二次創作を通じて本家への導線にします。二次創作音源を無断で販売、視聴により収益化することはありません。ただし、投げ銭システムのある媒体（ニコニコ生放送など）で紹介、宣伝目的で使用する可能性はあります。
+              <strong>「セレクションCD企画NG」</strong>
+            </li>
+            <li>
+              <strong>「打ち上げ祭りNG」</strong>{" "}
             </li>
           </ul>
+
+          <p className="text-slate-600 leading-relaxed text-sm mt-2">
+            なお、
+            <strong>
+              本ルー参加作品を起点に二次創作者自身が新たに制作したイラストについては、Pへの個別確認を必要とせず、二次創作者が自由に公開・利用・頒布できるものとします。
+            </strong>
+            本規約における「頒布」には、有償・無償を問わず、第三者への配布・提供を含みます。
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm mt-2">
+            ただし、本ルー参加作品についてP以外に別途権利者が存在する場合、その権利者が有する権利については本規約の対象外とします。
+            <strong>必要な場合は、各権利者の許諾を得てください。</strong>
+          </p>
 
           <p className="text-slate-600 leading-relaxed text-sm mt-2 mb-4">
             詳しいルールについては
