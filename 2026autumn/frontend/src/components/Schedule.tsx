@@ -26,7 +26,7 @@ export default function Schedule() {
     },
     {
       title: "結果発表",
-      date: "2026年XX月XX日(X) 予定",
+      date: "2026年10月19日(月) 以降",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary", // skyblue
     },
@@ -73,22 +73,18 @@ export default function Schedule() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-5 rounded-xl border border-mint/10 shadow-sm">
-              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">
-                exステージ
-              </h5>
+              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">exステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
                 2026年9月4日(金) 17:00 〜 9月6日(日) 16:00
               </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                人気投票に参加したくない作品はop期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
+                人気投票に参加したくない作品はex期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-cherry/10 shadow-sm">
-              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">
-                SPステージ
-              </h5>
+              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">SPステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
                 2026年10月5日(月) 〜 2026年10月18日(日) 24:00
               </p>

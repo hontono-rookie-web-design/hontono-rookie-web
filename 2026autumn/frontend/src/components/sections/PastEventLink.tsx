@@ -5,8 +5,8 @@ export default function PastEventLink() {
   const events = [
     {
       title: "本当のルーキー祭り2026春",
-      image: "",
-      url: "https://hontono-rookie2026spring.vercel.app",
+      image: "/images/eventFourth.jpg",
+      url: "https://hontono-rookie-web-2026spring.vercel.app/",
     },
     {
       title: "本当のルーキー祭り2025秋",
