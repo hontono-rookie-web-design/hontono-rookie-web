@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@theme {
+  --color-link: var(--color-info);
+}
+
 @plugin "daisyui/theme" {
   name: "bumblebee";
   default: true;
@@ -10,7 +14,6 @@
   --color-secondary-content: var(--color-rose-100);
   --color-accent: var(--color-orange-500);
   --color-accent-content: var(--color-orange-950);
-  --color-link: var(--color-info);
 }
 
 body {

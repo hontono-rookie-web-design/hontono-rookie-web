@@ -511,7 +511,7 @@ export default function Rules() {
               <Link
                 href="/derivative/Postingform"
                 prefetch={false}
-                className="text-secondary font-medium hover:underline"
+                className="text-link font-medium hover:underline"
               >
                 Googleフォーム
               </Link>
