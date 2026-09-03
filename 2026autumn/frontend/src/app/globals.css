@@ -3,7 +3,7 @@
 
 @plugin "daisyui/theme" {
   name: "bumblebee";
-  default: "true";
+  default: true;
   --color-primary: var(--color-amber-500);
   --color-primary-content: var(--color-amber-950);
   --color-secondary: var(--color-rose-900);
