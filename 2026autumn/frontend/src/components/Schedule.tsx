@@ -2,13 +2,13 @@ export default function Schedule() {
   const scheduleItems = [
     {
       title: "エキシビジョンステージ(ex)",
-      date: "2026年9月4日(金) 17:00 〜 9月7日(月) 16:00",
+      date: "2026年9月4日(金) 17:00 〜 9月6日(日) 16:00",
       description: "人気投票に参加しない作品の投稿期間",
       color: "step-primary",
     },
     {
       title: "作品投稿期間",
-      date: "2026年9月7日(月) 17:00 〜 9月12日(土) 04:00",
+      date: "2026年9月6日(日) 17:00 〜 9月12日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
       color: "step-primary",
     },
@@ -19,14 +19,14 @@ export default function Schedule() {
       color: "step-accent",
     },
     {
-      title: "決勝(Best)・SPステージ",
+      title: "決勝(Best)",
       date: "2026年10月5日(月) 〜 10月18日(日)",
       description: "各Discの上位作品による最終決戦！",
       color: "step-accent",
     },
     {
       title: "結果発表",
-      date: "2026年XX月XX日(X) 予定",
+      date: "2026年10月19日(月) 以降",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary",
     },
@@ -66,29 +66,31 @@ export default function Schedule() {
             ))}
           </ul>
         </div>
-        {/* opステージ・exステージの付記 */}
+        {/* exステージ・SPステージの付記 */}
 
         <div className="mt-16 p-6 md:p-8 bg-slate-50/80 backdrop-blur-sm rounded-2xl border border-slate-100 shadow-sm max-w-3xl mx-auto">
           <h4 className="text-lg font-extrabold text-slate-700 mb-6 text-center">併催ステージ</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-5 rounded-xl border border-primary/10 shadow-sm">
-              <h5 className="font-bold text-secondary text-xl tracking-wide mb-2">opステージ</h5>
+              <h5 className="font-bold text-secondary text-xl tracking-wide mb-2">exステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年4月18日(土) 0:00 〜 4月22日(水) 16:59
+                2026年9月4日(金) 17:00 〜 9月6日(日) 16:00
               </p>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                人気投票に参加したくない作品はop期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
+                人気投票に参加したくない作品はex期間に投稿してください。純粋に楽曲を聴き合うための事前投稿期間です。
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-accent/10 shadow-sm">
-              <h5 className="font-bold text-primary text-xl tracking-wide mb-2">exステージ</h5>
-              <p className="text-xs text-slate-400 font-semibold mb-3">2026年6月1日(月) 〜</p>
+              <h5 className="font-bold text-primary text-xl tracking-wide mb-2">SPステージ</h5>
+              <p className="text-xs text-slate-400 font-semibold mb-3">
+                2026年10月5日(月) 〜 2026年10月18日(日) 24:00
+              </p>
               <p className="text-sm text-slate-600 leading-relaxed">
                 二次創作参加作品が対象となる特別なステージです。
-                <span className="text-primary font-bold">投稿締切：5/30(土) 24:00</span>
+                <span className="text-red-500 font-bold">投稿締切：5/30(土) 24:00</span>
               </p>
             </div>
           </div>

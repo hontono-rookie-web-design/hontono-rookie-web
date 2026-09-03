@@ -212,17 +212,6 @@ export default function Hero() {
           {renderCTA()}
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a
-            href="https://www.nicovideo.jp/watch/sm46006887"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-sm btn-outline text-base-content"
-          >
-            説明会動画を見る
-          </a>
-        </div>
-
         <p className="mt-8 text-sm text-slate-500 max-w-md mx-auto">
           投稿祭の進行は
           <a
