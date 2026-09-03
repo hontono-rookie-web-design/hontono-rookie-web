@@ -78,16 +78,24 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           </li>
 
           <li>
-            <Link href="/submissions/songs/opening" prefetch={false} onClick={closeDrawer}>
-              <Music className="w-4 h-4 mr-3 text-slate-400" />
-              楽曲一覧 opステージ
+            <Link
+              href="/submissions/songs/opening"
+              prefetch={false}
+              onClick={closeDrawer}
+            >
+              <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
+              exステージ
             </Link>
           </li>
 
           <li>
-            <Link href="/submissions/songs/extra" prefetch={false} onClick={closeDrawer}>
-              <Music className="w-4 h-4 mr-3 text-slate-400" />
-              楽曲一覧 exステージ
+            <Link
+              href="/submissions/songs/extra"
+              prefetch={false}
+              onClick={closeDrawer}
+            >
+              <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
+              SPステージ
             </Link>
           </li>
 
@@ -119,7 +127,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <li>
             <Link href="/submissions/vote/extra" prefetch={false} onClick={closeDrawer}>
               <Vote className="w-4 h-4 mr-3 text-slate-400" />
-              人気投票 exステージ
+              人気投票 SPステージ
             </Link>
           </li>
 
