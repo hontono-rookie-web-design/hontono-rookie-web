@@ -241,7 +241,7 @@ export default function Rules() {
             href="https://nico.ms/sm46643101?ref=thumb_watch"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-skyblue font-medium text-fg-brand hover:underline"
+            className="text-link font-medium text-fg-brand hover:underline"
           >
             本当のルーキー祭り2026秋告知曲　True Rookie5
           </a>
@@ -399,40 +399,11 @@ export default function Rules() {
             </li>
           </ul>
 
-          <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">準決勝（Selection）</h3>
-
-          <ul className="list-disc list-outside ml-6 space-y-2">
-            <li>予選通過作品を改めて10作品単位のSelectionに分けます。</li>
-
-            <li>
-              予選と同様に人気投票をして
-              <strong>
-                <s>上位2曲</s>
-                <span className="text-cherry">上位1曲</span>
-                を準決勝通過
-              </strong>
-              とします。
-            </li>
-            <li>スコアは全曲が公開されます。</li>
-          </ul>
           <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">決勝（Best）</h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>通過作品に対して同様の人気投票をします。</li>
             <li>スコアは全曲が公開されます。</li>
           </ul>
-
-          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026春人気投票募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
@@ -553,19 +524,6 @@ export default function Rules() {
             </li>
             <li>楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。</li>
           </ul>
-
-          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            詳しいルールについては
-            <a
-              href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のルーキー祭り2026春二次創作者募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
@@ -590,19 +548,6 @@ export default function Rules() {
               をタグロックしてください。
             </li>
           </ul>
-
-          <p className="text-slate-600 leading-relaxed text-sm mt-4 mb-4">
-            セレクションCDについては
-            <a
-              href="https://twipla.jp/events/704387"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
-            >
-              本当のNEXTAGE祭2026【開催日2026/9/18】with 大阪新世界フェス
-            </a>
-            をご確認ください。
-          </p>
         </div>
       ),
     },
