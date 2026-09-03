@@ -4,31 +4,31 @@ export default function Schedule() {
       title: "エキシビジョンステージ(ex)",
       date: "2026年9月4日(金) 17:00 〜 9月6日(日) 16:00",
       description: "人気投票に参加しない作品の投稿期間",
-      color: "step-primary", // mint
+      color: "step-primary",
     },
     {
       title: "作品投稿期間",
       date: "2026年9月6日(日) 17:00 〜 9月12日(土) 04:00",
       description: "本祭の楽曲投稿期間。指定タグをロックして投稿してください。",
-      color: "step-primary", // mint
+      color: "step-primary",
     },
     {
       title: "予選(Disc)",
       date: "2026年9月14日(月) 〜 9月27日(日)",
       description: "各Discの上位作品はスコア公開、決勝進出",
-      color: "step-accent", // cherry
+      color: "step-accent",
     },
     {
       title: "決勝(Best)",
       date: "2026年10月5日(月) 〜 10月18日(日)",
       description: "各Discの上位作品による最終決戦！",
-      color: "step-accent", // cherry
+      color: "step-accent",
     },
     {
       title: "結果発表",
       date: "2026年10月19日(月) 以降",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
-      color: "step-secondary", // skyblue
+      color: "step-secondary",
     },
   ];
 
@@ -36,16 +36,16 @@ export default function Schedule() {
     <section id="schedule" className="w-full py-24 bg-white relative overflow-hidden">
       {/* うっすらとした背景装飾 */}
 
-      <div className="absolute top-0 right-0 w-64 h-64 bg-mint/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-skyblue/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">Schedule</h2>
-
+          <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">
+            Schedule
+          </h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">スケジュール</h3>
-
           <p className="text-slate-500 text-sm font-medium">
             ※投票状況を見て日程が前後する場合があります
           </p>
@@ -57,9 +57,9 @@ export default function Schedule() {
               <li key={index} className={`step ${item.color} leading-relaxed`}>
                 <div className="mt-4 lg:mt-6 text-left lg:text-center p-4">
                   <h4 className="text-lg font-bold text-slate-800 mb-1">{item.title}</h4>
-
-                  <p className="text-sm text-mint font-semibold tracking-wide mb-3">{item.date}</p>
-
+                  <p className="text-sm text-secondary font-semibold tracking-wide mb-3">
+                    {item.date}
+                  </p>
                   <p className="text-xs text-slate-500 max-w-[200px] mx-auto">{item.description}</p>
                 </div>
               </li>
@@ -72,8 +72,8 @@ export default function Schedule() {
           <h4 className="text-lg font-extrabold text-slate-700 mb-6 text-center">併催ステージ</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-5 rounded-xl border border-mint/10 shadow-sm">
-              <h5 className="font-bold text-mint text-xl tracking-wide mb-2">exステージ</h5>
+            <div className="bg-white p-5 rounded-xl border border-primary/10 shadow-sm">
+              <h5 className="font-bold text-secondary text-xl tracking-wide mb-2">exステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
                 2026年9月4日(金) 17:00 〜 9月6日(日) 16:00
               </p>
@@ -83,8 +83,8 @@ export default function Schedule() {
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-cherry/10 shadow-sm">
-              <h5 className="font-bold text-cherry text-xl tracking-wide mb-2">SPステージ</h5>
+            <div className="bg-white p-5 rounded-xl border border-accent/10 shadow-sm">
+              <h5 className="font-bold text-primary text-xl tracking-wide mb-2">SPステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
                 2026年10月5日(月) 〜 2026年10月18日(日) 24:00
               </p>

@@ -5,8 +5,7 @@ export default function About() {
     <section id="about" className="w-full py-24 bg-white">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">About</h2>
-
+          <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">About</h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800">
             本当のルーキー祭りとは？
           </h3>
@@ -14,7 +13,7 @@ export default function About() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="flex flex-col items-center text-center p-6 bg-base-100 rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1 duration-300">
-            <div className="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mb-6 text-mint">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary">
               <Users size={32} />
             </div>
 
@@ -28,7 +27,7 @@ export default function About() {
           </div>
 
           <div className="flex flex-col items-center text-center p-6 bg-base-100 rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1 duration-300">
-            <div className="w-16 h-16 rounded-full bg-skyblue/10 flex items-center justify-center mb-6 text-skyblue">
+            <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6 text-secondary">
               <Music size={32} />
             </div>
 
@@ -48,7 +47,7 @@ export default function About() {
           </div>
 
           <div className="flex flex-col items-center text-center p-6 bg-base-100 rounded-3xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1 duration-300">
-            <div className="w-16 h-16 rounded-full bg-cherry/10 flex items-center justify-center mb-6 text-cherry">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary">
               <Star size={32} />
             </div>
 

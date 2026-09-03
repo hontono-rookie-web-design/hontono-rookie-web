@@ -66,7 +66,7 @@ export default function Rules() {
       title: "投稿方法",
       content: (
         <div>
-          <p className="text-sm font-semibold text-cherry mb-2">※ タグに#や「」は不要です。</p>
+          <p className="text-sm font-semibold text-primary mb-2">※ タグに#や「」は不要です。</p>
 
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>
@@ -144,7 +144,7 @@ export default function Rules() {
               href="https://note.com/syn523/n/n15ed59e49077?sub_rt=share_pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-skyblue font-medium text-fg-brand hover:underline"
+              className="text-link font-medium hover:underline"
             >
               本当のルーキー祭り2026秋募集要項
             </a>
@@ -241,7 +241,7 @@ export default function Rules() {
             href="https://nico.ms/sm46643101?ref=thumb_watch"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-skyblue font-medium text-fg-brand hover:underline"
+            className="text-link font-medium text-fg-brand hover:underline"
           >
             本当のルーキー祭り2026秋告知曲　True Rookie5
           </a>
@@ -398,6 +398,7 @@ export default function Rules() {
               具体的に特定できない表現（思ってたより良かった、良くなかったなど）で感謝や感想を表明するのはOKです。
             </li>
           </ul>
+
           <h3 className="text-lg font-bold text-slate-700 mt-4 mb-2">決勝（Best）</h3>
           <ul className="list-disc list-outside ml-6 space-y-2">
             <li>通過作品に対して同様の人気投票をします。</li>
@@ -510,7 +511,7 @@ export default function Rules() {
               <Link
                 href="/derivative/Postingform"
                 prefetch={false}
-                className="text-skyblue font-medium text-fg-brand hover:underline"
+                className="text-link font-medium hover:underline"
               >
                 Googleフォーム
               </Link>
@@ -556,12 +557,10 @@ export default function Rules() {
     <section id="rules" className="w-full py-24 bg-base-100/50">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-widest text-mint uppercase mb-2">Rules</h2>
-
+          <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">Rules</h2>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-800">参加ルール・要項</h3>
-
           <p className="text-slate-500 mt-4 text-sm mt-6 flex items-center justify-center gap-2">
-            <AlertCircle size={16} className="text-cherry" />
+            <AlertCircle size={16} className="text-accent" />
             エントリー前に必ずすべての項目をご確認ください
           </p>
         </div>

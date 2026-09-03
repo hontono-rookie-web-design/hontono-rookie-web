@@ -62,7 +62,7 @@ export const CONFIG = {
   },
 
   images: {
-    defaultIllustration: "/2026spring_logo.png",
+    defaultIllustration: "/images/2026autumn_logo.png",
   },
 
   links: {

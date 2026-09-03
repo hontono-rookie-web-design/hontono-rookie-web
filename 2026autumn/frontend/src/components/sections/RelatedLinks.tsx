@@ -36,8 +36,7 @@ export default function RelatedLinks() {
     <section id="links" className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
-          <LinkIcon className="text-mint w-8 h-8" />
-
+          <LinkIcon className="text-primary w-8 h-8" />
           <h3 className="text-2xl md:text-3xl font-bold text-slate-800">関連リンク</h3>
         </div>
 
@@ -53,9 +52,9 @@ export default function RelatedLinks() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-mint/50 hover:shadow-md transition-all"
+                className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-primary/50 hover:shadow-md transition-all"
               >
-                <div className="font-bold text-mint text-sm mb-1">{link.title}</div>
+                <div className="font-bold text-secondary text-sm mb-1">{link.title}</div>
 
                 <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
@@ -73,9 +72,9 @@ export default function RelatedLinks() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-skyblue/50 hover:shadow-md transition-all"
+                className="block p-4 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-secondary/50 hover:shadow-md transition-all"
               >
-                <div className="font-bold text-skyblue text-sm mb-1">{link.title}</div>
+                <div className="font-bold text-primary text-sm mb-1">{link.title}</div>
 
                 <div className="text-xs text-slate-500">{link.desc}</div>
               </a>
