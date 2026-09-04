@@ -1,4 +1,4 @@
-# 本当のルーキー祭り2026春 Webサイト frontend
+# 本当のルーキー祭り2026秋 Webサイト frontend
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
@@ -44,22 +44,20 @@ http://localhost:3000
 
 ## 本戦フェーズ
 
-本戦（オープニングステージ~決勝）は 環境変数`NEXT_PUBLIC_EVENT_PHASE` により制御します。
+本戦（exステージ〜決勝）は環境変数 `NEXT_PUBLIC_EVENT_PHASE` により制御します。
 
 ### 設定可能な値
 
-| 値                   | 内容                         |
-| -------------------- | ---------------------------- |
-| `before`             | 開催前                       |
-| `opening`            | オープニングステージ投稿期間 |
-| `rookie`             | ルーキー投稿期間             |
-| `prelim`             | 予選投票期間                 |
-| `prelim_counting`    | 予選集計中                   |
-| `semifinal`          | 準決勝投票期間               |
-| `semifinal_counting` | 準決勝集計中                 |
-| `final`              | 決勝投票期間                 |
-| `final_counting`     | 決勝集計中                   |
-| `after`              | イベント終了後               |
+| 値                | 内容               |
+| ----------------- | ------------------ |
+| `before`          | 開催前             |
+| `extra`           | exステージ投稿期間 |
+| `rookie`          | ルーキー投稿期間   |
+| `prelim`          | 予選投票期間       |
+| `prelim_counting` | 予選集計中         |
+| `final`           | 決勝投票期間       |
+| `final_counting`  | 決勝集計中         |
+| `after`           | イベント終了後     |
 
 ### 設定例
 
@@ -69,9 +67,9 @@ NEXT_PUBLIC_EVENT_PHASE=prelim
 
 ---
 
-## Exステージフェーズ
+## SPステージフェーズ
 
-Exステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_EX` により制御します。
+SPステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_SP` により制御します。
 
 ### 設定可能な値
 
@@ -86,14 +84,18 @@ Exステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_EX` �
 ### 設定例
 
 ```env
-NEXT_PUBLIC_EVENT_PHASE_EX=submission
+NEXT_PUBLIC_EVENT_PHASE_SP=submission
 ```
 
 ---
 
 ## フェーズの変更方法
 
-ローカル開発では `.env.local` の環境変数を変更してください。
+ローカル開発をする場合、まずGoogleドライブ共有フォルダからフロンドエンドの `.env.local.example` をダウンロードしてください。
+
+それをこのフォルダ内に配置し、名前を `.env.local` に変更してください。
+
+ファイルの中身のうち、`<>`で囲まれているところがあれば、あなたの環境に合わせて書き換えてください。
 
 例：
 
@@ -101,8 +103,8 @@ NEXT_PUBLIC_EVENT_PHASE_EX=submission
 # 本戦
 NEXT_PUBLIC_EVENT_PHASE=final
 
-# Exステージ
-NEXT_PUBLIC_EVENT_PHASE_EX=voting
+# SPステージ
+NEXT_PUBLIC_EVENT_PHASE_SP=voting
 ```
 
 本番環境では、デプロイ先の環境変数を変更してください。
@@ -125,10 +127,10 @@ npm run dev
 const phase = getCurrentPhase();
 ```
 
-### Exステージ
+### SPステージ
 
 ```ts
-const phase = getCurrentPhaseEx();
+const phase = getCurrentPhaseSp();
 ```
 
 各ページでは取得したイベントフェーズをページ固有の表示フェーズへ変換し、その値に応じて表示内容を切り替えています。

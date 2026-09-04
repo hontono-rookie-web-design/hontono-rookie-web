@@ -1,6 +1,9 @@
 import os
 
+from dotenv import load_dotenv
 from lib import sheet_client, utils
+
+load_dotenv()
 
 # fanart_listシートの全列名（checkは承認作業用の列で、このスクリプトは書き込まない）
 HEADERS = [
@@ -15,7 +18,6 @@ HEADERS = [
     "stream_at",
     "check",
 ]
-
 
 def deduplicate_by_url(data: list[dict]) -> list[dict]:
     """
@@ -97,14 +99,10 @@ def main():
     input_spreadsheet_name = config["spreadsheets"]["forms_result_fanfic"]["name"]
     input_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["for_check"]
 
-    # 環境変数FANART_LIST_SPREADSHEET_NAMEが設定されていればそちらを優先する
-    # （ローカルでの開発用スプレッドシート向けテスト実行用。未設定時はsettings.ymlの値＝本番用を使う）
-    fanart_list_spreadsheetname = os.environ.get(
-        "FANART_LIST_SPREADSHEET_NAME", fanart_list_config["name"]
-    )
+    fanart_list_spreadsheetname = fanart_list_config["name"]
     print(f"接続先スプレッドシート: {fanart_list_spreadsheetname}")
 
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     # 入力取得
     input_ws = sheet_client.connect_sheet(

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
-import { CONFIG } from "@/config/config";
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
 import TBA from "@/components/TBA";
+import { CONFIG } from "@/config/config";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 // Video型の定義（必要に応じてインポートしてください）
 interface Video {
@@ -23,7 +23,7 @@ const VIEW_PHASE = {
 function getViewPhase(phase: string) {
   switch (phase) {
     case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
+    case EVENT_PHASES.EXTRA:
       return VIEW_PHASE.BEFORE;
     default:
       return VIEW_PHASE.DURING;
