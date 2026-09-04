@@ -70,7 +70,7 @@ def upsert_sheet(worksheet, data: list[dict], key: str, headers: list[str]):
         rows.append([row.get(h, "") for h in headers])
 
     worksheet.clear()
-    worksheet.update(rows)
+    worksheet.update(values=rows, range_name="A1", value_input_option="USER_ENTERED")
 
 
 def clear_sheet(worksheet):
