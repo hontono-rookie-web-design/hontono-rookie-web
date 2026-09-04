@@ -33,6 +33,7 @@ HEADERS = [
     "sp_rank",
 ]
 
+
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
@@ -184,11 +185,7 @@ def main():
     video_list_sheet_config = config["spreadsheets"]["video_list"]
     exclusion_sheet_config = config["spreadsheets"]["excluded_list"]
 
-    # 環境変数EXCLUSION_LIST_SPREADSHEET_NAMEが設定されていればそちらを優先する
-    # （ローカルでの開発用スプレッドシート向けテスト実行用。未設定時はsettings.ymlの値＝本番用を使う）
-    exclusion_spreadsheetname = os.environ.get(
-        "EXCLUSION_LIST_SPREADSHEET_NAME", exclusion_sheet_config["name"]
-    )
+    exclusion_spreadsheetname = exclusion_sheet_config["name"]
     print(f"接続先スプレッドシート（除外リスト）: {exclusion_spreadsheetname}")
 
     exclusion_list_sheet = connect_sheet(
@@ -213,11 +210,7 @@ def main():
     else:
         target_keys = target_divs
 
-    # 環境変数VIDEO_LIST_SPREADSHEET_NAMEが設定されていればそちらを優先する
-    # （ローカルでの開発用スプレッドシート向けテスト実行用。未設定時はsettings.ymlの値＝本番用を使う）
-    video_list_spreadsheetname = os.environ.get(
-        "VIDEO_LIST_SPREADSHEET_NAME", video_list_sheet_config["name"]
-    )
+    video_list_spreadsheetname = video_list_sheet_config["name"]
     print(f"接続先スプレッドシート: {video_list_spreadsheetname}")
 
     video_list_sheet = connect_sheet(

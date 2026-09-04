@@ -13,9 +13,7 @@ status: # video_listシートのstatus列に書き込む値
 
 spreadsheets:
   video_list: # 参加作品動画リスト（全部門をstatus列で管理する単一シート）
-    # スプレッドシート名（本番用）。開発用スプレッドシート（video_list_dev）でテストする場合は
-    # このファイルを書き換えず、環境変数VIDEO_LIST_SPREADSHEET_NAMEに"video_list_dev"を設定して実行する
-    name: "video_list_pro" # スプレッドシート名
+    name: "video_list_dev" # スプレッドシート名（開発用）
     sheet: "video_list" # ワークシート名
 
   # 以下は旧構造。group_id・順位の書き込みなど、video_listへの移行が未対応の処理が参照しているため残置。
@@ -30,9 +28,7 @@ spreadsheets:
     excluded_fanfic_sheet: "excluded_fanfic" # 除外済動画リストシート名（二次創作）
 
   excluded_list: # 参加作品動画の除外リスト（全部門で共通の単一シート）
-    # スプレッドシート名（本番用）。開発用スプレッドシート（excluded_list_dev）でテストする場合は
-    # このファイルを書き換えず、環境変数EXCLUSION_LIST_SPREADSHEET_NAMEに"excluded_list_dev"を設定して実行する
-    name: "excluded_list_pro" # スプレッドシート名
+    name: "excluded_list_dev" # スプレッドシート名（開発用）
     sheet: "excluded_list" # ワークシート名
 
   video_catalog_semifinal: # 準決勝進出作品動画リスト
