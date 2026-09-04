@@ -165,7 +165,11 @@ def main():
     rows = deduplicate_by_url(rows)
     print(f"total: {len(rows)} items")
 
-    new_rows = [build_row(item) for item in rows]
+    total = len(rows)
+    new_rows = []
+    for i, item in enumerate(rows, 1):
+        print(f"[{i}/{total}] {item.get(TABLE_KEYS['url'])}")
+        new_rows.append(build_row(item))
 
     # 書き込み（derivative_urlをキーに更新・追加。checkなど承認作業で使う列は新規行以外上書きしない）
     derivative_list_ws = sheet_client.connect_sheet(
