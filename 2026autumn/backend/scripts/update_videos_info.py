@@ -1,11 +1,13 @@
 import os
 from typing import Dict, List
 
+from dotenv import load_dotenv
 from lib import niconico, sheet_client, utils
 
+load_dotenv()
 
 def connect(spreadsheet_name: str, sheet_name: str):
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 
 

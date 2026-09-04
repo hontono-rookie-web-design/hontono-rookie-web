@@ -1,12 +1,19 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: pastel --default;
-}
+@plugin "daisyui";
 
 @theme {
-  --color-mint: #2dd4bf;
-  --color-skyblue: #38bdf8;
-  --color-cherry: #fb7185;
+  --color-link: var(--color-info);
+}
+
+@plugin "daisyui/theme" {
+  name: "bumblebee";
+  default: true;
+  --color-primary: var(--color-amber-500);
+  --color-primary-content: var(--color-amber-950);
+  --color-secondary: var(--color-rose-900);
+  --color-secondary-content: var(--color-rose-100);
+  --color-accent: var(--color-orange-500);
+  --color-accent-content: var(--color-orange-950);
 }
 
 body {

@@ -3,7 +3,10 @@ import datetime
 import os
 import warnings
 
+from dotenv import load_dotenv
 from lib import niconico, sheet_client, utils
+
+load_dotenv()
 
 # video_listシートの全列名（他の処理が書き込むgroup_id・順位関連の列を含む）
 HEADERS = [
@@ -30,10 +33,9 @@ HEADERS = [
     "sp_rank",
 ]
 
-
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 

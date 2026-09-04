@@ -10,8 +10,6 @@ export type Item = {
   title: string;
   imageUrl: string;
   originalUrl: string;
-  originalTitle: string;
-  originalAuthor: string;
 };
 
 export function SkeletonCard() {
@@ -54,11 +52,7 @@ export default function IllustrationsContent({ initialItems }: Props) {
     if (searchText.trim()) {
       const q = searchText.toLowerCase();
 
-      filtered = filtered.filter((item) =>
-        (item.title + item.creator + item.originalTitle + item.originalAuthor)
-          .toLowerCase()
-          .includes(q),
-      );
+      filtered = filtered.filter((item) => (item.title + item.creator).toLowerCase().includes(q));
     }
 
     setDisplayData(filtered);
@@ -154,7 +148,7 @@ export default function IllustrationsContent({ initialItems }: Props) {
                 </p>
                 {/* Original */}
 
-                {item.originalTitle && (
+                {item.originalUrl && (
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2 min-h-[2rem]">
                     Original:
                     <a
@@ -162,9 +156,8 @@ export default function IllustrationsContent({ initialItems }: Props) {
                       target="_blank"
                       className="underline hover:text-gray-700"
                     >
-                      {item.originalTitle}
+                      元作品を見る
                     </a>
-                    {item.originalAuthor && ` / ${item.originalAuthor}`}
                   </p>
                 )}
               </div>

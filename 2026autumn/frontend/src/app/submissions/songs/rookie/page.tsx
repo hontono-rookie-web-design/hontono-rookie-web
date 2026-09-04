@@ -3,7 +3,7 @@ import { CONFIG } from "@/config/config";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
 
 export default async function Page() {
-  const rawVideos = await fetchVideosSheet(CONFIG.videosheets.rookie.name);
+  const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.rookie.name);
 
   const mappedVideos = rawVideos.map((item) => ({
     title: item.title,
