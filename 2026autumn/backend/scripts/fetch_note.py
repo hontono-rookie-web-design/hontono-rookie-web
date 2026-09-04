@@ -11,6 +11,7 @@ from lib import sheet_client, utils
 
 load_dotenv()
 
+
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
@@ -141,11 +142,7 @@ def main():
     config = utils.load_config()
     tag_config: dict[str, str] = config["tag"]
     catalog_sheet_config = config["spreadsheets"]["note_list"]
-    # 環境変数NOTE_LIST_SPREADSHEET_NAMEが設定されていればそちらを優先する
-    # （ローカルでの開発用スプレッドシート向けテスト実行用。未設定時はsettings.ymlの値＝本番用を使う）
-    catalog_spreadsheetname = os.environ.get(
-        "NOTE_LIST_SPREADSHEET_NAME", catalog_sheet_config["name"]
-    )
+    catalog_spreadsheetname = catalog_sheet_config["name"]
     print(f"接続先スプレッドシート: {catalog_spreadsheetname}")
     catalog_sheetname = catalog_sheet_config["list_sheet"]
 
