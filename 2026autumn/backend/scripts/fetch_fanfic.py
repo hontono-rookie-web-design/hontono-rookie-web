@@ -5,19 +5,20 @@ from lib import sheet_client, utils
 
 load_dotenv()
 
-# fanart_listシートの全列名（checkは承認作業用の列で、このスクリプトは書き込まない）
+# derivative_listシートの全列名（checkは承認作業用の列で、このスクリプトは書き込まない）
 HEADERS = [
-    "fanart_id",
+    "derivative_id",
     "creator_name",
     "category",
     "posted_service",
-    "fanart_title",
-    "fanart_url",
-    "fanart_img_url",
+    "derivative_title",
+    "derivative_url",
+    "derivative_img_url",
     "original_id",
     "stream_at",
     "check",
 ]
+
 
 def deduplicate_by_url(data: list[dict]) -> list[dict]:
     """
@@ -61,30 +62,30 @@ def build_row(item: dict) -> dict:
         "creator_name": item.get("二次創作者活動名"),
         "category": item.get("分類"),
         "posted_service": item.get("投稿先サービス"),
-        "fanart_title": item.get("タイトル"),
-        "fanart_url": item.get("二次創作作品URL"),
-        "fanart_img_url": item.get("画像URL"),
+        "derivative_title": item.get("タイトル"),
+        "derivative_url": item.get("二次創作作品URL"),
+        "derivative_img_url": item.get("画像URL"),
         "original_id": item.get("元作品URL"),
         "stream_at": item.get("配信日時"),
     }
 
 
-def assign_fanart_ids(
+def assign_derivative_ids(
     rows: list[dict], existing_ids_by_url: dict[str, int]
 ) -> list[dict]:
     """
-    fanart_url単位で既存のfanart_idを引き継ぎ、新規のURLには連番のIDを新たに割り振る
+    derivative_url単位で既存のderivative_idを引き継ぎ、新規のURLには連番のIDを新たに割り振る
     """
 
     next_id = max(existing_ids_by_url.values(), default=0) + 1
 
     result = []
     for row in rows:
-        url = row["fanart_url"]
+        url = row["derivative_url"]
         if url in existing_ids_by_url:
             result.append(row)
         else:
-            result.append({**row, "fanart_id": next_id})
+            result.append({**row, "derivative_id": next_id})
             next_id += 1
 
     return result
@@ -95,12 +96,12 @@ def assign_fanart_ids(
 # ------------------------
 def main():
     config = utils.load_config()
-    fanart_list_config = config["spreadsheets"]["fanart_list"]
+    derivative_list_config = config["spreadsheets"]["derivative_list"]
     input_spreadsheet_name = config["spreadsheets"]["forms_result_fanfic"]["name"]
     input_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["for_check"]
 
-    fanart_list_spreadsheetname = fanart_list_config["name"]
-    print(f"接続先スプレッドシート: {fanart_list_spreadsheetname}")
+    derivative_list_spreadsheetname = derivative_list_config["name"]
+    print(f"接続先スプレッドシート: {derivative_list_spreadsheetname}")
 
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
@@ -120,21 +121,23 @@ def main():
 
     new_rows = [build_row(item) for item in rows if item.get("二次創作作品URL")]
 
-    # 書き込み（fanart_urlをキーに更新・追加。checkなど他の作業で使う列は上書きしない）
-    fanart_list_ws = sheet_client.connect_sheet(
-        credentials_path, fanart_list_spreadsheetname, fanart_list_config["sheet"]
+    # 書き込み（derivative_urlをキーに更新・追加。checkなど他の作業で使う列は上書きしない）
+    derivative_list_ws = sheet_client.connect_sheet(
+        credentials_path,
+        derivative_list_spreadsheetname,
+        derivative_list_config["sheet"],
     )
-    existing_rows = sheet_client.fetch_sheet_data(fanart_list_ws)
+    existing_rows = sheet_client.fetch_sheet_data(derivative_list_ws)
     existing_ids_by_url = {
-        row["fanart_url"]: row["fanart_id"]
+        row["derivative_url"]: row["derivative_id"]
         for row in existing_rows
-        if row.get("fanart_url")
+        if row.get("derivative_url")
     }
 
-    new_rows = assign_fanart_ids(new_rows, existing_ids_by_url)
+    new_rows = assign_derivative_ids(new_rows, existing_ids_by_url)
 
     sheet_client.upsert_sheet(
-        fanart_list_ws, new_rows, key="fanart_url", headers=HEADERS
+        derivative_list_ws, new_rows, key="derivative_url", headers=HEADERS
     )
 
     print(f"{len(new_rows)} items")

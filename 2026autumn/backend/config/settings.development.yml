@@ -38,11 +38,9 @@ spreadsheets:
     name: "note_list_2026spring" # スプレッドシート名
     list_sheet: "list" # Note記事リストシート名
 
-  fanart_list: # 二次創作作品リスト（全カテゴリをcategory列で管理する単一シート）
-    # スプレッドシート名（本番用）。開発用スプレッドシート（fanart_list_dev）でテストする場合は
-    # このファイルを書き換えず、環境変数FANART_LIST_SPREADSHEET_NAMEに"fanart_list_dev"を設定して実行する
-    name: "fanart_list_pro" # スプレッドシート名
-    sheet: "fanart_list" # ワークシート名
+  derivative_list: # 二次創作作品リスト（全カテゴリをcategory列で管理する単一シート）
+    name: "derivative_list_dev" # スプレッドシート名（開発用）
+    sheet: "derivative_list" # ワークシート名
 
   forms_result_fanfic: # 二次創作作品提出フォーム回答リスト
     name: "二次創作作品提出フォーム回答_2026春" # スプレッドシート名

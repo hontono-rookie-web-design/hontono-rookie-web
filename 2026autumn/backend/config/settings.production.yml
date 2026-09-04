@@ -38,8 +38,9 @@ spreadsheets:
     name: "note_list_2026autumn" # スプレッドシート名
     list_sheet: "list" # Note記事リストシート名
 
-  fanfic_list: # 二次創作作品リスト
-    name: "fanfic_list_2026autumn" # スプレッドシート名
+  derivative_list: # 二次創作作品リスト（全カテゴリをcategory列で管理する単一シート）
+    name: "derivative_list_pro" # スプレッドシート名（本番用）
+    sheet: "derivative_list" # ワークシート名
 
   forms_result_fanfic: # 二次創作作品提出フォーム回答リスト
     name: "二次創作作品提出フォーム回答_2026秋" # スプレッドシート名
