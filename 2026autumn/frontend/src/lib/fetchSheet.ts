@@ -164,7 +164,7 @@ export type VoteSheetItem = {
 };
 
 export async function fetchVotesSheet(stage: string): Promise<VoteSheetItem[]> {
-  const data = await fetchSheetRows(CONFIG.voteformssheets.spreadsheetId, "fetchVotesSheet", 600);
+  const data = await fetchSheetRows(CONFIG.voteformssheets.spreadsheetId, "fetchVotesSheet");
   return data
     .filter((row) => asString(row.stage) === stage)
     .map((row) => ({
