@@ -87,9 +87,6 @@ def classify_videos(
             # 除外リストに入っている動画は除外リストにしたがって振り分け
             destination = destinations[v["contentId"]]
             if status_before is not None and destination in [
-                "op",
-                "OP",
-                "オープニング",
                 "ex",
                 "EX",
             ]:
