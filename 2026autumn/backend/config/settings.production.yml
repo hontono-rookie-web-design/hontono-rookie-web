@@ -45,7 +45,6 @@ spreadsheets:
   forms_result_fanfic: # 二次創作作品提出フォーム回答リスト
     name: "二次創作作品提出フォーム回答_2026秋" # スプレッドシート名
     forms_result: "Forms_result" # フォーム回答結果シート名（二次創作作品提出フォームの回答をリンクさせるシート）
-    for_check: "二次創作作品情報確認用" # 二次創作作品情報確認用シート名
 
   grouped_video_catalog_final: # 決勝参加の全ての動画リスト。
     name: "grouped_video_catalog_2026autumn_final" # スプレッドシート名

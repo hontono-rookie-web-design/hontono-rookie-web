@@ -7,8 +7,6 @@ from lib import niconico, sheet_client, utils, youtube
 
 load_dotenv()
 
-HTTP_HEADERS = {"User-Agent": "Mozilla/5.0"}
-
 # derivative_listシートの全列名（checkは承認作業用の列。新規行のみ0で初期化し、
 # 既存行の値はイベント期間中スタッフが手動で1に切り替えるため上書きしない）
 HEADERS = [
