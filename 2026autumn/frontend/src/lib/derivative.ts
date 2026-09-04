@@ -1,29 +1,29 @@
-import { fetchFanficSheet } from "@/lib/fetchSheet";
+import { fetchDerivativeSheet } from "@/lib/fetchSheet";
 import { fetchNoteSheet } from "@/lib/fetchSheet";
 import { CONFIG } from "@/config/config";
 
 export async function getDerivativeArrangements() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.arrangements.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.arrangements.name);
 }
 
 export async function getDerivativeCoverSongs() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.coversongs.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.coversongs.name);
 }
 
 export async function getDerivativeIllustrations() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.illustrations.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.illustrations.name);
 }
 
 export async function getDerivativeOthers() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.others.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.others.name);
 }
 
 export async function getDerivativeStreams() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.streams.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.streams.name);
 }
 
 export async function getDerivativeArchives() {
-  return await fetchFanficSheet(CONFIG.fanficsheets.archive.name);
+  return await fetchDerivativeSheet(CONFIG.derivativesheets.archive.name);
 }
 
 export async function getDerivativeArticles() {

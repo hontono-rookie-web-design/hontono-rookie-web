@@ -78,16 +78,16 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           </li>
 
           <li>
-            <Link href="/submissions/songs/opening" prefetch={false} onClick={closeDrawer}>
+            <Link href="/submissions/songs/extra" prefetch={false} onClick={closeDrawer}>
               <Music className="w-4 h-4 mr-3 text-slate-400" />
-              楽曲一覧 opステージ
+              楽曲一覧 exステージ
             </Link>
           </li>
 
           <li>
-            <Link href="/submissions/songs/extra" prefetch={false} onClick={closeDrawer}>
+            <Link href="/submissions/songs/special" prefetch={false} onClick={closeDrawer}>
               <Music className="w-4 h-4 mr-3 text-slate-400" />
-              楽曲一覧 exステージ
+              楽曲一覧 SPステージ
             </Link>
           </li>
 

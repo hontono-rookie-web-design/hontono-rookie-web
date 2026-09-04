@@ -64,7 +64,7 @@ async function fetchSheetRows(
   }
 }
 
-export type FanficSheetItem = {
+export type DerivativeSheetItem = {
   creator: string;
   service: string;
   workUrl: string;
@@ -74,8 +74,8 @@ export type FanficSheetItem = {
   publishedAt: string;
 };
 
-export async function fetchFanficSheet(category: string): Promise<FanficSheetItem[]> {
-  const data = await fetchSheetRows(CONFIG.fanficsheets.spreadsheetId, "fetchFanficSheet");
+export async function fetchDerivativeSheet(category: string): Promise<DerivativeSheetItem[]> {
+  const data = await fetchSheetRows(CONFIG.derivativesheets.spreadsheetId, "fetchDerivativeSheet");
 
   return data
     .filter((row) => asString(row.category) === category)

@@ -189,7 +189,7 @@ FORMS_FOLDER_ID="1AFw64c80F5GZTYgT7wcFX3vDT1gb-NR6"
 # 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
 TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
-FANFIC_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
+DERIVATIVE_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
 
 APP_ENV="development"
 ```

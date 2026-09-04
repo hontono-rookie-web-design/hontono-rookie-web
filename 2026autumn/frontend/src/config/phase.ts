@@ -7,6 +7,9 @@ export const EVENT_PHASES = {
   PRELIM: "prelim", // 予選投票期間
   PRELIM_COUNTING: "prelim_counting", // 予選集計中
 
+  SEMIFINAL: "semifinal", // 準決勝投票期間
+  SEMIFINAL_COUNTING: "semifinal_counting", // 準決勝集計中
+
   FINAL: "final", // 決勝
   FINAL_COUNTING: "final_counting", // 決勝集計中
 
