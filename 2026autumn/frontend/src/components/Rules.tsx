@@ -445,7 +445,7 @@ export default function Rules() {
             </li>
 
             <li>
-              SPステージは参加条件がなく、<strong>誰でも参加できます</strong>
+              SPステージは<strong>誰でも参加できます</strong>
               。（MVアリ、再生数不問、既投稿曲アリ）
             </li>
 
@@ -454,7 +454,9 @@ export default function Rules() {
               （人気投票が難しくなるため）
             </li>
           </ul>
-          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">SPステージ参加方法</h4>
+          <h4 className="text-md font-semibold ml-6 mt-4 mb-2">
+            SPステージ参加方法（以下のいずれか1つ以上を満たすこと）
+          </h4>
           <ul className="list-disc list-outside ml-12 space-y-2">
             <li>本ルー作品の二次創作を行う。</li>
             <li>

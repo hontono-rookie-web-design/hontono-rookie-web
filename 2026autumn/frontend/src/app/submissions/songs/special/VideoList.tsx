@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/config/config";
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
+import { EVENT_PHASES_SP, getCurrentPhaseSp } from "@/config/phase";
 import TBA from "@/components/TBA";
 
 // Video型の定義（必要に応じてインポートしてください）
@@ -22,8 +22,7 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES.BEFORE:
-    case EVENT_PHASES.OPENING:
+    case EVENT_PHASES_SP.BEFORE:
       return VIEW_PHASE.BEFORE;
     default:
       return VIEW_PHASE.DURING;
@@ -56,7 +55,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const phase = getCurrentPhase();
+  const phase = getCurrentPhaseSp();
   const viewPhase = getViewPhase(phase);
 
   /* 初期ロード */
@@ -130,7 +129,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
   }, [displayData]);
 
   if (viewPhase === VIEW_PHASE.BEFORE) {
-    return <TBA title={`楽曲一覧 ルーキー`} />;
+    return <TBA title="楽曲一覧 SPステージ" />;
   }
 
   const visibleItems = displayData.slice(0, visibleCount);
@@ -141,11 +140,11 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* ヘッダー */}
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 opステージ</h1>
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight">楽曲一覧 SPステージ</h1>
 
           <p className="text-sm text-gray-500 mt-1">
             「{CONFIG.event.name}
-            」のopステージ参加楽曲を掲載しています。
+            」のSPステージ参加楽曲を掲載しています。
           </p>
 
           <div className="mt-4 border-b border-gray-200 w-full" />
@@ -226,7 +225,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* 空 */}
 
         {!loading && displayData.length === 0 && (
-          <div className="text-center py-20 text-gray-600">opステージ楽曲はまだありません。</div>
+          <div className="text-center py-20 text-gray-600">SPステージ楽曲はまだありません。</div>
         )}
         {/* グリッド */}
 

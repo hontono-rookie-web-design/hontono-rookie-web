@@ -78,24 +78,16 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           </li>
 
           <li>
-            <Link
-              href="/submissions/songs/opening"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
-              exステージ
+            <Link href="/submissions/songs/extra" prefetch={false} onClick={closeDrawer}>
+              <Music className="w-4 h-4 mr-3 text-slate-400" />
+              楽曲一覧 exステージ
             </Link>
           </li>
 
           <li>
-            <Link
-              href="/submissions/songs/extra"
-              prefetch={false}
-              onClick={closeDrawer}
-            >
-              <Music className="w-4 h-4 mr-3 text-slate-400" /> 楽曲一覧
-              SPステージ
+            <Link href="/submissions/songs/special" prefetch={false} onClick={closeDrawer}>
+              <Music className="w-4 h-4 mr-3 text-slate-400" />
+              楽曲一覧 SPステージ
             </Link>
           </li>
 
@@ -111,13 +103,6 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           </li>
 
           <li>
-            <Link href="/submissions/vote/semifinals" prefetch={false} onClick={closeDrawer}>
-              <Vote className="w-4 h-4 mr-3 text-slate-400" />
-              人気投票 準決勝
-            </Link>
-          </li>
-
-          <li>
             <Link href="/submissions/vote/finals" prefetch={false} onClick={closeDrawer}>
               <Vote className="w-4 h-4 mr-3 text-slate-400" />
               人気投票 決勝
@@ -125,7 +110,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           </li>
 
           <li>
-            <Link href="/submissions/vote/extra" prefetch={false} onClick={closeDrawer}>
+            <Link href="/submissions/vote/special" prefetch={false} onClick={closeDrawer}>
               <Vote className="w-4 h-4 mr-3 text-slate-400" />
               人気投票 SPステージ
             </Link>
