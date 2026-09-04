@@ -99,7 +99,7 @@ def classify_videos(
             else:
                 excluded = True
                 if destination not in [None, "", "除外"]:
-                    warnings.warn(f"destination of {v["contentId"]}: {destination}.")
+                    warnings.warn(f"destination of {v['contentId']}: {destination}.")
 
         if status is None:
             # 除外リスト未記載、または移動先の指定なしの場合は投稿時刻で振り分け
