@@ -1,10 +1,10 @@
 export const CONFIG = {
   event: {
-    name: "本当のルーキー祭り2026春",
+    name: "本当のルーキー祭り2026秋",
   },
 
-  fanficsheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_FANFIC!,
+  derivativesheets: {
+    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_DERIVATIVE!,
     streams: { name: "紹介配信予定" },
     archive: { name: "紹介配信アーカイブ" },
     illustrations: { name: "イラスト" },
@@ -15,54 +15,31 @@ export const CONFIG = {
 
   notesheets: {
     spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_NOTES!,
-    name: "list",
   },
 
   videosheets: {
     spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VIDEOS!,
-    rookie: { name: "rookie" },
-    op: { name: "op" },
-    ex: { name: "ex" },
-  },
-
-  groupedvideosheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED!,
-    rookie: { name: "rookie" },
-  },
-
-  groupedvideosheets_semifinal: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_SEMIFINAL!,
-    rookie: { name: "rookie" },
-  },
-
-  groupedvideosheets_final: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_FINAL!,
-    rookie: { name: "rookie" },
-  },
-
-  groupedvideosheets_ex: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_GROUPED_EX!,
-    rookie: { name: "ex" },
+    status: {
+      rookie: { name: "ルーキー" },
+      ex: { name: "EX" },
+      sp: { name: "SP" },
+    },
+    stage: {
+      preliminaries: { group_id: "prelim_group_id", rank: "prelim_rank", name: "予選" },
+      finals: { group_id: "final_group_id", rank: "final_rank", name: "決勝" },
+      sp: { group_id: "sp_group_id", rank: "sp_rank", name: "sp" },
+    },
   },
 
   voteformssheets: {
     spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VOTEFORM!,
     preliminaries: { name: "予選" },
-    semifinals: { name: "準決勝" },
     finals: { name: "決勝" },
-    ex: { name: "ex" },
-  },
-
-  rankingsheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_RANKING!,
-    preliminaries: { name: "予選" },
-    semifinals: { name: "準決勝" },
-    finals: { name: "決勝" },
-    ex: { name: "ex" },
+    sp: { name: "SP" },
   },
 
   images: {
-    defaultIllustration: "/2026spring_logo.png",
+    defaultIllustration: "/images/2026autumn_logo.png",
   },
 
   links: {

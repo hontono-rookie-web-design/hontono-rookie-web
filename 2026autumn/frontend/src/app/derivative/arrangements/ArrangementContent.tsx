@@ -11,8 +11,6 @@ type Item = {
   title: string;
   imageUrl: string;
   originalUrl: string;
-  originalTitle: string;
-  originalAuthor: string;
   publishedAt?: string;
 };
 
@@ -70,11 +68,7 @@ export default function ArrangementContent({ initialData }: { initialData: Item[
     if (searchText.trim()) {
       const q = searchText.toLowerCase();
 
-      filtered = filtered.filter((item) =>
-        (item.title + item.creator + item.originalTitle + item.originalAuthor)
-          .toLowerCase()
-          .includes(q),
-      );
+      filtered = filtered.filter((item) => (item.title + item.creator).toLowerCase().includes(q));
     }
 
     setDisplayData(filtered);
@@ -193,7 +187,7 @@ export default function ArrangementContent({ initialData }: { initialData: Item[
                     </div>
 
                     <div className="mt-2 sm:mt-3 flex flex-col gap-2 w-full">
-                      {item.originalTitle && (
+                      {item.originalUrl && (
                         <div className="bg-gray-50 px-3 py-2 rounded-lg text-xs text-gray-600 w-full min-w-0">
                           <a
                             href={item.originalUrl}
@@ -201,9 +195,7 @@ export default function ArrangementContent({ initialData }: { initialData: Item[
                             rel="noopener noreferrer"
                             className="block truncate underline hover:text-gray-800"
                           >
-                            {item.originalTitle}
-
-                            {item.originalAuthor && ` / ${item.originalAuthor}`}
+                            元作品を見る
                           </a>
                         </div>
                       )}

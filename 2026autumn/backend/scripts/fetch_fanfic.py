@@ -1,8 +1,10 @@
 import os
 from collections import defaultdict
 
+from dotenv import load_dotenv
 from lib import sheet_client, utils
 
+load_dotenv()
 
 def deduplicate_by_url(data: list[dict]) -> list[dict]:
     """
@@ -52,7 +54,7 @@ def main():
     input_spreadsheet_name = config["spreadsheets"]["forms_result_fanfic"]["name"]
     input_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["for_check"]
 
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     # 入力取得
     input_ws = sheet_client.connect_sheet(

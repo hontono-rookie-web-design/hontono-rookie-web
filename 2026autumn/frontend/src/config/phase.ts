@@ -1,13 +1,13 @@
 export const EVENT_PHASES = {
   BEFORE: "before", // 開催前
 
-  OPENING: "opening", // opステージ投稿期間
+  EXTRA: "extra", // exステージ投稿期間
   ROOKIE: "rookie", // ルーキー投稿期間
 
   PRELIM: "prelim", // 予選投票期間
   PRELIM_COUNTING: "prelim_counting", // 予選集計中
 
-  SEMIFINAL: "semifinal", // 準決勝
+  SEMIFINAL: "semifinal", // 準決勝投票期間
   SEMIFINAL_COUNTING: "semifinal_counting", // 準決勝集計中
 
   FINAL: "final", // 決勝
@@ -28,25 +28,27 @@ export function getCurrentPhase(): EventPhase {
   return EVENT_PHASES.BEFORE;
 }
 
-export const EVENT_PHASES_EX = {
+export const EVENT_PHASES_SP = {
   BEFORE: "before", // 開催前
 
-  SUBMISSION: "submission", // ex投稿期間
+  SUBMISSION: "submission", // sp投稿期間
 
-  VOTING: "voting", // ex投票期間
-  COUNTING: "counting", // ex集計中
+  VOTING: "voting", // sp投票期間
+  COUNTING: "counting", // sp集計中
 
   AFTER: "after", // 終了後
 } as const;
 
-export type EventPhaseEx = (typeof EVENT_PHASES_EX)[keyof typeof EVENT_PHASES_EX];
+export type EventPhaseSp = (typeof EVENT_PHASES_SP)[keyof typeof EVENT_PHASES_SP];
 
-export function getCurrentPhaseEx(): EventPhaseEx {
-  const env = process.env.NEXT_PUBLIC_EVENT_PHASE_EX as EventPhaseEx | undefined;
+export function getCurrentPhaseSp(): EventPhaseSp {
+  const env = process.env.NEXT_PUBLIC_EVENT_PHASE_SP as
+    | EventPhaseSp
+    | undefined;
 
-  if (env && Object.values(EVENT_PHASES_EX).includes(env)) {
+  if (env && Object.values(EVENT_PHASES_SP).includes(env)) {
     return env;
   }
 
-  return EVENT_PHASES_EX.BEFORE;
+  return EVENT_PHASES_SP.BEFORE;
 }

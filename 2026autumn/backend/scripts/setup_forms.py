@@ -4,11 +4,13 @@ import os
 import sys
 
 import pandas as pd
+from dotenv import load_dotenv
 from googleapiclient import discovery
 from httplib2 import Http
 from lib import sheet_client, utils
 from oauth2client import client, file, tools
 
+load_dotenv()
 
 def create_folder(creds, parent_folder_id):
     """
@@ -153,7 +155,7 @@ def update_vote_form(creds, form_id, title, item_title, video_titles):
 
 
 def initialize_oauth_credentials():
-    oauth_credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
+    oauth_credentials_path = os.getenv("GOOGLE_OAUTH_CREDENTIALS")
 
     SCOPES = [
         "https://www.googleapis.com/auth/forms.body",
@@ -172,7 +174,7 @@ def initialize_oauth_credentials():
 
 def load_spreadsheet(config, phase):
 
-    service_account_credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    service_account_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     # ルーキーのスプレッドシート読み込み
     # 「グループID」「タイトル」という列が最低でも必要
@@ -219,9 +221,9 @@ def load_spreadsheet(config, phase):
 
 def create_vote_forms(creds, config, df, phase):
 
-    template_form_id = os.environ["TEMPLATE_FORM_ID"]
+    template_form_id = os.getenv("TEMPLATE_FORM_ID")
     # Formsフォルダに新しいフォルダを作成
-    parent_folder_id = os.environ["FORMS_FOLDER_ID"]
+    parent_folder_id = os.getenv("FORMS_FOLDER_ID")
     new_folder_id = create_folder(creds, parent_folder_id)
 
     # グループIDごとに処理

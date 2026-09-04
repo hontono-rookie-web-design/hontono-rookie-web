@@ -5,13 +5,15 @@ import time
 
 import pandas as pd
 import requests
+from dotenv import load_dotenv
 from gspread_dataframe import set_with_dataframe
 from lib import sheet_client, utils
 
+load_dotenv()
 
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 

@@ -5,8 +5,8 @@ import { CONFIG } from "@/config/config";
 
 export default async function Page() {
   const [songs, forms] = await Promise.all([
-    fetchVideosSheet(CONFIG.videosheets.status.rookie.name, CONFIG.videosheets.stage.preliminaries),
-    fetchVotesSheet(CONFIG.voteformssheets.preliminaries.name),
+    fetchVideosSheet(CONFIG.videosheets.status.sp.name, CONFIG.videosheets.stage.sp),
+    fetchVotesSheet(CONFIG.voteformssheets.sp.name),
   ]);
 
   return (

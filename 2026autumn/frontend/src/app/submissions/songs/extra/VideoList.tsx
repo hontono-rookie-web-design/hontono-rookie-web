@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/config/config";
-import { getCurrentPhaseEx, EVENT_PHASES_EX } from "@/config/phase";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import TBA from "@/components/TBA";
 
 // Video型の定義（必要に応じてインポートしてください）
@@ -22,8 +22,9 @@ const VIEW_PHASE = {
 
 function getViewPhase(phase: string) {
   switch (phase) {
-    case EVENT_PHASES_EX.BEFORE:
+    case EVENT_PHASES.BEFORE:
       return VIEW_PHASE.BEFORE;
+    case EVENT_PHASES.EXTRA:
     default:
       return VIEW_PHASE.DURING;
   }
@@ -55,7 +56,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const phase = getCurrentPhaseEx();
+  const phase = getCurrentPhase();
   const viewPhase = getViewPhase(phase);
 
   /* 初期ロード */
@@ -129,7 +130,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
   }, [displayData]);
 
   if (viewPhase === VIEW_PHASE.BEFORE) {
-    return <TBA title={`楽曲一覧 ルーキー`} />;
+    return <TBA title={`楽曲一覧　exステージ`} />;
   }
 
   const visibleItems = displayData.slice(0, visibleCount);
@@ -225,7 +226,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
         {/* 空 */}
 
         {!loading && displayData.length === 0 && (
-          <div className="text-center py-20 text-gray-600">opステージ楽曲はまだありません。</div>
+          <div className="text-center py-20 text-gray-600">exステージ楽曲はまだありません。</div>
         )}
         {/* グリッド */}
 
