@@ -1,5 +1,3 @@
-"use client";
-
 import { CONFIG } from "@/config/config";
 import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { ArrowRight } from "lucide-react";
