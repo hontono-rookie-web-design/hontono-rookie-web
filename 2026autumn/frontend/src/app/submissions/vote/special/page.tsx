@@ -1,8 +1,8 @@
+import { CONFIG } from "@/config/config";
+import { getCurrentPhaseSp } from "@/config/phase";
+import { fetchVideosSheet, fetchVotesSheet } from "@/lib/fetchSheet";
 import { Suspense } from "react";
 import VoteContent from "./VoteContent";
-import { fetchVideosSheet, fetchVotesSheet } from "@/lib/fetchSheet";
-import { CONFIG } from "@/config/config";
-import { getCurrentPhaseSp, EVENT_PHASES_SP } from "@/config/phase";
 
 export default async function Page() {
   const currentPhase = getCurrentPhaseSp();

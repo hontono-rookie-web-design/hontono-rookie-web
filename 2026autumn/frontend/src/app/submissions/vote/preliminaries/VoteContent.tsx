@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Counting from "@/components/Counting";
+import TBA from "@/components/TBA";
 import { CONFIG } from "@/config/config";
 import { EVENT_PHASES, type EventPhase } from "@/config/phase";
-import TBA from "@/components/TBA";
-import Counting from "@/components/Counting";
-import { useSearchParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import type { VideoSheetItem, VoteSheetItem } from "@/lib/fetchSheet";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 
 /* =========================
    表示ラベル

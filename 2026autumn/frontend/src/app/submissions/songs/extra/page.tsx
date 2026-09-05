@@ -1,6 +1,6 @@
 import { CONFIG } from "@/config/config";
+import { getCurrentPhase } from "@/config/phase";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
 import VideoList from "./VideoList";
 
 export default async function Page() {

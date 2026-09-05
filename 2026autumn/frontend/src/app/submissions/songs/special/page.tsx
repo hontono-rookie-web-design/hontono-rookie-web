@@ -1,7 +1,7 @@
-import VideoList from "./VideoList";
 import { CONFIG } from "@/config/config";
+import { getCurrentPhaseSp } from "@/config/phase";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
-import { getCurrentPhaseSp, EVENT_PHASES_SP } from "@/config/phase";
+import VideoList from "./VideoList";
 
 export default async function Page() {
   const currentPhase = getCurrentPhaseSp();

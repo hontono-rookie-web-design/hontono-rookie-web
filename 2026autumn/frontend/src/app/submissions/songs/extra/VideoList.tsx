@@ -44,7 +44,13 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 const PAGE_SIZE = 24;
 
-export default function VideoList({ initialData, initialPhase }: { initialData: Video[]; initialPhase: EventPhase }) {
+export default function VideoList({
+  initialData,
+  initialPhase,
+}: {
+  initialData: Video[];
+  initialPhase: EventPhase;
+}) {
   const [data, setData] = useState<Video[]>(initialData);
   const [displayData, setDisplayData] = useState<Video[]>(initialData);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);

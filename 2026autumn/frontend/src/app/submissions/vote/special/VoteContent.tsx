@@ -4,10 +4,10 @@ import Counting from "@/components/Counting";
 import TBA from "@/components/TBA";
 import { CONFIG } from "@/config/config";
 import { EVENT_PHASES_SP, type EventPhaseSp } from "@/config/phase";
+import type { VideoSheetItem, VoteSheetItem } from "@/lib/fetchSheet";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import type { VideoSheetItem, VoteSheetItem } from "@/lib/fetchSheet";
 
 /* =========================
    表示ラベル
