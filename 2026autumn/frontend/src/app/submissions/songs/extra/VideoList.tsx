@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
-import { CONFIG } from "@/config/config";
-import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import TBA from "@/components/TBA";
+import { CONFIG } from "@/config/config";
+import { EVENT_PHASES, type EventPhase } from "@/config/phase";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 // Video型の定義（必要に応じてインポートしてください）
 interface Video {
@@ -44,7 +44,13 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 const PAGE_SIZE = 24;
 
-export default function VideoList({ initialData }: { initialData: Video[] }) {
+export default function VideoList({
+  initialData,
+  initialPhase,
+}: {
+  initialData: Video[];
+  initialPhase: EventPhase;
+}) {
   const [data, setData] = useState<Video[]>(initialData);
   const [displayData, setDisplayData] = useState<Video[]>(initialData);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -56,8 +62,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const phase = getCurrentPhase();
-  const viewPhase = getViewPhase(phase);
+  const viewPhase = getViewPhase(initialPhase);
 
   /* 初期ロード */
   useEffect(() => {

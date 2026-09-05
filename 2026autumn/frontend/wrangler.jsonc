@@ -5,6 +5,11 @@
   "compatibility_date": "2026-07-04",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "preview_urls": true,
+  "vars": {
+    "EVENT_PHASE": "extra",
+    "EVENT_PHASE_SP": "before",
+    "GOOGLE_ANALYTICS_ID": "G-TB29CEYQHC",
+  },
 
   "assets": {
     "directory": ".open-next/assets",
@@ -24,5 +29,19 @@
     // Enable image optimization
     // see https://opennext.js.org/cloudflare/howtos/image
     "binding": "IMAGES",
+  },
+
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true,
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+    },
   },
 }
