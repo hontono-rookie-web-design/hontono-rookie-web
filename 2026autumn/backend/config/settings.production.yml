@@ -1,12 +1,25 @@
 tag:
-  rookie: "本当のルーキー祭り2026秋" # ルーキー参加タグ
-  ex: "本当のルーキー祭り2026秋ex" # exステージ参加タグ
+  rookie: "本当のルーキー祭り2026秋" # ルーキー参加タグ（ルーキー・exステージ共通。旧opステージが2026秋からexステージに改称）
+  sp: "本当のルーキー祭り2026秋ex" # spステージ参加タグ（旧exステージが2026秋からspステージに改称）
   fanfic: "本当のルーキー祭り2026秋二次創作" # 二次創作作品タグ
 
 period:
-  start_period: "2026-09-14T00:00:00+09:00" # ルーキー投稿期間開始時刻（opステージとルーキー作品を分けるために使用。ISO形式）
+  start_period: "2026-09-14T00:00:00+09:00" # ルーキー投稿期間開始時刻（exステージとルーキー作品を分けるために使用。ISO形式）
+
+status: # video_listシートのstatus列に書き込む値
+  rookie: "ルーキー" # ルーキー参加作品
+  ex: "EX" # exステージ参加作品（投稿期間より前のrookieタグ作品。旧opステージ）
+  sp: "SP" # spステージ参加作品（旧exステージ）
 
 spreadsheets:
+  video_list: # 参加作品動画リスト（全部門をstatus列で管理する単一シート）
+    name: "video_list_pro" # スプレッドシート名（本番用）
+    sheet: "video_list" # ワークシート名
+
+  excluded_list: # 参加作品動画の除外リスト（全部門で共通の単一シート）
+    name: "excluded_list_pro" # スプレッドシート名（本番用）
+    sheet: "excluded_list" # ワークシート名
+
   video_catalog: # 参加作品動画リスト
     name: "video_catalog_2026autumn" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名

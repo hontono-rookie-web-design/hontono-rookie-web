@@ -1,12 +1,22 @@
 tag:
-  rookie: "本当のルーキー祭り2026春" # ルーキー参加タグ
-  ex: "本当のルーキー祭り2026春ex" # exステージ参加タグ
+  rookie: "本当のルーキー祭り2026春" # ルーキー参加タグ（ルーキー・exステージ共通。旧opステージが2026秋からexステージに改称）
+  sp: "本当のルーキー祭り2026春ex" # spステージ参加タグ（旧exステージが2026秋からspステージに改称）
   fanfic: "本当のルーキー祭り2026春二次創作" # 二次創作作品タグ
 
 period:
-  start_period: "2026-04-22T17:00:00+09:00" # ルーキー投稿期間開始時刻（opステージとルーキー作品を分けるために使用。ISO形式）
+  start_period: "2026-04-22T17:00:00+09:00" # ルーキー投稿期間開始時刻（exステージとルーキー作品を分けるために使用。ISO形式）
+
+status: # video_listシートのstatus列に書き込む値
+  rookie: "ルーキー" # ルーキー参加作品
+  ex: "EX" # exステージ参加作品（投稿期間より前のrookieタグ作品。旧opステージ）
+  sp: "SP" # spステージ参加作品（旧exステージ）
 
 spreadsheets:
+  video_list: # 参加作品動画リスト（全部門をstatus列で管理する単一シート）
+    name: "video_list_dev" # スプレッドシート名（開発用）
+    sheet: "video_list" # ワークシート名
+
+  # 以下は旧構造。group_id・順位の書き込みなど、video_listへの移行が未対応の処理が参照しているため残置。
   video_catalog: # 参加作品動画リスト
     name: "video_catalog_2026spring" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名
@@ -17,11 +27,9 @@ spreadsheets:
     excluded_ex_sheet: "excluded_ex" # 除外済動画リストシート名（exステージ）
     excluded_fanfic_sheet: "excluded_fanfic" # 除外済動画リストシート名（二次創作）
 
-  video_exclusion_list: # 参加作品動画の除外リスト
-    name: "動画除外リスト_2026春" # スプレッドシート名
-    rookie_sheet: "ルーキー" # 除外対象動画リストシート名（opステージ、ルーキー）
-    ex_sheet: "ex" # 除外対象動画リストシート名（exステージ）
-    fanfic_sheet: "二次創作" # 除外対象動画リストシート名（二次創作）
+  excluded_list: # 参加作品動画の除外リスト（全部門で共通の単一シート）
+    name: "excluded_list_dev" # スプレッドシート名（開発用）
+    sheet: "excluded_list" # ワークシート名
 
   video_catalog_semifinal: # 準決勝進出作品動画リスト
     name: "video_catalog_2026spring_semifinal" # スプレッドシート名
