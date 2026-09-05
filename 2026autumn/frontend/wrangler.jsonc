@@ -5,6 +5,11 @@
   "compatibility_date": "2026-07-04",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "preview_urls": true,
+  "vars": {
+    "EVENT_PHASE": "extra",
+    "EVENT_PHASE_SP": "before",
+    "GOOGLE_ANALYTICS_ID": "G-TB29CEYQHC",
+  },
 
   "assets": {
     "directory": ".open-next/assets",

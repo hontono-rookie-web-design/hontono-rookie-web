@@ -153,8 +153,8 @@ const viewPhase = getViewPhase(phase);
 
 ```jsonc
 "vars": {
-    "NEXT_PUBLIC_EVENT_PHASE": "extra",
-    "NEXT_PUBLIC_EVENT_PHASE_SP": "before",
+    "EVENT_PHASE": "extra",
+    "EVENT_PHASE_SP": "before",
   },
 ```
 
@@ -165,6 +165,8 @@ CLIコマンドなら以下を実行
 ```bash
 npx wrangler secret put <KEY>
 ```
+
+またはCloudflareのdashboardからGUIで設定する
 
 # Learn More
 
