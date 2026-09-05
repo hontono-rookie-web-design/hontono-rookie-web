@@ -42,6 +42,37 @@ def update_sheet(worksheet, data: list[dict]):
     worksheet.update(rows)
 
 
+def upsert_sheet(worksheet, data: list[dict], key: str, headers: list[str]):
+    """
+    key列の値をもとに、シートの内容をlist[dict]で更新（一致する行は上書き、なければ追加）する。
+    data内のdictに含まれない列（他の処理が書き込む列など）は、既存の値をそのまま保持する。
+
+    Args:
+        worksheet: 更新対象のワークシート
+        data (list[dict]): 更新するデータ
+        key (str): 行を一意に識別するキーの列名
+        headers (list[str]): シートの全列名（出力時の列順）
+    """
+    existing_rows = worksheet.get_all_records()
+    index = {str(row[key]): dict(row) for row in existing_rows}
+
+    for item in data:
+        row_key = str(item[key])
+        if row_key in index:
+            index[row_key].update(item)
+        else:
+            row = {h: "" for h in headers}
+            row.update(item)
+            index[row_key] = row
+
+    rows = [headers]
+    for row in index.values():
+        rows.append([row.get(h, "") for h in headers])
+
+    worksheet.clear()
+    worksheet.update(rows)
+
+
 def clear_sheet(worksheet):
     """
     スプレッドシートのデータを全削除

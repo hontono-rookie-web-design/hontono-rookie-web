@@ -178,7 +178,7 @@ def fetch_single_video(url, fields):
 
     api = f"https://ext.nicovideo.jp/api/getthumbinfo/{video_id}"
 
-    res = requests.get(api)
+    res = requests.get(api, timeout=10)
     res.raise_for_status()
 
     root = ET.fromstring(res.text)
