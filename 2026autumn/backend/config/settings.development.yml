@@ -35,8 +35,8 @@ spreadsheets:
     ex_sheet: "ex" #exシート名
 
   note_list: # Note記事リスト
-    name: "note_list_2026spring" # スプレッドシート名
-    list_sheet: "list" # Note記事リストシート名
+    name: "note_list_dev" # スプレッドシート名（開発用）
+    list_sheet: "note_list" # Note記事リストシート名
 
   fanfic_list: # 二次創作作品リスト
     name: "fanfic_list_2026spring" # スプレッドシート名
