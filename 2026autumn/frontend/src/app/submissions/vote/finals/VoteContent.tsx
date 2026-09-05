@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CONFIG } from "@/config/config";
-import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
+import { EVENT_PHASES, type EventPhase } from "@/config/phase";
 import TBA from "@/components/TBA";
 import Counting from "@/components/Counting";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -108,12 +108,13 @@ function SkeletonCard() {
 export default function VoteContent({
   initialSongs,
   initialForms,
+  initialPhase,
 }: {
   initialSongs: VideoSheetItem[];
   initialForms: VoteSheetItem[];
+  initialPhase: EventPhase;
 }) {
-  const phase = getCurrentPhase();
-  const viewPhase = getViewPhase(phase);
+  const viewPhase = getViewPhase(initialPhase);
 
   const videos = useMemo(
     () => initialSongs.filter((video): video is Video => video.group !== undefined),

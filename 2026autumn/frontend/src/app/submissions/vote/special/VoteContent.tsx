@@ -3,7 +3,7 @@
 import Counting from "@/components/Counting";
 import TBA from "@/components/TBA";
 import { CONFIG } from "@/config/config";
-import { EVENT_PHASES_SP, getCurrentPhaseSp } from "@/config/phase";
+import { EVENT_PHASES_SP, type EventPhaseSp } from "@/config/phase";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -105,12 +105,13 @@ function SkeletonCard() {
 export default function VoteContent({
   initialSongs,
   initialForms,
+  initialPhase,
 }: {
   initialSongs: VideoSheetItem[];
   initialForms: VoteSheetItem[];
+  initialPhase: EventPhaseSp;
 }) {
-  const phase = getCurrentPhaseSp();
-  const viewPhase = getViewPhase(phase);
+  const viewPhase = getViewPhase(initialPhase);
 
   const videos = useMemo(
     () => initialSongs.filter((video): video is Video => video.group !== undefined),

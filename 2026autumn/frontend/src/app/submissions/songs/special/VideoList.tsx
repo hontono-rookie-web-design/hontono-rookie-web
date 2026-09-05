@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/config/config";
-import { EVENT_PHASES_SP, getCurrentPhaseSp } from "@/config/phase";
+import { EVENT_PHASES_SP, type EventPhaseSp } from "@/config/phase";
 import TBA from "@/components/TBA";
 
 // Video型の定義（必要に応じてインポートしてください）
@@ -43,7 +43,7 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 const PAGE_SIZE = 24;
 
-export default function VideoList({ initialData }: { initialData: Video[] }) {
+export default function VideoList({ initialData, initialPhase }: { initialData: Video[]; initialPhase: EventPhaseSp }) {
   const [data, setData] = useState<Video[]>(initialData);
   const [displayData, setDisplayData] = useState<Video[]>(initialData);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -55,8 +55,7 @@ export default function VideoList({ initialData }: { initialData: Video[] }) {
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const phase = getCurrentPhaseSp();
-  const viewPhase = getViewPhase(phase);
+  const viewPhase = getViewPhase(initialPhase);
 
   /* 初期ロード */
   useEffect(() => {

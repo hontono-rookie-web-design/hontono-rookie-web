@@ -1,8 +1,10 @@
 import { CONFIG } from "@/config/config";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
+import { getCurrentPhase, EVENT_PHASES } from "@/config/phase";
 import VideoList from "./VideoList";
 
 export default async function Page() {
+  const currentPhase = getCurrentPhase();
   const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.ex.name);
 
   const mappedVideos = rawVideos.map((item) => ({
@@ -14,5 +16,5 @@ export default async function Page() {
     description: item.description,
   }));
 
-  return <VideoList initialData={mappedVideos} />;
+  return <VideoList initialData={mappedVideos} initialPhase={currentPhase} />;
 }
