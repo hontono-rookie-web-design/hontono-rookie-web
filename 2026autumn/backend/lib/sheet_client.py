@@ -42,7 +42,14 @@ def update_sheet(worksheet, data: list[dict]):
     worksheet.update(rows)
 
 
-def upsert_sheet(worksheet, data: list[dict], key: str, headers: list[str]):
+def upsert_sheet(
+    worksheet,
+    data: list[dict],
+    key: str,
+    headers: list[str],
+    deleted_flag_column: str = None,
+    deleted_scope=None,
+):
     """
     key列の値をもとに、シートの内容をlist[dict]で更新（一致する行は上書き、なければ追加）する。
     data内のdictに含まれない列（他の処理が書き込む列など）は、既存の値をそのまま保持する。
@@ -52,18 +59,34 @@ def upsert_sheet(worksheet, data: list[dict], key: str, headers: list[str]):
         data (list[dict]): 更新するデータ
         key (str): 行を一意に識別するキーの列名
         headers (list[str]): シートの全列名（出力時の列順）
+        deleted_flag_column (str, optional): 指定すると、既存行のうちdeleted_scopeの対象で
+            今回のdataに含まれない行にTrueを、dataに含まれる行にFalseをセットする列名。
+            （例: 取得元から消えた＝削除された行に印を付ける用途）
+        deleted_scope (Callable[[dict], bool], optional): 既存行（dict）を受け取り、
+            削除判定の対象にするかどうかを返す関数。Noneの場合は全既存行が対象。
+            data内のdictが一部門分しか含まないケース（複数回に分けてupsert_sheetを呼ぶ場合）で、
+            他部門の行まで誤って削除扱いにしないために使う。
     """
     existing_rows = worksheet.get_all_records()
     index = {str(row[key]): dict(row) for row in existing_rows}
 
+    touched_keys = set()
     for item in data:
         row_key = str(item[key])
+        touched_keys.add(row_key)
         if row_key in index:
             index[row_key].update(item)
         else:
             row = {h: "" for h in headers}
             row.update(item)
             index[row_key] = row
+
+    if deleted_flag_column:
+        for row_key, row in index.items():
+            if row_key in touched_keys:
+                row[deleted_flag_column] = False
+            elif deleted_scope is None or deleted_scope(row):
+                row[deleted_flag_column] = True
 
     rows = [headers]
     for row in index.values():

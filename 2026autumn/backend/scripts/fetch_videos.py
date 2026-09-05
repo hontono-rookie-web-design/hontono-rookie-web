@@ -25,6 +25,7 @@ HEADERS = [
     "thumbnail_url",
     "status",
     "excluded",
+    "deleted",
     "prelim_group_id",
     "final_group_id",
     "sp_group_id",
@@ -161,7 +162,18 @@ def update_video_list_by_tag(
 
     rows = [build_row(v) for v in classified_videos]
 
-    sheet_client.upsert_sheet(video_list_sheet, rows, key="video_id", headers=HEADERS)
+    # このタグで扱うstatusの範囲のみをdeleted判定の対象にする
+    # （rookie/spを別々に処理するため、他タグ分のstatusまで誤ってdeleted扱いにしないようにする）
+    relevant_statuses = {status_during} | ({status_before} if status_before else set())
+
+    sheet_client.upsert_sheet(
+        video_list_sheet,
+        rows,
+        key="video_id",
+        headers=HEADERS,
+        deleted_flag_column="deleted",
+        deleted_scope=lambda row: row.get("status") in relevant_statuses,
+    )
 
     print(f"{status_during}/{status_before or ''} update completed")
 
