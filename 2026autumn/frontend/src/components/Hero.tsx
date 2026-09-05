@@ -1,7 +1,7 @@
 "use client";
 
-import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { CONFIG } from "@/config/config";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

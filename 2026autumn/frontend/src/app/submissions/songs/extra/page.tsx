@@ -1,6 +1,6 @@
-import VideoList from "./VideoList";
 import { CONFIG } from "@/config/config";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
+import VideoList from "./VideoList";
 
 export default async function Page() {
   const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.ex.name);

@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import { CONFIG } from "@/config/config";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
@@ -57,7 +58,7 @@ export default function RootLayout({
       <body className="min-h-full">
         <Navigation>{children}</Navigation>
 
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""} />
+        <GoogleAnalytics gaId={CONFIG.googleAnalyticsId} />
       </body>
     </html>
   );
