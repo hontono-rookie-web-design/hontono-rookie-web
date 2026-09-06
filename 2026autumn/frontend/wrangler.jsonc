@@ -8,7 +8,7 @@
   "vars": {
     "EVENT_PHASE": "extra",
     "EVENT_PHASE_SP": "before",
-    "GOOGLE_ANALYTICS_ID": "G-TB29CEYQHC",
+    "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID": "G-TB29CEYQHC",
   },
 
   "assets": {
