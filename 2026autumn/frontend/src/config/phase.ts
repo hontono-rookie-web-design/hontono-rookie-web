@@ -20,7 +20,7 @@ export type EventPhase = (typeof EVENT_PHASES)[keyof typeof EVENT_PHASES];
 
 export function getCurrentPhase(): EventPhase {
   const env = process.env.EVENT_PHASE as EventPhase | undefined;
-  console.log(`env: ${env}, process.env.EVENT_PHASE: ${process.env.EVENT_PHASE}}`);
+
   if (env && Object.values(EVENT_PHASES).includes(env)) {
     return env;
   }
