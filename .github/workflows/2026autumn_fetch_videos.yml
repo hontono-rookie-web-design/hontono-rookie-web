@@ -2,9 +2,9 @@ name: 2026autumn Fetch Videos
 
 on:
   workflow_dispatch: # 手動実行
-    #schedule:
+  schedule:
     # JST 午前6:00 = UTC 前日 21:00
-    - cron: "0 21 * * *"
+    - cron: '0 21 * * *'
 
 jobs:
   run-script:
