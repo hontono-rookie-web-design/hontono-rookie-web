@@ -36,14 +36,14 @@ jobs:
       # PRで変更されたファイルをgit diffで確認するため、
       # fetch-depth: 0としてGitの履歴をすべて取得する。
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
 
       # ESLintの実行に使用するNode.jsを準備する。
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
@@ -110,14 +110,14 @@ jobs:
       # PRで変更されたファイルをgit diffで確認するため、
       # Gitの履歴をすべて取得する。
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
 
       # TypeScriptの型チェックに使用するNode.jsを準備する。
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
@@ -184,14 +184,14 @@ jobs:
       # PRで変更されたファイルをgit diffで確認するため、
       # Gitの履歴をすべて取得する。
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
 
       # Next.jsのProduction Buildに使用するNode.jsを準備する。
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
