@@ -47,4 +47,6 @@ export const CONFIG = {
   },
 
   googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "",
+
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "",
 };
