@@ -1,8 +1,6 @@
 # 本当のルーキー祭り2026秋 Webサイト frontend
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
----
+このサイトは[Next.js](https://nextjs.org)プロジェクトです。[`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)により作成されました。
 
 # 開発環境
 
@@ -26,25 +24,13 @@ bun dev
 http://localhost:3000
 ```
 
-## ページの編集
-
-ページは `app/page.tsx` を編集することで更新できます。
-
-ファイルを保存すると、開発サーバー上で自動的に反映されます。
-
-## フォント
-
-本プロジェクトでは、`next/font` を利用して Vercel の **Geist** フォントを自動的に最適化・読み込みしています。
-
----
-
 # イベントフェーズ管理
 
 本サイトでは、イベントの進行状況に応じて画面表示を切り替えるため、環境変数によるフェーズ管理を行っています。
 
 ## 本戦フェーズ
 
-本戦（exステージ〜決勝）は環境変数 `NEXT_PUBLIC_EVENT_PHASE` により制御します。
+本戦（exステージ〜決勝）は環境変数 `EVENT_PHASE` により制御します。
 
 ### 設定可能な値
 
@@ -59,17 +45,9 @@ http://localhost:3000
 | `final_counting`  | 決勝集計中         |
 | `after`           | イベント終了後     |
 
-### 設定例
-
-```env
-NEXT_PUBLIC_EVENT_PHASE=prelim
-```
-
----
-
 ## SPステージフェーズ
 
-SPステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_SP` により制御します。
+SPステージは本戦とは独立しており、`EVENT_PHASE_SP` により制御します。
 
 ### 設定可能な値
 
@@ -81,19 +59,13 @@ SPステージは本戦とは独立しており、`NEXT_PUBLIC_EVENT_PHASE_SP` �
 | `counting`   | 集計中   |
 | `after`      | 終了後   |
 
-### 設定例
-
-```env
-NEXT_PUBLIC_EVENT_PHASE_SP=submission
-```
-
----
+詳しくは `frontend/src/config/phase.ts`を参照してください
 
 ## フェーズの変更方法
 
-ローカル開発をする場合、まずGoogleドライブ共有フォルダからフロンドエンドの `.env.local.example` をダウンロードしてください。
+ローカル開発をする場合、まずGoogleドライブ共有フォルダからフロンドエンドの `.env.development.example` をダウンロードしてください。
 
-それをこのフォルダ内に配置し、名前を `.env.local` に変更してください。
+それをこのフォルダ内に配置し、名前を `.env.development` に変更してください。
 
 ファイルの中身のうち、`<>`で囲まれているところがあれば、あなたの環境に合わせて書き換えてください。
 
@@ -101,74 +73,24 @@ NEXT_PUBLIC_EVENT_PHASE_SP=submission
 
 ```env
 # 本戦
-NEXT_PUBLIC_EVENT_PHASE=final
+EVENT_PHASE="final"
 
 # SPステージ
-NEXT_PUBLIC_EVENT_PHASE_SP=voting
+EVENT_PHASE_SP="voting"
 ```
 
-本番環境では、デプロイ先の環境変数を変更してください。
+### 本番環境のデータで試す場合
 
-環境変数を変更した場合は、開発サーバーを再起動すると反映されます。
+1. `.env.production.example` をダウンロードしてください
+2. `.env.production` という名前に変えてください
+3. 適宜内容を変更してください
+4. `npm run build && npm run start` で本番モードで起動してください
 
-```bash
-npm run dev
-```
+## Cloudflareにおける環境変数の設定
 
----
+CloudflareのdashboardからGUIで設定してください。
 
-## コードでの利用方法
-
-現在のフェーズは以下の関数から取得できます。
-
-### 本戦
-
-```ts
-const phase = getCurrentPhase();
-```
-
-### SPステージ
-
-```ts
-const phase = getCurrentPhaseSp();
-```
-
-各ページでは取得したイベントフェーズをページ固有の表示フェーズへ変換し、その値に応じて表示内容を切り替えています。
-
-例：
-
-```ts
-const viewPhase = getViewPhase(phase);
-```
-
-これにより、開催前・投稿期間・投票期間・集計中・終了後など、イベントの進行状況に応じた画面表示を実現しています。
-
----
-
-## 本番環境における環境変数の設定
-
-### 公開できる環境変数
-
-`wrangler.jsonc`に記述します
-
-```jsonc
-"vars": {
-    "EVENT_PHASE": "extra",
-    "EVENT_PHASE_SP": "before",
-  },
-```
-
-### 公開できない環境変数
-
-CLIコマンドなら以下を実行
-
-```bash
-npx wrangler secret put <KEY>
-```
-
-またはCloudflareのdashboardからGUIで設定する
-
-# Learn More
+# Next.jsについて
 
 Next.js の詳細については、以下のリソースを参照してください。
 
@@ -176,15 +98,3 @@ Next.js の詳細については、以下のリソースを参照してくださ
 - [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
 
 You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
----
-
-# Deploy on Vercel
-
-このプロジェクトは Vercel へのデプロイをサポートしています。
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-詳細については、以下のドキュメントを参照してください。
-
-- [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying)
