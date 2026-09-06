@@ -23,8 +23,7 @@ backend
 ├ scripts
 │  ├ fetch_videos.py              参加動画一覧更新スクリプト
 │  ├ fetch_note.py                note記事一覧更新スクリプト
-│  ├ fetch_fanfic_forms_result.py 二次創作情報確認用シート更新スクリプト
-│  ├ fetch_fanfic.py              二次創作一覧更新スクリプト
+│  ├ fetch_derivative.py          二次創作一覧更新スクリプト
 │  ├ vote_grouping.py             投票グループ作成スクリプト
 │  ├ setup_forms.py               投票フォーム作成スクリプト
 │  └ update_videos_info.py        動画情報更新スクリプト
@@ -36,13 +35,12 @@ backend
 backend処理関連のworkflowは以下があり、workflowファイルは`.github/workflows`以下にある。
 GitHub Actionsで実行する。
 
-| workflow                                | workflowファイル                            | 処理内容                                       |
-| --------------------------------------- | ------------------------------------------- | ---------------------------------------------- |
-| \<yyyyseoson\> Fetch Videos Rookie      | `<yyyyseoson>_fetch_videos_rookie.yml`      | Rookie、opステージの動画リストを更新する       |
-| \<yyyyseoson\> Fetch Videos ex          | `<yyyyseoson>_fetch_videos_ex.yml`          | exステージ（、二次創作）の動画リストを更新する |
-| \<yyyyseoson\> Fetch Note               | `<yyyyseoson>_fetch_note.yml`               | Note記事リストを更新する                       |
-| \<yyyyseoson\> Fetch Fanfic From Result | `<yyyyseoson>_fetch_fanfic_from_result.yml` | 二次創作作品提出フォーム回答リストを更新する   |
-| \<yyyyseoson\> Fetch Fanfic             | `<yyyyseoson>_fetch_fanfic.yml`             | 二次創作作品リストを更新する                   |
+| workflow                           | workflowファイル                       | 処理内容                                       |
+| ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| \<yyyyseoson\> Fetch Videos Rookie | `<yyyyseoson>_fetch_videos_rookie.yml` | Rookie、opステージの動画リストを更新する       |
+| \<yyyyseoson\> Fetch Videos ex     | `<yyyyseoson>_fetch_videos_ex.yml`     | exステージ（、二次創作）の動画リストを更新する |
+| \<yyyyseoson\> Fetch Note          | `<yyyyseoson>_fetch_note.yml`          | Note記事リストを更新する                       |
+| \<yyyyseoson\> Fetch Derivative    | `<yyyyseoson>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
 
 ## 運用方法
 
@@ -54,14 +52,13 @@ GitHub Actionsで実行する。
 
 1. 本当のルーキー祭りWebデザイン部のGoogle Driveに以下のスプレッドシートを作成する。
 
-   | スプレッドシート名                           | 概要                                   |
-   | -------------------------------------------- | -------------------------------------- |
-   | video*catalog*\<yyyyseoson\>                 | 参加作品動画リスト                     |
-   | grouped*video_catalog*\<yyyyseoson\>         | 投票グループ分けした参加作品動画リスト |
-   | note*list*\<yyyyseoson\>                     | Note記事リスト                         |
-   | fanfic*list*\<yyyyseoson\>                   | 二次創作作品リスト                     |
-   | 動画除外リスト\_\<yyyyseoson\>               | 参加作品動画の除外リスト               |
-   | 二次創作作品提出フォーム回答\_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト     |
+   | スプレッドシート名                           | 概要                               |
+   | -------------------------------------------- | ---------------------------------- |
+   | video_list_pro                               | 参加作品動画リスト                 |
+   | note_list_pro                                | Note記事リスト                     |
+   | derivative*list_pro*                         | 二次創作作品リスト                 |
+   | excluded_list_pro                            | 参加作品動画の除外リスト           |
+   | 二次創作作品提出フォーム回答\_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |
 
    スプレッドシートのシート名は`config/setting.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
 
@@ -203,30 +200,6 @@ APP_ENV="development"
 
 スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で設定内容が取得できる。
 
-## スプレッドシート
-
-backendの処理で利用するGoogleスプレッドシートを説明する。
-Googleスプレッドシートをデータベースとして利用している。
-
-スプレッドシート名、シート名は、設定ファイル`config/settings.yml`で設定している。以下の表は、現在設定しているスプレッドシート名。
-
-スプレッドシートは以下がある。
-
-| スプレッドシート名                              | 概要                                             | 更新workflow                                                       |
-| ----------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------ |
-| video*catalog*\<yyyyseoson\>                    | 参加作品動画リスト                               | \<yyyyseoson\> Fetch Videos Rookie、\<yyyyseoson\> Fetch Videos ex |
-| grouped*video_catalog*\<yyyyseoson\>            | 予選投票グループ分けした参加作品動画リスト       |                                                                    |
-| grouped*video_catalog*\<yyyyseoson\>\_semifinal | 準決勝投票グループ分けした参加作品動画リスト     |                                                                    |
-| grouped*video_catalog*\<yyyyseoson\>\_final     | 決勝投票グループ分けした参加作品動画リスト       |                                                                    |
-| grouped*video_catalog*\<yyyyseoson\>\_ex        | exステージ投票グループ分けした参加作品動画リスト |                                                                    |
-| note*list*\<yyyyseoson\>                        | Note記事リスト                                   | \<yyyyseoson\> Fetch Note                                          |
-| fanfic*list*\<yyyyseoson\>                      | 二次創作作品リスト                               | \<yyyyseoson\> Fetch Videos Fanfic                                 |
-| 動画除外リスト\_\<yyyyseoson\>                  | 参加作品動画の除外リスト                         |                                                                    |
-| 二次創作作品提出フォーム回答\_\<yyyyseoson\>    | 二次創作作品提出フォーム回答リスト               |                                                                    |
-| updated*video_catalog*\<yyyyseoson\>            | 再生数いいね数集計用参加作品動画リスト           | \<yyyyseoson\> Update Videos Info                                  |
-
-現状、workflowやスクリプトで更新するスプレッドシートは英語名、手動で更新するスプレッドシートは日本語名をつけている（この命名ルールは要議論）。
-
 ## 実行
 
 各処理をローカルで実行する場合の手順を説明する。
@@ -256,15 +229,10 @@ Googleスプレッドシートをデータベースとして利用している�
 
 ### 二次創作作品一覧更新
 
-1. `backend`ディレクトリで以下を実行
+1. 二次創作作品情報確認用シートを確認し、二次創作作品リストに載せる作品は「掲載可否」欄を1にする。
+2. `backend`ディレクトリで以下を実行
    ```
-   python -m scripts.fetch_fanfic_forms_result
-   ```
-   二次創作作品提出フォーム回答リストの二次創作作品情報確認用シートが更新される。
-2. 二次創作作品情報確認用シートを確認し、二次創作作品リストに載せる作品は「掲載可否」欄を1にする。
-3. `backend`ディレクトリで以下を実行
-   ```
-   python -m scripts.fetch_fanfic
+   python -m scripts.fetch_derivative
    ```
    二次創作作品リストが更新される。
 

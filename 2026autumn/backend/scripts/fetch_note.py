@@ -146,9 +146,6 @@ def main():
     print(f"接続先スプレッドシート: {catalog_spreadsheetname}")
     catalog_sheetname = catalog_sheet_config["list_sheet"]
 
-    # hashtag = "本当のルーキー祭り2025秋"
-    # hashtag = tag_config["rookie"]
-    # hashtag = tag_config["fanfic"]
     hashtags = set(
         tag_config.values()
     )  # tag_config内のタグすべてを検索対象とする 2026/04/05
