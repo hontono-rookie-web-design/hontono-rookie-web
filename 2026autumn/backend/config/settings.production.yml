@@ -1,6 +1,6 @@
 tag:
   rookie: "本当のルーキー祭り2026秋" # ルーキー参加タグ（ルーキー・exステージ共通。旧opステージが2026秋からexステージに改称）
-  sp: "本当のルーキー祭り2026秋ex" # spステージ参加タグ（旧exステージが2026秋からspステージに改称）
+  sp: "本当のルーキー祭り2026秋SP" # spステージ参加タグ（旧exステージが2026秋からspステージに改称）
   fanfic: "本当のルーキー祭り2026秋二次創作" # 二次創作作品タグ
 
 period:
@@ -48,8 +48,8 @@ spreadsheets:
     ex_sheet: "ex" #exシート名
 
   note_list: # Note記事リスト
-    name: "note_list_2026autumn" # スプレッドシート名
-    list_sheet: "list" # Note記事リストシート名
+    name: "note_list_pro" # スプレッドシート名（本番用）
+    list_sheet: "note_list" # Note記事リストシート名
 
   derivative_list: # 二次創作作品リスト（全カテゴリをcategory列で管理する単一シート）
     name: "derivative_list_pro" # スプレッドシート名（本番用）
