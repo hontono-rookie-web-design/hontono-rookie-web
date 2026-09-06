@@ -1,10 +1,10 @@
 name: 2026autumn Fetch Derivative
 
 on:
-  workflow_dispatch:  # 手動実行
-  # schedule:
+  workflow_dispatch: # 手動実行
+    # schedule:
     #- cron: '0 * * * *'  # 毎時実行
-    # - cron: '0 */3 * * *' # 3時間おき実行
+    - cron: "0 */3 * * *" # 3時間おき実行
     #- cron: '0 */6 * * *' # 6時間おき実行
     #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
 
@@ -14,6 +14,7 @@ jobs:
 
     env:
       GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+      APP_ENV: production
 
     defaults:
       run:
@@ -26,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |

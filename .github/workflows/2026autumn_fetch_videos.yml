@@ -1,12 +1,10 @@
 name: 2026autumn Fetch Videos
 
 on:
-  workflow_dispatch:  # 手動実行
-  #schedule:
-    #- cron: '0 * * * *'  # 毎時実行
-    #- cron: '0 */3 * * *' # 3時間おき実行
-    #- cron: '0 */6 * * *' # 6時間おき実行
-    #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
+  workflow_dispatch: # 手動実行
+    #schedule:
+    # JST 午前6:00 = UTC 前日 21:00
+    - cron: "0 21 * * *"
 
 jobs:
   run-script:
@@ -14,6 +12,7 @@ jobs:
 
     env:
       GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+      APP_ENV: production
 
     defaults:
       run:
@@ -26,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
