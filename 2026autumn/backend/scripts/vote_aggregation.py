@@ -2,7 +2,13 @@
 
 from collections import defaultdict
 from lib.sheet_client import connect_sheet, fetch_sheet_data
+from lib import utils
+
+from dotenv import load_dotenv
+load_dotenv()
+
 import re, os
+
 
 
 # シート上のデータの前処理
@@ -173,18 +179,19 @@ def main():
     # Number of Discs
     ## 現在はテスト用に「3」に設定しています！！！ 
     ## I CURRENTLY SET IT TO 3 FOR TESTING!!!
-    number_of_discs = 3
+    config = utils.load_config()
+    number_of_discs = config["vote_grouping"]["group_num"]
 
-    # シーツを取得する
-    # Get sheets
+    # 予選のシーツを取得する
+    # Get sheets of prelim
     sheets = [
         {
             "disc": i,
-            "spreadsheet_name": f"本当のルーキー祭り2026春_Disc.{i}（回答）",
-            "worksheet_name": "フォームの回答 1",
+            "spreadsheet_name": f'{config["vote_form"]["prelim"]["title"]}{i}（回答）',
+            "worksheet_name": config["vote_form"]["prelim"]["item_title"],
         }
         for i in range(1, number_of_discs + 1)
-    ]
+        ]
 
     # 各シートのランキングを出力します
     # Print the ranking of each sheets
