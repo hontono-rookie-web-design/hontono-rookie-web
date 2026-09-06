@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import { CONFIG } from "@/config/config";
 import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Item = {
   creator: string;

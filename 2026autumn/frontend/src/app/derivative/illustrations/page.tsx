@@ -1,6 +1,6 @@
+import { getDerivativeIllustrations } from "@/lib/derivative";
 import { Suspense } from "react";
 import IllustrationsContent from "./IllustrationsContent";
-import { getDerivativeIllustrations } from "@/lib/derivative";
 
 export default async function Page() {
   const items = await getDerivativeIllustrations();

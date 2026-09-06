@@ -19,8 +19,8 @@ export const EVENT_PHASES = {
 export type EventPhase = (typeof EVENT_PHASES)[keyof typeof EVENT_PHASES];
 
 export function getCurrentPhase(): EventPhase {
-  const env = process.env.NEXT_PUBLIC_EVENT_PHASE as EventPhase | undefined;
-
+  const env = process.env.EVENT_PHASE as EventPhase | undefined;
+  console.log(`env: ${env}, process.env.EVENT_PHASE: ${process.env.EVENT_PHASE}}`);
   if (env && Object.values(EVENT_PHASES).includes(env)) {
     return env;
   }
@@ -42,9 +42,7 @@ export const EVENT_PHASES_SP = {
 export type EventPhaseSp = (typeof EVENT_PHASES_SP)[keyof typeof EVENT_PHASES_SP];
 
 export function getCurrentPhaseSp(): EventPhaseSp {
-  const env = process.env.NEXT_PUBLIC_EVENT_PHASE_SP as
-    | EventPhaseSp
-    | undefined;
+  const env = process.env.EVENT_PHASE_SP as EventPhaseSp | undefined;
 
   if (env && Object.values(EVENT_PHASES_SP).includes(env)) {
     return env;

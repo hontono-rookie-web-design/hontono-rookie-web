@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
 import { CONFIG } from "@/config/config";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export type Item = {
   creator: string;

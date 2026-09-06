@@ -1,8 +1,13 @@
 import re
+import time
 import xml.etree.ElementTree as ET
 
 import requests
 from bs4 import BeautifulSoup
+
+REQUEST_INTERVAL_SECONDS = (
+    0.3  # 投稿者ページスクレイピング・サムネイル取得のレート制限対策
+)
 
 
 def fetch_all_videos(tag, limit=100):
@@ -37,7 +42,7 @@ def fetch_all_videos(tag, limit=100):
             "_sort": "+startTime",
         }
 
-        res = requests.get(url, params=params)
+        res = requests.get(url, params=params, timeout=30)
         res.raise_for_status()
 
         data = res.json()["data"]
@@ -47,7 +52,7 @@ def fetch_all_videos(tag, limit=100):
 
         all_videos.extend(data)
 
-        # print(f"{len(all_videos)} 件取得")
+        print(f"[{tag}] {len(all_videos)} 件取得")
 
         offset += limit
 
@@ -59,7 +64,10 @@ def get_username(user_id):
 
     headers = {"User-Agent": "Mozilla/5.0"}
 
-    res = requests.get(url, headers=headers)
+    try:
+        res = requests.get(url, headers=headers, timeout=10)
+    except requests.RequestException:
+        return None
 
     if res.status_code != 200:
         return None
@@ -143,8 +151,9 @@ def _get_thumbnail_from_thumbinfo(video_id: str) -> str:
 def attach_username_and_thumbnail(videos):
 
     user_cache = {}
+    total = len(videos)
 
-    for video in videos:
+    for i, video in enumerate(videos, 1):
 
         # ユーザーID追加
         user_id = video.get("userId")
@@ -164,6 +173,12 @@ def attach_username_and_thumbnail(videos):
             video["thumbnailUrl"] = None
         else:
             video["thumbnailUrl"] = get_thumbnail_url(video_id)
+
+        print(
+            f"[{i}/{total}] {video_id} title={video.get('title')} user={video['userName']}"
+        )
+
+        time.sleep(REQUEST_INTERVAL_SECONDS)
 
     return videos
 

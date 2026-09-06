@@ -145,6 +145,29 @@ const viewPhase = getViewPhase(phase);
 
 ---
 
+## 本番環境における環境変数の設定
+
+### 公開できる環境変数
+
+`wrangler.jsonc`に記述します
+
+```jsonc
+"vars": {
+    "EVENT_PHASE": "extra",
+    "EVENT_PHASE_SP": "before",
+  },
+```
+
+### 公開できない環境変数
+
+CLIコマンドなら以下を実行
+
+```bash
+npx wrangler secret put <KEY>
+```
+
+またはCloudflareのdashboardからGUIで設定する
+
 # Learn More
 
 Next.js の詳細については、以下のリソースを参照してください。

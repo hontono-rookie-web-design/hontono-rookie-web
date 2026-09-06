@@ -1,6 +1,6 @@
+import { getDerivativeArticles } from "@/lib/derivative";
 import { Suspense } from "react";
 import ArticlesContent from "./ArticlesContent";
-import { getDerivativeArticles } from "@/lib/derivative";
 
 export default async function Page() {
   const data = await getDerivativeArticles();

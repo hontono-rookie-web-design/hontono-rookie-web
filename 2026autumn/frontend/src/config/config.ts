@@ -4,7 +4,7 @@ export const CONFIG = {
   },
 
   derivativesheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_DERIVATIVE!,
+    spreadsheetId: process.env.SPREADSHEET_ID_DERIVATIVE!,
     streams: { name: "紹介配信予定" },
     archive: { name: "紹介配信アーカイブ" },
     illustrations: { name: "イラスト" },
@@ -14,11 +14,11 @@ export const CONFIG = {
   },
 
   notesheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_NOTES!,
+    spreadsheetId: process.env.SPREADSHEET_ID_NOTES!,
   },
 
   videosheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VIDEOS!,
+    spreadsheetId: process.env.SPREADSHEET_ID_VIDEOS!,
     status: {
       rookie: { name: "ルーキー" },
       ex: { name: "EX" },
@@ -32,7 +32,7 @@ export const CONFIG = {
   },
 
   voteformssheets: {
-    spreadsheetId: process.env.NEXT_PUBLIC_SPREADSHEET_ID_VOTEFORM!,
+    spreadsheetId: process.env.SPREADSHEET_ID_VOTEFORM!,
     preliminaries: { name: "予選" },
     finals: { name: "決勝" },
     sp: { name: "SP" },
@@ -45,4 +45,6 @@ export const CONFIG = {
   links: {
     voteGuide: "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
   },
+
+  googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || "",
 };
