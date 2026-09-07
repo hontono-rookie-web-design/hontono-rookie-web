@@ -1,13 +1,14 @@
 ## 集計機能
 
 from collections import defaultdict
-from lib.sheet_client import connect_sheet, fetch_sheet_data
-from lib import utils
+# from lib.sheet_client import connect_sheet, fetch_sheet_data
+# from lib import utils
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
-import re, os
+import re
+# import os
 
 
 
@@ -171,68 +172,68 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
 ## 最終的なランキングリストを出力します
 ## Output the final list
 
-credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+# credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
-def main():
+# def main():
 
-    # ディスク枚数
-    # Number of Discs
-    ## 現在はテスト用に「3」に設定しています！！！ 
-    ## I CURRENTLY SET IT TO 3 FOR TESTING!!!
-    config = utils.load_config()
-    number_of_discs = config["vote_grouping"]["group_num"]
+#     # ディスク枚数
+#     # Number of Discs
+#     ## 現在はテスト用に「3」に設定しています！！！ 
+#     ## I CURRENTLY SET IT TO 3 FOR TESTING!!!
+#     config = utils.load_config()
+#     number_of_discs = config["vote_grouping"]["group_num"]
 
-    # 予選のシーツを取得する
-    # Get sheets of prelim
-    sheets = [
-        {
-            "disc": i,
-            "spreadsheet_name": f'{config["vote_form"]["prelim"]["title"]}{i}（回答）',
-            "worksheet_name": config["vote_form"]["prelim"]["item_title"],
-        }
-        for i in range(1, number_of_discs + 1)
-        ]
+#     # 予選のシーツを取得する
+#     # Get sheets of prelim
+#     sheets = [
+#         {
+#             "disc": i,
+#             "spreadsheet_name": f'{config["vote_form"]["prelim"]["title"]}{i}（回答）',
+#             "worksheet_name": config["vote_form"]["prelim"]["item_title"],
+#         }
+#         for i in range(1, number_of_discs + 1)
+#         ]
 
-    # 各シートのランキングを出力します
-    # Print the ranking of each sheets
-    for sheet in sheets:
+#     # 各シートのランキングを出力します
+#     # Print the ranking of each sheets
+#     for sheet in sheets:
 
-        print(f"\n===== Disc {sheet['disc']} =====")
+#         print(f"\n===== Disc {sheet['disc']} =====")
 
-        worksheet = connect_sheet(
-            credentials_path,
-            sheet["spreadsheet_name"],
-            sheet["worksheet_name"],
-        )
+#         worksheet = connect_sheet(
+#             credentials_path,
+#             sheet["spreadsheet_name"],
+#             sheet["worksheet_name"],
+#         )
 
-        # 投票数を取得する
-        # Get the number of votes
-        votes = fetch_sheet_data(worksheet)
+#         # 投票数を取得する
+#         # Get the number of votes
+#         votes = fetch_sheet_data(worksheet)
 
-        print("Number of votes:", len(votes))
+#         print("Number of votes:", len(votes))
 
-        # しきい値
-        # Threshold
-        if len(votes) == 0:
-            print("No votes found. Skip.")
-            continue
+#         # しきい値
+#         # Threshold
+#         if len(votes) == 0:
+#             print("No votes found. Skip.")
+#             continue
 
-        # 投票を集計する
-        # Aggregate votes
-        ranking = aggregate_votes(votes)
+#         # 投票を集計する
+#         # Aggregate votes
+#         ranking = aggregate_votes(votes)
 
-        print("\n===== Ranking =====")
+#         print("\n===== Ranking =====")
 
-        # 最終順位を出力する
-        # Print the final rankings
-        print([
-            { 
-            '曲名': row['曲名'], 
-            '順位': row['順位'], 
-            } 
-            for row in ranking
-            ])
+#         # 最終順位を出力する
+#         # Print the final rankings
+#         print([
+#             { 
+#             '曲名': row['曲名'], 
+#             '順位': row['順位'], 
+#             } 
+#             for row in ranking
+#             ])
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
