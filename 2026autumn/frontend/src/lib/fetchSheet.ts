@@ -82,9 +82,9 @@ export async function fetchDerivativeSheet(category: string): Promise<Derivative
     .map((row) => ({
       creator: asString(row.creator_name),
       service: asString(row.posted_service),
-      workUrl: asString(row.fanart_url),
-      title: asString(row.fanart_title),
-      imageUrl: asString(row.fanart_img_url),
+      workUrl: asString(row.derivative_url),
+      title: asString(row.derivative_title),
+      imageUrl: asString(row.derivative_img_url),
       originalUrl: asString(row.original_id),
       publishedAt: asString(row.stream_at),
     }));
