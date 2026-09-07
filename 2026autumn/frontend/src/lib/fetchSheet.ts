@@ -29,6 +29,10 @@ function isExcluded(value: unknown): boolean {
   return value === true || asString(value).toUpperCase() === "TRUE";
 }
 
+function isDeleted(value: unknown): boolean {
+  return value === true || asString(value).toUpperCase() === "TRUE";
+}
+
 async function fetchSheetRows(
   spreadsheetId: string,
   label: string,
@@ -79,6 +83,7 @@ export async function fetchDerivativeSheet(category: string): Promise<Derivative
 
   return data
     .filter((row) => asString(row.category) === category)
+    .filter((row) => !isDeleted(row.deleted))
     .map((row) => ({
       creator: asString(row.creator_name),
       service: asString(row.posted_service),
@@ -103,15 +108,17 @@ export type NoteSheetItem = {
 export async function fetchNoteSheet(): Promise<NoteSheetItem[]> {
   const data = await fetchSheetRows(CONFIG.notesheets.spreadsheetId, "fetchNoteSheet");
 
-  return data.map((row) => ({
-    title: asString(row.article_title),
-    author: asString(row.article_author),
-    publishedAt: asString(row.posted_at),
-    noteUrl: asString(row.article_url),
-    userUrl: asString(row.author_url),
-    eyecatchUrl: asString(row.eyecatch_url),
-    userProfileImageUrl: asString(row.user_profile_img_url),
-  }));
+  return data
+    .filter((row) => !isDeleted(row.deleted))
+    .map((row) => ({
+      title: asString(row.article_title),
+      author: asString(row.article_author),
+      publishedAt: asString(row.posted_at),
+      noteUrl: asString(row.article_url),
+      userUrl: asString(row.author_url),
+      eyecatchUrl: asString(row.eyecatch_url),
+      userProfileImageUrl: asString(row.user_profile_img_url),
+    }));
 }
 
 export type VideoStage = {
@@ -141,6 +148,7 @@ export async function fetchVideosSheet(
   return data
     .filter((row) => asString(row.status) === status)
     .filter((row) => !isExcluded(row.excluded))
+    .filter((row) => !isDeleted(row.deleted))
     .map((row) => ({
       videoId: asString(row.video_id),
       title: asString(row.title),
@@ -167,6 +175,7 @@ export async function fetchVotesSheet(stage: string): Promise<VoteSheetItem[]> {
   const data = await fetchSheetRows(CONFIG.voteformssheets.spreadsheetId, "fetchVotesSheet");
   return data
     .filter((row) => asString(row.stage) === stage)
+    .filter((row) => !isDeleted(row.deleted))
     .map((row) => ({
       group: asOptionalNumber(row.group_id) ?? 0,
       formUrl: asString(row.form_url),
