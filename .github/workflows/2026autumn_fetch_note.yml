@@ -1,14 +1,12 @@
-name: 2026spring Fetch Videos ex
+name: 2026autumn Fetch Note
 
 on:
-  workflow_dispatch:  # 手動実行
-  #schedule:
+  workflow_dispatch: # 手動実行
+  schedule:
     #- cron: '0 * * * *'  # 毎時実行
-    #- cron: '0 */3 * * *' # 3時間おき実行
+    - cron: '0 */3 * * *' # 3時間おき実行
     #- cron: '0 */6 * * *' # 6時間おき実行
     #- cron: '0 15 * * *' # 毎日実行（日本時間0時）
-    #- cron: '0 21 * * *' # 毎日実行（日本時間6時）
-    #- cron: '0 0 * * *' # 毎日実行（日本時間9時）
 
 jobs:
   run-script:
@@ -16,10 +14,11 @@ jobs:
 
     env:
       GOOGLE_APPLICATION_CREDENTIALS: credentials.json
+      APP_ENV: production
 
     defaults:
       run:
-        working-directory: 2026spring/backend
+        working-directory: 2026autumn/backend
 
     steps:
       - name: Checkout
@@ -28,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
@@ -40,4 +39,4 @@ jobs:
 
       - name: Run script
         run: |
-          python -m scripts.fetch_videos --keys ex fanfic
+          python -m scripts.fetch_note

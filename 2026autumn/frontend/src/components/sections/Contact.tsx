@@ -5,7 +5,7 @@ export default function Contact() {
     <section className="w-full py-12 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
-          <MessageCircle className="text-cherry w-8 h-8" />
+          <MessageCircle className="text-accent w-8 h-8" />
           <h3 className="text-2xl md:text-3xl font-bold text-slate-800">お問い合わせ</h3>
         </div>
 
@@ -19,7 +19,7 @@ export default function Contact() {
               href="https://x.com/SynNightPsub?s=20"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline border-slate-300 hover:bg-slate-50 hover:border-slate-400 text-slate-700"
+              className="btn btn-outline text-base-content"
             >
               公式XへDMを送る
             </a>
@@ -28,7 +28,7 @@ export default function Contact() {
               href="https://discord.gg/XfM6KqZbPT"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline border-slate-300 hover:bg-slate-50 hover:border-slate-400 text-slate-700"
+              className="btn btn-outline text-base-content"
             >
               公式Discordに参加
             </a>

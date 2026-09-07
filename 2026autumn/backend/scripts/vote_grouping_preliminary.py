@@ -1,13 +1,15 @@
 import os
 
 import pandas as pd
+from dotenv import load_dotenv
 from lib import sheet_client, utils
 from lib.content_grouper import ContentGrouper
 
+load_dotenv()
 
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
-    credentials_path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 

@@ -4,6 +4,11 @@ import Image from "next/image";
 export default function PastEventLink() {
   const events = [
     {
+      title: "本当のルーキー祭り2026春",
+      image: "/images/eventFourth.jpg",
+      url: "https://hontono-rookie-web-2026spring.vercel.app/",
+    },
+    {
       title: "本当のルーキー祭り2025秋",
       image: "/images/eventThird.jpg",
       url: "https://hontono-rookie2025autum.onrender.com/index.html",
@@ -26,7 +31,7 @@ export default function PastEventLink() {
         {/* タイトル */}
 
         <div className="flex items-center gap-3 mb-8">
-          <LinkIcon className="text-skyblue w-8 h-8" />
+          <LinkIcon className="text-primary w-8 h-8" />
           <h3 className="text-2xl md:text-3xl font-bold text-slate-800">過去イベント</h3>
         </div>
         {/* グリッド */}
@@ -61,12 +66,12 @@ export default function PastEventLink() {
                   <div className="relative flex flex-col items-center justify-center text-center">
                     {/* タイトル */}
 
-                    <span className="text-white text-lg md:text-xl font-bold transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
+                    <span className="text-base-100 text-lg md:text-xl font-bold transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
                       {event.title}
                     </span>
                     {/* 詳細 */}
 
-                    <span className="absolute text-white text-lg md:text-xl font-bold opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                    <span className="absolute text-base-100 text-lg md:text-xl font-bold opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
                       詳細を見る
                     </span>
                   </div>

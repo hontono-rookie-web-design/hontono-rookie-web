@@ -5,7 +5,7 @@ def fetch_single_video(url, fields):
     endpoint = "https://www.youtube.com/oembed"
     params = {"url": url, "format": "json"}
 
-    res = requests.get(endpoint, params=params)
+    res = requests.get(endpoint, params=params, timeout=10)
     res.raise_for_status()
 
     data = res.json()

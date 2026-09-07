@@ -9,7 +9,7 @@ export default function Page() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">二次創作 提出フォーム</h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          「本当のルーキー祭り2026春」の二次創作作品の提出はこちらから行えます。
+          「本当のルーキー祭り2026秋」の二次創作作品の提出はこちらから行えます。
         </p>
         {/* 区切り線 */}
 
@@ -25,10 +25,10 @@ export default function Page() {
           <br />
           本サイトへの掲載を希望する場合は、このページ下部のフォーム、または
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSczlIrsD3P3AEpbpKirIp8ZZFF6MWlLU2uSPXNTPHw3oicgBA/viewform"
+            href="https://forms.gle/fQF2vcVvWARJzvFx6"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline mx-1"
+            className="text-link underline mx-1"
           >
             こちらのフォーム
           </a>
@@ -53,50 +53,20 @@ export default function Page() {
 
           <ul className="list-disc pl-5 space-y-1">
             <li>
-              ニコニコ動画に投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグをロックしてください。
+              ニコニコ動画に投稿する場合は、「本当のルーキー祭り2026秋二次創作」のタグをロックしてください。
             </li>
 
             <li>
-              noteに投稿する場合は、「本当のルーキー祭り2026春二次創作」のタグを付けてください。
+              noteに投稿する場合は、「本当のルーキー祭り2026秋二次創作」のタグを付けてください。
             </li>
           </ul>
-        </div>
-        {/* ルール */}
-
-        <div>
-          <p className="font-semibold mb-1">■ ルール・注意事項</p>
-
-          <ul className="list-disc pl-5 space-y-1">
-            <li>
-              商業目的での利用（無許可での販売・グッズ化）は禁止ですが、YouTube等の収益化済み配信での利用は可能です。
-            </li>
-
-            <li>
-              ルーキー歌い手に参加する場合は、開催期間内にニコニコ動画へ新規投稿する必要があります（期間前の投稿では参加できません）。
-            </li>
-
-            <li>楽曲投稿者は、参加時点で二次創作利用に同意したものとみなします。</li>
-          </ul>
-
-          <p className="mt-2 text-xs text-gray-500">
-            詳細については
-            <a
-              href="https://note.com/syn523/n/n8c309f89031e?sub_rt=share_pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline ml-1"
-            >
-              本当のルーキー祭り2026春二次創作者募集要項
-            </a>
-            をご確認ください。
-          </p>
         </div>
       </div>
       {/* フォーム */}
 
       <div className="w-full max-w-[760px]">
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSczlIrsD3P3AEpbpKirIp8ZZFF6MWlLU2uSPXNTPHw3oicgBA/viewform"
+          src="https://forms.gle/fQF2vcVvWARJzvFx6"
           className="w-full h-[900px] border rounded-lg"
         />
       </div>

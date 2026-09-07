@@ -4,7 +4,6 @@ import Rules from "@/components/Rules";
 import Schedule from "@/components/Schedule";
 
 import Contact from "@/components/sections/Contact";
-import Crowdfunding from "@/components/sections/Crowdfunding";
 import PastEventLink from "@/components/sections/PastEventLink";
 import PrivacyPolicy from "@/components/sections/PrivacyPolicy";
 import RelatedLinks from "@/components/sections/RelatedLinks";
@@ -22,9 +21,6 @@ export default function Home() {
       <Schedule />
 
       <RelatedLinks />
-
-      <Crowdfunding />
-
       <PastEventLink />
 
       <Sponsors />
