@@ -12,6 +12,12 @@ from oauth2client import client, file, tools
 
 load_dotenv()
 
+
+def is_true(value) -> bool:
+    """Google Sheetsから取得した真偽値を判定する。"""
+    return value is True or str(value).strip().upper() == "TRUE"
+
+
 def create_folder(creds, parent_folder_id):
     """
     指定した親フォルダIDの下に、新しいフォルダを作成します。
@@ -176,13 +182,10 @@ def load_spreadsheet(config, phase):
 
     service_account_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-    # ルーキーのスプレッドシート読み込み
-    # 「グループID」「タイトル」という列が最低でも必要
     if phase == "prelim":
-        video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-        video_sheetname = config["vote_grouping"]["grouped_video_catalog"][
-            "rookie_sheet"
-        ]
+        video_list_config = config["spreadsheets"]["video_list"]
+        video_spreadsheetname = video_list_config["name"]
+        video_sheetname = video_list_config["sheet"]
     elif phase == "semifinal":
         video_spreadsheetname = config["vote_semifinal"][
             "grouped_video_catalog_semifinal"
@@ -215,6 +218,22 @@ def load_spreadsheet(config, phase):
 
     # pandasのDataFrameに変換
     df = pd.DataFrame(video_data)
+
+    if phase == "prelim":
+        # video_listから有効なルーキー作品かつグループ分け済みの行だけを取得する
+        df = df[
+            (df["status"] == config["status"]["rookie"])
+            & ~df["excluded"].apply(is_true)
+            & ~df["deleted"].apply(is_true)
+        ].copy()
+        df["prelim_group_id"] = pd.to_numeric(
+            df["prelim_group_id"], errors="coerce"
+        )
+        df = df.dropna(subset=["prelim_group_id"])
+        df["prelim_group_id"] = df["prelim_group_id"].astype(int)
+        df = df.rename(
+            columns={"prelim_group_id": "グループID", "title": "タイトル"}
+        )
 
     return df
 
