@@ -1,4 +1,4 @@
-"use client";
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf5w0e6qlsbV0iGWcnimnXk34MW68gPdYKK3-Qii388px2y1w/viewform";
 
 export default function Page() {
   return (
@@ -9,7 +9,10 @@ export default function Page() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">ボカナイト音源 提出フォーム</h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2">
-	  SOUND UP STATION -NFRS- | ネットラジオ　こちらのラジオで放送していただくための楽曲・コメント提出フォームはこちらです。
+	  SOUND UP STATION -NFRS- | ネットラジオ
+	</p>
+	<p>
+　こちらのラジオで放送していただくための楽曲・コメント提出フォームはこちらです。
         </p>
         {/* 区切り線 */}
 
@@ -22,10 +25,10 @@ export default function Page() {
         <p className="mt-2">
           ラジオでの紹介を希望する場合は、このページ下部のフォーム、または
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSf5w0e6qlsbV0iGWcnimnXk34MW68gPdYKK3-Qii388px2y1w/viewform"
+            href={FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline mx-1"
+            className="text-link underline mx-1"
           >
             こちらのフォーム
           </a>
@@ -37,7 +40,7 @@ export default function Page() {
 
       <div className="w-full max-w-[760px]">
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSf5w0e6qlsbV0iGWcnimnXk34MW68gPdYKK3-Qii388px2y1w/viewform"
+          src={FORM_URL}
           className="w-full h-[900px] border rounded-lg"
         />
       </div>
