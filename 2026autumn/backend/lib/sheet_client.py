@@ -38,8 +38,7 @@ def update_sheet(worksheet, data: list[dict]):
     for item in data:
         rows.append([item.get(h, "") for h in headers])
 
-    worksheet.clear()
-    worksheet.update(rows)
+    worksheet.update(values=rows, range_name="A1", value_input_option="USER_ENTERED")
 
 
 def upsert_sheet(
