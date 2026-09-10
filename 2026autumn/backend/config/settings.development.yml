@@ -78,7 +78,7 @@ vote_semifinal: # 準決勝グループ分け関連パラメータ
     name: "grouped_video_catalog_2026spring_semifinal"
     rookie_sheet: "rookie"
 
-vote_grouping_sp: # exグループ分け関連パラメータ
+vote_grouping_sp: # spグループ分け関連パラメータ
   random_seed: 43
   group_num: 8
 
