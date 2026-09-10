@@ -31,26 +31,6 @@ def build_services(credentials_path: str):
     return drive_service, forms_service
 
 
-def find_folder_id(drive_service, folder_name: str) -> str:
-    query = (
-        f"name = '{folder_name.replace(chr(39), chr(92) + chr(39))}' "
-        f"and mimeType = '{DRIVE_FOLDER_MIME_TYPE}' and trashed = false"
-    )
-    folders = list(
-        drive_service.files()
-        .list(q=query, spaces="drive", fields="files(id,name)", pageSize=1000)
-        .execute()
-        .get("files", [])
-    )
-
-    if not folders:
-        raise RuntimeError(f"Google Drive にフォルダがありません: {folder_name}")
-    if len(folders) > 1:
-        ids = ", ".join(folder["id"] for folder in folders)
-        raise RuntimeError(f"同名のフォルダが複数あります: {folder_name} ({ids})")
-    return folders[0]["id"]
-
-
 def fetch_forms(drive_service, folder_id: str) -> list[dict]:
     query = (
         f"'{folder_id}' in parents and mimeType = '{FORM_MIME_TYPE}' "
@@ -130,25 +110,26 @@ def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[
     return row_question_ids, [{"row_count": row_count, **vote} for vote in responses]
 
 
-def aggregate_daily_scores(forms_service, forms: list[dict]) -> dict[str, dict[str, int]]:
+def aggregate_daily_scores(
+    forms_service, form: dict
+) -> dict[str, dict[str, int]]:
     daily_scores = defaultdict(lambda: defaultdict(int))
 
-    for form in forms:
-        row_question_ids, responses = fetch_form_votes(forms_service, form["id"])
-        for response in responses:
-            submitted_at = datetime.fromisoformat(
-                response["createTime"].replace("Z", "+00:00")
-            )
-            vote_date = submitted_at.date().isoformat()
-            for question_id, answer in response.get("answers", {}).items():
-                video_id = row_question_ids.get(question_id)
-                if not video_id:
-                    continue
-                answers = answer.get("textAnswers", {}).get("answers", [])
-                rank = extract_rank(answers[0].get("value")) if answers else None
-                if rank is None or not 1 <= rank <= response["row_count"]:
-                    continue
-                daily_scores[vote_date][video_id] += response["row_count"] - rank + 1
+    row_question_ids, responses = fetch_form_votes(forms_service, form["id"])
+    for response in responses:
+        submitted_at = datetime.fromisoformat(
+            response["createTime"].replace("Z", "+00:00")
+        )
+        vote_date = submitted_at.date().isoformat()
+        for question_id, answer in response.get("answers", {}).items():
+            video_id = row_question_ids.get(question_id)
+            if not video_id:
+                continue
+            answers = answer.get("textAnswers", {}).get("answers", [])
+            rank = extract_rank(answers[0].get("value")) if answers else None
+            if rank is None or not 1 <= rank <= response["row_count"]:
+                continue
+            daily_scores[vote_date][video_id] += response["row_count"] - rank + 1
 
     return {date: dict(scores) for date, scores in daily_scores.items()}
 
@@ -163,7 +144,9 @@ def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict
     return daily_ranks
 
 
-def plot_rank_transition(daily_ranks: dict[str, dict[str, int]], output_path: Path):
+def plot_rank_transition(
+    daily_ranks: dict[str, dict[str, int]], form_name: str, output_path: Path
+):
     dates = sorted(daily_ranks)
     video_ids = sorted({video_id for ranks in daily_ranks.values() for video_id in ranks})
     colors = plt.get_cmap("viridis")(  # 明示的なカラーマップで線を区別する
@@ -187,7 +170,7 @@ def plot_rank_transition(daily_ranks: dict[str, dict[str, int]], output_path: Pa
     axis.invert_yaxis()
     axis.set_xlabel("投票日", fontsize=16, labelpad=12)
     axis.set_ylabel("順位", fontsize=16, labelpad=12)
-    axis.set_title("動画順位の推移", fontsize=22, fontweight="bold", pad=18)
+    axis.set_title(form_name, fontsize=22, fontweight="bold", pad=18)
     axis.tick_params(axis="both", labelsize=13)
     axis.set_xticks(dates)
     axis.tick_params(axis="x", rotation=35)
@@ -199,14 +182,21 @@ def plot_rank_transition(daily_ranks: dict[str, dict[str, int]], output_path: Pa
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Google Forms の日次順位推移を描画します")
-    parser.add_argument("folder_name", help="Google Drive 上のフォーム格納フォルダ名")
+    parser = argparse.ArgumentParser(
+        description="Google Drive フォルダ内の各Google Formの日次順位推移を描画します"
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="処理するフォーム数の上限。未指定時はすべて処理します",
+    )
     parser.add_argument(
         "-o",
         "--output",
-        default="rank_transition.png",
+        default=Path("rank_transition"),
         type=Path,
-        help="出力するPNGファイルのパス（既定: rank_transition.png）",
+        help="フォームごとのPNGを出力するディレクトリ（既定: rank_transition）",
     )
     args = parser.parse_args()
 
@@ -214,22 +204,30 @@ def main():
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
         raise RuntimeError("GOOGLE_APPLICATION_CREDENTIALS が設定されていません")
+    folder_id = os.getenv("FORMS_FOLDER_ID")
+    if not folder_id:
+        raise RuntimeError("FORMS_FOLDER_ID が設定されていません")
+    if args.limit is not None and args.limit < 1:
+        raise ValueError("--limit は1以上を指定してください")
 
     drive_service, forms_service = build_services(credentials_path)
-    folder_id = find_folder_id(drive_service, args.folder_name)
     forms = fetch_forms(drive_service, folder_id)
     if not forms:
-        raise RuntimeError(f"フォルダ内に対象フォームがありません: {args.folder_name}")
+        raise RuntimeError(f"フォルダ内に対象フォームがありません: {folder_id}")
+    if args.limit is not None:
+        forms = forms[: args.limit]
+    args.output.mkdir(parents=True, exist_ok=True)
 
     print("処理するフォーム:")
     for form in forms:
         print(f"  Disc.{form['number']}: {form['name']}")
-
-    daily_scores = aggregate_daily_scores(forms_service, forms)
-    if not daily_scores:
-        raise RuntimeError("投票回答がありません")
-    plot_rank_transition(build_daily_ranks(daily_scores), args.output)
-    print(f"グラフを出力しました: {args.output}")
+        daily_scores = aggregate_daily_scores(forms_service, form)
+        if not daily_scores:
+            print("  投票回答がないためスキップします")
+            continue
+        output_path = args.output / f"Disc.{form['number']}_{form['name']}.png"
+        plot_rank_transition(build_daily_ranks(daily_scores), form["name"], output_path)
+        print(f"  グラフを出力しました: {output_path}")
 
 
 if __name__ == "__main__":
