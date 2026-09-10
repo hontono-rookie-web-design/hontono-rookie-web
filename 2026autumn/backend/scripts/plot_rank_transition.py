@@ -7,6 +7,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+import japanize_matplotlib
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
@@ -194,9 +195,9 @@ def main():
     parser.add_argument(
         "-o",
         "--output",
-        default=Path("rank_transition"),
+        default=Path("images/prelim_rank_transition"),
         type=Path,
-        help="フォームごとのPNGを出力するディレクトリ（既定: rank_transition）",
+        help="フォームごとのPNGを出力するディレクトリ（既定: images/prelim_rank_transition）",
     )
     args = parser.parse_args()
 
@@ -204,9 +205,9 @@ def main():
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
         raise RuntimeError("GOOGLE_APPLICATION_CREDENTIALS が設定されていません")
-    folder_id = os.getenv("FORMS_FOLDER_ID")
+    folder_id = os.getenv("PRELIM_FORMS_FOLDER_ID")
     if not folder_id:
-        raise RuntimeError("FORMS_FOLDER_ID が設定されていません")
+        raise RuntimeError("PRELIM_FORMS_FOLDER_ID が設定されていません")
     if args.limit is not None and args.limit < 1:
         raise ValueError("--limit は1以上を指定してください")
 
