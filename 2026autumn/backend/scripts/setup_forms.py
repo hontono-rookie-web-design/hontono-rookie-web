@@ -12,6 +12,12 @@ from oauth2client import client, file, tools
 
 load_dotenv()
 
+
+def is_true(value) -> bool:
+    """Google Sheetsから取得した真偽値を判定する。"""
+    return value is True or str(value).strip().upper() == "TRUE"
+
+
 def create_folder(creds, parent_folder_id):
     """
     指定した親フォルダIDの下に、新しいフォルダを作成します。
@@ -204,9 +210,13 @@ def create_vote_forms(creds, config, df, phase):
     parent_folder_id = os.getenv("FORMS_FOLDER_ID")
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    df = df[(df["excluded"] != True) & (df["deleted"] != True)] #excludedがTRUEでないもの, deletedがTRUEでないものをdfから除外
-    df = df[df[f"{phase}_group_id"] != ""] #該当フェーズのgroup_idが空欄のものをdfから除外
-    # グループIDごとに処理
+    # 該当フェーズのgroup_idが割り当て済、かつ除外も削除もされていない行を抽出する
+    df = df[
+        df[f"{phase}_group_id"].astype(bool)
+        & ~df["excluded"].apply(is_true)
+        & ~df["deleted"].apply(is_true)
+    ].copy()
+    
     for group_id, group_df in df.groupby(f"{phase}_group_id", dropna=True, sort=True):
         print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
 
