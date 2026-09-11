@@ -553,6 +553,58 @@ export default function Rules() {
         </div>
       ),
     },
+    {
+      title: "本当のボカナイト",
+      content: (
+        <div>
+          <ul className="list-disc list-outside ml-6 space-y-2">
+            <li>ネットラジオ<strong>「NFRS ラジオ」</strong>様後援。ラジオ番組<strong>「ラジけっと」</strong>内の<strong>「本当のボカナイトコーナー」</strong>での放送楽曲募集中です。</li>
+
+            <li>
+	      本当のルーキー歌い手企画についても対象になりました!
+            </li>
+            <li>
+	      あなたの歌声とコメントをラジオ放送し、他の界隈の方々へ聞いてもらえるチャンスです。
+            </li>
+
+            <li>
+	      是非ご提出お待ちしています! なお、本ルー楽曲は全て放送可能となっており、許可を取る必要はありません。
+            </li>
+
+            <li>
+              指定の
+              <Link
+                href="/nfrs"
+                prefetch={false}
+                className="text-link font-medium hover:underline"
+              >
+                Googleフォーム
+              </Link>
+              にて音源・紹介コメントを提出ください。
+              <br />※応募者多数の場合抽選あり
+            </li>
+
+            <li>
+	      <strong>【放送枠詳細】</strong>
+              <br />月曜〜金曜 NFRSラジオ 19:00 ~ 19:30に放送される
+              <br />音ケット主催番組「ラジけっと」内「本当のボカナイトコーナー」
+              <br />1日1曲と紹介コメントを放送中。ナレーター：MAYUっきー様
+	    </li>
+            <li>
+	     後援   
+            <a
+              href="https://www.nfrsradio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link font-medium hover:underline"
+            >
+	      https://www.nfrsradio.com
+            </a>
+            </li>
+          </ul>
+        </div>
+      ),
+    },
   ];
 
   return (
