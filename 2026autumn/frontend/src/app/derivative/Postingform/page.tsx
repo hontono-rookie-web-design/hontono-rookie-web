@@ -1,4 +1,4 @@
-const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf5w0e6qlsbV0iGWcnimnXk34MW68gPdYKK3-Qii388px2y1w/viewform";
+const FORM_URL = "https://forms.gle/fQF2vcVvWARJzvFx6";
 
 export default function Page() {
   return (
