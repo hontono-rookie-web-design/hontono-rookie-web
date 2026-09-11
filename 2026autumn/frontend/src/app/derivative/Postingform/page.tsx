@@ -1,4 +1,4 @@
-"use client";
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf5w0e6qlsbV0iGWcnimnXk34MW68gPdYKK3-Qii388px2y1w/viewform";
 
 export default function Page() {
   return (
@@ -25,7 +25,7 @@ export default function Page() {
           <br />
           本サイトへの掲載を希望する場合は、このページ下部のフォーム、または
           <a
-            href="https://forms.gle/fQF2vcVvWARJzvFx6"
+            href={FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-link underline mx-1"
@@ -66,7 +66,7 @@ export default function Page() {
 
       <div className="w-full max-w-[760px]">
         <iframe
-          src="https://forms.gle/fQF2vcVvWARJzvFx6"
+          src={`${FORM_URL}?embedded=true`}
           className="w-full h-[900px] border rounded-lg"
         />
       </div>
