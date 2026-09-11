@@ -40,7 +40,7 @@ export default function Page() {
 
       <div className="w-full max-w-[760px]">
         <iframe
-          src={'${FORM_URL}?embedded=true'}
+          src={`${FORM_URL}?embedded=true`}
           className="w-full h-[900px] border rounded-lg"
         />
       </div>
