@@ -42,10 +42,6 @@ export const CONFIG = {
     defaultIllustration: "/images/2026autumn_logo.png",
   },
 
-  links: {
-    voteGuide: "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
-  },
-
   googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "",
 
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "",
