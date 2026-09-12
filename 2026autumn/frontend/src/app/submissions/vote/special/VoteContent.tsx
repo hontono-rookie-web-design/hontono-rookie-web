@@ -371,19 +371,6 @@ export default function VoteContent({
             楽曲マイリストはこちら
           </a>
         )}
-
-        <a
-          href={CONFIG.links.voteGuide}
-          target="_blank"
-          className="
-            px-6 py-2 rounded
-            bg-gray-500 text-white text-sm
-            min-w-[260px]
-            text-center
-          "
-        >
-          人気投票の詳細はこちら
-        </a>
       </div>
 
       {loading ? (

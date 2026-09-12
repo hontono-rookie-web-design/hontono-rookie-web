@@ -131,10 +131,6 @@ export default function VoteContent({
     return [...new Set(videos.map((v) => v.group))].sort((a, b) => a - b);
   }, [videos]);
 
-  //確認用
-console.log("全楽曲データ:", initialSongs);
-console.log("抽出されたDisc一覧:", groups);
-
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const groupFromUrl = Number(searchParams.get("group"));
   const activeGroup = groups.includes(groupFromUrl)
@@ -348,27 +344,23 @@ console.log("抽出されたDisc一覧:", groups);
       {/* BUTTONS */}
 
       <div className="flex flex-wrap gap-3 mb-6 justify-center">
-        {/* 人気投票ボタン（強制表示） */}
-        <a
-          href={
-            voteInfo?.formUrl && voteInfo.formUrl !== "NaN"
-              ? voteInfo.formUrl
-              : "https://forms.google.com" // スプレッドシートからURLが取れない場合のダミーURL
-          }
-          target="_blank"
-          className="
-            px-6 py-2 rounded
-            bg-blue-500 text-white text-sm
-            min-w-[260px]
-            text-center
-          "
-        >
-          {DISC_LABEL}
-          {activeGroup}
-          の人気投票はこちら
-        </a>
+        {viewPhase === VIEW_PHASE.DURING && voteInfo?.formUrl && voteInfo.formUrl !== "NaN" && (
+          <a
+            href={voteInfo.formUrl}
+            target="_blank"
+            className="
+              px-6 py-2 rounded
+              bg-blue-500 text-white text-sm
+              min-w-[260px]
+              text-center
+            "
+          >
+            {DISC_LABEL}
+            {activeGroup}
+            の人気投票はこちら
+          </a>
+        )}
 
-        {/* 楽曲マイリストボタン */}
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
           <a
             href={voteInfo.mylistUrl}
