@@ -178,33 +178,14 @@ def initialize_oauth_credentials():
     return creds
 
 
-def load_spreadsheet(config, phase):
+def load_spreadsheet(config):
 
     service_account_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-    if phase == "prelim":
-        video_list_config = config["spreadsheets"]["video_list"]
-        video_spreadsheetname = video_list_config["name"]
-        video_sheetname = video_list_config["sheet"]
-    elif phase == "semifinal":
-        video_spreadsheetname = config["vote_semifinal"][
-            "grouped_video_catalog_semifinal"
-        ]["name"]
-        video_sheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"][
-            "rookie_sheet"
-        ]
-    elif phase == "final":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_final"][
-            "name"
-        ]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_final"][
-            "rookie_sheet"
-        ]
-    elif phase == "ex":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_ex"][
-            "name"
-        ]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_ex"]["ex_sheet"]
+    # ルーキーのスプレッドシート読み込み
+    video_spreadsheetname = config["spreadsheets"]["video_list"]["name"]
+    video_sheetname = config["spreadsheets"]["video_list"]["sheet"]
+
 
     video_sheet = sheet_client.connect_sheet(
         service_account_credentials_path, video_spreadsheetname, video_sheetname
@@ -219,22 +200,6 @@ def load_spreadsheet(config, phase):
     # pandasのDataFrameに変換
     df = pd.DataFrame(video_data)
 
-    if phase == "prelim":
-        # video_listから有効なルーキー作品かつグループ分け済みの行だけを取得する
-        df = df[
-            (df["status"] == config["status"]["rookie"])
-            & ~df["excluded"].apply(is_true)
-            & ~df["deleted"].apply(is_true)
-        ].copy()
-        df["prelim_group_id"] = pd.to_numeric(
-            df["prelim_group_id"], errors="coerce"
-        )
-        df = df.dropna(subset=["prelim_group_id"])
-        df["prelim_group_id"] = df["prelim_group_id"].astype(int)
-        df = df.rename(
-            columns={"prelim_group_id": "グループID", "title": "タイトル"}
-        )
-
     return df
 
 
@@ -245,8 +210,14 @@ def create_vote_forms(creds, config, df, phase):
     parent_folder_id = os.getenv("FORMS_FOLDER_ID")
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # グループIDごとに処理
-    for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
+    # 該当フェーズのgroup_idが割り当て済、かつ除外も削除もされていない行を抽出する
+    df = df[
+        df[f"{phase}_group_id"].astype(bool)
+        & ~df["excluded"].apply(is_true)
+        & ~df["deleted"].apply(is_true)
+    ].copy()
+    
+    for group_id, group_df in df.groupby(f"{phase}_group_id", dropna=True, sort=True):
         print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
 
         title = f'{config["vote_form"][phase]["title"]}{group_id}'
@@ -260,7 +231,7 @@ def create_vote_forms(creds, config, df, phase):
 
         # フォームを更新
         update_vote_form(
-            creds, new_form_id, title, item_title, group_df["タイトル"].tolist()
+            creds, new_form_id, title, item_title, group_df[["title","video_id"]].astype(str).agg("_".join,axis=1).tolist()
         )
 
 
@@ -271,7 +242,7 @@ def main():
         "--phase",
         type=str,
         required=True,
-        help="対象フェーズ（例: prelim, semifinal, final, ex）",
+        help="対象フェーズ（例: prelim, final, sp）",
     )
     args, remaining = parser.parse_known_args()
     phase = args.phase
