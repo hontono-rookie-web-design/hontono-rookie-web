@@ -5,7 +5,7 @@ import { unstable_rethrow } from "next/navigation";
 type SheetRow = Record<string, unknown>;
 
 const SHEET_INDEX = 1;
-const ACTIVE_REVALIDATE_SECONDS = 600;
+const ACTIVE_REVALIDATE_SECONDS = 3600;
 const AFTER_EVENT_REVALIDATE_SECONDS = 86400;
 
 function getRevalidateSeconds() {
