@@ -16,7 +16,7 @@ spreadsheets:
     name: "video_list_dev" # スプレッドシート名（開発用）
     sheet: "video_list" # ワークシート名
 
-  # 以下は旧構造。group_id・順位の書き込みなど、video_listへの移行が未対応の処理が参照しているため残置。
+  # 以下は旧構造。順位の書き込みなど、video_listへの移行が未対応の処理が参照しているため残置。
   video_catalog: # 参加作品動画リスト
     name: "video_catalog_2026spring" # スプレッドシート名
     rookie_sheet: "rookie" # ルーキー参加作品リストシート名
@@ -64,12 +64,7 @@ spreadsheets:
 
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
-  group_num: 70
-  grouped_video_catalog:
-    name: "grouped_video_catalog_2026spring"
-    rookie_sheet: "rookie"
-    op_sheet: "op"
-    ex_sheet: "ex"
+  group_num: 70 # 予選の合計グループ数（1グループ5～6曲になる値を指定）
 
 vote_semifinal: # 準決勝グループ分け関連パラメータ
   semifinal_size: 3 #Selection数

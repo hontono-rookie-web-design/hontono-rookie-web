@@ -69,12 +69,7 @@ spreadsheets:
 
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
-  group_num: 70
-  grouped_video_catalog:
-    name: "grouped_video_catalog_2026autumn"
-    rookie_sheet: "rookie"
-    op_sheet: "op"
-    ex_sheet: "ex"
+  group_num: 70 # 予選の合計グループ数（1グループ5～6曲になる値を指定）
 
 vote_semifinal: # 準決勝グループ分け関連パラメータ
   semifinal_size: 3 #Selection数

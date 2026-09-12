@@ -178,7 +178,7 @@ def initialize_oauth_credentials():
     return creds
 
 
-def load_spreadsheet(config, phase):
+def load_spreadsheet(config):
 
     service_account_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
