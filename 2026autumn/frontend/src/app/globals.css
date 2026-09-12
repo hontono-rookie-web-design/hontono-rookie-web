@@ -1,6 +1,15 @@
 @import "tailwindcss";
+/*
+<<<<<<< Updated upstream
 @plugin "daisyui";
-
+=======
+*/
+@plugin "daisyui" {
+  themes: autumn --default;
+}
+/*
+>>>>>>> Stashed changes
+*/
 @theme {
   --color-link: var(--color-info);
 }
