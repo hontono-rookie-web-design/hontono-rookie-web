@@ -258,7 +258,7 @@ def main():
     config = utils.load_config()
 
     # スプレッドシートからデータを読み込む
-    df = load_spreadsheet(config, phase)
+    df = load_spreadsheet(config)
 
     # 投票フォームの作成
     create_vote_forms(oauth_creds, config, df, phase)
