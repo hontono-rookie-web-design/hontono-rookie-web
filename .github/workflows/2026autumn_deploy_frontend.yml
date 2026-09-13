@@ -48,6 +48,14 @@ jobs:
         run: npm ci
         working-directory: "2026autumn/frontend"
 
+      - name: Create .env.production
+        working-directory: "2026autumn/frontend"
+        run: |
+          echo "EVENT_PHASE=${{ vars.EVENT_PHASE }}" >> .env.production
+          echo "EVENT_PHASE_SP=${{ vars.EVENT_PHASE_SP }}" >> .env.production
+          echo "NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}" >> .env.production
+          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }}" >> .env.production
+
       # CloudflareのProductionへデプロイ
       - name: Deploy to Cloudflare Production
         run: npm run deploy

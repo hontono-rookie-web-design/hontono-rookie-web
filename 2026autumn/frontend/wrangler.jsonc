@@ -4,12 +4,6 @@
   "name": "2026autumn",
   "compatibility_date": "2026-07-04",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "vars": {
-    "EVENT_PHASE": "rookie",
-    "EVENT_PHASE_SP": "submission",
-    "NEXT_PUBLIC_SITE_URL": "https://2026autumn.hontono-rookie-web.workers.dev/",
-    "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID": "G-TB29CEYQHC",
-  },
   "keep_vars": true,
   "preview_urls": true,
 
