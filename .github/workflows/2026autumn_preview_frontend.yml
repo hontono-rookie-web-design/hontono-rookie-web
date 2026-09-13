@@ -9,6 +9,9 @@ on:
     paths:
       - "2026autumn/frontend/**"
 
+  # GitHub Actionsから手動でPreviewへデプロイ
+  workflow_dispatch:
+  
 permissions:
   contents: read
   deployments: write
