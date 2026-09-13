@@ -87,6 +87,14 @@ jobs:
             -f state="in_progress" \
             -f description="Deploying Preview to Cloudflare."
 
+      - name: Create .env.production
+        working-directory: "2026autumn/frontend"
+        run: |
+          echo "EVENT_PHASE=${{ vars.EVENT_PHASE }}" >> .env.production
+          echo "EVENT_PHASE_SP=${{ vars.EVENT_PHASE_SP }}" >> .env.production
+          echo "NEXT_PUBLIC_SITE_URL=https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/" >> .env.production
+          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }}" >> .env.production
+         
       # CloudflareへPreviewをデプロイ
       #
       # PR番号をPreview Aliasとして使用することで、
