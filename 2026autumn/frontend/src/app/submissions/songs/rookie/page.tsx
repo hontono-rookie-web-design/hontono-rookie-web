@@ -13,7 +13,6 @@ export default async function Page() {
     videoUrl: item.videoUrl,
     thumbnailUrl: item.thumbnailUrl,
     publishedAt: item.publishedAt,
-    description: item.description,
   }));
 
   return <VideoList initialData={mappedVideos} initialPhase={currentPhase} />;
