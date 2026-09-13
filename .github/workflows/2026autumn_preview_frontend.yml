@@ -94,7 +94,11 @@ jobs:
           echo "EVENT_PHASE_SP=${{ vars.EVENT_PHASE_SP }}" >> .env.production
           echo "NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}" >> .env.production
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }}" >> .env.production
-         
+          echo "SPREADSHEET_ID_DERIVATIVE=${{ secrets.SPREADSHEET_ID_DERIVATIVE }}" >> .env.production
+          echo "SPREADSHEET_ID_NOTES=${{ secrets.SPREADSHEET_ID_NOTES }}" >> .env.production
+          echo "SPREADSHEET_ID_VIDEOS=${{ secrets.SPREADSHEET_ID_VIDEOS }}" >> .env.production
+          echo "SPREADSHEET_ID_VOTEFORM=${{ secrets.SPREADSHEET_ID_VOTEFORM }}" >> .env.production
+
       # CloudflareへPreviewをデプロイ
       #
       # PR番号をPreview Aliasとして使用することで、
