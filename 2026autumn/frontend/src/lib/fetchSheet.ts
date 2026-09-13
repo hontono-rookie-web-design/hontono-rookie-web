@@ -1,18 +1,9 @@
 import { CONFIG } from "@/config/config";
-import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { unstable_rethrow } from "next/navigation";
 
 type SheetRow = Record<string, unknown>;
 
 const SHEET_INDEX = 1;
-const ACTIVE_REVALIDATE_SECONDS = 3600;
-const AFTER_EVENT_REVALIDATE_SECONDS = 86400;
-
-function getRevalidateSeconds() {
-  return getCurrentPhase() === EVENT_PHASES.AFTER
-    ? AFTER_EVENT_REVALIDATE_SECONDS
-    : ACTIVE_REVALIDATE_SECONDS;
-}
 
 function asString(value: unknown): string {
   return typeof value === "string" ? value : value == null ? "" : String(value);
@@ -36,7 +27,7 @@ function isDeleted(value: unknown): boolean {
 async function fetchSheetRows(
   spreadsheetId: string,
   label: string,
-  revalidate = getRevalidateSeconds(),
+  revalidate: number | false = false,
 ): Promise<SheetRow[]> {
   if (!spreadsheetId) {
     console.error(`${label}: spreadsheet ID is not configured`);
