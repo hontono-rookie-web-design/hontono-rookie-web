@@ -92,7 +92,7 @@ jobs:
         run: |
           echo "EVENT_PHASE=${{ vars.EVENT_PHASE }}" >> .env.production
           echo "EVENT_PHASE_SP=${{ vars.EVENT_PHASE_SP }}" >> .env.production
-          echo "NEXT_PUBLIC_SITE_URL=https://pr-${{ github.event.pull_request.number }}-2026autumn.hontono-rookie-web.workers.dev/" >> .env.production
+          echo "NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}" >> .env.production
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }}" >> .env.production
          
       # CloudflareへPreviewをデプロイ
