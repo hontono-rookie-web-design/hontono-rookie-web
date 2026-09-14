@@ -1,9 +1,15 @@
 @import "tailwindcss";
-
+/*
+<<<<<<< Updated upstream
+@plugin "daisyui";
+=======
+*/
 @plugin "daisyui" {
-  themes: light --default;
+  themes: autumn --default;
 }
-
+/*
+>>>>>>> Stashed changes
+*/
 @theme {
   --color-link: var(--color-info);
 }
@@ -22,5 +28,4 @@
 body {
   font-family: var(--font-noto-sans-jp), sans-serif;
   background-color: var(--color-base-100);
-  color-scheme: light !important;
 }
