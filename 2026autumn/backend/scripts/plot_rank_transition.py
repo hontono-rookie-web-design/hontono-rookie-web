@@ -7,7 +7,6 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-import japanize_matplotlib
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
