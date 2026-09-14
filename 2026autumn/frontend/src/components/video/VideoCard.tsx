@@ -14,7 +14,6 @@ export default function VideoCard({ video }: { video: Video }) {
     <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
       <div className={styles.card}>
         <img src={video.thumbnailUrl} className={styles.thumbnail} alt="" />
-        　　　　　
         <div className={styles.info}>
           <h3 className={styles.title}>{video.title}</h3>
           <p className={styles.author}>{video.author}</p>
