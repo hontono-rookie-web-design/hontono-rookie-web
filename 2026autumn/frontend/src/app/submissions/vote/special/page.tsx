@@ -4,6 +4,9 @@ import { fetchVideosSheet, fetchVotesSheet } from "@/lib/fetchSheet";
 import { Suspense } from "react";
 import VoteContent from "./VoteContent";
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default async function Page() {
   const currentPhase = getCurrentPhaseSp();
   const [songs, forms] = await Promise.all([
