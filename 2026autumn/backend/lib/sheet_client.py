@@ -150,6 +150,24 @@ def fetch_sheet_data(worksheet) -> list[dict]:
     return worksheet.get_all_records()
 
 
+def fetch_sheet_values(worksheet) -> list[list[str]]:
+    """
+    スプレッドシートの内容を2次元配列（ヘッダー行含む）で取得
+    """
+    return worksheet.get_all_values()
+
+
+def update_sheet_rows(worksheet, rows: list[list]):
+    """
+    スプレッドシートを2次元配列（ヘッダー行含む）で完全更新
+    """
+    if not rows:
+        return
+
+    worksheet.clear()
+    worksheet.update(rows)
+
+
 def build_video_index(
     spreadsheet_name: str,
     credentials_path: str,
