@@ -59,6 +59,28 @@ def calculate_score(rank, total_songs) -> int:
     return total_songs - rank + 1
 
 
+# 同点の場合は同じ順位にする
+# Competition ranking
+def assign_ranking(ranking):
+
+    previous_score = None
+    previous_rank = 0
+
+    for index, item in enumerate(ranking):
+
+        if item["得点"] == previous_score:
+
+            item["順位"] = previous_rank
+
+        else:
+
+            item["順位"] = index + 1
+            previous_rank = item["順位"]
+            previous_score = item["得点"]
+
+    return ranking
+
+
 # 得点とランキングを集計
 
 
@@ -150,3 +172,7 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
         item["順位"] = index + 1
 
     return ranking
+
+    # 同点の場合は同じ順位にする
+    # Competition ranking
+    # return assign_ranking(ranking)
