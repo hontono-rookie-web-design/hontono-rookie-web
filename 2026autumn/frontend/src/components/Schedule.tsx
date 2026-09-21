@@ -14,7 +14,7 @@ export default function Schedule() {
     },
     {
       title: "予選(Disc)",
-      date: "2026年9月14日(月) 〜 9月27日(日)",
+      date: "2026年9月14日(月) 〜 9月25日(金)",
       description: "各Discの上位作品はスコア公開、決勝進出",
       color: "step-accent",
     },
