@@ -30,7 +30,7 @@ def build_services(credentials_path: str):
     forms_service = discovery.build("forms", "v1", credentials=credentials)
     return drive_service, forms_service
 
-
+# Google Formを取得
 def fetch_forms(drive_service, folder_id: str) -> list[dict]:
     query = (
         f"'{folder_id}' in parents and mimeType = '{FORM_MIME_TYPE}' "
@@ -63,19 +63,19 @@ def fetch_forms(drive_service, folder_id: str) -> list[dict]:
 
     return sorted(forms, key=lambda form: (form["number"], form["name"]))
 
-
+# "〇位"の文字列から順位を整数で返す
 def extract_rank(value) -> int | None:
     match = RANK_PATTERN.search(str(value or ""))
     return int(match.group()) if match else None
 
-
+# "曲名_ID" のテンプレからIDのみを返す
 def extract_video_id(row_title: str) -> str:
     video_id = row_title.rsplit("_", 1)[-1].strip()
     if not video_id:
         raise ValueError(f"videoId を取得できない行タイトルです: {row_title}")
     return video_id
 
-
+# 各フォームの回答を取得
 def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[dict]]:
     form = forms_service.forms().get(formId=form_id).execute()
     row_question_ids = {}
@@ -109,7 +109,7 @@ def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[
 
     return row_question_ids, [{"row_count": row_count, **vote} for vote in responses]
 
-
+# 各動画の日付ごとのスコアを集計
 def aggregate_daily_scores(
     forms_service, form: dict
 ) -> dict[str, dict[str, int]]:
@@ -134,7 +134,8 @@ def aggregate_daily_scores(
     return {date: dict(scores) for date, scores in daily_scores.items()}
 
 
-def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]:
+# 日ごとのスコアを降順に並べ、順位を付与する
+def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]: 
     daily_ranks = {}
     for date, scores in daily_scores.items():
         ordered = sorted(scores.items(), key=lambda item: (-item[1], item[0]))
@@ -143,7 +144,7 @@ def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict
         }
     return daily_ranks
 
-
+# 順位推移のグラフを描画し保存
 def plot_rank_transition(
     daily_ranks: dict[str, dict[str, int]], form_name: str, output_path: Path
 ):
@@ -221,11 +222,17 @@ def main():
     print("処理するフォーム:")
     for form in forms:
         print(f"  Disc.{form['number']}: {form['name']}")
+
+        # 日時スコアを集計
         daily_scores = aggregate_daily_scores(forms_service, form)
         if not daily_scores:
             print("  投票回答がないためスキップします")
             continue
+
+        # 出力ファイルパス
         output_path = args.output / f"Disc.{form['number']}_{form['name']}.png"
+
+        # 順位の遷移集計しグラフ化
         plot_rank_transition(build_daily_ranks(daily_scores), form["name"], output_path)
         print(f"  グラフを出力しました: {output_path}")
 
