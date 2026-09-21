@@ -159,13 +159,12 @@ def fetch_sheet_values(worksheet) -> list[list[str]]:
 
 def update_sheet_rows(worksheet, rows: list[list]):
     """
-    スプレッドシートを2次元配列（ヘッダー行含む）で完全更新
+    スプレッドシートを2次元配列（ヘッダー行含む）で上書き
     """
     if not rows:
         return
 
-    worksheet.clear()
-    worksheet.update(rows)
+    worksheet.update(values=rows, range_name="A1", value_input_option="USER_ENTERED")
 
 
 def build_video_index(
