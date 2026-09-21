@@ -4,7 +4,7 @@ import argparse
 import os
 import re
 from collections import defaultdict
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -113,7 +113,7 @@ def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[
 
     return row_question_ids, [{"row_count": row_count, **vote} for vote in responses]
 
-# 各動画の日付ごとのスコアを集計
+# 各動画の日付ごとのスコアを集計し、累計獲得スコアを算出
 def aggregate_daily_scores(
     forms_service, form: dict
 ) -> dict[str, dict[str, int]]:
@@ -135,10 +135,24 @@ def aggregate_daily_scores(
                 continue
             daily_scores[vote_date][video_id] += response["row_count"] - rank + 1
 
-    return {date: dict(scores) for date, scores in daily_scores.items()}
+    if not daily_scores:
+        return {}
+
+    # 最初〜最後の投票日を1日ずつ進め、票のない日も含めて累計スコアを求める
+    first_date = date.fromisoformat(min(daily_scores))
+    last_date = date.fromisoformat(max(daily_scores))
+    cumulative_scores = {}
+    running_scores = defaultdict(int)
+    for offset in range((last_date - first_date).days + 1):
+        current_date = (first_date + timedelta(days=offset)).isoformat()
+        for video_id, score in daily_scores.get(current_date, {}).items():
+            running_scores[video_id] += score
+        cumulative_scores[current_date] = dict(running_scores)  # その日時点のスナップショット
+
+    return cumulative_scores
 
 
-# 日ごとのスコアを降順に並べ、順位を付与する
+# 当日までの累計獲得スコアを降順に並べ、順位を付与する
 def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]: 
     daily_ranks = {}
     for date, scores in daily_scores.items():
