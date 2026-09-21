@@ -131,10 +131,6 @@ export default function VoteContent({
     return [...new Set(videos.map((v) => v.group))].sort((a, b) => a - b);
   }, [videos]);
 
-  //確認用
-console.log("全楽曲データ:", initialSongs);
-console.log("抽出されたDisc一覧:", groups);
-
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const groupFromUrl = Number(searchParams.get("group"));
   const activeGroup = groups.includes(groupFromUrl)
