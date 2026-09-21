@@ -361,7 +361,6 @@ export default function VoteContent({
           </a>
         )}
 
-        {/* 楽曲マイリストボタン */}
         {voteInfo?.mylistUrl && voteInfo.mylistUrl !== "NaN" && (
           <a
             href={voteInfo.mylistUrl}
