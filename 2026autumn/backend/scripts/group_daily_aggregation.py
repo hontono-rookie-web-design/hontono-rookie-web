@@ -83,7 +83,7 @@ def resolve_form_id(
     """タイトル完全一致でGoogleフォームを検索し、formIdを返す。
 
     Googleフォームの場合、Driveのファイル id がそのままForms APIの formId として使える。
-    同じタイトルのフォームが複数見つかった場合は、各候補の回答用URル（responderUri）から
+    同じタイトルのフォームが複数見つかった場合は、各候補の回答用URL（responderUri）から
     公開IDを取り出し、forms_listシートに記録されている公開IDと一致するものだけを採用する。
     """
     escaped_title = title.replace("'", "\\'")
