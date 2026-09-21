@@ -190,10 +190,8 @@ def add_response_count_column(
     group_id_order: list[str] = []
 
     for row in data_rows:
-        # 列数がヘッダーより少ない行があれば空文字で埋めて揃える
-        padded_row = row + [""] * (column_count - len(row))
-        group_id = padded_row[0]
-        rows_by_group_id[group_id] = padded_row
+        group_id = row[0]
+        rows_by_group_id[group_id] = row
         group_id_order.append(group_id)
 
     for group_id in group_response_counts:
