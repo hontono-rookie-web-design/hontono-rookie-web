@@ -128,7 +128,8 @@ def count_form_responses(forms_service, form_id: str) -> int:
         response = (
             forms_service.forms()
             .responses()
-            .list(formId=form_id, pageToken=page_token)
+            .list(formId=form_id, pageToken=page_token,
+                  fields="responses/responseId,nextPageToken")
             .execute()
         )
         count += len(response.get("responses", []))
