@@ -67,6 +67,19 @@ spreadsheets:
     name: "grouped_video_catalog_2026autumn_ex" # スプレッドシート名
     ex_sheet: "ex" # exステージ作品リストシート名
 
+  vote_form_list: # 投票フォームURL一覧（stage, group_id, form_urlの3列を持つ既存シート）
+    name: "forms_list_pro" # スプレッドシート名（本番用）
+    sheet: "forms_list" # ワークシート名
+
+  vote_response_counts: # 人気投票フォームの回答数集計（実行ごとに列を追加し履歴を蓄積する公開用シート）
+    name: "【公開用】人気投票投票数_2026秋" # スプレッドシート名（本番用）
+
+vote_response_aggregation: # 人気投票フォーム回答数集計のstage関連パラメータ
+  stage_labels: # フォームURL一覧シートのstage列の値／集計結果シートのワークシート名として使う
+    prelim: "予選"
+    final: "決勝"
+    sp: "SP"
+
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
   group_num: 75 # 予選の合計グループ数（1グループ5～6曲になる値を指定）
