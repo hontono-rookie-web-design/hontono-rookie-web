@@ -12,6 +12,10 @@ from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
 from googleapiclient import discovery
 
+from zoneinfo import ZoneInfo
+
+JST = ZoneInfo("Asia/Tokyo")
+
 DRIVE_FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
 FORM_MIME_TYPE = "application/vnd.google-apps.form"
 SCOPES = [
@@ -119,7 +123,7 @@ def aggregate_daily_scores(
     for response in responses:
         submitted_at = datetime.fromisoformat(
             response["createTime"].replace("Z", "+00:00")
-        )
+        ).astimezone(JST) #JSTに対応
         vote_date = submitted_at.date().isoformat()
         for question_id, answer in response.get("answers", {}).items():
             video_id = row_question_ids.get(question_id)
