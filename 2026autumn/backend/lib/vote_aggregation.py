@@ -166,13 +166,6 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
     # Sort by scores (decreasing)
     ranking.sort(key=lambda x: x["得点"], reverse=True)
 
-    # 最終順位の番号を追加する
-    # Add final ranking number
-    for index, item in enumerate(ranking):
-        item["順位"] = index + 1
-
-    return ranking
-
     # 同点の場合は同じ順位にする
     # Competition ranking
-    # return assign_ranking(ranking)
+    return assign_ranking(ranking)

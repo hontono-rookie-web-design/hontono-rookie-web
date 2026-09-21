@@ -4,9 +4,6 @@ from pathlib import Path
 from lib.vote_aggregation import (
     aggregate_votes,
     clean_song_name,
-)
-
-from lib.vote_aggregation import (
     calculate_score,
     extract_rank,
 )
