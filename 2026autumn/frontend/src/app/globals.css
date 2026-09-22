@@ -1,8 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
 
-@theme {
-  --color-link: var(--color-info);
+@plugin "daisyui" {
+  themes: autumn --default;
 }
 
 @plugin "daisyui/theme" {
@@ -19,4 +18,5 @@
 body {
   font-family: var(--font-noto-sans-jp), sans-serif;
   background-color: var(--color-base-100);
+  color-scheme: light !important;
 }
