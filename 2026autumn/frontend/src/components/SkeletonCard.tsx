@@ -1,7 +1,7 @@
 /* =========================
    Skeleton
 ========================= */
-export function SkeletonCard() {
+export default function SkeletonCard() {
   return (
     <div className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
       <div className="flex gap-4">
