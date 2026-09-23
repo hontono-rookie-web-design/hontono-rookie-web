@@ -14,32 +14,6 @@ type Item = {
   publishedAt?: string;
 };
 
-/* =========================
-   Skeleton Card
-========================= */
-function SkeletonCard() {
-  return (
-    <div className="w-full max-w-[760px] rounded-xl bg-white p-4 shadow-sm">
-      <div className="flex gap-3 sm:gap-4 w-full">
-        <div className="w-32 sm:w-44 h-20 sm:h-28 bg-gray-200 rounded-lg animate-pulse" />
-
-        <div className="flex flex-col justify-between flex-1 min-w-0 gap-3">
-          <div className="space-y-2">
-            <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
-
-            <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="h-5 bg-gray-200 rounded w-24 animate-pulse" />
-
-            <div className="h-10 bg-gray-200 rounded w-full animate-pulse" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const PAGE_SIZE = 24;
 
