@@ -5,9 +5,9 @@ import Schedule from "@/components/Schedule";
 
 import Contact from "@/components/sections/Contact";
 import PastEventLink from "@/components/sections/PastEventLink";
-import PrivacyPolicy from "@/components/sections/PrivacyPolicy";
 import RelatedLinks from "@/components/sections/RelatedLinks";
 import Sponsors from "@/components/sections/Sponsors";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -27,11 +27,7 @@ export default function Home() {
 
       <Contact />
 
-      <PrivacyPolicy />
-
-      <footer className="w-full py-8 text-center text-sm text-slate-400 bg-white">
-        <p>© 2026 本当のルーキー祭り 運営</p>
-      </footer>
+      <Footer />
     </main>
   );
 }

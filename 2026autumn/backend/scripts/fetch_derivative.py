@@ -137,8 +137,8 @@ def apply_new_entry_defaults(
 def main():
     config = utils.load_config()
     derivative_list_config = config["spreadsheets"]["derivative_list"]
-    input_spreadsheet_name = config["spreadsheets"]["forms_result_fanfic"]["name"]
-    input_sheet_name = config["spreadsheets"]["forms_result_fanfic"]["forms_result"]
+    input_spreadsheet_name = config["spreadsheets"]["forms_result_derivative"]["name"]
+    input_sheet_name = config["spreadsheets"]["forms_result_derivative"]["forms_result"]
 
     derivative_list_spreadsheetname = derivative_list_config["name"]
     print(f"接続先スプレッドシート: {derivative_list_spreadsheetname}")

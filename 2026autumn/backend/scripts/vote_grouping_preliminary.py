@@ -1,11 +1,13 @@
 import os
 
-import pandas as pd
 from dotenv import load_dotenv
 from lib import sheet_client, utils
 from lib.content_grouper import ContentGrouper
 
 load_dotenv()
+
+GROUP_ID_COLUMN = "prelim_group_id"
+
 
 def connect_sheet(spreadsheet_name, sheet_name):
     # 環境変数からJSONパス取得
@@ -14,61 +16,105 @@ def connect_sheet(spreadsheet_name, sheet_name):
     return sheet_client.connect_sheet(credentials_path, spreadsheet_name, sheet_name)
 
 
-def main():
+def is_true(value) -> bool:
+    """Google Sheetsから取得した真偽値を判定する。"""
+    return value is True or str(value).strip().upper() == "TRUE"
 
-    # シートに接続
-    config = utils.load_config()
-    catalog_sheet_config = config["spreadsheets"]["video_catalog"]
-    catalog_spreadsheetname = catalog_sheet_config["name"]
 
-    catalog_sheetname = catalog_sheet_config[f"rookie_sheet"]
+def select_rookie_videos(video_data: list[dict], rookie_status: str) -> list[dict]:
+    """予選グループ分けの対象となるルーキー動画だけを返す。"""
+    return [
+        row
+        for row in video_data
+        if row.get("status") == rookie_status
+        and not is_true(row.get("excluded"))
+        and not is_true(row.get("deleted"))
+    ]
 
-    # シートに接続
-    videl_catalog_sheet = connect_sheet(catalog_spreadsheetname, catalog_sheetname)
 
-    # シートからデータを取得
-    video_data = sheet_client.fetch_sheet_data(videl_catalog_sheet)
-    # print(video_data)
+def create_group_assignments(
+    rookie_videos: list[dict], group_num: int, seed: int | None = None
+) -> dict[str, int]:
+    """各グループが5～6曲になるよう、動画IDとグループIDの対応を作る。"""
+    if not isinstance(group_num, int) or isinstance(group_num, bool) or group_num <= 0:
+        raise ValueError("vote_grouping.group_num must be a positive integer")
 
-    # 取得したデータが空であればスキップ
-    if any(video_data) == False:
-        print(f"No data found in {catalog_sheetname}. Skipping.")
+    content_ids = [str(row.get("video_id", "")).strip() for row in rookie_videos]
+    if any(not content_id for content_id in content_ids):
+        raise ValueError("All rookie videos must have a video_id")
+    if len(content_ids) != len(set(content_ids)):
+        raise ValueError("Duplicate video_id found in rookie videos")
+
+    grouper = ContentGrouper(content_ids, seed=seed)
+    grouper.group_by_count(group_num)
+    return {content_id: grouper.get_group_id(content_id) for content_id in content_ids}
+
+
+def column_number_to_name(column_number: int) -> str:
+    """1始まりの列番号をGoogle Sheetsの列名へ変換する。"""
+    name = ""
+    while column_number:
+        column_number, remainder = divmod(column_number - 1, 26)
+        name = chr(ord("A") + remainder) + name
+    return name
+
+
+def update_group_ids(
+    video_list_sheet, video_data: list[dict], assignments: dict[str, int]
+) -> None:
+    """video_listのprelim_group_id列だけを更新する。"""
+    headers = video_list_sheet.row_values(1)
+    if GROUP_ID_COLUMN not in headers:
+        raise ValueError(f"Column not found in video_list: {GROUP_ID_COLUMN}")
+
+    if not video_data:
         return
 
-    # pandasのDataFrameに変換
-    df = pd.DataFrame(video_data)
-    # print(df)
+    column_name = column_number_to_name(headers.index(GROUP_ID_COLUMN) + 1)
+    values = [
+        [assignments.get(str(row.get("video_id", "")).strip(), "")]
+        for row in video_data
+    ]
+    video_list_sheet.update(
+        values=values,
+        range_name=f"{column_name}2:{column_name}{len(video_data) + 1}",
+        value_input_option="USER_ENTERED",
+    )
 
-    # content_idのリストを作成
-    content_ids = df["動画ID"].tolist()
-    # print(content_ids)
 
-    # グループ分け
-    seed = config["vote_grouping"]["random_seed"]
-    print(f"Using random seed: {seed}")
-    grouper = ContentGrouper(content_ids, seed=seed)
+def main():
+    config = utils.load_config()
+    video_list_config = config["spreadsheets"]["video_list"]
+    video_list_sheet = connect_sheet(
+        video_list_config["name"], video_list_config["sheet"]
+    )
 
-    # グループ数によってグループ分け
+    video_data = sheet_client.fetch_sheet_data(video_list_sheet)
+    if not video_data:
+        print(f"No data found in {video_list_config['sheet']}. Skipping.")
+        return
+
+    rookie_status = config["status"]["rookie"]
+    rookie_videos = select_rookie_videos(video_data, rookie_status)
     group_num = config["vote_grouping"]["group_num"]
-    print(f"Grouping by number: {group_num} groups")
-    grouper.group_by_count(group_num)
+    seed = config["vote_grouping"]["random_seed"]
+    print(
+        f"Grouping {len(rookie_videos)} rookie videos into {group_num} groups "
+        f"using random seed {seed}"
+    )
 
-    # DataFrameにグループ番号の列を追加
-    df["グループID"] = df["動画ID"].apply(grouper.get_group_id)
+    assignments = create_group_assignments(rookie_videos, group_num, seed)
+    update_group_ids(video_list_sheet, video_data, assignments)
 
-    print(df)
-
-    # グループ分けされたデータを新しいシートに書き込む
-    output_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-    output_sheetname = config["vote_grouping"]["grouped_video_catalog"][f"rookie_sheet"]
-    output_sheet = connect_sheet(output_spreadsheetname, output_sheetname)
-    sheet_client.clear_sheet(output_sheet)  # 既存のデータをクリア
-    sheet_client.update_sheet(
-        output_sheet, df.to_dict(orient="records")
-    )  # orient='records'で[{列名: 値}, ...]の形式で辞書を作成
+    group_sizes = {
+        group_id: list(assignments.values()).count(group_id)
+        for group_id in range(1, group_num + 1)
+    }
+    print(f"Group sizes: {group_sizes}")
 
     print(
-        f"Successfully updated '{output_sheetname}' in '{output_spreadsheetname}' with grouped data."
+        f"Successfully updated '{GROUP_ID_COLUMN}' in "
+        f"'{video_list_config['sheet']}' of '{video_list_config['name']}'."
     )
 
 

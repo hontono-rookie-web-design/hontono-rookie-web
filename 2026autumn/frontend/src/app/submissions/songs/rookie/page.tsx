@@ -3,6 +3,9 @@ import { getCurrentPhase } from "@/config/phase";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
 import VideoList from "./VideoList";
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default async function Page() {
   const currentPhase = getCurrentPhase();
   const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.rookie.name);
@@ -13,7 +16,6 @@ export default async function Page() {
     videoUrl: item.videoUrl,
     thumbnailUrl: item.thumbnailUrl,
     publishedAt: item.publishedAt,
-    description: item.description,
   }));
 
   return <VideoList initialData={mappedVideos} initialPhase={currentPhase} />;

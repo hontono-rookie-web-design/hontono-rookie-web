@@ -1,6 +1,7 @@
 "use client";
 
 import Counting from "@/components/Counting";
+import SkeletonCard from "@/components/SkeletonCard";
 import TBA from "@/components/TBA";
 import { CONFIG } from "@/config/config";
 import { EVENT_PHASES, type EventPhase } from "@/config/phase";
@@ -77,29 +78,6 @@ function medalClass(rank: number) {
   if (rank === 2) return "bg-gray-200";
   if (rank === 3) return "bg-orange-100";
   return "bg-gray-100";
-}
-
-/* =========================
-   Skeleton
-========================= */
-function SkeletonCard() {
-  return (
-    <div className="w-full max-w-[900px] rounded-xl bg-white p-4 shadow-sm">
-      <div className="flex gap-4">
-        <div className="w-40 h-24 bg-gray-200 rounded animate-pulse" />
-
-        <div className="flex flex-col flex-1 gap-2">
-          <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
-
-          <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
-
-          <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />
-
-          <div className="h-4 bg-gray-200 rounded w-full animate-pulse" />
-        </div>
-      </div>
-    </div>
-  );
 }
 
 /* =========================
@@ -374,19 +352,6 @@ export default function VoteContent({
             楽曲マイリストはこちら
           </a>
         )}
-
-        <a
-          href={CONFIG.links.voteGuide}
-          target="_blank"
-          className="
-            px-6 py-2 rounded
-            bg-gray-500 text-white text-sm
-            min-w-[260px]
-            text-center
-          "
-        >
-          人気投票の詳細はこちら
-        </a>
       </div>
 
       {loading ? (

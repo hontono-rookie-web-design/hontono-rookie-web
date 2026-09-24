@@ -12,6 +12,12 @@ from oauth2client import client, file, tools
 
 load_dotenv()
 
+
+def is_true(value) -> bool:
+    """Google Sheetsから取得した真偽値を判定する。"""
+    return value is True or str(value).strip().upper() == "TRUE"
+
+
 def create_folder(creds, parent_folder_id):
     """
     指定した親フォルダIDの下に、新しいフォルダを作成します。
@@ -172,36 +178,14 @@ def initialize_oauth_credentials():
     return creds
 
 
-def load_spreadsheet(config, phase):
+def load_spreadsheet(config):
 
     service_account_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     # ルーキーのスプレッドシート読み込み
-    # 「グループID」「タイトル」という列が最低でも必要
-    if phase == "prelim":
-        video_spreadsheetname = config["vote_grouping"]["grouped_video_catalog"]["name"]
-        video_sheetname = config["vote_grouping"]["grouped_video_catalog"][
-            "rookie_sheet"
-        ]
-    elif phase == "semifinal":
-        video_spreadsheetname = config["vote_semifinal"][
-            "grouped_video_catalog_semifinal"
-        ]["name"]
-        video_sheetname = config["vote_semifinal"]["grouped_video_catalog_semifinal"][
-            "rookie_sheet"
-        ]
-    elif phase == "final":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_final"][
-            "name"
-        ]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_final"][
-            "rookie_sheet"
-        ]
-    elif phase == "ex":
-        video_spreadsheetname = config["spreadsheets"]["grouped_video_catalog_ex"][
-            "name"
-        ]
-        video_sheetname = config["spreadsheets"]["grouped_video_catalog_ex"]["ex_sheet"]
+    video_spreadsheetname = config["spreadsheets"]["video_list"]["name"]
+    video_sheetname = config["spreadsheets"]["video_list"]["sheet"]
+
 
     video_sheet = sheet_client.connect_sheet(
         service_account_credentials_path, video_spreadsheetname, video_sheetname
@@ -226,8 +210,14 @@ def create_vote_forms(creds, config, df, phase):
     parent_folder_id = os.getenv("FORMS_FOLDER_ID")
     new_folder_id = create_folder(creds, parent_folder_id)
 
-    # グループIDごとに処理
-    for group_id, group_df in df.groupby("グループID", dropna=True, sort=True):
+    # 該当フェーズのgroup_idが割り当て済、かつ除外も削除もされていない行を抽出する
+    df = df[
+        df[f"{phase}_group_id"].astype(bool)
+        & ~df["excluded"].apply(is_true)
+        & ~df["deleted"].apply(is_true)
+    ].copy()
+    
+    for group_id, group_df in df.groupby(f"{phase}_group_id", dropna=True, sort=True):
         print(f"[INFO]\t処理中 group_id={group_id}, 件数={len(group_df)}")
 
         title = f'{config["vote_form"][phase]["title"]}{group_id}'
@@ -241,7 +231,7 @@ def create_vote_forms(creds, config, df, phase):
 
         # フォームを更新
         update_vote_form(
-            creds, new_form_id, title, item_title, group_df["タイトル"].tolist()
+            creds, new_form_id, title, item_title, group_df[["title","video_id"]].astype(str).agg("_".join,axis=1).tolist()
         )
 
 
@@ -252,7 +242,7 @@ def main():
         "--phase",
         type=str,
         required=True,
-        help="対象フェーズ（例: prelim, semifinal, final, ex）",
+        help="対象フェーズ（例: prelim, final, sp）",
     )
     args, remaining = parser.parse_known_args()
     phase = args.phase
@@ -268,7 +258,7 @@ def main():
     config = utils.load_config()
 
     # スプレッドシートからデータを読み込む
-    df = load_spreadsheet(config, phase)
+    df = load_spreadsheet(config)
 
     # 投票フォームの作成
     create_vote_forms(oauth_creds, config, df, phase)

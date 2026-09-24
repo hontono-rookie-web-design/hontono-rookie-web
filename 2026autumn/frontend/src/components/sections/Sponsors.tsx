@@ -10,21 +10,6 @@ export default function Sponsors() {
         </div>
 
         <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
-          <h4 className="text-xl font-bold text-slate-800 mb-2">ヴォエ</h4>
-
-          <p className="text-slate-600 text-sm mb-6">この投稿祭は「ヴォエ」が後援しています。</p>
-
-          <a
-            href="https://x.com/vliverofepic"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-secondary hover:underline"
-          >
-            公式X
-          </a>
-        </div>
-
-        <div className="p-8 bg-gradient-to-br from-white to-slate-100 rounded-3xl shadow-sm border border-slate-200 mb-6">
           <h4 className="text-xl font-bold text-slate-800 mb-2">NFRSラジオ</h4>
 
           <p className="text-slate-600 text-sm mb-6">
