@@ -95,6 +95,10 @@ vote_grouping_sp: # spグループ分け関連パラメータ
   random_seed: 43
   group_num: 8
 
+vote_grouping_final: # 決勝グループ分け関連パラメータ
+  group_num: 12 # 決勝のDisc数
+  final_border: 1 # 予選の何位までを決勝進出とするか
+
 vote_form: # 投票フォーム関連パラメータ
   prelim: # 予選
     title: "本当のルーキー祭り2026秋_Disc."
