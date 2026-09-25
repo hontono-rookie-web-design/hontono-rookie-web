@@ -269,6 +269,18 @@ APP_ENV="development"
    ```
    連番のついたGoogleフォームが作成される。
 
+### 予選投票集計
+
+1. `backend`ディレクトリで以下を実行する。
+
+   ```bash
+   python -m scripts.vote_aggregation_preliminary
+   ```
+
+   Googleフォームの回答をDiscごとに集計し、ランキングを作成してスプレッドシートに書き込む。
+
+
+
 ### 再生数いいね数集計用参加動画一覧更新
 
 開催中に参加動画の再生数・いいね数を集計したいことがある。
@@ -279,3 +291,18 @@ APP_ENV="development"
    python -m scripts.update_videos_info
    ```
    再生数いいね数集計用参加作品動画リストが更新される。
+
+
+## テスト
+
+`backend`ディレクトリで以下を実行する。
+
+```bash
+pytest
+```
+
+特定のテストファイルのみ実行する場合：
+
+```bash
+pytest <テストファイルのパス>
+```
