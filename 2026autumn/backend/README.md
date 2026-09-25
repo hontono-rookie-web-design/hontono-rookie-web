@@ -271,21 +271,7 @@ APP_ENV="development"
 
 ### 予選投票集計
 
-1. 実行する環境を設定する。
-
-   production環境で実行する場合：
-
-   ```powershell
-   $env:APP_ENV="production"
-   ```
-
-   development環境で実行する場合：
-
-   ```powershell
-   $env:APP_ENV="development"
-   ```
-
-2. `backend`ディレクトリで以下を実行する。
+1. `backend`ディレクトリで以下を実行する。
 
    ```bash
    python -m scripts.vote_aggregation_preliminary
