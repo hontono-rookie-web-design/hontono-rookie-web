@@ -187,6 +187,8 @@ def update_prelim_rank(
         video_data,
     )
 
+    print("Successfully updated prelim_rank.")
+
 def update_prelim_score(ranking, video_data, config):
     video_by_id = {
         str(video.get("video_id", "")).strip(): video
@@ -225,6 +227,8 @@ def update_prelim_score(ranking, video_data, config):
 
     sheet_client.update_sheet(score_sheet, score_data)
 
+    print("Successfully updated prelim_score.")
+
 def update_public_prelim_score(ranking, video_data, config):
     public_rank_limit = config["prelim_aggregation"]["public_rank_limit"]
     public_score_limit = config["prelim_aggregation"]["public_score_limit"]
@@ -250,6 +254,8 @@ def update_public_prelim_score(ranking, video_data, config):
         public_data.append(
             {
                 "Disc番号": video.get("prelim_group_id", ""),
+                "グループ曲数": row.get("グループ曲数", ""),
+                "投票数": row.get("投票数", ""),
                 "順位": rank,
                 "スコア": score,
                 "平均スコア": average_score,
@@ -278,6 +284,8 @@ def update_public_prelim_score(ranking, video_data, config):
     )
 
     sheet_client.update_sheet(public_score_sheet, public_data)
+
+    print("Successfully updated public_prelim_score.")
 
 def main():
 
@@ -373,21 +381,12 @@ def main():
 
         return
 
-    update_prelim_rank(
-        video_sheet,
-        video_data,
-        all_rankings,
-    )
-
-    print("Successfully updated prelim_rank.")
+    update_prelim_rank(video_sheet, video_data, all_rankings)
 
     update_prelim_score(all_rankings, video_data, config)
 
-    print("Successfully updated prelim_score.")
-
     update_public_prelim_score(all_rankings, video_data, config)
 
-    print("Successfully updated public_prelim_score.")
 
 
 if __name__ == "__main__":
