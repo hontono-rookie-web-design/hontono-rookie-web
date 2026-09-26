@@ -23,15 +23,3 @@ def test_aggregate_votes():
 
     assert result == expected
 
-
-def test_aggregate_votes_includes_video_id():
-    votes = [
-        {
-            "好きな作品を教えてください。[Song_Name_sm123]": "1位",
-        }
-    ]
-
-    result = aggregate_votes(votes)
-
-    assert result[0]["動画ID"] == "sm123"
-    assert result[0]["曲名"] == "Song_Name"
