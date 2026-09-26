@@ -225,6 +225,59 @@ def update_prelim_score(ranking, video_data, config):
 
     sheet_client.update_sheet(score_sheet, score_data)
 
+def update_public_prelim_score(ranking, video_data, config):
+    public_rank_limit = config["vote_grouping"]["public_rank_limit"]
+    public_score_limit = config["vote_grouping"]["public_score_limit"]
+    
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video
+        for video in video_data
+    }
+
+    public_data = []
+
+    for row in ranking:
+        rank = row.get("順位")
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id or rank is None or rank > public_rank_limit:
+            continue
+
+        video = video_by_id.get(video_id, {})
+        score = row["得点"] if rank <= public_score_limit else "-"
+        average_score = row["平均得点"] if rank <= public_score_limit else "-"
+
+        public_data.append(
+            {
+                "Disc番号": video.get("prelim_group_id", ""),
+                "順位": rank,
+                "スコア": score,
+                "平均スコア": average_score,
+                "動画ID": video_id,
+                "タイトル": video.get("タイトル", ""),
+                "投稿者名": video.get("投稿者名", ""),
+            }
+        )
+
+    if not public_data:
+        print("No public preliminary scores found. Skipping public score update.")
+        return
+
+    public_data.sort(
+        key=lambda item: (
+            int(str(item["Disc番号"]).strip()),
+            int(item["順位"]),
+        )
+    )
+
+    public_score_config = config["spreadsheets"]["public_prelim_score_list"]
+    public_score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        public_score_config["name"],
+        public_score_config["sheet"],
+    )
+
+    sheet_client.update_sheet(public_score_sheet, public_data)
 
 def main():
 
@@ -331,6 +384,10 @@ def main():
     update_prelim_score(all_rankings, video_data, config)
 
     print("Successfully updated prelim_score.")
+
+    update_public_prelim_score(all_rankings, video_data, config)
+
+    print("Successfully updated public_prelim_score.")
 
 
 

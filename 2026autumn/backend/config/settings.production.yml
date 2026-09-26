@@ -78,6 +78,12 @@ spreadsheets:
     name: "score_list_pro" # スプレッドシート名（本番用）
     sheet: "score_list" # ワークシート名
 
+  public_prelim_score_list: # 予選人気投票スコア集計（公開用）
+    name: "【公開用】予選結果_2026秋" # スプレッドシート名（本番用）
+    sheet: "score_list" # ワークシート名
+    public_rank_limit: 3 # 公開する順位のボーダー（上位3位までを公開する場合は3を指定）
+    public_score_limit: 1 # 公開するスコアのボーダー（上位1位までを公開する場合は1を指定）
+
 vote_response_aggregation: # 人気投票フォーム回答数集計のstage関連パラメータ
   stage_labels: # フォームURL一覧シートのstage列の値／集計結果シートのワークシート名として使う
     prelim: "予選"
