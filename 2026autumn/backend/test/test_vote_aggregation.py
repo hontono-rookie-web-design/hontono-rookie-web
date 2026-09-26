@@ -22,4 +22,5 @@ def test_aggregate_votes():
     result = aggregate_votes(votes)
 
     assert result == expected
+    assert all(song["グループ曲数"] == len(votes[0]) - 2 for song in result)
 

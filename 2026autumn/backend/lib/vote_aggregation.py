@@ -170,6 +170,7 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
                 "得点": data["得点"],
                 "投票数": data["投票数"],
                 "平均得点": round(data["得点"] / data["投票数"], 2),
+                "グループ曲数": total_songs,
             }
         )
 
