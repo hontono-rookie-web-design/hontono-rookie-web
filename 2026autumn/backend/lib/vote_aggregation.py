@@ -126,7 +126,8 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
         }
     )
 
-    total_songs = len(votes[0]) - len(IGNORE_COLUMNS)
+    total_songs = sum(1 for column in votes[0] if column not in IGNORE_COLUMNS)
+    print(f"The total number of songs is {total_songs}")
 
     for vote in votes:
 

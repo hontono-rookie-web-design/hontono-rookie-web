@@ -326,9 +326,12 @@ def main():
         all_rankings,
     )
 
+    print("Successfully updated prelim_rank.")
+
     update_prelim_score(all_rankings, video_data, config)
 
-    print("Successfully updated prelim_rank.")
+    print("Successfully updated prelim_score.")
+
 
 
 if __name__ == "__main__":
