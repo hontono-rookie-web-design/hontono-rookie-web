@@ -226,9 +226,9 @@ def update_prelim_score(ranking, video_data, config):
     sheet_client.update_sheet(score_sheet, score_data)
 
 def update_public_prelim_score(ranking, video_data, config):
-    public_rank_limit = config["vote_grouping"]["public_rank_limit"]
-    public_score_limit = config["vote_grouping"]["public_score_limit"]
-    
+    public_rank_limit = config["prelim_aggregation"]["public_rank_limit"]
+    public_score_limit = config["prelim_aggregation"]["public_score_limit"]
+
     video_by_id = {
         str(video.get("video_id", "")).strip(): video
         for video in video_data
@@ -254,8 +254,8 @@ def update_public_prelim_score(ranking, video_data, config):
                 "スコア": score,
                 "平均スコア": average_score,
                 "動画ID": video_id,
-                "タイトル": video.get("タイトル", ""),
-                "投稿者名": video.get("投稿者名", ""),
+                "タイトル": video.get("title", ""),
+                "投稿者名": video.get("user_name", ""),
             }
         )
 
@@ -306,7 +306,7 @@ def main():
 
     forms = sorted(forms, key=lambda x: x["name"])
 
-    number_of_discs = config["vote_grouping"]["group_num"]
+    number_of_discs = config["prelim_aggregation"]["number_of_groups"]
 
     all_rankings = []
 
@@ -388,7 +388,6 @@ def main():
     update_public_prelim_score(all_rankings, video_data, config)
 
     print("Successfully updated public_prelim_score.")
-
 
 
 if __name__ == "__main__":
