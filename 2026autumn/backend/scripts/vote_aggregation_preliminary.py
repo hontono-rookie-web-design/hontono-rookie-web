@@ -16,23 +16,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-#  曲名から動画IDを取得する。
-#  Extract video ID from song title.
-
-
-def extract_video_id(song_name):
-
-    match = re.search(
-        r"(sm\d+|nm\d+|so\d+)",
-        song_name,
-    )
-
-    if match:
-        return match.group(1)
-
-    return None
-
-
 # Initialize OAuth credentials for Google Forms API.
 # Google Forms APIのOAuth認証情報を初期化します。
 
@@ -182,12 +165,8 @@ def update_prelim_rank(
     rank_map = {}
 
     for row in ranking:
-
-        video_id = extract_video_id(row["曲名"])
-
-        if video_id:
-
-            rank_map[video_id] = row["順位"]
+        video_id = row["動画ID"]
+        rank_map[video_id] = row["順位"]
 
     updated_count = 0
 
@@ -207,6 +186,44 @@ def update_prelim_rank(
         worksheet,
         video_data,
     )
+
+def update_prelim_score(ranking, video_data, config):
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video
+        for video in video_data
+    }
+
+    score_data = []
+
+    for row in ranking:
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id:
+            continue
+
+        video = video_by_id.get(video_id, {})
+        score_data.append(
+            {
+                "video_id": video_id,
+                "prelim_group_id": video.get("prelim_group_id", ""),
+                "prelim_score": row["得点"],
+                "prelim_vote_count": row["投票数"],
+                "prelim_average_score": row["平均得点"],
+            }
+        )
+
+    if not score_data:
+        print("No preliminary scores found. Skipping score_list update.")
+        return
+
+    score_list_config = config["spreadsheets"]["score_list"]
+    score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        score_list_config["name"],
+        score_list_config["sheet"],
+    )
+
+    sheet_client.update_sheet(score_sheet, score_data)
 
 
 def main():
@@ -308,6 +325,8 @@ def main():
         video_data,
         all_rankings,
     )
+
+    update_prelim_score(all_rankings, video_data, config)
 
     print("Successfully updated prelim_rank.")
 

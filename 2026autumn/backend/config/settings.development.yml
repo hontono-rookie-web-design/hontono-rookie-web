@@ -69,10 +69,14 @@ spreadsheets:
   vote_response_counts: # 人気投票フォームの回答数集計（実行ごとに列を追加し履歴を蓄積する公開用シート）
     name: "【検証用】人気投票投票数_2026春" # スプレッドシート名（開発用）
 
+  score_list: # 人気投票スコア集計
+    name: "score_list_dev" # スプレッドシート名（開発用）
+    sheet: "score_list" # ワークシート名
+
 vote_response_aggregation: # 人気投票フォーム回答数集計のstage関連パラメータ
   stage_labels: # フォームURL一覧シートのstage列の値／集計結果シートのワークシート名として使う
     prelim: "予選"
-    semifinal : "準決勝"
+    semifinal: "準決勝"
     final: "決勝"
     sp: "SP"
 
