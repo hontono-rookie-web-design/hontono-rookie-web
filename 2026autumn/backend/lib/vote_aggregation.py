@@ -24,9 +24,12 @@ def extract_song_name_and_video_id(column_name: str) -> tuple[str, str | None]:
     アヤツリ/まやかし, sm12345678
     """
 
-    # [と]の間の文字列を抽出する
-    if "[" in column_name and "]" in column_name:
-        song_name_and_video_id = column_name.split("[", 1)[1].split("]", 1)[0]
+    # Extract between the outer brackets; song names may contain closing brackets.
+    # 外側の括弧の間を抽出する。曲名に閉じ括弧が含まれる場合がある。
+    opening_bracket = column_name.find("[")
+    closing_bracket = column_name.rfind("]")
+    if opening_bracket != -1 and closing_bracket > opening_bracket:
+        song_name_and_video_id = column_name[opening_bracket + 1 : closing_bracket]
     else:
         song_name_and_video_id = column_name
 
