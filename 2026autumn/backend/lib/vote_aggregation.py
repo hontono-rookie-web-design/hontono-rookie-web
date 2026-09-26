@@ -18,25 +18,16 @@ def extract_song_name_and_video_id(column_name: str) -> tuple[str, str | None]:
     Googleフォームの質問列から曲名と動画IDを抽出する。
 
     Example:
-    好きな作品を教えてください。 [アヤツリ/まやかし_sm12345678]
+    アヤツリ/まやかし_sm12345678
 
     ->
     アヤツリ/まやかし, sm12345678
     """
 
-    # Extract between the outer brackets; song names may contain closing brackets.
-    # 外側の括弧の間を抽出する。曲名に閉じ括弧が含まれる場合がある。
-    opening_bracket = column_name.find("[")
-    closing_bracket = column_name.rfind("]")
-    if opening_bracket != -1 and closing_bracket > opening_bracket:
-        song_name_and_video_id = column_name[opening_bracket + 1 : closing_bracket]
-    else:
-        song_name_and_video_id = column_name
-
     # アンダーバーで区切る
-    parts = song_name_and_video_id.rsplit("_", 1)
+    parts = column_name.rsplit("_", 1)
     if len(parts) == 1:
-        return song_name_and_video_id, None
+        print(f"Error: No video ID found in column '{column_name}'.")
 
     song_name, video_id = parts
     return song_name, video_id or None
@@ -104,8 +95,8 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
     [{
         "タイムスタンプ": "...",
         "メールアドレス": "...",
-        "好きな作品を教えてください。[Song A_sm12345678]": "1位",
-        "好きな作品を教えてください。[Song B_sm87654321]": "2位"
+        "Song A_sm12345678": "1位",
+        "Song B_sm87654321": "2位"
     },
     ...
     ]
@@ -158,7 +149,8 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
             if video_id:
                 songs[song_name]["動画ID"] = video_id
             else:
-                print(f"Warning: No video ID found for song '{song_name}' in column '{column}'.")
+                print(f"Error: No video ID found for song '{song_name}' in column '{column}'.")
+                exit(1)
 
             songs[song_name]["得点"] += calculate_score(rank, total_songs)
 
