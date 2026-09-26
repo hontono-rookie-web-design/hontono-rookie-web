@@ -3,8 +3,8 @@ from pathlib import Path
 
 from lib.vote_aggregation import (
     aggregate_votes,
-    clean_song_name,
     calculate_score,
+    extract_song_name_and_video_id,
     extract_rank,
 )
 
@@ -25,21 +25,14 @@ def load_test_data():
 # If the name of songs are invalid in google forms
 def test_invalid_answers():
 
-    test_data = load_test_data()
+    data_path = Path(__file__).parent.parent / "data" / "test_vote_aggregation_invalid.json"
 
-    votes = test_data["votes"]
+    with open(data_path, encoding="utf-8") as file:
+        test_data = json.load(file)
 
-    votes[0]["好きな作品を教えてください。[Song B]"] = ""
+    result = aggregate_votes(test_data["votes"])
 
-    votes[0]["好きな作品を教えてください。[Song C]"] = "abc"
-
-    result = aggregate_votes(votes)
-
-    song_a = result[0]
-
-    assert song_a["曲名"] == "Song A"
-
-    assert song_a["得点"] == 5
+    assert result == test_data["expected"]
 
 
 # 不要なデータについて
@@ -57,13 +50,13 @@ def test_ignore_form_metadata_columns():
         assert "メールアドレス" not in song
 
 
-def test_clean_song_name():
+def test_extract_song_name_and_video_id():
 
     test_data = load_test_data()
 
     column_name = list(test_data["votes"][0].keys())[2]
 
-    assert clean_song_name(column_name) == "Song A"
+    assert extract_song_name_and_video_id(column_name) == ("Song A", "sm12345678")
 
 
 # 「順位」内の数値が適切に区切られている場合

@@ -1,8 +1,6 @@
 ## 集計機能
 
 from collections import defaultdict
-
-
 import re
 
 # シート上のデータの前処理
@@ -14,21 +12,25 @@ IGNORE_COLUMNS = [
 ]
 
 
-def clean_song_name(column_name: str) -> str:
+def extract_song_name_and_video_id(column_name: str) -> tuple[str, str | None]:
     """
-    Extract song name from Google Form question column.
+    Extract song name and video ID from Google Form question column.
+    Googleフォームの質問列から曲名と動画IDを抽出する。
 
     Example:
-    好きな作品を教えてください。 [アヤツリ/まやかし]
+    アヤツリ/まやかし_sm12345678
 
     ->
-    アヤツリ/まやかし
+    アヤツリ/まやかし, sm12345678
     """
 
-    if "[" in column_name and "]" in column_name:
-        return column_name.split("[", 1)[1].rstrip("]")
+    # アンダーバーで区切る
+    parts = column_name.rsplit("_", 1)
+    if len(parts) == 1:
+        print(f"Error: No video ID found in column '{column_name}'.")
 
-    return column_name
+    song_name, video_id = parts
+    return song_name, video_id or None
 
 
 def extract_rank(value: str):
@@ -93,8 +95,8 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
     [{
         "タイムスタンプ": "...",
         "メールアドレス": "...",
-        "好きな作品を教えてください。[Song A]": "1位",
-        "好きな作品を教えてください。[Song B]": "2位"
+        "Song A_sm12345678": "1位",
+        "Song B_sm87654321": "2位"
     },
     ...
     ]
@@ -104,6 +106,7 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
 
     [{
         "曲名": "Song A",
+        "動画ID": "sm12345678",
         "得点": 1000,
         "投票数": 298,
         "順位合計": 500,
@@ -123,7 +126,8 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
         }
     )
 
-    total_songs = len(votes[0]) - len(IGNORE_COLUMNS)
+    total_songs = sum(1 for column in votes[0] if column not in IGNORE_COLUMNS)
+    print(f"The total number of songs is {total_songs}")
 
     for vote in votes:
 
@@ -141,7 +145,13 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
             if rank is None:
                 continue
 
-            song_name = clean_song_name(column)
+            song_name, video_id = extract_song_name_and_video_id(column)
+
+            if video_id:
+                songs[song_name]["動画ID"] = video_id
+            else:
+                print(f"Error: No video ID found for song '{song_name}' in column '{column}'.")
+                exit(1)
 
             songs[song_name]["得点"] += calculate_score(rank, total_songs)
 
@@ -156,9 +166,11 @@ def aggregate_votes(votes: list[dict]) -> list[dict]:
         ranking.append(
             {
                 "曲名": song_name,
+                "動画ID": data["動画ID"],
                 "得点": data["得点"],
                 "投票数": data["投票数"],
                 "平均得点": round(data["得点"] / data["投票数"], 2),
+                "グループ曲数": total_songs,
             }
         )
 

@@ -74,6 +74,14 @@ spreadsheets:
   vote_response_counts: # 人気投票フォームの回答数集計（実行ごとに列を追加し履歴を蓄積する公開用シート）
     name: "【公開用】人気投票投票数_2026秋" # スプレッドシート名（本番用）
 
+  score_list: # 人気投票スコア集計
+    name: "score_list_pro" # スプレッドシート名（本番用）
+    sheet: "score_list" # ワークシート名
+
+  public_prelim_score_list: # 予選人気投票スコア集計（公開用）
+    name: "【公開用】予選結果_2026秋" # スプレッドシート名（本番用）
+    sheet: "score_list" # ワークシート名
+
 vote_response_aggregation: # 人気投票フォーム回答数集計のstage関連パラメータ
   stage_labels: # フォームURL一覧シートのstage列の値／集計結果シートのワークシート名として使う
     prelim: "予選"
@@ -83,13 +91,6 @@ vote_response_aggregation: # 人気投票フォーム回答数集計のstage関�
 vote_grouping: # 投票グループ分け関連パラメータ
   random_seed: 42
   group_num: 75 # 予選の合計グループ数（1グループ5～6曲になる値を指定）
-
-vote_semifinal: # 準決勝グループ分け関連パラメータ
-  semifinal_size: 3 #Selection数
-  semifinal_border: 5 #予選通過ボーダー
-  grouped_video_catalog_semifinal:
-    name: "grouped_video_catalog_2026autumn_semifinal"
-    rookie_sheet: "rookie"
 
 vote_grouping_sp: # spグループ分け関連パラメータ
   random_seed: 43
@@ -105,3 +106,9 @@ vote_form: # 投票フォーム関連パラメータ
   sp: # exステージ
     title: "本当のルーキー祭り2026秋_SP."
     item_title: "好きな作品を教えてください。"
+
+# 予選集計
+prelim_aggregation:
+  number_of_groups: 75 # 予選のグループ数（集計対象とする数）
+  public_rank_limit: 3 # 公開する順位のボーダー（上位3位までを公開する場合は3を指定）
+  public_score_limit: 1 # 公開するスコアのボーダー（上位1位までを公開する場合は1を指定）
