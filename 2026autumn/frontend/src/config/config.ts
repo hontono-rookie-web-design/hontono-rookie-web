@@ -4,7 +4,9 @@ export const CONFIG = {
   },
 
   ranking: {
-    cutoff: 3,
+    prelim_cutoff: 3,
+    final_cutoff: null,
+    special_cutoff: 3,
   },
 
   derivativesheets: {

@@ -132,7 +132,9 @@ export default function VoteContent({
     return videos
       .filter(
         (r): r is Video & { rank: number } =>
-          r.group === activeGroup && r.rank !== undefined && r.rank <= CONFIG.ranking.cutoff,
+          r.group === activeGroup &&
+          r.rank !== undefined &&
+          (CONFIG.ranking.prelim_cutoff === null || r.rank <= CONFIG.ranking.prelim_cutoff),
       )
       .sort((a, b) => a.rank - b.rank)
       .map((r) => ({
