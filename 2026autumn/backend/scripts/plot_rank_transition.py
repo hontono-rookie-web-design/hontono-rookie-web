@@ -81,10 +81,20 @@ def extract_video_id(row_title: str) -> str:
         raise ValueError(f"videoId を取得できない行タイトルです: {row_title}")
     return video_id
 
+# "曲名_ID" のテンプレから曲名のみを返す
+def extract_video_title(row_title: str) -> str:
+    video_title = row_title.rsplit("_", 1)[0].strip()
+    if not video_title:
+        raise ValueError(f"曲名を取得できない行タイトルです: {row_title}")
+    return video_title
+
 # 各フォームの回答を取得
-def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[dict]]:
+def fetch_form_votes(
+    forms_service, form_id: str
+) -> tuple[dict[str, str], dict[str, str], list[dict]]:
     form = forms_service.forms().get(formId=form_id).execute()
     row_question_ids = {}
+    video_titles = {}
     row_count = 0
 
     for item in form.get("items", []):
@@ -93,7 +103,9 @@ def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[
             question_id = question.get("questionId")
             row_title = row_question.get("title")
             if question_id and row_title:
-                row_question_ids[question_id] = extract_video_id(row_title)
+                video_id = extract_video_id(row_title)
+                row_question_ids[question_id] = video_id
+                video_titles[video_id] = extract_video_title(row_title)
                 row_count += 1
 
     if not row_question_ids:
@@ -113,15 +125,17 @@ def fetch_form_votes(forms_service, form_id: str) -> tuple[dict[str, str], list[
         if not page_token:
             break
 
-    return row_question_ids, [{"row_count": row_count, **vote} for vote in responses]
+    return row_question_ids, video_titles, [
+        {"row_count": row_count, **vote} for vote in responses
+    ]
 
 # 各動画の日付ごとのスコアを集計し、累計獲得スコアを算出
 def aggregate_daily_scores(
     forms_service, form: dict
-) -> dict[str, dict[str, int]]:
+) -> tuple[dict[str, dict[str, int]], dict[str, str]]:
     daily_scores = defaultdict(lambda: defaultdict(int))
 
-    row_question_ids, responses = fetch_form_votes(forms_service, form["id"])
+    row_question_ids, video_titles, responses = fetch_form_votes(forms_service, form["id"])
     for response in responses:
         submitted_at = datetime.fromisoformat(
             response["createTime"].replace("Z", "+00:00")
@@ -138,7 +152,7 @@ def aggregate_daily_scores(
             daily_scores[vote_date][video_id] += response["row_count"] - rank + 1
 
     if not daily_scores:
-        return {}
+        return {}, video_titles
 
     # 最初〜最後の投票日を1日ずつ進め、票のない日も含めて累計スコアを求める
     first_date = date.fromisoformat(min(daily_scores))
@@ -151,7 +165,7 @@ def aggregate_daily_scores(
             running_scores[video_id] += score
         cumulative_scores[current_date] = dict(running_scores)  # その日時点のスナップショット
 
-    return cumulative_scores
+    return cumulative_scores, video_titles
 
 
 # 当日までの累計獲得スコアを降順に並べ、順位を付与する
@@ -196,6 +210,7 @@ def plot_rank_transition(
     form_name: str,
     output_path: Path,
     total_video_count: int | None = None,
+    video_titles: dict[str, str] | None = None,
 ):
     dates = sorted(daily_ranks)
     video_ids = sorted({video_id for ranks in daily_ranks.values() for video_id in ranks})
@@ -208,6 +223,7 @@ def plot_rank_transition(
     plt.style.use("seaborn-v0_8-whitegrid")
     matplotlib_fontja.japanize()  # style.use でリセットされる日本語フォント設定を再適用
     figure, axis = plt.subplots(figsize=(14, 9), constrained_layout=True)
+    final_positions = {}  # video_id -> (最終有効値のx位置インデックス, 順位)
     for color, video_id in zip(colors, video_ids):
         ranks = [daily_ranks[date].get(video_id) for date in dates]
         axis.plot(
@@ -217,7 +233,37 @@ def plot_rank_transition(
             linewidth=2.8,
             markersize=8,
             color=color,
-            label=video_id,
+        )
+        for index in range(len(ranks) - 1, -1, -1):
+            if ranks[index] is not None:
+                final_positions[video_id] = (index, ranks[index])
+                break
+
+    # 同着（最終順位が同じ）の動画同士はラベルが重なるので縦にずらして配置する
+    same_rank_groups = defaultdict(list)
+    for video_id, (_, rank) in final_positions.items():
+        same_rank_groups[rank].append(video_id)
+    label_y_offsets = {}
+    line_spacing = 16  # ラベル間の縦方向の間隔（ポイント単位）
+    for ids in same_rank_groups.values():
+        ids.sort()
+        count = len(ids)
+        for position, video_id in enumerate(ids):
+            label_y_offsets[video_id] = (position - (count - 1) / 2) * line_spacing
+
+    # 凡例枠の代わりに、最終日のプロットの右側に曲名ラベルを直接添える
+    for color, video_id in zip(colors, video_ids):
+        if video_id not in final_positions:
+            continue
+        index, rank = final_positions[video_id]
+        axis.annotate(
+            (video_titles or {}).get(video_id, video_id),
+            xy=(dates[index], rank),
+            xytext=(10, label_y_offsets[video_id]),
+            textcoords="offset points",
+            va="center",
+            fontsize=11,
+            color=color,
         )
 
     axis.set_ylim(y_max + 0.5, 0.5)  # 1位を上端、動画数分を下端に固定（絞り込み時も範囲を変えない）
@@ -228,7 +274,6 @@ def plot_rank_transition(
     axis.tick_params(axis="both", labelsize=13)
     axis.set_xticks(dates)
     axis.tick_params(axis="x", rotation=35)
-    axis.legend(title="videoId", fontsize=11, title_fontsize=12, bbox_to_anchor=(1.02, 1), loc="upper left")
     axis.spines["top"].set_visible(False)
     axis.spines["right"].set_visible(False)
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
@@ -282,7 +327,7 @@ def main():
         print(f"  Disc.{form['number']}: {form['name']}")
 
         # 日時スコアを集計
-        daily_scores = aggregate_daily_scores(forms_service, form)
+        daily_scores, video_titles = aggregate_daily_scores(forms_service, form)
         if not daily_scores:
             print("  投票回答がないためスキップします")
             continue
@@ -298,7 +343,11 @@ def main():
         if args.public:
             daily_ranks = filter_public_ranks(daily_ranks)
         plot_rank_transition(
-            daily_ranks, form["name"], output_path, total_video_count=total_video_count
+            daily_ranks,
+            form["name"],
+            output_path,
+            total_video_count=total_video_count,
+            video_titles=video_titles,
         )
         print(f"  グラフを出力しました: {output_path}")
 
