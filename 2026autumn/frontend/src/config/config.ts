@@ -3,6 +3,12 @@ export const CONFIG = {
     name: "本当のルーキー祭り2026秋",
   },
 
+  ranking: {
+    prelim_cutoff: 3,
+    final_cutoff: null,
+    special_cutoff: 3,
+  },
+
   derivativesheets: {
     spreadsheetId: process.env.SPREADSHEET_ID_DERIVATIVE!,
     streams: { name: "紹介配信予定" },

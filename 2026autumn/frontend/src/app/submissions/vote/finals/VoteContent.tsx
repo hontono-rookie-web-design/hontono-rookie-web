@@ -130,7 +130,12 @@ export default function VoteContent({
   const rankedVideos = useMemo(() => {
     if (activeGroup === null) return [];
     return videos
-      .filter((r): r is Video & { rank: number } => r.group === activeGroup && r.rank !== undefined)
+      .filter(
+        (r): r is Video & { rank: number } =>
+          r.group === activeGroup &&
+          r.rank !== undefined &&
+          (CONFIG.ranking.final_cutoff === null || r.rank <= CONFIG.ranking.final_cutoff),
+      )
       .sort((a, b) => a.rank - b.rank)
       .map((r) => ({
         rank: r.rank,
