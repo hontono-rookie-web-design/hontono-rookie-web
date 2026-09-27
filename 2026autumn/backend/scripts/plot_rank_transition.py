@@ -216,8 +216,8 @@ def plot_rank_transition(
     video_ids = sorted({video_id for ranks in daily_ranks.values() for video_id in ranks})
     # 縦軸の範囲は絞り込み前の全動画数で統一する（未指定時は表示対象の動画数をそのまま使う）
     y_max = total_video_count if total_video_count is not None else len(video_ids)
-    colors = plt.get_cmap("viridis")(  # 明示的なカラーマップで線を区別する
-        [index / max(len(video_ids) - 1, 1) for index in range(len(video_ids))]
+    colors = plt.get_cmap("viridis")(  # 白地で見づらい黄色域(0.85超)を避けて0〜0.75の範囲でサンプリング
+        [0.75 * index / max(len(video_ids) - 1, 1) for index in range(len(video_ids))]
     )
 
     plt.style.use("seaborn-v0_8-whitegrid")
