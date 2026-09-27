@@ -8,6 +8,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import matplotlib_fontja
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
 from googleapiclient import discovery
@@ -173,6 +174,7 @@ def plot_rank_transition(
     )
 
     plt.style.use("seaborn-v0_8-whitegrid")
+    matplotlib_fontja.japanize()  # style.use でリセットされる日本語フォント設定を再適用
     figure, axis = plt.subplots(figsize=(14, 9), constrained_layout=True)
     for color, video_id in zip(colors, video_ids):
         ranks = [daily_ranks[date].get(video_id) for date in dates]
