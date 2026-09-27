@@ -9,6 +9,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import matplotlib_fontja
+from matplotlib.ticker import MaxNLocator
 from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
 from googleapiclient import discovery
@@ -195,6 +196,7 @@ def plot_rank_transition(
         )
 
     axis.invert_yaxis()
+    axis.yaxis.set_major_locator(MaxNLocator(integer=True))  # 順位は整数のみ目盛りに表示
     axis.set_xlabel("投票日", fontsize=16, labelpad=12)
     axis.set_ylabel("順位", fontsize=16, labelpad=12)
     axis.set_title(form_name, fontsize=22, fontweight="bold", pad=18)
