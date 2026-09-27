@@ -170,12 +170,37 @@ def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict
         daily_ranks[date] = ranks
     return daily_ranks
 
+# 最終順位が公開対象（上位top_n位以内）の動画のみに絞り込む（予選/SPフェーズは1〜3位までしか公表しないため）
+def filter_public_ranks(
+    daily_ranks: dict[str, dict[str, int]], top_n: int = 3
+) -> dict[str, dict[str, int]]:
+    if not daily_ranks:
+        return daily_ranks
+
+    last_date = max(daily_ranks)
+    public_video_ids = {
+        video_id for video_id, rank in daily_ranks[last_date].items() if rank <= top_n
+    }
+    return {
+        date: {
+            video_id: rank
+            for video_id, rank in ranks.items()
+            if video_id in public_video_ids
+        }
+        for date, ranks in daily_ranks.items()
+    }
+
 # 順位推移のグラフを描画し保存
 def plot_rank_transition(
-    daily_ranks: dict[str, dict[str, int]], form_name: str, output_path: Path
+    daily_ranks: dict[str, dict[str, int]],
+    form_name: str,
+    output_path: Path,
+    total_video_count: int | None = None,
 ):
     dates = sorted(daily_ranks)
     video_ids = sorted({video_id for ranks in daily_ranks.values() for video_id in ranks})
+    # 縦軸の範囲は絞り込み前の全動画数で統一する（未指定時は表示対象の動画数をそのまま使う）
+    y_max = total_video_count if total_video_count is not None else len(video_ids)
     colors = plt.get_cmap("viridis")(  # 明示的なカラーマップで線を区別する
         [index / max(len(video_ids) - 1, 1) for index in range(len(video_ids))]
     )
@@ -195,7 +220,7 @@ def plot_rank_transition(
             label=video_id,
         )
 
-    axis.invert_yaxis()
+    axis.set_ylim(y_max + 0.5, 0.5)  # 1位を上端、動画数分を下端に固定（絞り込み時も範囲を変えない）
     axis.yaxis.set_major_locator(MaxNLocator(integer=True))  # 順位は整数のみ目盛りに表示
     axis.set_xlabel("投票日", fontsize=16, labelpad=12)
     axis.set_ylabel("順位", fontsize=16, labelpad=12)
@@ -226,6 +251,11 @@ def main():
         default=Path("images/prelim_rank_transition"),
         type=Path,
         help="フォームごとのPNGを出力するディレクトリ（既定: images/prelim_rank_transition）",
+    )
+    parser.add_argument(
+        "--public",
+        action="store_true",
+        help="最終順位が3位以内の動画のみをグラフに表示します（予選/SPフェーズで一般公開する順位に合わせる）",
     )
     args = parser.parse_args()
 
@@ -261,7 +291,15 @@ def main():
         output_path = args.output / f"Disc.{form['number']}_{form['name']}.png"
 
         # 順位の遷移集計しグラフ化
-        plot_rank_transition(build_daily_ranks(daily_scores), form["name"], output_path)
+        daily_ranks = build_daily_ranks(daily_scores)
+        total_video_count = len(
+            {video_id for ranks in daily_ranks.values() for video_id in ranks}
+        )
+        if args.public:
+            daily_ranks = filter_public_ranks(daily_ranks)
+        plot_rank_transition(
+            daily_ranks, form["name"], output_path, total_video_count=total_video_count
+        )
         print(f"  グラフを出力しました: {output_path}")
 
 
