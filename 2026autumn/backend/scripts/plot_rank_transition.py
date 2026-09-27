@@ -157,10 +157,16 @@ def aggregate_daily_scores(
 def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]: 
     daily_ranks = {}
     for date, scores in daily_scores.items():
-        ordered = sorted(scores.items(), key=lambda item: (-item[1], item[0]))
-        daily_ranks[date] = {
-            video_id: rank for rank, (video_id, _) in enumerate(ordered, start=1)
-        }
+        ordered = sorted(scores.items(), key=lambda item: -item[1])
+        ranks = {}
+        previous_score = None
+        previous_rank = 0
+        for position, (video_id, score) in enumerate(ordered, start=1):
+            if score != previous_score:
+                previous_rank = position
+                previous_score = score
+            ranks[video_id] = previous_rank
+        daily_ranks[date] = ranks
     return daily_ranks
 
 # 順位推移のグラフを描画し保存
