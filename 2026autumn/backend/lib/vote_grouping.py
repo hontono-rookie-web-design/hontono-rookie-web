@@ -78,6 +78,8 @@ def create_final_group_assignments(
         prelim_rank = _positive_integer(
             row.get(prelim_rank_column), prelim_rank_column
         )
+        # 予選グループ1の1位を決勝グループ1へ配置し、
+        # 順位が下がるごとに配置先を1グループずつずらす。
         assignments[content_id] = (
             (prelim_group_id - 1) + (prelim_rank - 1)
         ) % group_num + 1

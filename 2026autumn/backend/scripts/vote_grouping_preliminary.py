@@ -11,22 +11,6 @@ def select_rookie_videos(video_data: list[dict], rookie_status: str) -> list[dic
     return vote_grouping.select_eligible_videos(video_data, rookie_status)
 
 
-def create_group_assignments(
-    rookie_videos: list[dict], group_num: int, seed: int | None = None
-) -> dict[str, int]:
-    """動画IDと予選グループIDの対応を作る。"""
-    return vote_grouping.create_group_assignments(rookie_videos, group_num, seed)
-
-
-def update_group_ids(
-    video_list_sheet, video_data: list[dict], assignments: dict[str, int]
-) -> None:
-    """video_listのprelim_group_id列だけを更新する。"""
-    vote_grouping.update_group_ids(
-        video_list_sheet, video_data, assignments, GROUP_ID_COLUMN
-    )
-
-
 def main():
     config = utils.load_config()
     video_list_config = config["spreadsheets"]["video_list"]
@@ -48,8 +32,12 @@ def main():
         f"using random seed {seed}"
     )
 
-    assignments = create_group_assignments(rookie_videos, group_num, seed)
-    update_group_ids(video_list_sheet, video_data, assignments)
+    assignments = vote_grouping.create_group_assignments(
+        rookie_videos, group_num, seed
+    )
+    vote_grouping.update_group_ids(
+        video_list_sheet, video_data, assignments, GROUP_ID_COLUMN
+    )
 
     group_sizes = vote_grouping.summarize_group_sizes(assignments, group_num)
     print(f"Group sizes: {group_sizes}")
