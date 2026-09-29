@@ -16,23 +16,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-#  曲名から動画IDを取得する。
-#  Extract video ID from song title.
-
-
-def extract_video_id(song_name):
-
-    match = re.search(
-        r"(sm\d+|nm\d+|so\d+)",
-        song_name,
-    )
-
-    if match:
-        return match.group(1)
-
-    return None
-
-
 # Initialize OAuth credentials for Google Forms API.
 # Google Forms APIのOAuth認証情報を初期化します。
 
@@ -182,12 +165,8 @@ def update_prelim_rank(
     rank_map = {}
 
     for row in ranking:
-
-        video_id = extract_video_id(row["曲名"])
-
-        if video_id:
-
-            rank_map[video_id] = row["順位"]
+        video_id = row["動画ID"]
+        rank_map[video_id] = row["順位"]
 
     updated_count = 0
 
@@ -208,6 +187,105 @@ def update_prelim_rank(
         video_data,
     )
 
+    print("Successfully updated prelim_rank.")
+
+def update_prelim_score(ranking, video_data, config):
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video
+        for video in video_data
+    }
+
+    score_data = []
+
+    for row in ranking:
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id:
+            continue
+
+        video = video_by_id.get(video_id, {})
+        score_data.append(
+            {
+                "video_id": video_id,
+                "prelim_group_id": video.get("prelim_group_id", ""),
+                "prelim_score": row["得点"],
+                "prelim_vote_count": row["投票数"],
+                "prelim_average_score": row["平均得点"],
+            }
+        )
+
+    if not score_data:
+        print("No preliminary scores found. Skipping score_list update.")
+        return
+
+    score_list_config = config["spreadsheets"]["score_list"]
+    score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        score_list_config["name"],
+        score_list_config["sheet"],
+    )
+
+    sheet_client.update_sheet(score_sheet, score_data)
+
+    print("Successfully updated prelim_score.")
+
+def update_public_prelim_score(ranking, video_data, config):
+    public_rank_limit = config["prelim_aggregation"]["public_rank_limit"]
+    public_score_limit = config["prelim_aggregation"]["public_score_limit"]
+
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video
+        for video in video_data
+    }
+
+    public_data = []
+
+    for row in ranking:
+        rank = row.get("順位")
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id or rank is None or rank > public_rank_limit:
+            continue
+
+        video = video_by_id.get(video_id, {})
+        score = row["得点"] if rank <= public_score_limit else "-"
+        average_score = row["平均得点"] if rank <= public_score_limit else "-"
+
+        public_data.append(
+            {
+                "Disc番号": video.get("prelim_group_id", ""),
+                "グループ曲数": row.get("グループ曲数", ""),
+                "投票数": row.get("投票数", ""),
+                "順位": rank,
+                "スコア": score,
+                "平均スコア": average_score,
+                "動画ID": video_id,
+                "タイトル": video.get("title", ""),
+                "投稿者名": video.get("user_name", ""),
+            }
+        )
+
+    if not public_data:
+        print("No public preliminary scores found. Skipping public score update.")
+        return
+
+    public_data.sort(
+        key=lambda item: (
+            int(str(item["Disc番号"]).strip()),
+            int(item["順位"]),
+        )
+    )
+
+    public_score_config = config["spreadsheets"]["public_prelim_score_list"]
+    public_score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        public_score_config["name"],
+        public_score_config["sheet"],
+    )
+
+    sheet_client.update_sheet(public_score_sheet, public_data)
+
+    print("Successfully updated public_prelim_score.")
 
 def main():
 
@@ -236,7 +314,7 @@ def main():
 
     forms = sorted(forms, key=lambda x: x["name"])
 
-    number_of_discs = config["vote_grouping"]["group_num"]
+    number_of_discs = config["prelim_aggregation"]["number_of_groups"]
 
     all_rankings = []
 
@@ -303,13 +381,12 @@ def main():
 
         return
 
-    update_prelim_rank(
-        video_sheet,
-        video_data,
-        all_rankings,
-    )
+    update_prelim_rank(video_sheet, video_data, all_rankings)
 
-    print("Successfully updated prelim_rank.")
+    update_prelim_score(all_rankings, video_data, config)
+
+    update_public_prelim_score(all_rankings, video_data, config)
+
 
 
 if __name__ == "__main__":
