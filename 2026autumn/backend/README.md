@@ -24,7 +24,9 @@ backend
 │  ├ fetch_videos.py              参加動画一覧更新スクリプト
 │  ├ fetch_note.py                note記事一覧更新スクリプト
 │  ├ fetch_derivative.py          二次創作一覧更新スクリプト
-│  ├ vote_grouping.py             投票グループ作成スクリプト
+│  ├ vote_grouping_preliminary.py 予選グループ作成スクリプト
+│  ├ vote_grouping_sp.py          SPグループ作成スクリプト
+│  ├ vote_grouping_final.py       決勝グループ作成スクリプト
 │  ├ setup_forms.py               投票フォーム作成スクリプト
 │  └ update_videos_info.py        動画情報更新スクリプト
 └ requirements.txt
@@ -239,11 +241,18 @@ APP_ENV="development"
 
 ### 投票グループ分け
 
-1. `backend`ディレクトリで以下を実行
+1. `backend`ディレクトリで、作成するグループに対応したコマンドを実行
    ```
-   python -m scripts.vote_grouping
+   # 予選
+   python -m scripts.vote_grouping_preliminary
+
+   # SP
+   python -m scripts.vote_grouping_sp
+
+   # 決勝（final_border以内の作品を予選グループ・順位から振り分ける）
+   python -m scripts.vote_grouping_final
    ```
-   グループ番号の列が追加された動画情報のリストが更新される。
+   `video_list`の対応するグループ番号列だけが更新される。
 
 ### 投票フォーム作成
 

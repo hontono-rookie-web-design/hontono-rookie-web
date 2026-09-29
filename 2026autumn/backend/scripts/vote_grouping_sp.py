@@ -3,12 +3,12 @@ from lib import sheet_client, utils, vote_grouping
 
 load_dotenv()
 
-GROUP_ID_COLUMN = "prelim_group_id"
+GROUP_ID_COLUMN = "sp_group_id"
 
 
-def select_rookie_videos(video_data: list[dict], rookie_status: str) -> list[dict]:
-    """予選グループ分けの対象となるルーキー動画だけを返す。"""
-    return vote_grouping.select_eligible_videos(video_data, rookie_status)
+def select_sp_videos(video_data: list[dict], sp_status: str) -> list[dict]:
+    """SPグループ分けの対象となる有効なSP動画だけを返す。"""
+    return vote_grouping.select_eligible_videos(video_data, sp_status)
 
 
 def main():
@@ -23,25 +23,29 @@ def main():
         print(f"No data found in {video_list_config['sheet']}. Skipping.")
         return
 
-    rookie_status = config["status"]["rookie"]
-    rookie_videos = select_rookie_videos(video_data, rookie_status)
-    group_num = config["vote_grouping"]["group_num"]
-    seed = config["vote_grouping"]["random_seed"]
+    sp_videos = select_sp_videos(video_data, config["status"]["sp"])
+    if not sp_videos:
+        print("No eligible SP videos found. Skipping.")
+        return
+
+    grouping_config = config["vote_grouping_sp"]
+    group_num = grouping_config["group_num"]
+    seed = grouping_config["random_seed"]
     print(
-        f"Grouping {len(rookie_videos)} rookie videos into {group_num} groups "
+        f"Grouping {len(sp_videos)} SP videos into {group_num} groups "
         f"using random seed {seed}"
     )
 
     assignments = vote_grouping.create_group_assignments(
-        rookie_videos, group_num, seed
+        sp_videos, group_num, seed
     )
     vote_grouping.update_group_ids(
         video_list_sheet, video_data, assignments, GROUP_ID_COLUMN
     )
 
-    group_sizes = vote_grouping.summarize_group_sizes(assignments, group_num)
-    print(f"Group sizes: {group_sizes}")
-
+    print(
+        f"Group sizes: {vote_grouping.summarize_group_sizes(assignments, group_num)}"
+    )
     print(
         f"Successfully updated '{GROUP_ID_COLUMN}' in "
         f"'{video_list_config['sheet']}' of '{video_list_config['name']}'."
