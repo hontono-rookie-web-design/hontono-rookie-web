@@ -11,6 +11,11 @@ on:
 
   # GitHub Actionsから手動でPreviewへデプロイ
   workflow_dispatch:
+    inputs:
+      alias_name:
+        description: 'PreviewのAlias名 (例: manual-preview-1)'
+        required: true
+        type: string
   
 permissions:
   contents: read
