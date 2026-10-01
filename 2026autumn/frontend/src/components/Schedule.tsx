@@ -20,13 +20,13 @@ export default function Schedule() {
     },
     {
       title: "決勝(Best)",
-      date: "2026年10月5日(月) 〜 10月18日(日)",
+      date: "2026年10月1日(木) 〜 10月12日(月)",
       description: "各Discの上位作品による最終決戦！",
       color: "step-accent",
     },
     {
       title: "結果発表",
-      date: "2026年10月19日(月) 以降",
+      date: "2026年10月13日(火) 以降",
       description: "本サイトおよび公式Xにて最終結果を発表します。",
       color: "step-secondary",
     },
@@ -86,11 +86,11 @@ export default function Schedule() {
             <div className="bg-white p-5 rounded-xl border border-accent/10 shadow-sm">
               <h5 className="font-bold text-primary text-xl tracking-wide mb-2">SPステージ</h5>
               <p className="text-xs text-slate-400 font-semibold mb-3">
-                2026年10月5日(月) 〜 2026年10月18日(日) 24:00
+                2026年10月10日(土) 〜 2026年10月18日(日) 24:00
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
                 二次創作参加作品が対象となる特別なステージです。
-                <span className="text-primary font-bold">投稿締切：10/4(日) 24:00</span>
+                <span className="text-primary font-bold">投稿締切：10/8(日) 24:00</span>
               </p>
             </div>
           </div>
