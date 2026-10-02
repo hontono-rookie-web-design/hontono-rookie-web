@@ -1,6 +1,8 @@
 "use client";
 
 import styles from "./VideoCard.module.css";
+import Image from 'next/image'
+
 
 type Video = {
   title: string;
@@ -13,7 +15,7 @@ export default function VideoCard({ video }: { video: Video }) {
   return (
     <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
       <div className={styles.card}>
-        <img src={video.thumbnailUrl} className={styles.thumbnail} alt="" />
+        <Image src={video.thumbnailUrl} className={styles.thumbnail} alt="" />
         　　　　　
         <div className={styles.info}>
           <h3 className={styles.title}>{video.title}</h3>
