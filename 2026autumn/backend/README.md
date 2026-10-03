@@ -278,3 +278,24 @@ APP_ENV="development"
    python -m scripts.update_videos_info
    ```
    再生数いいね数集計用参加作品動画リストが更新される。
+
+### 順位推移グラフの作成
+
+各グループの日ごとの順位推移グラフを公開する場合、以下の手順でグラフを作成する。
+
+1. `backend`ディレクトリで以下の例に従い実行
+   ```
+   python -m scripts.plot_rank_transition --phase prelim
+   ```
+   `--phase`には `prelim`, `final`, `sp`のいずれかを指定する(必須)。
+   対象フェーズの各グループの順位推移グラフが`images/<phase>_rank_transition/`下にPNGで出力される。
+   横軸の日付範囲は、対象フェーズの全フォーム回答内でもっとも早い回答日からもっとも遅い回答日までで統一される。
+   `--rank` で数字を指定した場合、最終順位が指定した順位以内の動画のみがグラフに表示される。
+   (例：`--rank 3`とした場合、最終順位が3位以内の動画のみがグラフに表示される。)
+
+   フォームの取得には、対象フェーズに応じた以下いずれかの環境変数（投票フォームが入っているGoogle DriveフォルダのID）が`.env`に必要。
+   | フェーズ  | 環境変数                  |
+   | --------- | -------------------------- |
+   | `prelim`  | `PRELIM_FORMS_FOLDER_ID`   |
+   | `final`   | `FINAL_FORMS_FOLDER_ID`    |
+   | `sp`      | `SP_FORMS_FOLDER_ID`       |
