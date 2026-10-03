@@ -185,9 +185,9 @@ def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict
         daily_ranks[date] = ranks
     return daily_ranks
 
-# 最終順位が公開対象（上位top_n位以内）の動画のみに絞り込む（予選/SPフェーズは1〜3位までしか公表しないため）
+# 最終順位が公開対象（上位top_n位以内）の動画のみに絞り込む
 def filter_public_ranks(
-    daily_ranks: dict[str, dict[str, int]], top_n: int = 3
+    daily_ranks: dict[str, dict[str, int]], top_n: None
 ) -> dict[str, dict[str, int]]:
     if not daily_ranks:
         return daily_ranks
@@ -301,9 +301,9 @@ def main():
         help="フォームごとのPNGを出力するディレクトリ（既定: images/prelim_rank_transition）",
     )
     parser.add_argument(
-        "--public",
-        action="store_true",
-        help="最終順位が3位以内の動画のみをグラフに表示します（予選/SPフェーズで一般公開する順位に合わせる）",
+        "--rank",
+        type=int,
+        help="最終順位が指定した順位以内の動画のみをグラフに表示します",
     )
     args = parser.parse_args()
 
@@ -316,6 +316,8 @@ def main():
         raise RuntimeError("PRELIM_FORMS_FOLDER_ID が設定されていません")
     if args.limit is not None and args.limit < 1:
         raise ValueError("--limit は1以上を指定してください")
+    if args.rank is not None and args.rank < 1:
+        raise ValueError("--rank は1以上を指定してください")
 
     drive_service, forms_service = build_services(credentials_path)
     forms = fetch_forms(drive_service, folder_id)
@@ -343,8 +345,8 @@ def main():
         total_video_count = len(
             {video_id for ranks in daily_ranks.values() for video_id in ranks}
         )
-        if args.public:
-            daily_ranks = filter_public_ranks(daily_ranks)
+        if args.rank:
+            daily_ranks = filter_public_ranks(daily_ranks,args.rank)
         plot_rank_transition(
             daily_ranks,
             form["name"],
