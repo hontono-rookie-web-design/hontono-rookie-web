@@ -130,7 +130,7 @@ def fetch_form_votes(
         {"row_count": row_count, **vote} for vote in responses
     ]
 
-# 各動画の日付ごとのスコアを集計し、累計獲得スコアを算出
+# 各動画の日付ごとのスコアを集計する（票のない日の穴埋め・累計はbuild_cumulative_scoresで行う）
 def aggregate_daily_scores(
     forms_service, form: dict
 ) -> tuple[dict[str, dict[str, int]], dict[str, str]]:
@@ -152,12 +152,13 @@ def aggregate_daily_scores(
                 continue
             daily_scores[vote_date][video_id] += response["row_count"] - rank + 1
 
-    if not daily_scores:
-        return {}, video_titles
+    return {date: dict(scores) for date, scores in daily_scores.items()}, video_titles
 
-    # 最初〜最後の投票日を1日ずつ進め、票のない日も含めて累計スコアを求める
-    first_date = date.fromisoformat(min(daily_scores))
-    last_date = date.fromisoformat(max(daily_scores))
+
+# 指定した日付範囲（全フォーム共通）で、票のない日も含めて累計スコアを求める
+def build_cumulative_scores(
+    daily_scores: dict[str, dict[str, int]], first_date: date, last_date: date
+) -> dict[str, dict[str, int]]:
     cumulative_scores = {}
     running_scores = defaultdict(int)
     for offset in range((last_date - first_date).days + 1):
@@ -166,7 +167,7 @@ def aggregate_daily_scores(
             running_scores[video_id] += score
         cumulative_scores[current_date] = dict(running_scores)  # その日時点のスナップショット
 
-    return cumulative_scores, video_titles
+    return cumulative_scores
 
 
 # 当日までの累計獲得スコアを降順に並べ、順位を付与する
@@ -327,21 +328,47 @@ def main():
         forms = forms[: args.limit]
     args.output.mkdir(parents=True, exist_ok=True)
 
-    print("処理するフォーム:")
-    for form in forms:
-        print(f"  Disc.{form['number']}: {form['name']}")
+    print("横軸範囲を取得中...")
 
-        # 日時スコアを集計
+    # 1周目: 全フォームの日時スコアを集計しつつ、横軸範囲を揃えるため全フォーム共通の最小・最大投票日を求める
+    forms_data = []
+    global_first_date = None
+    global_last_date = None
+    for form in forms:
         daily_scores, video_titles = aggregate_daily_scores(forms_service, form)
+        if daily_scores:
+            form_first_date = date.fromisoformat(min(daily_scores))
+            form_last_date = date.fromisoformat(max(daily_scores))
+            global_first_date = (
+                form_first_date
+                if global_first_date is None
+                else min(global_first_date, form_first_date)
+            )
+            global_last_date = (
+                form_last_date
+                if global_last_date is None
+                else max(global_last_date, form_last_date)
+            )
+        forms_data.append((form, daily_scores, video_titles))
+
+    print(f"全フォーム共通の横軸範囲: {global_first_date} 〜 {global_last_date}")
+
+    # 2周目: 共通の日付範囲で累計スコアを求め、順位の遷移集計・グラフ化
+    print("処理するフォーム:")
+    for form, daily_scores, video_titles in forms_data:
+        print(f"  Disc.{form['number']}: {form['name']}")
         if not daily_scores:
             print("  投票回答がないためスキップします")
             continue
 
+        cumulative_scores = build_cumulative_scores(
+            daily_scores, global_first_date, global_last_date
+        )
+
         # 出力ファイルパス
         output_path = args.output / f"Disc.{form['number']}_{form['name']}.png"
 
-        # 順位の遷移集計しグラフ化
-        daily_ranks = build_daily_ranks(daily_scores)
+        daily_ranks = build_daily_ranks(cumulative_scores)
         total_video_count = len(
             {video_id for ranks in daily_ranks.values() for video_id in ranks}
         )
