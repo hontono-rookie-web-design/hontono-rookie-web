@@ -37,8 +37,8 @@ def build_services(credentials_path: str):
     forms_service = discovery.build("forms", "v1", credentials=credentials)
     return drive_service, forms_service
 
-# Google Formを取得
 def fetch_forms(drive_service, folder_id: str) -> list[dict]:
+    """Google Formを取得"""
     query = (
         f"'{folder_id}' in parents and mimeType = '{FORM_MIME_TYPE}' "
         "and trashed = false"
@@ -70,29 +70,29 @@ def fetch_forms(drive_service, folder_id: str) -> list[dict]:
 
     return sorted(forms, key=lambda form: (form["number"], form["name"]))
 
-# "〇位"の文字列から順位を整数で返す
 def extract_rank(value) -> int | None:
+    """「〇位」の文字列から順位を整数で返す"""
     match = RANK_PATTERN.search(str(value or ""))
     return int(match.group()) if match else None
 
-# "曲名_ID" のテンプレからIDのみを返す
 def extract_video_id(row_title: str) -> str:
+    """「曲名_ID」のテンプレからIDのみを返す"""
     video_id = row_title.rsplit("_", 1)[-1].strip()
     if not video_id:
         raise ValueError(f"videoId を取得できない行タイトルです: {row_title}")
     return video_id
 
-# "曲名_ID" のテンプレから曲名のみを返す
 def extract_video_title(row_title: str) -> str:
+    """「曲名_ID」のテンプレから曲名のみを返す"""
     video_title = row_title.rsplit("_", 1)[0].strip()
     if not video_title:
         raise ValueError(f"曲名を取得できない行タイトルです: {row_title}")
     return video_title
 
-# 各フォームの回答を取得
 def fetch_form_votes(
     forms_service, form_id: str
 ) -> tuple[dict[str, str], dict[str, str], list[dict]]:
+    """各フォームの回答を取得"""
     form = forms_service.forms().get(formId=form_id).execute()
     row_question_ids = {}
     video_titles = {}
@@ -130,10 +130,10 @@ def fetch_form_votes(
         {"row_count": row_count, **vote} for vote in responses
     ]
 
-# 各動画の日付ごとのスコアを集計する（票のない日の穴埋め・累計はbuild_cumulative_scoresで行う）
 def aggregate_daily_scores(
     forms_service, form: dict
 ) -> tuple[dict[str, dict[str, int]], dict[str, str]]:
+    """各動画の日付ごとのスコアを集計する（票のない日の穴埋め・累計はbuild_cumulative_scoresで行う）"""
     daily_scores = defaultdict(lambda: defaultdict(int))
 
     row_question_ids, video_titles, responses = fetch_form_votes(forms_service, form["id"])
@@ -155,10 +155,10 @@ def aggregate_daily_scores(
     return {date: dict(scores) for date, scores in daily_scores.items()}, video_titles
 
 
-# 指定した日付範囲（全フォーム共通）で、票のない日も含めて累計スコアを求める
 def build_cumulative_scores(
     daily_scores: dict[str, dict[str, int]], first_date: date, last_date: date
 ) -> dict[str, dict[str, int]]:
+    """指定した日付範囲（全フォーム共通）で、票のない日も含めて累計スコアを求める"""
     cumulative_scores = {}
     running_scores = defaultdict(int)
     for offset in range((last_date - first_date).days + 1):
@@ -170,8 +170,8 @@ def build_cumulative_scores(
     return cumulative_scores
 
 
-# 当日までの累計獲得スコアを降順に並べ、順位を付与する
-def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]: 
+def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]:
+    """当日までの累計獲得スコアを降順に並べ、順位を付与する"""
     daily_ranks = {}
     for date, scores in daily_scores.items():
         ordered = sorted(scores.items(), key=lambda item: -item[1])
@@ -186,10 +186,10 @@ def build_daily_ranks(daily_scores: dict[str, dict[str, int]]) -> dict[str, dict
         daily_ranks[date] = ranks
     return daily_ranks
 
-# 最終順位が公開対象（上位top_n位以内）の動画のみに絞り込む
 def filter_public_ranks(
     daily_ranks: dict[str, dict[str, int]], top_n: None
 ) -> dict[str, dict[str, int]]:
+    """最終順位が公開対象（上位top_n位以内）の動画のみに絞り込む"""
     if not daily_ranks:
         return daily_ranks
 
@@ -206,7 +206,6 @@ def filter_public_ranks(
         for date, ranks in daily_ranks.items()
     }
 
-# 順位推移のグラフを描画し保存
 def plot_rank_transition(
     daily_ranks: dict[str, dict[str, int]],
     form_name: str,
@@ -214,6 +213,7 @@ def plot_rank_transition(
     total_video_count: int | None = None,
     video_titles: dict[str, str] | None = None,
 ):
+    """順位推移のグラフを描画し保存"""
     dates = sorted(daily_ranks)
     video_ids = sorted({video_id for ranks in daily_ranks.values() for video_id in ranks})
     # 縦軸の範囲は絞り込み前の全動画数で統一する（未指定時は表示対象の動画数をそのまま使う）
