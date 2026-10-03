@@ -303,8 +303,8 @@ def main():
     parser.add_argument(
         "--phase",
         choices=sorted(PHASE_FOLDER_ENV_VARS),
-        default="prelim",
-        help="対象フェーズ（prelim/final/sp）。未指定時はprelim",
+        default=None,
+        help="対象フェーズ（prelim/final/sp）。必須",
     )
     parser.add_argument(
         "--limit",
@@ -327,6 +327,8 @@ def main():
     args = parser.parse_args()
 
     load_dotenv()
+    if args.phase is None:
+        raise ValueError("--phase を指定してください（prelim/final/sp）")
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
         raise RuntimeError("GOOGLE_APPLICATION_CREDENTIALS が設定されていません")
