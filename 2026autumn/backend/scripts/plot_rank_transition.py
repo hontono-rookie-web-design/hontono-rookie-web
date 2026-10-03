@@ -27,6 +27,18 @@ SCOPES = [
 ]
 FORM_NUMBER_PATTERN = re.compile(r"(\d+)\s*$")
 RANK_PATTERN = re.compile(r"\d+")
+# フェーズごとに、投票フォームが入っているGoogle Driveフォルダを指す環境変数名
+PHASE_FOLDER_ENV_VARS = {
+    "prelim": "PRELIM_FORMS_FOLDER_ID",
+    "final": "FINAL_FORMS_FOLDER_ID",
+    "sp": "SP_FORMS_FOLDER_ID",
+}
+# フェーズごとの表示ラベル（出力ファイル名・コンソール表示に使用）
+PHASE_LABELS = {
+    "prelim": "Disc.",
+    "final": "Best.",
+    "sp": "SP.",
+}
 
 
 def build_services(credentials_path: str):
@@ -289,6 +301,12 @@ def main():
         description="Google Drive フォルダ内の各Google Formの日次順位推移を描画します"
     )
     parser.add_argument(
+        "--phase",
+        choices=sorted(PHASE_FOLDER_ENV_VARS),
+        default="prelim",
+        help="対象フェーズ（prelim/final/sp）。未指定時はprelim",
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=None,
@@ -297,9 +315,9 @@ def main():
     parser.add_argument(
         "-o",
         "--output",
-        default=Path("images/prelim_rank_transition"),
+        default=None,
         type=Path,
-        help="フォームごとのPNGを出力するディレクトリ（既定: images/prelim_rank_transition）",
+        help="フォームごとのPNGを出力するディレクトリ（未指定時は images/<phase>_rank_transition）",
     )
     parser.add_argument(
         "--rank",
@@ -312,13 +330,17 @@ def main():
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
         raise RuntimeError("GOOGLE_APPLICATION_CREDENTIALS が設定されていません")
-    folder_id = os.getenv("PRELIM_FORMS_FOLDER_ID")
+    folder_env_var = PHASE_FOLDER_ENV_VARS[args.phase]
+    folder_id = os.getenv(folder_env_var)
     if not folder_id:
-        raise RuntimeError("PRELIM_FORMS_FOLDER_ID が設定されていません")
+        raise RuntimeError(f"{folder_env_var} が設定されていません")
     if args.limit is not None and args.limit < 1:
         raise ValueError("--limit は1以上を指定してください")
     if args.rank is not None and args.rank < 1:
         raise ValueError("--rank は1以上を指定してください")
+
+    output_dir = args.output if args.output is not None else Path(f"images/{args.phase}_rank_transition")
+    phase_label = PHASE_LABELS[args.phase]
 
     drive_service, forms_service = build_services(credentials_path)
     forms = fetch_forms(drive_service, folder_id)
@@ -326,8 +348,9 @@ def main():
         raise RuntimeError(f"フォルダ内に対象フォームがありません: {folder_id}")
     if args.limit is not None:
         forms = forms[: args.limit]
-    args.output.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
+    print(f"対象フェーズ: {args.phase}")
     print("横軸範囲を取得中...")
 
     # 1周目: 全フォームの日時スコアを集計しつつ、横軸範囲を揃えるため全フォーム共通の最小・最大投票日を求める
@@ -356,7 +379,7 @@ def main():
     # 2周目: 共通の日付範囲で累計スコアを求め、順位の遷移集計・グラフ化
     print("処理するフォーム:")
     for form, daily_scores, video_titles in forms_data:
-        print(f"  Disc.{form['number']}: {form['name']}")
+        print(f"  {phase_label}{form['number']}: {form['name']}")
         if not daily_scores:
             print("  投票回答がないためスキップします")
             continue
@@ -366,7 +389,7 @@ def main():
         )
 
         # 出力ファイルパス
-        output_path = args.output / f"Disc.{form['number']}_{form['name']}.png"
+        output_path = output_dir / f"{phase_label}{form['number']}_{form['name']}.png"
 
         daily_ranks = build_daily_ranks(cumulative_scores)
         total_video_count = len(
