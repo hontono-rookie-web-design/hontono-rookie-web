@@ -3,6 +3,7 @@
 import argparse
 import os
 import re
+import textwrap
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -256,8 +257,10 @@ def plot_rank_transition(
         if video_id not in final_positions:
             continue
         index, rank = final_positions[video_id]
+        label_text = (video_titles or {}).get(video_id, video_id)
+        wrapped_label = textwrap.fill(label_text, width=15)  # 曲名が長い場合に折り返して横に伸びすぎないようにする
         axis.annotate(
-            (video_titles or {}).get(video_id, video_id),
+            wrapped_label,
             xy=(dates[index], rank),
             xytext=(10, label_y_offsets[video_id]),
             textcoords="offset points",
