@@ -1,22 +1,59 @@
+import TBA from "@/components/TBA";
+import VideoList, { type VideoListItem } from "@/components/video/VideoList";
 import { CONFIG } from "@/config/config";
-import { getCurrentPhase } from "@/config/phase";
+import { EVENT_PHASES, getCurrentPhase } from "@/config/phase";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
-import VideoList from "./VideoList";
 
 export const dynamic = "force-static";
 export const revalidate = false;
 
+const TITLE = "楽曲一覧 ルーキー";
+
+function isBeforePhase(phase: string) {
+  switch (phase) {
+    case EVENT_PHASES.BEFORE:
+    case EVENT_PHASES.EXTRA:
+      return true;
+    default:
+      return false;
+  }
+}
+
 export default async function Page() {
-  const currentPhase = getCurrentPhase();
+  // 公開前はデータを取得・送信せずに TBA を表示する
+  if (isBeforePhase(getCurrentPhase())) {
+    return <TBA title={TITLE} />;
+  }
+
   const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.rookie.name);
 
-  const mappedVideos = rawVideos.map((item) => ({
+  // クライアントには表示に必要な項目のみを渡す
+  const videos: VideoListItem[] = rawVideos.map((item) => ({
     title: item.title,
-    author: item.creator, // creator を author にマッピング
+    author: item.creator,
     videoUrl: item.videoUrl,
     thumbnailUrl: item.thumbnailUrl,
     publishedAt: item.publishedAt,
   }));
 
-  return <VideoList initialData={mappedVideos} initialPhase={currentPhase} />;
+  return (
+    <main className="flex justify-center">
+      <div className="w-full max-w-6xl px-4 py-6">
+        {/* ヘッダー */}
+
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight">{TITLE}</h1>
+
+          <p className="text-sm text-gray-500 mt-1">
+            「{CONFIG.event.name}
+            」のルーキー参加楽曲を掲載しています。
+          </p>
+
+          <div className="mt-4 border-b border-gray-200 w-full" />
+        </div>
+
+        <VideoList videos={videos} emptyMessage="ルーキー楽曲はまだありません。" />
+      </div>
+    </main>
+  );
 }

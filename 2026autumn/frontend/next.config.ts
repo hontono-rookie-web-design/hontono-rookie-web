@@ -4,6 +4,15 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    // 旧URL（?group=N）を /N のパス形式へ転送する
+    return ["preliminaries", "finals", "special"].map((stage) => ({
+      source: `/submissions/vote/${stage}`,
+      has: [{ type: "query" as const, key: "group", value: "(?<group>\\d+)" }],
+      destination: `/submissions/vote/${stage}/:group`,
+      permanent: false,
+    }));
+  },
   async headers() {
     return [
       // ビルド済み静的アセット（ハッシュ付き）: 長期キャッシュ
