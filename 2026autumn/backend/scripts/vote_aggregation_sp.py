@@ -1,59 +1,16 @@
-## 予選の集計機能
-## Vote Aggregation for Preliminary
+## SPの集計機能
+## Vote Aggregation for SP
 
-import os, argparse
+import os
 
-from lib import utils
-from lib import sheet_client
-
-from lib.vote_aggregation import aggregate_votes
-
+from dotenv import load_dotenv
 from googleapiclient import discovery
 from oauth2client import client, file, tools
 
-from dotenv import load_dotenv
-
-# Phase: prelim, final, sp
+from lib import sheet_client, utils
+from lib.vote_aggregation import aggregate_votes
 
 load_dotenv()
-PHASE_CONFIG = {
-    "prelim": {
-        "forms_env": "PRELIMINARY_FORMS_FOLDER_ID",
-        "group_id": "prelim_group_id",
-        "rank": "prelim_rank",
-        "score": "prelim_score",
-        "vote_count": "prelim_vote_count",
-        "average_score": "prelim_average_score",
-    },
-    "final": {
-        "forms_env": "FINAL_FORMS_ID",
-        "group_id": "final_group_id",
-        "rank": "final_rank",
-        "score": "final_score",
-        "vote_count": "final_vote_count",
-        "average_score": "final_average_score",
-    },
-    "sp": {
-        "forms_env": "SP_FORMS_ID",
-        "group_id": "sp_group_id",
-        "rank": "sp_rank",
-        "score": "sp_score",
-        "vote_count": "sp_vote_count",
-        "average_score": "sp_average_score",
-    },
-}
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--phase",
-        choices=["prelim", "final", "sp"],
-        required=True,
-    )
-
-    return parser.parse_args()
 
 
 # Initialize OAuth credentials for Google Forms API.
@@ -189,28 +146,22 @@ def convert_form_responses(
     return converted
 
 
-# Update ranking for preliminary by video_id.
-# video_id 別に予選の順位を更新する。
+# Update SP ranking by video_id.
+# video_id別にSPの順位を更新する。
 
 
-# Update ranking by video_id.
-# video_id別に順位を更新する。
-
-
-def update_rank(
+def update_sp_rank(
     worksheet,
     video_data,
     ranking,
-    phase,
 ):
-
-    phase_config = PHASE_CONFIG[phase]
-    rank_column = phase_config["rank"]
 
     rank_map = {}
 
     for row in ranking:
+
         video_id = row["動画ID"]
+
         rank_map[video_id] = row["順位"]
 
     updated_count = 0
@@ -221,7 +172,7 @@ def update_rank(
 
         if video_id in rank_map:
 
-            video[rank_column] = rank_map[video_id]
+            video["sp_rank"] = rank_map[video_id]
 
             updated_count += 1
 
@@ -232,22 +183,18 @@ def update_rank(
         video_data,
     )
 
-    print(f"Successfully updated {rank_column}.")
+    print("Successfully updated sp_rank.")
 
 
-def update_score(
+# Update SP scores.
+# SPのスコアを更新する。
+
+
+def update_sp_score(
     ranking,
     video_data,
     config,
-    phase,
 ):
-
-    phase_config = PHASE_CONFIG[phase]
-
-    group_id_column = phase_config["group_id"]
-    score_column = phase_config["score"]
-    vote_count_column = phase_config["vote_count"]
-    average_score_column = phase_config["average_score"]
 
     video_by_id = {
         str(video.get("video_id", "")).strip(): video for video in video_data
@@ -267,15 +214,17 @@ def update_score(
         score_data.append(
             {
                 "video_id": video_id,
-                group_id_column: video.get(group_id_column, ""),
-                score_column: row["得点"],
-                vote_count_column: row["投票数"],
-                average_score_column: row["平均得点"],
+                "sp_group_id": video.get("sp_group_id", ""),
+                "sp_score": row["得点"],
+                "sp_vote_count": row["投票数"],
+                "sp_average_score": row["平均得点"],
             }
         )
 
     if not score_data:
-        print(f"No {phase} scores found. Skipping score_list update.")
+
+        print("No SP scores found. Skipping score_list update.")
+
         return
 
     score_list_config = config["spreadsheets"]["score_list"]
@@ -291,103 +240,17 @@ def update_score(
         score_data,
     )
 
-    print(f"Successfully updated {score_column}.")
-
-
-def update_public_score(
-    ranking,
-    video_data,
-    config,
-    phase,
-):
-
-    if phase != "prelim":
-        return
-
-    phase_config = PHASE_CONFIG[phase]
-    group_id_column = phase_config["group_id"]
-
-    public_rank_limit = config["prelim_aggregation"]["public_rank_limit"]
-    public_score_limit = config["prelim_aggregation"]["public_score_limit"]
-
-    video_by_id = {
-        str(video.get("video_id", "")).strip(): video for video in video_data
-    }
-
-    public_data = []
-
-    for row in ranking:
-
-        rank = row.get("順位")
-        video_id = str(row.get("動画ID", "")).strip()
-
-        if not video_id or rank is None or rank > public_rank_limit:
-            continue
-
-        video = video_by_id.get(video_id, {})
-
-        score = row["得点"] if rank <= public_score_limit else "-"
-        average_score = row["平均得点"] if rank <= public_score_limit else "-"
-
-        public_data.append(
-            {
-                "Disc番号": video.get(group_id_column, ""),
-                "グループ曲数": row.get("グループ曲数", ""),
-                "投票数": row.get("投票数", ""),
-                "順位": rank,
-                "スコア": score,
-                "平均スコア": average_score,
-                "動画ID": video_id,
-                "タイトル": video.get("title", ""),
-                "投稿者名": video.get("user_name", ""),
-            }
-        )
-
-    if not public_data:
-        print("No public preliminary scores found. Skipping public score update.")
-        return
-
-    public_data.sort(
-        key=lambda item: (
-            int(str(item["Disc番号"]).strip()),
-            int(item["順位"]),
-        )
-    )
-
-    public_score_config = config["spreadsheets"]["public_prelim_score_list"]
-
-    public_score_sheet = sheet_client.connect_sheet(
-        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
-        public_score_config["name"],
-        public_score_config["sheet"],
-    )
-
-    sheet_client.update_sheet(
-        public_score_sheet,
-        public_data,
-    )
-
-    print("Successfully updated public_prelim_score.")
+    print("Successfully updated sp_score.")
 
 
 def main():
 
-    args = parse_args()
-
-    phase = args.phase
-    phase_config = PHASE_CONFIG[phase]
-
     config = utils.load_config()
-
-    print(f"Aggregation phase: {phase}")
 
     # Initialize OAuth
     # OAuthを初期化する
 
     creds = initialize_oauth_credentials()
-
-    # Get forms from the folder
-    # フォルダーからフォームを取得する
 
     form_service = discovery.build(
         "forms",
@@ -395,10 +258,13 @@ def main():
         credentials=creds,
     )
 
-    forms_folder_id = os.getenv(phase_config["forms_env"])
+    # Get SP forms from the folder.
+    # フォルダからSPフォームを取得する。
+
+    forms_folder_id = os.getenv("SP_FORMS_ID")
 
     if not forms_folder_id:
-        print(f"{phase_config['forms_env']} is not set.")
+        print("SP_FORMS_ID is not set.")
         return
 
     forms = get_forms_in_folder(
@@ -408,9 +274,9 @@ def main():
 
     forms = sorted(forms, key=lambda x: x["name"])
 
-    if phase == "prelim":
-        number_of_forms = config["prelim_aggregation"]["number_of_groups"]
-        forms = forms[:number_of_forms]
+    if not forms:
+        print("No SP forms found.")
+        return
 
     all_rankings = []
 
@@ -428,13 +294,11 @@ def main():
         print("Number of responses:", len(responses))
 
         if not responses:
-
             print("No responses found. Skip.")
-
             continue
 
         # Convert Responses
-        # 回答を変換する
+        # 回答を変換する。
 
         question_map = get_question_map(
             form_service,
@@ -447,19 +311,16 @@ def main():
         )
 
         # Aggregate Votes
-        # 集計機能
+        # 集計する。
 
         ranking = aggregate_votes(votes)
 
         all_rankings.extend(ranking)
 
-    # Update video_list
-    # video_listを更新する
-
-    print("\n===== Updating video_list =====")
-
     # Load video_list sheet.
     # video_listを取得する。
+
+    print("\n===== Updating video_list =====")
 
     sheet_config = config["spreadsheets"]["video_list"]
 
@@ -477,25 +338,22 @@ def main():
 
         return
 
-    update_rank(
+    # Update SP rank.
+    # SP順位を更新する。
+
+    update_sp_rank(
         video_sheet,
         video_data,
         all_rankings,
-        phase,
     )
 
-    update_score(
+    # Update SP score.
+    # SPスコアを更新する。
+
+    update_sp_score(
         all_rankings,
         video_data,
         config,
-        phase,
-    )
-
-    update_public_score(
-        all_rankings,
-        video_data,
-        config,
-        phase,
     )
 
 
