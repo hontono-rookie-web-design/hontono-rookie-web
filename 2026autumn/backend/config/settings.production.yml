@@ -94,7 +94,7 @@ vote_grouping: # 投票グループ分け関連パラメータ
 
 vote_grouping_sp: # spグループ分け関連パラメータ
   random_seed: 43
-  group_num: 8
+  group_num: 10
 
 vote_grouping_final: # 決勝グループ分け関連パラメータ
   group_num: 12 # 決勝のDisc数
