@@ -10,19 +10,104 @@ on:
   # GitHub Actionsから手動でProductionへデプロイ
   workflow_dispatch:
 
+  # ページはビルド時に静的生成しているため、
+  # スプレッドシートの更新を反映するために10分おきに確認し、
+  # 前回デプロイ時から変わっていたときだけ再デプロイする
+  # （毎時0分はActionsが混み合い遅延しやすいので5分ずらす）
+  schedule:
+    - cron: "5,15,25,35,45,55 * * * *"
+
+  # スプレッドシートを更新するワークフローが終わったら、すぐに反映する
+  workflow_run:
+    workflows:
+      - "2026autumn Fetch Videos"
+      - "2026autumn Group Daily Aggregation"
+      - "2026autumn Fetch Derivative"
+      - "2026autumn Fetch Note"
+    types:
+      - completed
+
 permissions:
   contents: read
   deployments: write
 
-# Productionへのデプロイが同時に複数実行されないようにする
-concurrency:
-  group: 2026autumn-production
-  cancel-in-progress: false
-
 jobs:
+  # スプレッドシートとフェーズの内容からハッシュを計算し、
+  # 前回デプロイ時から変わっているかを確認する
+  check-sheets:
+    name: Check spreadsheet changes
+    # workflow_runの場合は、元のワークフローが成功したときだけ実行する
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    outputs:
+      hash: ${{ steps.hash.outputs.hash }}
+      changed: ${{ steps.cache.outputs.cache-hit != 'true' }}
+
+    steps:
+      - name: Compute spreadsheet hash
+        id: hash
+        env:
+          SPREADSHEET_IDS: >-
+            ${{ secrets.SPREADSHEET_ID_DERIVATIVE }}
+            ${{ secrets.SPREADSHEET_ID_NOTES }}
+            ${{ secrets.SPREADSHEET_ID_VIDEOS }}
+            ${{ secrets.SPREADSHEET_ID_VOTEFORM }}
+          EVENT_PHASE: ${{ vars.EVENT_PHASE }}
+          EVENT_PHASE_SP: ${{ vars.EVENT_PHASE_SP }}
+        run: |
+          mkdir -p sheets
+          i=0
+          for id in $SPREADSHEET_IDS; do
+            i=$((i + 1))
+            # 取得に失敗した場合は、空のデータでデプロイしないようにここで止める
+            curl -sSfL --retry 3 --retry-delay 5 "https://opensheet.elk.sh/${id}/1" -o "sheets/${i}.json"
+            if ! jq -e 'type == "array"' "sheets/${i}.json" > /dev/null; then
+              echo "::error::Spreadsheet ${i} returned unexpected data."
+              exit 1
+            fi
+          done
+
+          # フェーズの切り替えも反映できるようにハッシュに含める
+          printf '%s\n%s\n' "$EVENT_PHASE" "$EVENT_PHASE_SP" > sheets/phase.txt
+
+          hash=$(cat sheets/*.json sheets/phase.txt | sha256sum | cut -d ' ' -f 1)
+          echo "$hash" > sheet-hash.txt
+          echo "hash=$hash" >> "$GITHUB_OUTPUT"
+          echo "Spreadsheet hash: $hash"
+
+      # 同じハッシュでデプロイ済みならキャッシュが存在する（中身はダウンロードしない）
+      - name: Check previous deployment
+        id: cache
+        uses: actions/cache/restore@v6
+        with:
+          path: sheet-hash.txt
+          key: 2026autumn-sheets-${{ steps.hash.outputs.hash }}
+          lookup-only: true
+
+      - name: Show result
+        run: |
+          if [ "${{ steps.cache.outputs.cache-hit }}" = "true" ]; then
+            echo "No spreadsheet changes since the last deployment."
+          else
+            echo "Spreadsheet changes detected."
+          fi
+
   deploy:
+    needs: check-sheets
+    # 定期実行ではスプレッドシートが変わったときだけデプロイする
+    # （push・手動実行・workflow_runでは常にデプロイする）
+    if: github.event_name != 'schedule' || needs.check-sheets.outputs.changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    # Productionへのデプロイが同時に複数実行されないようにする
+    # ワークフロー全体ではなくこのジョブに設定することで、
+    # 変更がなくデプロイしない定期実行が、待機中のpushのデプロイを置き換えないようにする
+    concurrency:
+      group: 2026autumn-production
+      cancel-in-progress: false
 
     # GitHub上では開催期ごとにEnvironmentを分けて管理する
     environment:
@@ -67,6 +152,18 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # デプロイしたときのハッシュを記録し、次回の定期実行で比較する
+      - name: Save spreadsheet hash
+        if: needs.check-sheets.outputs.changed == 'true'
+        run: echo "${{ needs.check-sheets.outputs.hash }}" > sheet-hash.txt
+
+      - name: Record deployed spreadsheet hash
+        if: needs.check-sheets.outputs.changed == 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: sheet-hash.txt
+          key: 2026autumn-sheets-${{ needs.check-sheets.outputs.hash }}
 
   # Productionへのデプロイ成功後、
   # 最新以外のGitHub Deploymentをinactiveにする
