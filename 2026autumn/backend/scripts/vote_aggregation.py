@@ -1,0 +1,512 @@
+## 予選の集計機能
+## Vote Aggregation for Preliminary
+
+import os, argparse
+
+from lib import utils
+from lib import sheet_client
+
+from lib.vote_aggregation import aggregate_votes
+
+from googleapiclient import discovery
+from oauth2client import client, file, tools
+
+from dotenv import load_dotenv
+
+# Phase: prelim, final, sp
+
+load_dotenv()
+PHASE_CONFIG = {
+    "prelim": {
+        "forms_env": "PRELIMINARY_FORMS_FOLDER_ID",
+        "aggregation_config": "prelim_aggregation",
+        "public_score_config": "public_prelim_score_list",
+        "group_id": "prelim_group_id",
+        "rank": "prelim_rank",
+        "score": "prelim_score",
+        "vote_count": "prelim_vote_count",
+        "average_score": "prelim_average_score",
+    },
+    "final": {
+        "forms_env": "FINAL_FORMS_ID",
+        "aggregation_config": "final_aggregation",
+        "public_score_config": "public_final_score_list",
+        "group_id": "final_group_id",
+        "rank": "final_rank",
+        "score": "final_score",
+        "vote_count": "final_vote_count",
+        "average_score": "final_average_score",
+    },
+    "sp": {
+        "forms_env": "SP_FORMS_ID",
+        "aggregation_config": "sp_aggregation",
+        "public_score_config": "public_sp_score_list",
+        "group_id": "sp_group_id",
+        "rank": "sp_rank",
+        "score": "sp_score",
+        "vote_count": "sp_vote_count",
+        "average_score": "sp_average_score",
+    },
+}
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--phase",
+        choices=["prelim", "final", "sp"],
+        required=True,
+    )
+
+    return parser.parse_args()
+
+
+# Initialize OAuth credentials for Google Forms API.
+# Google Forms APIのOAuth認証情報を初期化します。
+
+
+def initialize_oauth_credentials():
+
+    oauth_credentials_path = os.environ["GOOGLE_OAUTH_CREDENTIALS"]
+
+    SCOPES = [
+        "https://www.googleapis.com/auth/forms.responses.readonly",
+        "https://www.googleapis.com/auth/drive",
+    ]
+
+    store = file.Storage("token.json")
+
+    creds = store.get()
+
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets(
+            oauth_credentials_path,
+            SCOPES,
+        )
+
+        creds = tools.run_flow(
+            flow,
+            store,
+        )
+
+    return creds
+
+
+# Get all Google Forms in the folder.
+# フォルダ内のすべてのGoogleフォームを取得します。
+
+
+def get_forms_in_folder(creds, folder_id):
+
+    drive_service = discovery.build(
+        "drive",
+        "v3",
+        credentials=creds,
+    )
+
+    result = (
+        drive_service.files()
+        .list(
+            q=(
+                f"'{folder_id}' in parents "
+                "and mimeType='application/vnd.google-apps.form'"
+            ),
+            fields="files(id,name)",
+        )
+        .execute()
+    )
+
+    return result.get("files", [])
+
+
+def fetch_form_responses(
+    form_service,
+    form_id,
+):
+
+    response = form_service.forms().responses().list(formId=form_id).execute()
+
+    return response.get("responses", [])
+
+
+# Create question_id -> song_name map.
+# Convert Google Form question IDs into song names.
+# Googleフォームの質問IDを曲名に変換します。
+
+
+def get_question_map(
+    form_service,
+    form_id,
+):
+
+    form = form_service.forms().get(formId=form_id).execute()
+
+    question_map = {}
+
+    for item in form["items"]:
+
+        if "questionGroupItem" not in item:
+            continue
+
+        for question in item["questionGroupItem"]["questions"]:
+
+            question_id = question["questionId"]
+
+            title = question["rowQuestion"]["title"]
+
+            question_map[question_id] = title
+
+    return question_map
+
+
+# Convert Google Forms API responses into aggregate_votes format.
+# Google Forms APIのレスポンスをaggregate_votes形式に変換します。
+
+
+def convert_form_responses(
+    responses,
+    question_map,
+):
+
+    converted = []
+
+    for response in responses:
+
+        vote = {}
+
+        answers = response.get("answers", {})
+
+        for question_id, answer in answers.items():
+
+            if question_id not in question_map:
+                continue
+
+            song_name = question_map[question_id]
+
+            value = answer.get("textAnswers", {}).get("answers", [{}])[0].get("value")
+
+            if value:
+
+                vote[song_name] = value
+
+        converted.append(vote)
+
+    return converted
+
+
+# Update ranking for preliminary by video_id.
+# video_id 別に予選の順位を更新する。
+
+
+# Update ranking by video_id.
+# video_id別に順位を更新する。
+
+
+def update_rank(
+    worksheet,
+    video_data,
+    ranking,
+    phase,
+):
+
+    phase_config = PHASE_CONFIG[phase]
+    rank_column = phase_config["rank"]
+
+    rank_map = {}
+
+    for row in ranking:
+        video_id = row["動画ID"]
+        rank_map[video_id] = row["順位"]
+
+    updated_count = 0
+
+    for video in video_data:
+
+        video_id = video.get("video_id", "")
+
+        if video_id in rank_map:
+
+            video[rank_column] = rank_map[video_id]
+
+            updated_count += 1
+
+    print(f"Updated {updated_count} videos.")
+
+    sheet_client.update_sheet(
+        worksheet,
+        video_data,
+    )
+
+    print(f"Successfully updated {rank_column}.")
+
+
+def update_score(
+    ranking,
+    video_data,
+    config,
+    phase,
+):
+
+    phase_config = PHASE_CONFIG[phase]
+
+    group_id_column = phase_config["group_id"]
+    score_column = phase_config["score"]
+    vote_count_column = phase_config["vote_count"]
+    average_score_column = phase_config["average_score"]
+
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video for video in video_data
+    }
+
+    score_data = []
+
+    for row in ranking:
+
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id:
+            continue
+
+        video = video_by_id.get(video_id, {})
+
+        score_data.append(
+            {
+                "video_id": video_id,
+                group_id_column: video.get(group_id_column, ""),
+                score_column: row["得点"],
+                vote_count_column: row["投票数"],
+                average_score_column: row["平均得点"],
+            }
+        )
+
+    if not score_data:
+        print(f"No {phase} scores found. Skipping score_list update.")
+        return
+
+    score_list_config = config["spreadsheets"]["score_list"]
+
+    score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        score_list_config["name"],
+        score_list_config["sheet"],
+    )
+
+    sheet_client.update_sheet(
+        score_sheet,
+        score_data,
+    )
+
+    print(f"Successfully updated {score_column}.")
+
+
+def update_public_score(
+    ranking,
+    video_data,
+    config,
+    phase,
+):
+
+    phase_config = PHASE_CONFIG[phase]
+    group_id_column = phase_config["group_id"]
+
+    phase_config = PHASE_CONFIG[phase]
+    aggregation_config = phase_config["aggregation_config"]
+
+    public_rank_limit = config[aggregation_config]["public_rank_limit"]
+    public_score_limit = config[aggregation_config]["public_score_limit"]
+
+    video_by_id = {
+        str(video.get("video_id", "")).strip(): video for video in video_data
+    }
+
+    public_data = []
+
+    for row in ranking:
+
+        rank = row.get("順位")
+        video_id = str(row.get("動画ID", "")).strip()
+
+        if not video_id or rank is None or rank > public_rank_limit:
+            continue
+
+        video = video_by_id.get(video_id, {})
+
+        score = row["得点"] if rank <= public_score_limit else "-"
+        average_score = row["平均得点"] if rank <= public_score_limit else "-"
+
+        public_data.append(
+            {
+                "Disc番号": video.get(group_id_column, ""),
+                "グループ曲数": row.get("グループ曲数", ""),
+                "投票数": row.get("投票数", ""),
+                "順位": rank,
+                "スコア": score,
+                "平均スコア": average_score,
+                "動画ID": video_id,
+                "タイトル": video.get("title", ""),
+                "投稿者名": video.get("user_name", ""),
+            }
+        )
+
+    if not public_data:
+        print("No public preliminary scores found. Skipping public score update.")
+        return
+
+    public_data.sort(
+        key=lambda item: (
+            int(str(item["Disc番号"]).strip()),
+            int(item["順位"]),
+        )
+    )
+
+    public_score_config_name = phase_config["public_score_config"]
+    public_score_config = config["spreadsheets"][public_score_config_name]
+
+    public_score_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        public_score_config["name"],
+        public_score_config["sheet"],
+    )
+
+    sheet_client.update_sheet(
+        public_score_sheet,
+        public_data,
+    )
+
+    print(f"Successfully updated public_{phase}_score.")
+
+
+def main():
+
+    args = parse_args()
+
+    phase = args.phase
+    phase_config = PHASE_CONFIG[phase]
+
+    config = utils.load_config()
+
+    print(f"Aggregation phase: {phase}")
+
+    # Initialize OAuth
+    # OAuthを初期化する
+
+    creds = initialize_oauth_credentials()
+
+    # Get forms from the folder
+    # フォルダーからフォームを取得する
+
+    form_service = discovery.build(
+        "forms",
+        "v1",
+        credentials=creds,
+    )
+
+    forms_folder_id = os.getenv(phase_config["forms_env"])
+
+    if not forms_folder_id:
+        print(f"{phase_config['forms_env']} is not set.")
+        return
+
+    forms = get_forms_in_folder(
+        creds,
+        forms_folder_id,
+    )
+
+    forms = sorted(forms, key=lambda x: x["name"])
+
+    aggregation_config = phase_config["aggregation_config"]
+
+    number_of_discs = config[aggregation_config]["number_of_groups"]
+
+    forms = forms[:number_of_discs]
+
+    all_rankings = []
+
+    for form in forms[:number_of_discs]:
+
+        print(f"\n===== {form['name']} =====")
+
+        form_id = form["id"]
+
+        responses = fetch_form_responses(
+            form_service,
+            form_id,
+        )
+
+        print("Number of responses:", len(responses))
+
+        if not responses:
+
+            print("No responses found. Skip.")
+
+            continue
+
+        # Convert Responses
+        # 回答を変換する
+
+        question_map = get_question_map(
+            form_service,
+            form_id,
+        )
+
+        votes = convert_form_responses(
+            responses,
+            question_map,
+        )
+
+        # Aggregate Votes
+        # 集計機能
+
+        ranking = aggregate_votes(votes)
+
+        all_rankings.extend(ranking)
+
+    # Update video_list
+    # video_listを更新する
+
+    print("\n===== Updating video_list =====")
+
+    # Load video_list sheet.
+    # video_listを取得する。
+
+    sheet_config = config["spreadsheets"]["video_list"]
+
+    video_sheet = sheet_client.connect_sheet(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        sheet_config["name"],
+        sheet_config["sheet"],
+    )
+
+    video_data = sheet_client.fetch_sheet_data(video_sheet)
+
+    if not video_data:
+
+        print("No video data found.")
+
+        return
+
+    update_rank(
+        video_sheet,
+        video_data,
+        all_rankings,
+        phase,
+    )
+
+    update_score(
+        all_rankings,
+        video_data,
+        config,
+        phase,
+    )
+
+    update_public_score(
+        all_rankings,
+        video_data,
+        config,
+        phase,
+    )
+
+
+if __name__ == "__main__":
+    main()
