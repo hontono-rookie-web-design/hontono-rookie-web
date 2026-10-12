@@ -9,4 +9,5 @@ __pycache__/
 data/
 **/node_modules/
 token.json
+**/images/**
 secrets/
