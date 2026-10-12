@@ -3,6 +3,12 @@ export const CONFIG = {
     name: "本当のルーキー祭り2026秋",
   },
 
+  ranking: {
+    prelim_cutoff: 3,
+    final_cutoff: null,
+    special_cutoff: 3,
+  },
+
   derivativesheets: {
     spreadsheetId: process.env.SPREADSHEET_ID_DERIVATIVE!,
     streams: { name: "紹介配信予定" },
@@ -40,10 +46,6 @@ export const CONFIG = {
 
   images: {
     defaultIllustration: "/images/2026autumn_logo.png",
-  },
-
-  links: {
-    voteGuide: "https://note.com/syn523/n/n3269782e9e16?sub_rt=share_pb",
   },
 
   googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "",

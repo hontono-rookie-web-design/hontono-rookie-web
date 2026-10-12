@@ -24,7 +24,9 @@ backend
 │  ├ fetch_videos.py              参加動画一覧更新スクリプト
 │  ├ fetch_note.py                note記事一覧更新スクリプト
 │  ├ fetch_derivative.py          二次創作一覧更新スクリプト
-│  ├ vote_grouping.py             投票グループ作成スクリプト
+│  ├ vote_grouping_preliminary.py 予選グループ作成スクリプト
+│  ├ vote_grouping_sp.py          SPグループ作成スクリプト
+│  ├ vote_grouping_final.py       決勝グループ作成スクリプト
 │  ├ setup_forms.py               投票フォーム作成スクリプト
 │  └ update_videos_info.py        動画情報更新スクリプト
 └ requirements.txt
@@ -41,6 +43,7 @@ GitHub Actionsで実行する。
 | \<yyyyseoson\> Fetch Videos ex     | `<yyyyseoson>_fetch_videos_ex.yml`     | exステージ（、二次創作）の動画リストを更新する |
 | \<yyyyseoson\> Fetch Note          | `<yyyyseoson>_fetch_note.yml`          | Note記事リストを更新する                       |
 | \<yyyyseoson\> Fetch Derivative    | `<yyyyseoson>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
+| \<yyyyseoson\> Group Daily Aggregation | `<yyyyseoson>_group_daily_aggregation.yml` | 人気投票フォームの回答数を集計し、公開用シートに日次で追記する |
 
 ## 運用方法
 
@@ -238,11 +241,18 @@ APP_ENV="development"
 
 ### 投票グループ分け
 
-1. `backend`ディレクトリで以下を実行
+1. `backend`ディレクトリで、作成するグループに対応したコマンドを実行
    ```
-   python -m scripts.vote_grouping
+   # 予選
+   python -m scripts.vote_grouping_preliminary
+
+   # SP
+   python -m scripts.vote_grouping_sp
+
+   # 決勝（final_border以内の作品を予選グループ・順位から振り分ける）
+   python -m scripts.vote_grouping_final
    ```
-   グループ番号の列が追加された動画情報のリストが更新される。
+   `video_list`の対応するグループ番号列だけが更新される。
 
 ### 投票フォーム作成
 
@@ -267,6 +277,18 @@ APP_ENV="development"
    python -m scripts.setup_forms
    ```
    連番のついたGoogleフォームが作成される。
+
+### 予選投票集計
+
+1. `backend`ディレクトリで以下を実行する。
+
+   ```bash
+   python -m scripts.vote_aggregation_preliminary
+   ```
+
+   Googleフォームの回答をDiscごとに集計し、ランキングを作成してスプレッドシートに書き込む。
+
+
 
 ### 再生数いいね数集計用参加動画一覧更新
 
@@ -299,3 +321,17 @@ APP_ENV="development"
    | `prelim`  | `PRELIM_FORMS_FOLDER_ID`   |
    | `final`   | `FINAL_FORMS_FOLDER_ID`    |
    | `sp`      | `SP_FORMS_FOLDER_ID`       |
+
+## テスト
+
+`backend`ディレクトリで以下を実行する。
+
+```bash
+pytest
+```
+
+特定のテストファイルのみ実行する場合：
+
+```bash
+pytest <テストファイルのパス>
+```

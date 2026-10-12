@@ -12,23 +12,6 @@ export type Item = {
   originalUrl: string;
 };
 
-export function SkeletonCard() {
-  return (
-    <div className="flex flex-col">
-      <div className="aspect-square bg-gray-200 rounded-xl animate-pulse" />
-
-      <div className="mt-2 space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
-
-        <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
-      </div>
-
-      <div className="mt-2 h-4 bg-gray-200 rounded w-1/3 animate-pulse" />
-
-      <div className="mt-2 h-10 bg-gray-200 rounded w-full animate-pulse" />
-    </div>
-  );
-}
 
 type Props = {
   initialItems: Item[];

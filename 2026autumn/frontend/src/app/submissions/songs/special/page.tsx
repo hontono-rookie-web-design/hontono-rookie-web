@@ -3,6 +3,9 @@ import { getCurrentPhaseSp } from "@/config/phase";
 import { fetchVideosSheet } from "@/lib/fetchSheet";
 import VideoList from "./VideoList";
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default async function Page() {
   const currentPhase = getCurrentPhaseSp();
   const rawVideos = await fetchVideosSheet(CONFIG.videosheets.status.sp.name);

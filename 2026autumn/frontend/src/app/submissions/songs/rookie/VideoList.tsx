@@ -13,7 +13,6 @@ interface Video {
   videoUrl: string;
   thumbnailUrl: string;
   publishedAt: string;
-  description: string;
 }
 const VIEW_PHASE = {
   BEFORE: "before",
