@@ -1,17 +1,14 @@
 ## 予選の集計機能
 ## Vote Aggregation for Preliminary
 
-import os, argparse
-
-from lib import utils
-from lib import sheet_client
-
-from lib.vote_aggregation import aggregate_votes
-
-from googleapiclient import discovery
-from oauth2client import client, file, tools
+import argparse
+import os
 
 from dotenv import load_dotenv
+from googleapiclient import discovery
+from lib import sheet_client, utils
+from lib.vote_aggregation import aggregate_votes
+from oauth2client import client, file, tools
 
 # Phase: prelim, final, sp
 
@@ -292,9 +289,10 @@ def update_score(
         score_list_config["sheet"],
     )
 
-    sheet_client.update_sheet(
+    sheet_client.update_sheet_columns(
         score_sheet,
         score_data,
+        [group_id_column, score_column, vote_count_column, average_score_column]
     )
 
     print(f"Successfully updated {score_column}.")
