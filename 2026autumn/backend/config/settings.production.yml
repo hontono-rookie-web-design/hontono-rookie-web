@@ -76,7 +76,9 @@ spreadsheets:
 
   score_list: # 人気投票スコア集計
     name: "score_list_pro" # スプレッドシート名（本番用）
-    sheet: "score_list" # ワークシート名
+    preliminary_sheet: "予選" #予選結果シート名
+    final_sheet: "決勝" #決勝シート名
+    sp_sheet: "SP" #SPシート名
 
   public_prelim_score_list: # 予選人気投票スコア集計（公開用）
     name: "【公開用】予選結果_2026秋" # スプレッドシート名（本番用）

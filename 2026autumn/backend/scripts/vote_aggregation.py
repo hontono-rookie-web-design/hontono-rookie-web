@@ -18,6 +18,7 @@ PHASE_CONFIG = {
         "forms_env": "PRELIMINARY_FORMS_FOLDER_ID",
         "aggregation_config": "prelim_aggregation",
         "public_score_config": "public_prelim_score_list",
+        "score_sheet": "preliminary_sheet",
         "group_id": "prelim_group_id",
         "rank": "prelim_rank",
         "score": "prelim_score",
@@ -28,6 +29,7 @@ PHASE_CONFIG = {
         "forms_env": "FINAL_FORMS_ID",
         "aggregation_config": "final_aggregation",
         "public_score_config": "public_final_score_list",
+        "score_sheet": "final_sheet",
         "group_id": "final_group_id",
         "rank": "final_rank",
         "score": "final_score",
@@ -38,6 +40,7 @@ PHASE_CONFIG = {
         "forms_env": "SP_FORMS_ID",
         "aggregation_config": "sp_aggregation",
         "public_score_config": "public_sp_score_list",
+        "score_sheet": "sp_sheet",
         "group_id": "sp_group_id",
         "rank": "sp_rank",
         "score": "sp_score",
@@ -286,13 +289,12 @@ def update_score(
     score_sheet = sheet_client.connect_sheet(
         os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
         score_list_config["name"],
-        score_list_config["sheet"],
+        score_list_config[phase_config["score_sheet"]],
     )
 
-    sheet_client.update_sheet_columns(
+    sheet_client.update_sheet(
         score_sheet,
         score_data,
-        [group_id_column, score_column, vote_count_column, average_score_column]
     )
 
     print(f"Successfully updated {score_column}.")
