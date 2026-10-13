@@ -350,7 +350,7 @@ def update_public_score(
         )
 
     if not public_data:
-        print("No public preliminary scores found. Skipping public score update.")
+        print("No public scores found. Skipping public score update.")
         return
 
     public_data.sort(
@@ -417,13 +417,11 @@ def main():
 
     aggregation_config = phase_config["aggregation_config"]
 
-    number_of_discs = config[aggregation_config]["number_of_groups"]
-
-    forms = forms[:number_of_discs]
+    number_of_groups = config[aggregation_config]["number_of_groups"]
 
     all_rankings = []
 
-    for form in forms[:number_of_discs]:
+    for form in forms[:number_of_groups]:
 
         print(f"\n===== {form['name']} =====")
 
