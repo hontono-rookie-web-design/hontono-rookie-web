@@ -102,7 +102,7 @@ vote_grouping: # 投票グループ分け関連パラメータ
 
 vote_grouping_sp: # spグループ分け関連パラメータ
   random_seed: 43
-  group_num: 8
+  group_num: 10
 
 vote_grouping_final: # 決勝グループ分け関連パラメータ
   group_num: 12 # 決勝のDisc数
@@ -128,7 +128,11 @@ prelim_aggregation:
 # 決勝集計
 final_aggregation:
   number_of_groups: 12 # 決勝のグループ数（集計対象とする数）
+  public_rank_limit: None # 公開する順位のボーダー（Noneですべての順位を公開）
+  public_score_limit: None # 公開するスコアのボーダー（Noneですべてのスコアを公開）
 
 # SP集計
 sp_aggregation:
-  number_of_groups: 8 # SPのグループ数（集計対象とする数）
+  number_of_groups: 10 # SPのグループ数（集計対象とする数）
+  public_rank_limit: None # 公開する順位のボーダー（Noneですべての順位を公開）
+  public_score_limit: None # 公開するスコアのボーダー（Noneですべてのスコアを公開）

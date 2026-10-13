@@ -327,13 +327,21 @@ def update_public_score(
         rank = row.get("順位")
         video_id = str(row.get("動画ID", "")).strip()
 
-        if not video_id or rank is None or rank > public_rank_limit:
+        if (
+            not video_id
+            or rank is None
+            or (
+                public_rank_limit is not None
+                and rank > public_rank_limit
+            )
+        ):
             continue
 
         video = video_by_id.get(video_id, {})
 
-        score = row["得点"] if rank <= public_score_limit else "-"
-        average_score = row["平均得点"] if rank <= public_score_limit else "-"
+        show_score = public_score_limit is None or rank <= public_score_limit
+        score = row["得点"] if show_score else "-"
+        average_score = row["平均得点"] if show_score else "-"
 
         public_data.append(
             {
