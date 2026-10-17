@@ -10,6 +10,16 @@ on:
   # GitHub Actionsから手動でProductionへデプロイ
   workflow_dispatch:
 
+  # スプレッドシートを更新するワークフローが終わったら、すぐに反映する
+  workflow_run:
+    workflows:
+      - "2026autumn Fetch Videos"
+      - "2026autumn Group Daily Aggregation"
+      - "2026autumn Fetch Derivative"
+      - "2026autumn Fetch Note"
+    types:
+      - completed
+
 permissions:
   contents: read
   deployments: write
@@ -21,6 +31,8 @@ concurrency:
 
 jobs:
   deploy:
+    # workflow_runの場合は、元のワークフローが成功したときだけ実行する
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
