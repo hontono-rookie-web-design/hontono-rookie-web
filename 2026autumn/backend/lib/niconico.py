@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ET
 import requests
 from bs4 import BeautifulSoup
 
+from html import unescape
+
 REQUEST_INTERVAL_SECONDS = (
     0.3  # 投稿者ページスクレイピング・サムネイル取得のレート制限対策
 )
@@ -49,6 +51,13 @@ def fetch_all_videos(tag, limit=100):
 
         if not data:
             break
+
+        # Change the HTML entity to the character ampersand
+        # APIから取得したタイトル・概要欄のHTMLエンティティをデコードする
+        for video in data:
+            for field in ("title", "description"):
+                if isinstance(video.get(field), str):
+                    video[field] = unescape(video[field])
 
         all_videos.extend(data)
 
