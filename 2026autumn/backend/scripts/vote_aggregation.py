@@ -1,19 +1,65 @@
 ## 予選の集計機能
 ## Vote Aggregation for Preliminary
 
-import os, re
-
-from lib import utils
-from lib import sheet_client
-
-from lib.vote_aggregation import aggregate_votes
-
-from googleapiclient import discovery
-from oauth2client import client, file, tools
+import argparse
+import os
 
 from dotenv import load_dotenv
+from googleapiclient import discovery
+from lib import sheet_client, utils
+from lib.vote_aggregation import aggregate_votes
+from oauth2client import client, file, tools
+
+# Phase: prelim, final, sp
 
 load_dotenv()
+PHASE_CONFIG = {
+    "prelim": {
+        "forms_env": "PRELIMINARY_FORMS_FOLDER_ID",
+        "aggregation_config": "prelim_aggregation",
+        "public_score_config": "public_prelim_score_list",
+        "score_sheet": "preliminary_sheet",
+        "group_id": "prelim_group_id",
+        "rank": "prelim_rank",
+        "score": "prelim_score",
+        "vote_count": "prelim_vote_count",
+        "average_score": "prelim_average_score",
+    },
+    "final": {
+        "forms_env": "FINAL_FORMS_ID",
+        "aggregation_config": "final_aggregation",
+        "public_score_config": "public_final_score_list",
+        "score_sheet": "final_sheet",
+        "group_id": "final_group_id",
+        "rank": "final_rank",
+        "score": "final_score",
+        "vote_count": "final_vote_count",
+        "average_score": "final_average_score",
+    },
+    "sp": {
+        "forms_env": "SP_FORMS_ID",
+        "aggregation_config": "sp_aggregation",
+        "public_score_config": "public_sp_score_list",
+        "score_sheet": "sp_sheet",
+        "group_id": "sp_group_id",
+        "rank": "sp_rank",
+        "score": "sp_score",
+        "vote_count": "sp_vote_count",
+        "average_score": "sp_average_score",
+    },
+}
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--phase",
+        choices=["prelim", "final", "sp"],
+        required=True,
+    )
+
+    return parser.parse_args()
 
 
 # Initialize OAuth credentials for Google Forms API.
@@ -153,14 +199,19 @@ def convert_form_responses(
 # video_id 別に予選の順位を更新する。
 
 
-def update_prelim_rank(
+# Update ranking by video_id.
+# video_id別に順位を更新する。
+
+
+def update_rank(
     worksheet,
     video_data,
     ranking,
+    phase,
 ):
 
-    # video_idを使用してprelim_rankを更新する。
-    # Update prelim_rank using video_id.
+    phase_config = PHASE_CONFIG[phase]
+    rank_column = phase_config["rank"]
 
     rank_map = {}
 
@@ -176,7 +227,7 @@ def update_prelim_rank(
 
         if video_id in rank_map:
 
-            video["prelim_rank"] = rank_map[video_id]
+            video[rank_column] = rank_map[video_id]
 
             updated_count += 1
 
@@ -187,73 +238,114 @@ def update_prelim_rank(
         video_data,
     )
 
-    print("Successfully updated prelim_rank.")
+    print(f"Successfully updated {rank_column}.")
 
-def update_prelim_score(ranking, video_data, config):
+
+def update_score(
+    ranking,
+    video_data,
+    config,
+    phase,
+):
+
+    phase_config = PHASE_CONFIG[phase]
+
+    group_id_column = phase_config["group_id"]
+    score_column = phase_config["score"]
+    vote_count_column = phase_config["vote_count"]
+    average_score_column = phase_config["average_score"]
+
     video_by_id = {
-        str(video.get("video_id", "")).strip(): video
-        for video in video_data
+        str(video.get("video_id", "")).strip(): video for video in video_data
     }
 
     score_data = []
 
     for row in ranking:
+
         video_id = str(row.get("動画ID", "")).strip()
 
         if not video_id:
             continue
 
         video = video_by_id.get(video_id, {})
+
         score_data.append(
             {
                 "video_id": video_id,
-                "prelim_group_id": video.get("prelim_group_id", ""),
-                "prelim_score": row["得点"],
-                "prelim_vote_count": row["投票数"],
-                "prelim_average_score": row["平均得点"],
+                group_id_column: video.get(group_id_column, ""),
+                score_column: row["得点"],
+                vote_count_column: row["投票数"],
+                average_score_column: row["平均得点"],
             }
         )
 
     if not score_data:
-        print("No preliminary scores found. Skipping score_list update.")
+        print(f"No {phase} scores found. Skipping score_list update.")
         return
 
     score_list_config = config["spreadsheets"]["score_list"]
+
     score_sheet = sheet_client.connect_sheet(
         os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
         score_list_config["name"],
-        score_list_config["sheet"],
+        score_list_config[phase_config["score_sheet"]],
     )
 
-    sheet_client.update_sheet(score_sheet, score_data)
+    sheet_client.update_sheet(
+        score_sheet,
+        score_data,
+    )
 
-    print("Successfully updated prelim_score.")
+    print(f"Successfully updated {score_column}.")
 
-def update_public_prelim_score(ranking, video_data, config):
-    public_rank_limit = config["prelim_aggregation"]["public_rank_limit"]
-    public_score_limit = config["prelim_aggregation"]["public_score_limit"]
+
+def update_public_score(
+    ranking,
+    video_data,
+    config,
+    phase,
+):
+
+    phase_config = PHASE_CONFIG[phase]
+    group_id_column = phase_config["group_id"]
+
+    phase_config = PHASE_CONFIG[phase]
+    aggregation_config = phase_config["aggregation_config"]
+
+    public_rank_limit = config[aggregation_config]["public_rank_limit"]
+    public_score_limit = config[aggregation_config]["public_score_limit"]
 
     video_by_id = {
-        str(video.get("video_id", "")).strip(): video
-        for video in video_data
+        str(video.get("video_id", "")).strip(): video for video in video_data
     }
 
     public_data = []
 
     for row in ranking:
+
         rank = row.get("順位")
         video_id = str(row.get("動画ID", "")).strip()
 
-        if not video_id or rank is None or rank > public_rank_limit:
+        if (
+            not video_id
+            or rank is None
+            or (
+                public_rank_limit is not None
+                and rank > public_rank_limit
+            )
+        ):
             continue
 
         video = video_by_id.get(video_id, {})
-        score = row["得点"] if rank <= public_score_limit else "-"
-        average_score = row["平均得点"] if rank <= public_score_limit else "-"
+
+        show_score = public_score_limit is None or rank <= public_score_limit
+        score = row["得点"] if show_score else "-"
+        average_score = row["平均得点"] if show_score else "-"
 
         public_data.append(
             {
-                "Disc番号": video.get("prelim_group_id", ""),
+                "Disc番号": video.get(group_id_column, ""),
                 "グループ曲数": row.get("グループ曲数", ""),
                 "投票数": row.get("投票数", ""),
                 "順位": rank,
@@ -266,7 +358,7 @@ def update_public_prelim_score(ranking, video_data, config):
         )
 
     if not public_data:
-        print("No public preliminary scores found. Skipping public score update.")
+        print("No public scores found. Skipping public score update.")
         return
 
     public_data.sort(
@@ -276,20 +368,33 @@ def update_public_prelim_score(ranking, video_data, config):
         )
     )
 
-    public_score_config = config["spreadsheets"]["public_prelim_score_list"]
+    public_score_config_name = phase_config["public_score_config"]
+    public_score_config = config["spreadsheets"][public_score_config_name]
+
     public_score_sheet = sheet_client.connect_sheet(
         os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
         public_score_config["name"],
         public_score_config["sheet"],
     )
 
-    sheet_client.update_sheet(public_score_sheet, public_data)
+    sheet_client.update_sheet(
+        public_score_sheet,
+        public_data,
+    )
 
-    print("Successfully updated public_prelim_score.")
+    print(f"Successfully updated public_{phase}_score.")
+
 
 def main():
 
+    args = parse_args()
+
+    phase = args.phase
+    phase_config = PHASE_CONFIG[phase]
+
     config = utils.load_config()
+
+    print(f"Aggregation phase: {phase}")
 
     # Initialize OAuth
     # OAuthを初期化する
@@ -305,7 +410,11 @@ def main():
         credentials=creds,
     )
 
-    forms_folder_id = os.getenv("PRELIMINARY_FORMS_FOLDER_ID")
+    forms_folder_id = os.getenv(phase_config["forms_env"])
+
+    if not forms_folder_id:
+        print(f"{phase_config['forms_env']} is not set.")
+        return
 
     forms = get_forms_in_folder(
         creds,
@@ -314,11 +423,13 @@ def main():
 
     forms = sorted(forms, key=lambda x: x["name"])
 
-    number_of_discs = config["prelim_aggregation"]["number_of_groups"]
+    aggregation_config = phase_config["aggregation_config"]
+
+    number_of_groups = config[aggregation_config]["number_of_groups"]
 
     all_rankings = []
 
-    for form in forms[:number_of_discs]:
+    for form in forms[:number_of_groups]:
 
         print(f"\n===== {form['name']} =====")
 
@@ -381,12 +492,26 @@ def main():
 
         return
 
-    update_prelim_rank(video_sheet, video_data, all_rankings)
+    update_rank(
+        video_sheet,
+        video_data,
+        all_rankings,
+        phase,
+    )
 
-    update_prelim_score(all_rankings, video_data, config)
+    update_score(
+        all_rankings,
+        video_data,
+        config,
+        phase,
+    )
 
-    update_public_prelim_score(all_rankings, video_data, config)
-
+    update_public_score(
+        all_rankings,
+        video_data,
+        config,
+        phase,
+    )
 
 
 if __name__ == "__main__":

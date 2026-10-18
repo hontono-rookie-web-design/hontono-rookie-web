@@ -3,11 +3,11 @@ import Hero from "@/components/Hero";
 import Rules from "@/components/Rules";
 import Schedule from "@/components/Schedule";
 
+import Footer from "@/components/Footer";
 import Contact from "@/components/sections/Contact";
 import PastEventLink from "@/components/sections/PastEventLink";
 import RelatedLinks from "@/components/sections/RelatedLinks";
 import Sponsors from "@/components/sections/Sponsors";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
