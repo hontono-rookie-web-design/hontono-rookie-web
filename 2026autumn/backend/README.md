@@ -27,7 +27,7 @@ backend
 │  ├ vote_grouping_preliminary.py 予選グループ作成スクリプト
 │  ├ vote_grouping_sp.py          SPグループ作成スクリプト
 │  ├ vote_grouping_final.py       決勝グループ作成スクリプト
-│  ├ setup_forms.py               投票フォーム作成スクリプト
+│  └ setup_forms.py               投票フォーム作成スクリプト
 └ requirements.txt
 ```
 
