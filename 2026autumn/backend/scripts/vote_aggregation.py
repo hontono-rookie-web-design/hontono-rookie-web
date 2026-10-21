@@ -280,6 +280,19 @@ def update_score(
             }
         )
 
+    # Sort as increasing
+    # グループ番号を数値として昇順に並べる（未設定のものは最後）
+    score_data.sort(
+        key=lambda row: (
+            not str(row.get(group_id_column, "")).strip().isdigit(),
+            (
+                int(row[group_id_column])
+                if str(row.get(group_id_column, "")).strip().isdigit()
+                else 0
+            ),
+        )
+    )
+
     if not score_data:
         print(f"No {phase} scores found. Skipping score_list update.")
         return
@@ -330,10 +343,7 @@ def update_public_score(
         if (
             not video_id
             or rank is None
-            or (
-                public_rank_limit is not None
-                and rank > public_rank_limit
-            )
+            or (public_rank_limit is not None and rank > public_rank_limit)
         ):
             continue
 
