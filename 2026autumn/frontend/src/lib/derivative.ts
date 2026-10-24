@@ -1,6 +1,5 @@
-import { fetchDerivativeSheet } from "@/lib/fetchSheet";
-import { fetchNoteSheet } from "@/lib/fetchSheet";
 import { CONFIG } from "@/config/config";
+import { fetchDerivativeSheet, fetchNoteSheet } from "@/lib/fetchSheet";
 
 export async function getDerivativeArrangements() {
   return await fetchDerivativeSheet(CONFIG.derivativesheets.arrangements.name);
