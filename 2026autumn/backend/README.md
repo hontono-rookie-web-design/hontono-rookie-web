@@ -189,6 +189,11 @@ FORMS_FOLDER_ID="1AFw64c80F5GZTYgT7wcFX3vDT1gb-NR6"
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
 TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
 DERIVATIVE_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
+#投票フォームを作成したフォルダIDを指定する。
+#vote_aggregation.pyとplot_rank_transition.pyを実行する際に必要となる。
+PRELIM_FORMS_FOLDER_ID="<予選フォームのフォルダID>"
+FINAL_FORMS_FOLDER_ID="<決勝フォームのフォルダID>"
+SP_FORMS_FOLDER_ID="<SPフォームのフォルダID>"
 
 APP_ENV="development"
 ```
