@@ -76,7 +76,7 @@ GitHub Actionsで実行する。
    │ forms_list_pro                                | 各グループの投票フォームURLとマイリストURLのリスト |
    │ score_list_pro                                | 参加作品動画の獲得スコアリスト  |
 
-   スプレッドシートのシート名は`config/settings.<env>.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
+   スプレッドシートのシート名は`config/settings.<APP_ENV>.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
 
 #### workflow準備
 
@@ -99,7 +99,7 @@ GitHub Actionsで実行する。
    | 時期     | 作品動画リスト更新関連処理 | 二次創作作品・Noteリスト更新関連処理 |
    | -------- | -------------------------- | ------------------------------------ |
    | 投稿期間 | 毎日実行                   | 3時間おき実行                        |
-   | 投票期間 | 毎日実行（exステージのみ） | 3時間おき実行                        |
+   | 投票期間 | 毎日実行（SPステージのみ） | 3時間おき実行                        |
    | 終了後   | 実行なし                   | たまに手動実行                       |
 
 #### 二次創作作品提出フォームの作成
@@ -123,24 +123,24 @@ GitHub Actionsで実行する。
 
 1. 参加タグがついた動画の中で事情があり作品動画リストから除外する必要がある動画を、参加作品動画の除外リストに記載する。
 
-   opステージ、ルーキー参加動画については「rookie」シート、exステージ参加動画は「ex」シートに以下のように記載する。
+   [「excluded_list」]シートに以下のように記載する。
    - 期間外投稿動画、インスト動画などをリストから除外する場合
      | 動画ID | 移動先 |
      | --- | --- |
      | 除外する動画ID | (空欄) |
-   - opステージ投稿期間より後（ルーキー作品投稿期間）に投稿された動画をopステージ参加動画に移動させる場合
+   - exステージ投稿期間より後（ルーキー作品投稿期間）に投稿された動画をexステージ参加動画に移動させる場合
      | 動画ID | 移動先 |
      | --- | --- |
-     | 移動させる動画ID | op |
+     | 移動させる動画ID | ex |
    - ルーキー作品投稿期間より前（opステージ投稿期間）に投稿された動画をルーキー参加動画に移動させる場合
      | 動画ID | 移動先 |
      | --- | --- |
      | 移動させる動画ID | ルーキー |
-     「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
+   - 「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
 
 #### 二次創作作品の確認
 
-1. 二次創作作品の情報が、二次創作作品提出フォーム回答リストの二次創作作品情報確認用シート「二次創作作品情報確認用」に二次創作情報が追加されていくので、Webへの掲載可否を判断し、掲載して良いものは「掲載可否」の欄の数値を1に変更する。
+1. 二次創作作品の情報が、derivative_list_pro内のシート「derivative_list」に二次創作情報が追加されていくので、Webへの掲載可否を判断し、掲載して良いものは「check」の欄の数値を1に変更する。
 
 1. 二次創作確認用シートで、欠損のある内容や間違っている内容があれば記入・訂正を行う。
 
@@ -196,23 +196,23 @@ GitHub Actionsで実行する。
 GOOGLE_APPLICATION_CREDENTIALS="<GoogleサービスアカウントのJSONファイルのパス>"
 # Google API アクセストークンのJSONのPathを指定する。
 GOOGLE_OAUTH_CREDENTIALS="<Google OAuthクライアントIDのJSONファイルのパス>"
-# `FORMS_FOLDER_ID`で指定したフォルダの下に、作成時刻を名前としたフォルダが作成され、その下にフォームが作成される（指定フォルダ/yyyy-MM-dd_hh-mm-ss/本当のルーキー祭り2025秋_Disc.***）
+# `FORMS_FOLDER_ID`で指定したフォルダの下に、作成時刻を名前としたフォルダが作成され、その下にフォームが作成される（指定フォルダ/yyyy-MM-dd_hh-mm-ss/本当のルーキー祭り2026秋_Disc.***）
 # URLからフォルダIDがわかる。<br>例）`https://drive.google.com/drive/folders/<folder_id>`
 FORMS_FOLDER_ID="1AFw64c80F5GZTYgT7wcFX3vDT1gb-NR6"
 # 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
 TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
 DERIVATIVE_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
-
+# 開発用データを扱う場合は"development", 本番用データを扱う場合は"production"を指定する。
 APP_ENV="development"
 ```
 
 ## 設定
 
-`config/settings.yml`で、タグやスプレッドシート名などの情報を設定している。
+`config/settings.<APP_ENV>.yml`で、タグやスプレッドシート名などの情報を設定している。
 次回開催時にコードを流用する場合にはこのファイルのみ変更すれば良いはず。
 
-各パラメータの説明は`config/settings.yml`ファイル内のコメントを参照。
+各パラメータの説明は`config/settings.<APP_ENV>.yml`ファイル内のコメントを参照。
 
 スクリプト内では、`lib.utils.load_config`を呼ぶことで、`dict`形式で設定内容が取得できる。
 
