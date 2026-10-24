@@ -13,34 +13,34 @@ backend
 ├ README.md
 ├ .env
 ├ config
-│  ├ settings.development.yml     開発用設定ファイル
-│  └ settings.production.yml      本番用設定ファイル
+│  ├ settings.development.yml             開発用設定ファイル
+│  └ settings.production.yml              本番用設定ファイル
 ├ lib
 │  ├ __init__.py
-│  ├ content_grouper.py           動画のコンテンツIDをグループ化するクラス
-│  ├ sheet_client.py              スプレッドシート関連モジュール
-│  ├ niconico.py                  ニコニコ動画からの情報取得関連モジュール
-│  ├ youtube.py                   YouTubeからの情報取得関連モジュール
-│  ├ utils.py                     共通モジュール
-│  ├ vote_aggregation.py          投票集計関連モジュール
-│  └ vote_grouping.py             グループ分け関連モジュール
+│  ├ content_grouper.py                   動画のコンテンツIDをグループ化するクラス
+│  ├ sheet_client.py                      スプレッドシート関連モジュール
+│  ├ niconico.py                          ニコニコ動画からの情報取得関連モジュール
+│  ├ youtube.py                           YouTubeからの情報取得関連モジュール
+│  ├ utils.py                             共通モジュール
+│  ├ vote_aggregation.py                  投票集計関連モジュール
+│  └ vote_grouping.py                     グループ分け関連モジュール
 ├ scripts
-│  ├ fetch_videos.py              参加動画一覧更新スクリプト
-│  ├ fetch_note.py                note記事一覧更新スクリプト
-│  ├ fetch_derivative.py          二次創作一覧更新スクリプト
-│  ├ vote_grouping_preliminary.py 予選グループ作成スクリプト
-│  ├ vote_grouping_sp.py          SPグループ作成スクリプト
-│  ├ vote_grouping_final.py       決勝グループ作成スクリプト
-│  ├ setup_forms.py               投票フォーム作成スクリプト
-│  ├ vote_aggregation.py          投票集計スクリプト
-│  ├ group_daily_aggregation.py   グループとのの日次投票数集計スクリプト
-│  └ plot_rank_transition.py      順位推移グラフ作成スクリプト
+│  ├ fetch_videos.py                      参加動画一覧更新スクリプト
+│  ├ fetch_note.py                        note記事一覧更新スクリプト
+│  ├ fetch_derivative.py                  二次創作一覧更新スクリプト
+│  ├ vote_grouping_preliminary.py         予選グループ作成スクリプト
+│  ├ vote_grouping_sp.py                  SPグループ作成スクリプト
+│  ├ vote_grouping_final.py               決勝グループ作成スクリプト
+│  ├ setup_forms.py                       投票フォーム作成スクリプト
+│  ├ vote_aggregation.py                  投票集計スクリプト
+│  ├ group_daily_aggregation.py           グループとのの日次投票数集計スクリプト
+│  └ plot_rank_transition.py              順位推移グラフ作成スクリプト
 ├ data
-│  ├ test_vote_aggregation.json   投票集計テスト用データ(正常)
-│  └ test_vote_aggregation_invalid.json  投票集計テスト用データ(無効回答を含む)
+│  ├ test_vote_aggregation.json           投票集計テスト用データ(正常)
+│  └ test_vote_aggregation_invalid.json   投票集計テスト用データ(無効回答を含む)
 ├ test
-│  ├ test_othertests.py           投票集計用の関数個別テスト
-│  └ test_vote_aggregation.py     投票集計テスト
+│  ├ test_othertests.py                   投票集計用の関数個別テスト
+│  └ test_vote_aggregation.py             投票集計テスト
 └ requirements.txt
 ```
 
