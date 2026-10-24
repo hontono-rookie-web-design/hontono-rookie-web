@@ -198,11 +198,11 @@ GOOGLE_APPLICATION_CREDENTIALS="<GoogleサービスアカウントのJSONファ�
 GOOGLE_OAUTH_CREDENTIALS="<Google OAuthクライアントIDのJSONファイルのパス>"
 # `FORMS_FOLDER_ID`で指定したフォルダの下に、作成時刻を名前としたフォルダが作成され、その下にフォームが作成される（指定フォルダ/yyyy-MM-dd_hh-mm-ss/本当のルーキー祭り2026秋_Disc.***）
 # URLからフォルダIDがわかる。<br>例）`https://drive.google.com/drive/folders/<folder_id>`
-FORMS_FOLDER_ID="1AFw64c80F5GZTYgT7wcFX3vDT1gb-NR6"
+FORMS_FOLDER_ID="<フォームのフォルダID>"
 # 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
-TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
-DERIVATIVE_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
+TEMPLATE_FORM_ID="<テンプレートとなるフォームのID>"
+DERIVATIVE_FORM_ID="<二次創作提出フォームのID>"
 # 開発用データを扱う場合は"development", 本番用データを扱う場合は"production"を指定する。
 APP_ENV="development"
 ```
