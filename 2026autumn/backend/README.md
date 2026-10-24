@@ -222,12 +222,12 @@ APP_ENV="development"
 
 ### 共通準備
 
-1. `config/settings.yml`に設定を記載する。
+1. `config/settings.<APP_ENV>.yml`に設定を記載する。
 2. Google Cloud Platformを開き、テストユーザにOAuth認証をするユーザのメールアドレスを登録する。
 
 ### 参加動画一覧更新
 
-1. 「動画除外リスト\_2026秋」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
+1. 「excluded_list」のスプレッドシートに一覧から除外する動画のIDリストを作成する。
 
 2. `backend`ディレクトリで以下を実行
    ```
@@ -245,12 +245,12 @@ APP_ENV="development"
 
 ### 二次創作作品一覧更新
 
-1. 二次創作作品情報確認用シートを確認し、二次創作作品リストに載せる作品は「掲載可否」欄を1にする。
-2. `backend`ディレクトリで以下を実行
+1. `backend`ディレクトリで以下を実行
    ```
    python -m scripts.fetch_derivative
    ```
    二次創作作品リストが更新される。
+2. derivative_list_proシートを確認し、二次創作作品リストに載せる作品は「check」欄を1にする。
 
 ### 投票グループ分け
 
@@ -285,18 +285,20 @@ APP_ENV="development"
        - メールアドレスを収集する: 回答者からの入力
        - 回答のコピーを回答者に送信: 常に表示
        - 回答を1回に制限する: オン
-2. `backend`ディレクトリで以下を実行
+2. `backend`ディレクトリで以下を実行。
+   対象フェーズによって prelim/final/spからフェーズを指定する
    ```
-   python -m scripts.setup_forms
+   python -m scripts.setup_forms --phase [フェーズ]
    ```
    連番のついたGoogleフォームが作成される。
 
-### 予選投票集計
+### 投票集計
 
 1. `backend`ディレクトリで以下を実行する。
+   対象フェーズによって prelim/final/spからフェーズを指定する
 
    ```bash
-   python -m scripts.vote_aggregation_preliminary
+   python -m scripts.vote_aggregation --phase [フェーズ]
    ```
 
    Googleフォームの回答をDiscごとに集計し、ランキングを作成してスプレッドシートに書き込む。
@@ -304,12 +306,12 @@ APP_ENV="development"
 ### 順位推移グラフの作成
 
 各グループの日ごとの順位推移グラフを公開する場合、以下の手順でグラフを作成する。
+対象フェーズによって prelim/final/spからフェーズを指定する
 
-1. `backend`ディレクトリで以下の例に従い実行
+1. `backend`ディレクトリで以下を実行
    ```
-   python -m scripts.plot_rank_transition --phase prelim
+   python -m scripts.plot_rank_transition --phase [フェーズ]
    ```
-   `--phase`には `prelim`, `final`, `sp`のいずれかを指定する(必須)。
    対象フェーズの各グループの順位推移グラフが`images/<phase>_rank_transition/`下にPNGで出力される。
    横軸の日付範囲は、対象フェーズの全フォーム回答内でもっとも早い回答日からもっとも遅い回答日までで統一される。
    `--rank` で数字を指定した場合、最終順位が指定した順位以内の動画のみがグラフに表示される。
