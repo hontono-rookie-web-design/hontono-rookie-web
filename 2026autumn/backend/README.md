@@ -33,7 +33,7 @@ backend
 │  ├ vote_grouping_final.py               決勝グループ作成スクリプト
 │  ├ setup_forms.py                       投票フォーム作成スクリプト
 │  ├ vote_aggregation.py                  投票集計スクリプト
-│  ├ group_daily_aggregation.py           グループとのの日次投票数集計スクリプト
+│  ├ group_daily_aggregation.py           グループとの日次投票数集計スクリプト
 │  └ plot_rank_transition.py              順位推移グラフ作成スクリプト
 ├ data
 │  ├ test_vote_aggregation.json           投票集計テスト用データ(正常)
@@ -51,10 +51,10 @@ GitHub Actionsで実行する。
 
 | workflow                           | workflowファイル                       | 処理内容                                       |
 | ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
-| \<yyyyseoson\> Fetch Videos Rookie | `<yyyyseoson>_fetch_videos_rookie.yml` | Rookie、ex, SPステージの動画リストを更新する       |
-| \<yyyyseoson\> Fetch Note          | `<yyyyseoson>_fetch_note.yml`          | Note記事リストを更新する                       |
-| \<yyyyseoson\> Fetch Derivative    | `<yyyyseoson>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
-| \<yyyyseoson\> Group Daily Aggregation | `<yyyyseoson>_group_daily_aggregation.yml` | 人気投票フォームの回答数を集計し、公開用シートに日次で追記する |
+| \<yyyyseoson\> Fetch Videos | `<yyyyseason>_fetch_videos.yml` | Rookie、ex, SPステージの動画リストを更新する       |
+| \<yyyyseoson\> Fetch Note          | `<yyyyseason>_fetch_note.yml`          | Note記事リストを更新する                       |
+| \<yyyyseoson\> Fetch Derivative    | `<yyyyseason>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
+| \<yyyyseoson\> Group Daily Aggregation | `<yyyyseason>_group_daily_aggregation.yml` | 人気投票フォームの回答数を集計し、公開用シートに日次で追記する |
 
 ## 運用方法
 
@@ -73,8 +73,8 @@ GitHub Actionsで実行する。
    | derivative_list_pro                          | 二次創作作品リスト                 |
    | excluded_list_pro                            | 参加作品動画の除外リスト           |
    | 二次創作作品提出フォーム回答\_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |
-   │ forms_list_pro                                | 各グループの投票フォームURLとマイリストURLのリスト |
-   │ score_list_pro                                | 参加作品動画の獲得スコアリスト  |
+   | forms_list_pro                                | 各グループの投票フォームURLとマイリストURLのリスト |
+   | score_list_pro                                | 参加作品動画の獲得スコアリスト  |
 
    スプレッドシートのシート名は`config/settings.<APP_ENV>.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
 
@@ -123,17 +123,17 @@ GitHub Actionsで実行する。
 
 1. 参加タグがついた動画の中で事情があり作品動画リストから除外する必要がある動画を、参加作品動画の除外リストに記載する。
 
-   [「excluded_list」]シートに以下のように記載する。
+   excluded_list_pro内の`excluded_list`シートに以下のように記載する。
    - 期間外投稿動画、インスト動画などをリストから除外する場合
-     | 動画ID | 移動先 |
+     | video_id | move_to |
      | --- | --- |
      | 除外する動画ID | (空欄) |
    - exステージ投稿期間より後（ルーキー作品投稿期間）に投稿された動画をexステージ参加動画に移動させる場合
-     | 動画ID | 移動先 |
+     | video_id | move_to |
      | --- | --- |
      | 移動させる動画ID | ex |
-   - ルーキー作品投稿期間より前（opステージ投稿期間）に投稿された動画をルーキー参加動画に移動させる場合
-     | 動画ID | 移動先 |
+   - ルーキー作品投稿期間より前（exステージ投稿期間）に投稿された動画をルーキー参加動画に移動させる場合
+     | video_id | move_to |
      | --- | --- |
      | 移動させる動画ID | ルーキー |
    - 「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
