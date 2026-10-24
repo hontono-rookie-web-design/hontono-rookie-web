@@ -203,6 +203,14 @@ FORMS_FOLDER_ID="<フォームのフォルダID>"
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
 TEMPLATE_FORM_ID="<テンプレートとなるフォームのID>"
 DERIVATIVE_FORM_ID="<二次創作提出フォームのID>"
+#投票フォームを作成したフォルダIDを指定する。vote_aggregation.pyを実行する際に必要となる。
+PRELIMINARY_FORMS_FOLDER_ID="<予選フォームのフォルダID>"
+FINAL_FORMS_ID="<決勝フォームのフォルダID>"
+SP_FORMS_ID="<SPフォームのフォルダID>"
+#投票フォームを作成したフォルダIDを指定する。plot_rank_transition.pyを実行する際に必要となる。
+PRELIM_FORMS_FOLDER_ID="<予選フォームのフォルダID>"
+FINAL_FORMS_FOLDER_ID="<決勝フォームのフォルダID>"
+SP_FORMS_FOLDER_ID="<SPフォームのフォルダID>"
 # 開発用データを扱う場合は"development", 本番用データを扱う場合は"production"を指定する。
 APP_ENV="development"
 ```
@@ -317,12 +325,6 @@ APP_ENV="development"
    `--rank` で数字を指定した場合、最終順位が指定した順位以内の動画のみがグラフに表示される。
    (例：`--rank 3`とした場合、最終順位が3位以内の動画のみがグラフに表示される。)
 
-   フォームの取得には、対象フェーズに応じた以下いずれかの環境変数（投票フォームが入っているGoogle DriveフォルダのID）が`.env`に必要。
-   | フェーズ  | 環境変数                  |
-   | --------- | -------------------------- |
-   | `prelim`  | `PRELIM_FORMS_FOLDER_ID`   |
-   | `final`   | `FINAL_FORMS_FOLDER_ID`    |
-   | `sp`      | `SP_FORMS_FOLDER_ID`       |
 
 ## テスト
 
