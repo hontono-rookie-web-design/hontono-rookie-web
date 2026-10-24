@@ -51,8 +51,7 @@ GitHub Actionsで実行する。
 
 | workflow                           | workflowファイル                       | 処理内容                                       |
 | ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
-| \<yyyyseoson\> Fetch Videos Rookie | `<yyyyseoson>_fetch_videos_rookie.yml` | Rookie、opステージの動画リストを更新する       |
-| \<yyyyseoson\> Fetch Videos ex     | `<yyyyseoson>_fetch_videos_ex.yml`     | exステージ（、二次創作）の動画リストを更新する |
+| \<yyyyseoson\> Fetch Videos Rookie | `<yyyyseoson>_fetch_videos_rookie.yml` | Rookie、ex, SPステージの動画リストを更新する       |
 | \<yyyyseoson\> Fetch Note          | `<yyyyseoson>_fetch_note.yml`          | Note記事リストを更新する                       |
 | \<yyyyseoson\> Fetch Derivative    | `<yyyyseoson>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
 | \<yyyyseoson\> Group Daily Aggregation | `<yyyyseoson>_group_daily_aggregation.yml` | 人気投票フォームの回答数を集計し、公開用シートに日次で追記する |
