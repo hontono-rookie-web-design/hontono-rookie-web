@@ -51,7 +51,7 @@ GitHub Actionsで実行する。
 
 | workflow                           | workflowファイル                       | 処理内容                                       |
 | ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
-| \<yyyyseoson\> Fetch Videos | `<yyyyseason>_fetch_videos.yml` | Rookie、ex, SPステージの動画リストを更新する       |
+| \<yyyyseoson\> Fetch Videos | `<yyyyseason>_fetch_videos.yml` | Rookie、ex、SPステージの動画リストを更新する       |
 | \<yyyyseoson\> Fetch Note          | `<yyyyseason>_fetch_note.yml`          | Note記事リストを更新する                       |
 | \<yyyyseoson\> Fetch Derivative    | `<yyyyseason>_fetch_derivative.yml`    | 二次創作作品リストを更新する                   |
 | \<yyyyseoson\> Group Daily Aggregation | `<yyyyseason>_group_daily_aggregation.yml` | 人気投票フォームの回答数を集計し、公開用シートに日次で追記する |
@@ -136,7 +136,7 @@ GitHub Actionsで実行する。
      | video_id | move_to |
      | --- | --- |
      | 移動させる動画ID | ルーキー |
-   - 「除外理由」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
+   - 「reason」欄はメモ用なので、備考がある場合は記載する。「動画ID」はsmなどから始まる番号。
 
 #### 二次創作作品の確認
 
@@ -258,7 +258,7 @@ APP_ENV="development"
    python -m scripts.fetch_derivative
    ```
    二次創作作品リストが更新される。
-2. derivative_list_proシートを確認し、二次創作作品リストに載せる作品は「check」欄を1にする。
+2. derivative_list_pro内の`derivative_list`シートを確認し、二次創作作品リストに載せる作品は「check」欄を1にする。
 
 ### 投票グループ分け
 
@@ -299,6 +299,7 @@ APP_ENV="development"
    python -m scripts.setup_forms --phase [フェーズ]
    ```
    連番のついたGoogleフォームが作成される。
+3. 作成したフォームのURLを`forms_list`シートに手動で貼り付ける。
 
 ### 投票集計
 
@@ -309,14 +310,23 @@ APP_ENV="development"
    python -m scripts.vote_aggregation --phase [フェーズ]
    ```
 
-   Googleフォームの回答をDiscごとに集計し、ランキングを作成してスプレッドシートに書き込む。
+   Googleフォームの回答をグループごとに集計し、ランキングを作成してスプレッドシートに書き込む。
+
+### 各グループ投票回答数集計
+
+1. `backend`ディレクトリで以下を実行する。
+   対象フェーズによって prelim/final/spからフェーズを指定する。指定しなかった場合は全フェーズを対象に実行される。
+   ```
+   python -m scripts.group_daily_aggregation --phase [フェーズ]
+   ```
+   実行時点での各フォームの回答数が`【公開用】人気投票投票数_2026秋`に書き込まれる。
 
 ### 順位推移グラフの作成
 
 各グループの日ごとの順位推移グラフを公開する場合、以下の手順でグラフを作成する。
-対象フェーズによって prelim/final/spからフェーズを指定する
 
 1. `backend`ディレクトリで以下を実行
+   対象フェーズによって prelim/final/spからフェーズを指定する
    ```
    python -m scripts.plot_rank_transition --phase [フェーズ]
    ```
