@@ -70,11 +70,13 @@ GitHub Actionsで実行する。
    | -------------------------------------------- | ---------------------------------- |
    | video_list_pro                               | 参加作品動画リスト                 |
    | note_list_pro                                | Note記事リスト                     |
-   | derivative*list_pro*                         | 二次創作作品リスト                 |
+   | derivative_list_pro                          | 二次創作作品リスト                 |
    | excluded_list_pro                            | 参加作品動画の除外リスト           |
    | 二次創作作品提出フォーム回答\_\<yyyyseoson\> | 二次創作作品提出フォーム回答リスト |
+   │ forms_list_pro                                | 各グループの投票フォームURLとマイリストURLのリスト |
+   │ score_list_pro                                | 参加作品動画の獲得スコアリスト  |
 
-   スプレッドシートのシート名は`config/setting.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
+   スプレッドシートのシート名は`config/settings.<env>.yml`の`spreadsheets`の項目で設定するので、その名称のシートを用意しておくと良い。
 
 #### workflow準備
 
