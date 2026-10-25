@@ -2,9 +2,9 @@ name: 2026autumn Group Daily Aggregation
 
 on:
   workflow_dispatch: # 手動実行
-  schedule:
+  # schedule:
     # JST 午前0:00 = UTC 前日 15:00（毎日実行）
-    - cron: '0 15 * * *'
+    # - cron: '0 15 * * *'
 
 jobs:
   run-script:
