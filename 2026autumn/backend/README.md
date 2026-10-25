@@ -201,17 +201,14 @@ GOOGLE_OAUTH_CREDENTIALS="<Google OAuthクライアントIDのJSONファイル�
 FORMS_FOLDER_ID="<フォームのフォルダID>"
 # 環境変数`TEMPLATE_FORM_ID`に、人気投票フォームのテンプレートとなるフォームのIDを指定する。
 # Google Formsを作成すれば、URLからフォームIDがわかる。<br>例）`https://docs.google.com/forms/d/<forms_id>/edit`
-TEMPLATE_FORM_ID="<テンプレートとなるフォームのID>"
-DERIVATIVE_FORM_ID="<二次創作提出フォームのID>"
-#投票フォームを作成したフォルダIDを指定する。vote_aggregation.pyを実行する際に必要となる。
-PRELIMINARY_FORMS_FOLDER_ID="<予選フォームのフォルダID>"
-FINAL_FORMS_ID="<決勝フォームのフォルダID>"
-SP_FORMS_ID="<SPフォームのフォルダID>"
-#投票フォームを作成したフォルダIDを指定する。plot_rank_transition.pyを実行する際に必要となる。
+TEMPLATE_FORM_ID="1NmYwcNgE6pCexyYPgNh-91rcwLmRmQjmOq6vjuEQOqw"
+DERIVATIVE_FORM_ID="1GaUh9vJUcebZiajYYmvc8s1CVihyGVFz5qPXtItT_Ak"
+#投票フォームを作成したフォルダIDを指定する。
+#vote_aggregation.pyとplot_rank_transition.pyを実行する際に必要となる。
 PRELIM_FORMS_FOLDER_ID="<予選フォームのフォルダID>"
 FINAL_FORMS_FOLDER_ID="<決勝フォームのフォルダID>"
 SP_FORMS_FOLDER_ID="<SPフォームのフォルダID>"
-# 開発用データを扱う場合は"development", 本番用データを扱う場合は"production"を指定する。
+
 APP_ENV="development"
 ```
 

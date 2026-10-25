@@ -136,5 +136,5 @@ final_aggregation:
 # SP集計
 sp_aggregation:
   number_of_groups: 10 # SPのグループ数（集計対象とする数）
-  public_rank_limit: null # 公開する順位のボーダー（nullですべての順位を公開）
-  public_score_limit: null # 公開するスコアのボーダー（nullですべてのスコアを公開）
+  public_rank_limit: 3 # 公開する順位のボーダー（nullですべての順位を公開）
+  public_score_limit: 3 # 公開するスコアのボーダー（nullですべてのスコアを公開）
