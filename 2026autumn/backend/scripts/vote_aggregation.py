@@ -15,7 +15,7 @@ from oauth2client import client, file, tools
 load_dotenv()
 PHASE_CONFIG = {
     "prelim": {
-        "forms_env": "PRELIMINARY_FORMS_FOLDER_ID",
+        "forms_env": "PRELIM_FORMS_FOLDER_ID",
         "aggregation_config": "prelim_aggregation",
         "public_score_config": "public_prelim_score_list",
         "score_sheet": "preliminary_sheet",
@@ -26,7 +26,7 @@ PHASE_CONFIG = {
         "average_score": "prelim_average_score",
     },
     "final": {
-        "forms_env": "FINAL_FORMS_ID",
+        "forms_env": "FINAL_FORMS_FOLDER_ID",
         "aggregation_config": "final_aggregation",
         "public_score_config": "public_final_score_list",
         "score_sheet": "final_sheet",
@@ -37,7 +37,7 @@ PHASE_CONFIG = {
         "average_score": "final_average_score",
     },
     "sp": {
-        "forms_env": "SP_FORMS_ID",
+        "forms_env": "SP_FORMS_FOLDER_ID",
         "aggregation_config": "sp_aggregation",
         "public_score_config": "public_sp_score_list",
         "score_sheet": "sp_sheet",
