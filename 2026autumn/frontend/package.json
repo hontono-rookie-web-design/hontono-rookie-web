@@ -14,10 +14,10 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@next/third-parties": "^16.4.3",
-    "@opennextjs/cloudflare": "^1.20.9",
+    "@next/third-parties": "^16.4.6",
+    "@opennextjs/cloudflare": "^1.20.16",
     "lucide-react": "^0.577.0",
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
@@ -28,10 +28,10 @@
     "@types/react-dom": "^19",
     "daisyui": "^5.7.50",
     "eslint": "^9",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.6",
     "prettier": "3.9.10",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "wrangler": "^4.154.0"
+    "wrangler": "^4.160.0"
   }
 }
